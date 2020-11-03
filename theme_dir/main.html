@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{#
+
+The main Sheffield lab theme template. This template is based on the original MkDocs Theme.
+ 
+Any theme customizations should override this file to redefine blocks defined in
+the various templates. The custom theme should only need to define a main.html
+which `{% extends "base.html" %}` and defines various blocks which will replace
+the blocks defined in base.html and its included child templates.
+#}
+
+{%- block site_name %}
+{% if config.site_logo %}
+<a class="navbar-brand" href="{{ nav.homepage.url|url }}"><img src="{{ config.site_logo | url }}" class="navlogo"></a>
+{% else %}
+<a class="navbar-brand" href="{{ nav.homepage.url|url }}">{{ config.site_name }}</a>
+{% endif %}
+{%- endblock %}
+
+
+{%- block styles %}
+<link href="{{ 'css/bootstrap.min.css'|url }}" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+{%- if config.theme.highlightjs %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/{{ config.theme.hljs_style }}.min.css">
+{%- endif %}
+{%- for path in config['extra_css'] %}
+<link href="{{ path|url }}" rel="stylesheet">
+{%- endfor %}
+<link href="{{ 'css/extra.css'|url }}" rel="stylesheet">
+<link href="{{ 'extra.css'|url }}" rel="stylesheet">
+<link href="{{ 'jumbo.css'|url }}" rel="stylesheet">
+{%- endblock %}
+

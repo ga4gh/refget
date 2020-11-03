@@ -1,0 +1,47 @@
+site_name: Seqcol Protocol Specification
+site_logo: img/collection.svg
+site_url: http://seqcol.databio.org/
+repo_url: http://github.com/refgenie/seqcol_spec
+
+nav:
+  - Getting Started: 
+    - A simple example: simple_example.md
+    - Seqcol specification: specification.md
+  - Detailed how-to guides:
+      - Compute a digest given a FASTA file: digest_from_fasta.md
+      - Retrieve a fasta file giveh a digest: fasta_from_digest.md
+  - Implementations:
+    - "Python": implementation_python.md
+    - "Java": implementation_java.md
+  - SeqCol in practice:
+    - Projects and software using seqcol: seqcol_in_practice.md
+    - Support: https://github.com/refgenie/seqcol_spec/issues
+    - Team and Contributing: team.md
+
+theme:
+  name: databio
+  custom_dir: theme_dir
+
+plugins:
+- databio:
+    jupyter_source: "docs_jupyter"
+    jupyter_build: "docs_jupyter/build"
+    autodoc_build: "docs/autodoc_build"
+    no_top_level: true
+- search
+
+copyright: GA4GH Genomic Knowledge Standards Workstream, Seqcol team
+home_link: null
+
+
+navbar:
+  left:
+  - text: Specification
+    icon: fa-file-alt
+    href: specification
+  - text: Changelog
+    icon: fa-history
+    href: changelog
+  - text: Team
+    icon: fa-users
+    href: team
