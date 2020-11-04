@@ -1,6 +1,6 @@
-# PEP Docs
+# Seqcol Docs
 
-This is the repository for the PEP specification. These docs are written using `mkdocs` and hosted on `readthedocs`. Each version has a different branch. You can view the hosted docs by version, for example, [http://pep.databio.org/en/2.0.0/](http://pep.databio.org/en/2.0.0/) for version `2.0.0`.
+This is the repository for the Seqcol specification. These docs are written using `mkdocs` and hosted on `readthedocs`.
 
 ## Building locally
 
