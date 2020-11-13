@@ -12,6 +12,8 @@ Table of contents:
 
 [TOC]
 
+NOTICE! THIS IS A DRAFT SPECIFICATION FOR FEEDBACK. NOTHING IN HERE IS OFFICIAL OR FINAL.
+
 ## Introduction
 
 Reference sequences are fundamental to genomic analysis. The [refget protocol](http://samtools.github.io/hts-specs/refget.html) provides a way to access individual sequences using unique identifiers derived from sequences themselves. However, many applications require us to operate on *collections* of sequences. The seqcol protocol extends the refget protocol to collections of sequences. Seqcol identifiers use refget identifiers under the hood, so the seqcol protocol can be used to create unique identifiers derived from sequences collections themselves.
