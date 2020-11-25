@@ -27,7 +27,7 @@ Seqcol also specifies a RESTful API to enable retrieving the sequence collection
 The key terms are:
 
 - **Sequence**: Seqcol uses refget to store actual sequences, so we use the term in the same way as refget. Refget was designed for nucleotide sequences; however, other sequences could be provided via the same mechanism, *e.g.*, cDNA, CDS, mRNA or proteins. Essentially any ordered list of valid characters qualifies.
-- **Sequence collection**: A set of sequences.
+- **Sequence collection**: An ordered list of sequences.
 - **Digest**: A unique identifier resulting from a cryptographic hash function, such as `MD5` or `SHA512`, on input data.
 - **Seqcol digest**: A digest for a sequence collection, computed according to the seqcol algorithm.
 - **Seqcol algorithm**: The set of instructions used to compute a digest from a sequence collection.
@@ -67,7 +67,7 @@ The encoding function is fulfilled by an algorithm that takes as input a set of 
 
 - 1a. Compute the refget digest for the sequence.
 - 1b. Compute the length of the sequence.
-- 1c. Concatenate the name, length, and refget digest, delimited by `ATTRIBUTE_DELIMITER`.
+- 1c. Concatenate the name, length, and refget digest, in the order provided in the collection, delimited by `ATTRIBUTE_DELIMITER`.
 - 1d. Compute the digest of the result of step 1c. This is the *annotated sequence digest* for the sequence.
 
 **Step 2**. Concatenate the computed annotated sequence digests, in the order provided in the collection, delimited by `ITEM_DELIMITER`.
