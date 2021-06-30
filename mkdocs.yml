@@ -17,6 +17,7 @@ nav:
     - Projects and software using seqcol: seqcol_in_practice.md
     - Support: https://github.com/refgenie/seqcol_spec/issues
     - Team and Contributing: team.md
+    - Decision record: decision_record.md
 
 theme:
   name: databio

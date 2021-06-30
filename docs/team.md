@@ -9,4 +9,4 @@
 
 ## Contributing
 
-We welcome more participants! If you are interested in contributing to ongoing development of either the PEP structure format or the software toolkit, please feel free to reach out via e-mail or via raising issues or pull requests on <a href="http://github.com/refgenie">GitHub</a>.
+We welcome more participants! If you are interested in contributing, please feel free to reach out via e-mail or via raising issues or pull requests on <a href="http://github.com/ga4gh/seqcol-spec">GitHub</a>.
