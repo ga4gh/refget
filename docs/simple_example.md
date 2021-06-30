@@ -1,5 +1,4 @@
 
 # How do I use Seqcol? A simple example
 
-Well, good question.
-
+I put together a demo server. This is just a proof of concept draft: [seqcolapi.databio.org](http://seqcolapi.databio.org/).
