@@ -3,7 +3,7 @@
 
 ## 2021-06-30 - Use array-based data structure and multi-tiered digests
 
-A sequence collection will be constructed as a dictionary object, with attributes as named arrays, like this:
+Our original formulation structured data with groups of a sequence plus its  annotation, like `chr1|248956422|2648ae1bacce4ec4b6cf337dcae37816/chr2|242193529|4bb4f82880a14111eb7327169ffb729b|`. Instead, we decided to switch to an array-based model, in which a sequence collection will be constructed as a dictionary object, with attributes as named arrays, like this:
 
 ```
 seqcol = {'names': ['chrUn_KI270742v1',   'chrUn_GL000216v2',   'chrUn_GL000218v1'],
@@ -23,16 +23,21 @@ Digests of this object will be the unique identifier of the sequence collection.
 
 This will allow retrieving individual attributes, and testing for identity of individual attributes without retrieving more data.
 
-One major rationale for this choice is that it makes it straightforward to mix-and-match components of the collection. We can add a new component without eliminating backwards compatibility with previous digests that did not include it.
+### Rationale
+
+- This makes it straightforward to mix-and-match components of the collection. Because each component is independent, and not integrated in with the sequence, it is simpler to select and build subsets and permutations.
+- We can add a new component without eliminating backwards compatibility with previous digests that did not include it, because leaving out an array doesn't change the string to digest.
+- This makes it easier to test for matching sets of sequences, or matching coordinate systems, using the individual component digests. This way we don't have to traverse down a layer deeper, to the individual elements, to establish identity of individual components.
 
 ### Linked issues
 
-- https://github.com/ga4gh/seqcol-spec/issues/8#issuecomment-773489450
-- https://github.com/ga4gh/seqcol-spec/issues/10
+- [https://github.com/ga4gh/seqcol-spec/issues/8#issuecomment-773489450](https://github.com/ga4gh/seqcol-spec/issues/8#issuecomment-773489450)
+- [https://github.com/ga4gh/seqcol-spec/issues/10](https://github.com/ga4gh/seqcol-spec/issues/10)
 
 ### Known limitations
 
 - We may need to enforce that arrays be the same length, at least for attributes that provide one value per sequence. Also, the order of items within each array must match in order for the attributes to correctly collate to a specific sequence.
+
 
 ## 2021-01-20 - Use the SAM specification v1 description of sequence names
 
