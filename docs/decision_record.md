@@ -1,6 +1,5 @@
 # Architectural Decision Record
 
-
 ## 2021-06-30 - Use array-based data structure and multi-tiered digests
 
 Our original formulation structured data with groups of a sequence plus its  annotation, like `chr1|248956422|2648ae1bacce4ec4b6cf337dcae37816/chr2|242193529|4bb4f82880a14111eb7327169ffb729b|`. Instead, we decided to switch to an array-based model, in which a sequence collection will be constructed as a dictionary object, with attributes as named arrays, like this:
@@ -28,6 +27,7 @@ This will allow retrieving individual attributes, and testing for identity of in
 - This makes it straightforward to mix-and-match components of the collection. Because each component is independent, and not integrated in with the sequence, it is simpler to select and build subsets and permutations.
 - We can add a new component without eliminating backwards compatibility with previous digests that did not include it, because leaving out an array doesn't change the string to digest.
 - This makes it easier to test for matching sets of sequences, or matching coordinate systems, using the individual component digests. This way we don't have to traverse down a layer deeper, to the individual elements, to establish identity of individual components.
+- It requires only a single delimiter, rather than multiple, which has been a sticking point.
 
 ### Linked issues
 
