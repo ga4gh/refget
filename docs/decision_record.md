@@ -30,8 +30,6 @@ The attributes allowed to be used in the sequence collection digest construction
  - priorities: importance of the sequence in the assembly
  - order: the original order in which the sequence were defined (list of position)
 
-Additional optional fields can be added to extend the model as required but the only mandatory fields are lengths and order
-
 ### Linked issues
 
 - https://github.com/ga4gh/seqcol-spec/issues/8
