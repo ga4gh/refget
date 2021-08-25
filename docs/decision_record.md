@@ -1,5 +1,30 @@
 # Architectural Decision Record
 
+## 2021-08-25 - Determined list of mandatory arrays
+
+### Decision
+
+A sequence collection consists of a set of arrays. The only arrays that MUST be included for a valid sequence collection are *lengths* and *names*. All other possible arrays, including other controlled vocabulary arrays, are not required. Specifically, the *sequences* array is *NOT* mandatory. 
+
+### Rationale
+
+For most proposed arrays, it's clear that they are used infrequently, but debate has arisen among: sequences, names, and lengths. A common viewpoint is that sequences are a fundamental component of a sequence collections, and therefore, the *sequences* array should be mandatory, and names and lengths may be superfluous. If you have mostly encountered reference genomes from the perspective of sets of sequences, then this viewpoint makes sense. 
+
+However, analysis of reference genome data also includes many analyses for which the sequences themselves do not matter, and the critical component is simply the name and length of the sequence. An array of names and lengths can be thought of as a *coordinate system*, and we have realized that the sequence collection specification could *also* be extremely useful for representing and uniquely identifying coordinate systems. From this perspective, we envision a coordinate system as a sequence collection in which the actual sequence content is irrelevant, but in which the lengths and names of the sequences matter.
+
+Analysis of coordinate systems like this is very frequent, as for many analyses, the actual sequence is irrelevant, but the coordinate system is important. For example, any sort of annotation analysis looking at genomic regions will rely on the lengths of the sequences to enforce that coordinates refer to the same thing, but do not rely on the underlying sequences. This is why "chrom-sizes" files are used so frequently (*e.g.* across many UCSC tools).
+
+This leads us to the conclusion that *sequences* should be an optional component of a sequence collection, and *names* and *lengths* should be the only mandatory component. *Lengths* makes sense because if you have a sequence, you can always compute it's length, but if you don't have a sequence (all you have is a coordinate system), you may only have a length.
+
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/8
+
+### Known limitations
+
+- What is rationale for why *names* should be mandatory?
+
+
 ## 2021-08-25 - Sequence collection digests will reflect sequence order
 
 ### Decision
