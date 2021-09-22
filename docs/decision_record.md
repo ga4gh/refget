@@ -1,6 +1,29 @@
 # Architectural Decision Record
 
+## 2021-08-25 - Sequence collection digests will reflect sequence order
+
+### Decision
+
+The final sequence collection digests must reflect the order of the sequences given. In other words, changing the order of the sequences will change the identifier.
+
+### Rationale
+
+In some scenarios, the order of the sequences in a collection is irrelevant, and therefore, two collections with identical content but a different order should be considered equivalent. This could lead to an approach of first lexographically sorting input sequences before digesting, so that the final identifier is identical regardless of input order.
+
+However, there are also scenarios for which the order of sequences in a collection matters; for example, some aligners output different results based on the input order of the sequences. Or, order may be used to encode sequence priority. Therefore, it is critical that the final identifiers be able to uniquely identify sequence collections with different orders. Because some use cases require order-aware digests, the final algorithm will have to accommodate this, and we will need to come up with another way to identify two collections that are identical in content but with different order, without relying on the digests being identical
+
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/5
+
+### Known limitations
+
+This decision will lead to a bit more complexity for use cases that do not care about sequence order, because these use cases will no longer be able to rely on simple, identical digest matching. However, this is a necessary increase in complexity to accommodate other use cases where order matters.
+
+
 ## 2021-06-30 - Use array-based data structure and multi-tiered digests
+
+### Decision
 
 Our original formulation structured data with groups of a sequence plus its  annotation, like `chr1|248956422|2648ae1bacce4ec4b6cf337dcae37816/chr2|242193529|4bb4f82880a14111eb7327169ffb729b|`. Instead, we decided to switch to an array-based model, in which a sequence collection will be constructed as a dictionary object, with attributes as named arrays, like this:
 
