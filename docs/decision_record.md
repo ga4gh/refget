@@ -28,10 +28,11 @@ The attributes allowed to be used in the sequence collection digest construction
  - names: the given name of the sequence in this collection 
  - topologies: the topology of each sequence (can be either linear or circular)
  - priorities: importance of the sequence in the assembly
- - order: the original order in which the sequence were defined (list of position)
 
 ### Linked issues
 
 - https://github.com/ga4gh/seqcol-spec/issues/8
 
 ### Known limitations
+
+- After long discussion, we decided that storing an order array to explicitely was going to bring too many complications so we decided against it. This will limit (but not negate) our ability to find collections that have the same content but where the element. are in a different.
