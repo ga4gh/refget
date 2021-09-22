@@ -24,6 +24,10 @@ While options C/D skirt this issue by having a separate order for each array, so
 
 To conclude, option A seems simple and straightforward, satisfies for a basic implementation. We thus defer the question of determining whether two sequence collections differ only in order to the compatibility API.
 
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/5
+
 ### Known limitations
 
 For use cases that require determination of whether two sequence collections differ only in element order, option A will not provide an answer based on digest comparison alone. Instead, the query will be required to use the compatibility API, which means retrieving the contents of the array to compare them.
