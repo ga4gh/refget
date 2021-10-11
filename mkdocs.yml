@@ -21,16 +21,10 @@ theme:
   custom_dir: theme_dir
 
 plugins:
-- databio:
-    jupyter_source: "docs_jupyter"
-    jupyter_build: "docs_jupyter/build"
-    autodoc_build: "docs/autodoc_build"
-    no_top_level: true
 - search
 
 copyright: GA4GH Genomic Knowledge Standards Workstream, Seqcol team
 home_link: null
-
 
 navbar:
   left:
