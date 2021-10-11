@@ -2,6 +2,8 @@
 
 <ul>
 <li><a href="http://databio.org">Nathan Sheffield</a>, Center for Public Health Genomics, University of Virginia</li>
+<li>Andy Yates</li>
+<li>Tim Cezard</li>
 <li>Add your name here!</li>
 
 </ul>
