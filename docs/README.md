@@ -1,16 +1,14 @@
 template: jumbotron.html
 extra_css: [extra.css]
----
 
 <div class="header-container jumbotron">
     <div class="container">
         <h1>Seqcol: Sequence Collections</h1>
-        <p>Unique identifiers for sequence collections.
+        <p>Unique identifiers and lookup service for sequence collections.
           </p>
-        <p><a class="btn btn-primary btn-lg" href="simple_example" role="button">Learn more</a></p>
+        <p><a class="btn btn-primary btn-lg" href="specification" role="button">Learn more</a></p>
     </div>
 </div>
-
 <div class="container">
     <div class="row">
         <div class="col-md-8">
@@ -20,9 +18,10 @@ extra_css: [extra.css]
                 <ol>
               <li>implementations of an algorithm for computing sequence identifiers;</li>
               <li>a lookup service to retrieve sequences given a seqcol identifier</li>
-              <li>programmatic approach to assessing compatibility among sequence collections.</li>
+              <li>programatic approach to assessing compatibility among sequence collections.</li>
               </ol>
             </p>
+            <a href="specification">Read the complete specification</a>
             </blockquote>
         </div>
         <div class="col-md-4 text-center">
@@ -30,7 +29,6 @@ extra_css: [extra.css]
             <img src="druids.svg" alt="" class="img-responsive">
         </div>
     </div>
-
     <hr>
      <div class="row">
         <div class="col-sm-4">

@@ -5,15 +5,13 @@ repo_url: http://github.com/ga4gh/seqcol-spec
 
 nav:
   - Getting Started: 
-    - A simple example: simple_example.md
     - Seqcol specification: specification.md
   - Detailed how-to guides:
     - Compute a digest given a FASTA file: digest_from_fasta.md
     - Retrieve a fasta file given a digest: fasta_from_digest.md
   - Implementations:
     - "Python": implementation_python.md
-    - "Java": implementation_java.md
-    - Projects and software using seqcol: seqcol_in_practice.md
+    - "API": implementation_api.md
   - Reference:
     - Support: https://github.com/refgenie/seqcol_spec/issues
     - Team and contributing: team.md
@@ -40,9 +38,9 @@ navbar:
   - text: Specification
     icon: fa-file-alt
     href: specification
-  - text: Changelog
+  - text: Decision Record
     icon: fa-history
-    href: changelog
+    href: decision_record
   - text: Team
     icon: fa-users
     href: team
