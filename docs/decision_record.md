@@ -1,5 +1,11 @@
 # Architectural Decision Record
 
+*This is a record of decisions made during specification development. Each entry describes a decision that has been approved by the team members. Collectively, this ADR describes an institutional memory for decisions and their rationales, including known limitations. The goal is to avoid repeated discussion of previous decisions, formally acknowledge limitations, preserve and articulate reasons behind the decisions, and share this information with the broader community.* 
+
+## Contents: 
+
+[TOC]
+
 ## 2021-08-25 - Sequence collection digests will reflect sequence order
 
 ### Decision
@@ -14,7 +20,7 @@ However, there are also scenarios for which the order of sequences in a collecti
 
 ### Linked issues
 
-- https://github.com/ga4gh/seqcol-spec/issues/5
+- [https://github.com/ga4gh/seqcol-spec/issues/5](https://github.com/ga4gh/seqcol-spec/issues/5)
 
 ### Known limitations
 
@@ -74,7 +80,7 @@ Should a wider GA4GH standard appear from [TASC issue 5](https://github.com/ga4g
 
 ### Linked issues
 
-- https://github.com/ga4gh/seqcol-spec/issues/2
+- [https://github.com/ga4gh/seqcol-spec/issues/2](https://github.com/ga4gh/seqcol-spec/issues/2)
 
 ### Known limitations
 

@@ -1,23 +1,22 @@
 site_name: Seqcol Protocol Specification
 site_logo: img/collection.svg
 site_url: http://seqcol.databio.org/
-repo_url: http://github.com/ga4gh/seqcol_spec
+repo_url: http://github.com/ga4gh/seqcol-spec
 
 nav:
   - Getting Started: 
     - A simple example: simple_example.md
     - Seqcol specification: specification.md
-    - Example use cases: use_cases.md
   - Detailed how-to guides:
-      - Compute a digest given a FASTA file: digest_from_fasta.md
-      - Retrieve a fasta file given a digest: fasta_from_digest.md
+    - Compute a digest given a FASTA file: digest_from_fasta.md
+    - Retrieve a fasta file given a digest: fasta_from_digest.md
   - Implementations:
     - "Python": implementation_python.md
     - "Java": implementation_java.md
-  - SeqCol in practice:
     - Projects and software using seqcol: seqcol_in_practice.md
+  - Reference:
     - Support: https://github.com/refgenie/seqcol_spec/issues
-    - Team and Contributing: team.md
+    - Team and contributing: team.md
     - Decision record: decision_record.md
 
 theme:
