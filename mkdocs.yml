@@ -13,9 +13,8 @@ nav:
     - "Python": implementation_python.md
     - "API": implementation_api.md
   - Reference:
-    - Support: https://github.com/refgenie/seqcol_spec/issues
-    - Team and contributing: team.md
     - Decision record: decision_record.md
+    - Contributing: contributing.md
 
 theme:
   name: databio
@@ -41,6 +40,6 @@ navbar:
   - text: Decision Record
     icon: fa-history
     href: decision_record
-  - text: Team
+  - text: Contributing
     icon: fa-users
-    href: team
+    href: contributing
