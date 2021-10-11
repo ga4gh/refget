@@ -2,7 +2,6 @@ site_name: Seqcol Protocol Specification
 site_logo: img/collection.svg
 site_url: http://seqcol.databio.org/
 repo_url: http://github.com/ga4gh/seqcol-spec
-
 nav:
   - Getting Started: 
     - Seqcol specification: specification.md
@@ -10,22 +9,18 @@ nav:
     - Compute a digest given a FASTA file: digest_from_fasta.md
     - Retrieve a fasta file given a digest: fasta_from_digest.md
   - Implementations:
-    - "Python": implementation_python.md
-    - "API": implementation_api.md
+    - Python: implementation_python.md
+    - API: implementation_api.md
   - Reference:
     - Decision record: decision_record.md
     - Contributing: contributing.md
-
 theme:
   name: databio
   custom_dir: theme_dir
-
 plugins:
 - search
-
 copyright: GA4GH Genomic Knowledge Standards Workstream, Seqcol team
 home_link: null
-
 navbar:
   left:
   - text: Specification
