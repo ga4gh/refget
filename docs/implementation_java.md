@@ -1,5 +1,0 @@
-
-# Java implementation
-
-Under construction
-
