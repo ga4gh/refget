@@ -1,3 +1,0 @@
-# Seqcol in practice
-
-
