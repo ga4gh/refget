@@ -6,6 +6,39 @@
 
 [TOC]
 
+## 2021-11-17 - Structure for the return value of the comparison API endpoint
+
+### Decision
+
+At a minimum, the return value MUST return answers to basic questions, like "is one seqcol a subset of another", following the REQUIRED format specified below.
+
+**REQUIRED**: The endpoint MUST return, in JSON format, an object with these 7 keys: "any-elements-shared", "all-a-in-b", "all-b-in-a", "order-match", "no-overlap", "only-in-a", and "only-in-b". The value of each element should include a *list* of the attributes that meet the stated condition. 
+
+Example: 
+
+```
+{
+  "any-elements-shared": ["lengths", "names"],
+  "no-elements-shared": ["sequences"],  
+  "all-a-in-b": ["lengths", "names"],
+  "all-b-in-a": ["lengths", "names"],
+  "order-match": ["lengths", "names"],
+  "only-in-a": [],
+  "only-in-b": []
+}
+```
+
+### Rationale
+
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/21
+
+### Known limitations
+
+Someone may want to return more information than this, for example, counting or enumerating the specific elements in each category. We may in the future provide an update to the specification that defines how this information should be returned, but for now, we leave the specification at this minimum requirement.
+
+
 ## 2021-08-25 - Sequence collection digests will reflect sequence order
 
 ### Decision
