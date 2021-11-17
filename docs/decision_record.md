@@ -30,7 +30,7 @@ Example:
 
 ### Rationale
 
-The primary purpose of the compare function is to provide a high-level view of how two sequence collections match and differ. The primary use cases are to see if collections are identical or subsets or have any overlap at all in each attribute (such as sharing all sequence digests, sequence names, or lengths). If more details are needed, the user can easily look in more depth at the raw elements of the sequence collection. 
+The primary purpose of the compare function is to provide a high-level view of how two sequence collections match and differ. The primary use cases are to see if collections are identical or subsets or have any overlap at all in each attribute (such as sharing all sequence digests, sequence names, or lengths). If more details are needed, the user can easily look in more depth at the raw elements of the sequence collection. It's important to have a fast, easy-to-implement, and minimal payload function to provide answers to the common question about "how compatible are these two collections".
 
 ### Linked issues
 
