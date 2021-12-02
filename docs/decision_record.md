@@ -6,6 +6,52 @@
 
 [TOC]
 
+## 2021-12-01 - Endpoint names and structure
+
+### Decision
+
+The endpoint names will be:
+
+- `GET /service-info` for GA4GH service info
+- `GET /collection/{digest}` for retrieving a sequence collection
+- `GET /comparison/{digest1}/{digest2}` for comparing two collections in the database
+- `POST /comparison/{digest1}/` for comparing one database collection to a local user-provided collection.
+
+The POST body for the local comparison is a "level 2" sequence collection, like this:
+
+```
+{
+  "lengths": [
+    "248956422",
+    "242193529",
+    "198295559"
+  ],
+  "names": [
+    "chr1",
+    "chr2",
+    "chr3"
+  ],
+  "sequences": [
+    "a004bc1b0bf05fc668cab6bbfd93d3eb",
+    "0ccf3a67666ac53f99fcad19768f2dde",
+    "bda7b228789169ae811dd8d676d517ca"
+  ]
+}
+```
+
+### Rationale
+
+We wanted to stick with the REST guideline of noun endpoints with GET that describe what you are retrieving. We believe a prefix, like `/seqcol/...` could be added by a service that implemented multiple specifications, but this kind of namespace it outside the scope of the specification itself. We considered doing `/{digest1}/compare/{digest2}` and that would have been fine. In the end we liked the symmetry of `/comparison` and `/collection` as parallel endpoints. For the retrieval endpoint we considered `/secol` or `/sequence-collection` or `/seqCol`, but wanted to keep structure parallel to the refget `/sequence` endpoint.
+
+### Limitations
+
+For the `POST comparison` endpoint, we made 2 limitations to simplify the implementation of the function. First, we disallow comparing 2 local collections, which could be enabled, but we reason that users should always be comparing against something in the database, and this prevents abusing the system as a computing engine. We also disallowed (or at least don't explicitly require) comparing a level 1 collection (which consists of a named list of array digests), as we figured that most frequently the user will have the array details, and if not, they could look them up.
+
+### Linked issues
+
+- [https://github.com/ga4gh/seqcol-spec/issues/21](https://github.com/ga4gh/seqcol-spec/issues/21)
+- [https://github.com/ga4gh/seqcol-spec/issues/23](https://github.com/ga4gh/seqcol-spec/issues/23)
+
 ## 2021-08-25 - Sequence collection digests will reflect sequence order
 
 ### Decision
