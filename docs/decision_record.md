@@ -15,7 +15,7 @@ The endpoint names will be:
 - `GET /service-info` for GA4GH service info
 - `GET /collection/{digest}` for retrieving a sequence collection
 - `GET /comparison/{digest1}/{digest2}` for comparing two collections in the database
-- `POST /comparison/{digest1}/` for comparing one database collection to a local user-provided collection.
+- `POST /comparison/{digest1}` for comparing one database collection to a local user-provided collection.
 
 The POST body for the local comparison is a "level 2" sequence collection, like this:
 
