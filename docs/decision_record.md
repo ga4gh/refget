@@ -10,37 +10,77 @@
 
 ### Decision
 
-At a minimum, the return value MUST return answers to basic questions, like "is one seqcol a subset of another", following the REQUIRED format specified below.
+The return value MUST return an object following the REQUIRED format specified below.
 
-**REQUIRED**: The endpoint MUST return, in JSON format, an object with these 7 keys: "any-elements-shared", "all-a-in-b", "all-b-in-a", "order-match", "no-overlap", "only-in-a", and "only-in-b". The value of each element should include a *list* of the attributes that meet the stated condition. 
+**REQUIRED**: The endpoint MUST return, in JSON format, an object with these 3 keys: "digests", "arrays", "elements". 
+
+- *digests*: an object with 2 elements, with keys *a* and *b*, and values the level 0 seqcol digests for the compared collections.
+- *arrays*: an object with 3 elements, with keys *a-only*, *b-only*, and *a-and-b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
+- *elements*: An object with 3 elements: *total*, *overlap*, and *order-match*. *total* is an object with *a* and *b* keys, values corresponding to the total number of elements in the arrays for the corresponding collection. *overlap* is an object with names corresponding to each array present in both collections (in *arrays.a-and-b*), with values as the number of elements present in both collections for the given array. *order-match* is also an object with names corresponding to arrays, and the values a boolean following the order-match specification below.
 
 Example: 
 
 ```
 {
-  "any-elements-shared": ["lengths", "names"],
-  "no-elements-shared": ["sequences"],  
-  "all-a-in-b": ["lengths", "names"],
-  "all-b-in-a": ["lengths", "names"],
-  "order-match": ["lengths", "names"],
-  "only-in-a": [],
-  "only-in-b": []
+  "digests": {
+    "a": "514c871928a74885ce981faa61ccbb1a",
+    "b": "c345e091cce0b1df78bfc124b03fba1c"
+  },
+  "arrays": {
+    "a-only": [],
+    "b-only": [],
+    "a-and-b": [
+      "lengths",
+      "names",
+      "sequences"
+    ]
+  },
+  "elements": {
+    "total": {
+      "a": 195,
+      "b": 25
+    },
+    "overlap": {
+      "lengths": 25,
+      "names": 25,
+      "sequences": 0
+    },
+    "order-match": {
+      "lengths": false,
+      "names": false,
+      "sequences": null
+    }
+  }
 }
 ```
 
+#### Order-match specification
+
+The comparison return value computes an *order-match* boolean value for each array that is present in both collections. The defined value of this attribute is:
+
+- *undefined (null)* if there are fewer than 2 overlapping elements
+- *undefined (null)* if there are unbalanced duplicates present
+- *true* if all matching elements are in the same order in the two arrays
+- *false* otherwise.
+
+An *unbalanced duplicate* is used in contrast with a *balanced duplicate*. Balanced means the duplicates are the same in both arrays. When the duplicates are balanced, order is still defined; but if duplicates are unbalanced, this means an array has duplicates not present in the other, and in that case, order is not defined.
+
 ### Rationale
 
-The primary purpose of the compare function is to provide a high-level view of how two sequence collections match and differ. The primary use cases are to see if collections are identical or subsets or have any overlap at all in each attribute (such as sharing all sequence digests, sequence names, or lengths). If more details are needed, the user can easily look in more depth at the raw elements of the sequence collection. It's important to have a fast, easy-to-implement, and minimal payload function to provide answers to the common question about "how compatible are these two collections".
+The primary purpose of the compare function is to provide a high-level view of how two sequence collections match and differ. The primary use cases are to see if collections are identical or subsets, and to assess the degree of overlap in each attribute (such as sharing all sequence digests, sequence names, or lengths). If more details are needed, the user will need to look in more depth at the raw elements of the sequence collection. It's important to have a fast, easy-to-implement, and minimal payload function to provide answers to the common question about "how compatible are these two collections".
 
 ### Linked issues
 
 - https://github.com/ga4gh/seqcol-spec/issues/21
 - https://github.com/ga4gh/seqcol-spec/issues/7
 
+### Alternatives considered
+
+We considered a simpler arrangement that would only return true/false values as to whether the arrays matched but in the different order, or contained any matching elements vs no matching elements. While this would have been faster to compute than the counting approach we settled on, there was concern that it would not be enough information to interpret the comparison. We also considered more information-rich values that would enumerate overlapping or non-overlapping elements. We finally concluded that the most useful would be the middle ground proposed here, where you get counts but no enumerated elements. This provides sufficient information to make a pretty detailed comparison, and can still be computed relatively quickly and keeps the payload size small and predictable.
+
 ### Known limitations
 
-Someone may want to return more information than this, for example, counting or enumerating the specific elements in each category. We may in the future provide an update to the specification that defines how this information should be returned, but for now, we leave the specification at this minimum requirement.
-
+Someone may want to return more information than this, such as enumerating the specific elements in each category. However, this use case would be problematic for large collections, like a transcriptome. We may in the future provide an update to the specification that defines how this information should be returned, but for now, we leave the specification at this minimum requirement.
 
 ## 2021-08-25 - Sequence collection digests will reflect sequence order
 
