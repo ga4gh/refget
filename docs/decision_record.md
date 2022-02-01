@@ -6,7 +6,7 @@
 
 [TOC]
 
-## 2021-11-17 - Structure for the return value of the comparison API endpoint
+## 2022-02-01 - Structure for the return value of the comparison API endpoint
 
 ### Decision
 
