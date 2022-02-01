@@ -6,21 +6,19 @@
 
 [TOC]
 
-## 2021-08-25 - Determined list of mandatory arrays
+## 2022-02-XX - Determined list of mandatory arrays
 
 ### Decision
 
-A sequence collection consists of a set of arrays. The only arrays that MUST be included for a valid sequence collection are *lengths* and *names*. All other possible arrays, including other controlled vocabulary arrays, are not required. Specifically, the *sequences* array is *NOT* mandatory. 
+A sequence collection consists of a set of arrays. The only arrays that MUST be included for a valid sequence collection are *lengths* and *names*. All other possible arrays, including *sequences* and other controlled vocabulary arrays, are not required.
 
 ### Rationale
 
-For most proposed arrays, it's clear that they are used infrequently, but debate has arisen among: sequences, names, and lengths. A common viewpoint is that sequences are a fundamental component of a sequence collections, and therefore, the *sequences* array should be mandatory, and names and lengths may be superfluous. If you have mostly encountered reference genomes from the perspective of sets of sequences, then this viewpoint makes sense. 
+Debate around what should be mandatory as centered on 3 specific arras: sequences, names, and lengths:
 
-However, analysis of reference genome data also includes many analyses for which the sequences themselves do not matter, and the critical component is simply the name and length of the sequence. An array of names and lengths can be thought of as a *coordinate system*, and we have realized that the sequence collection specification could *also* be extremely useful for representing and uniquely identifying coordinate systems. From this perspective, we envision a coordinate system as a sequence collection in which the actual sequence content is irrelevant, but in which the lengths and names of the sequences matter.
+At first, it feels like sequences are a fundamental component of a sequence collections, and therefore, the *sequences* array should be mandatory, and names and lengths may be superfluous. For reference genomes, for example, it's clear that collections of sequences are the main purpose. However, analysis of reference genome data also includes many analyses for which the sequences themselves do not matter, and the critical component is simply the name and length of the sequence. An array of names and lengths can be thought of as a *coordinate system*, and we have realized that the sequence collection specification is *also* extremely useful for representing and uniquely identifying coordinate systems. From this perspective, we envision a coordinate system as a sequence collection in which the actual sequence content is irrelevant, but in which the lengths and names of the sequences are critical. Analysis of coordinate systems like this is very frequent. For example, any sort of annotation analysis looking at genomic regions will rely on the lengths of the sequences to enforce that coordinates refer to the same thing, but do not rely on the underlying sequences. This is why "chrom-sizes" files are used so frequently (*e.g.* across many UCSC tools).
 
-Analysis of coordinate systems like this is very frequent, as for many analyses, the actual sequence is irrelevant, but the coordinate system is important. For example, any sort of annotation analysis looking at genomic regions will rely on the lengths of the sequences to enforce that coordinates refer to the same thing, but do not rely on the underlying sequences. This is why "chrom-sizes" files are used so frequently (*e.g.* across many UCSC tools).
-
-This leads us to the conclusion that *sequences* should be an optional component of a sequence collection, and *names* and *lengths* should be the only mandatory component. *Lengths* makes sense because if you have a sequence, you can always compute it's length, but if you don't have a sequence (all you have is a coordinate system), you may only have a length.
+This leads us to the conclusion that *sequences* should be optional, and *names* and *lengths* should be the only mandatory component. *Lengths* makes sense because if you have a sequence, you can always compute it's length, but if you don't have a sequence (all you have is a coordinate system), you may only have a length.
 
 ### Linked issues
 
@@ -29,6 +27,52 @@ This leads us to the conclusion that *sequences* should be an optional component
 ### Known limitations
 
 - What is rationale for why *names* should be mandatory?
+
+## 2021-12-01 - Endpoint names and structure
+
+### Decision
+
+The endpoint names will be:
+
+- `GET /service-info` for GA4GH service info
+- `GET /collection/{digest}` for retrieving a sequence collection
+- `GET /comparison/{digest1}/{digest2}` for comparing two collections in the database
+- `POST /comparison/{digest1}` for comparing one database collection to a local user-provided collection.
+
+The POST body for the local comparison is a "level 2" sequence collection, like this:
+
+```
+{
+  "lengths": [
+    "248956422",
+    "242193529",
+    "198295559"
+  ],
+  "names": [
+    "chr1",
+    "chr2",
+    "chr3"
+  ],
+  "sequences": [
+    "a004bc1b0bf05fc668cab6bbfd93d3eb",
+    "0ccf3a67666ac53f99fcad19768f2dde",
+    "bda7b228789169ae811dd8d676d517ca"
+  ]
+}
+```
+
+### Rationale
+
+We wanted to stick with the REST guideline of noun endpoints with GET that describe what you are retrieving. As recommended in the [service-info specification](https://github.com/ga4gh-discovery/ga4gh-service-info#how-do-i-describe-a-service-implementing-multiple-specifications), a prefix, like `/seqcol/...` could be added by a service that implemented multiple specifications, but this kind of namespace it outside the scope of the specification itself. We considered doing `/{digest1}/compare/{digest2}` and that would have been fine. In the end we liked the symmetry of `/comparison` and `/collection` as parallel endpoints. For the retrieval endpoint we considered `/secol` or `/sequence-collection` or `/seqCol`, but wanted to keep structure parallel to the refget `/sequence` endpoint.
+
+### Limitations
+
+For the `POST comparison` endpoint, we made 2 limitations to simplify the implementation of the function. First, we do not require it to allow comparing 2 local collections, which could be enabled, but we reason that users should always be comparing against something in the database, and this prevents abusing the system as a computing engine. We also disallowed (or at least don't explicitly require) comparing a level 1 collection (which consists of a named list of array digests), as we figured that most frequently the user will have the array details, and if not, they could look them up.
+
+### Linked issues
+
+- [https://github.com/ga4gh/seqcol-spec/issues/21](https://github.com/ga4gh/seqcol-spec/issues/21)
+- [https://github.com/ga4gh/seqcol-spec/issues/23](https://github.com/ga4gh/seqcol-spec/issues/23)
 
 ## 2021-08-25 - Sequence collection digests will reflect sequence order
 
