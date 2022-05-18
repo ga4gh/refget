@@ -6,6 +6,74 @@
 
 [TOC]
 
+## We will define the elements of a sequence collections using a schema
+
+### Decision
+
+The elements of a sequence collection will be defined and described using JSON-schema. Here is such a JSON-schema:
+
+```json
+
+description: "A collection of sequences, representing biological sequences including nucleotide or amino acid sequences. For example, a sequence collection may represent the set of chromosomes in a reference genome, the set of transcripts in a transcriptome, a collection of reference microbial sequences of a specific gene, or any other set of sequences."
+type: object
+properties:
+  lengths:
+    type: array
+    description: "Number of elements, such as nucleotides or amino acids, in each sequence."
+    items:
+      type: integer
+  masks:
+    type: array
+    description: "Digests of subsequence masks indicating subsequences to be excluded from an analysis, such as repeats"
+    items:
+      type: string
+  names:
+    type: array
+    description: "Human-readable identifiers of each sequence, commonly called chromosome names."
+    items:
+      type: string
+  priorities:
+    type: array
+    description: "Annotation of whether each sequence is a primary or secondary component in the collection."
+    items:
+      type: boolean
+  sequences:
+    type: array
+    description: "Digests of sequences computed using the GA4GH digest algorithm (sha512t24u)."
+    items:
+      type: string
+      description: "Actual sequence content"
+  topologies:
+    type: array
+    description: "Annotation of whether each sequence represents a linear or other topology."
+    items:
+      type: string
+      enum: ["circular", "linear"]
+      default: "linear"
+required:
+  - lengths
+digested:
+  - lengths
+  - names
+  - masks
+  - priorities
+  - sequences
+  - topologies
+```
+
+
+
+### Rationale
+
+We need a formal definition of a sequence collection. The schema provides a machine-usable definition that specifies the names and types of what we envision as a sequence collection. It also provides a convenient way to describe those elements in human-understandable ways through the `description` field. Thus, this schema solves a number of issues. Most importantly, it answers the question of *what are the elements of the sequence collection, and how are they defined?* For example, this schema answers the more specific question: *what are the allowable or expected algorithms for items included in the sequence array (or possibly other, custom digested arrays?)*. The schema establishes a standard expectation for elements that will go into general sequence collections. Implementations are free to add to this schema for their instances as needed.
+
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/8
+- https://github.com/ga4gh/seqcol-spec/issues/6
+
+
+
 ## 2021-12-01 - Endpoint names and structure
 
 ### Decision
