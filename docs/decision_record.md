@@ -12,7 +12,7 @@
 
 The elements of a sequence collection will be defined and described using JSON-schema. Here is such a JSON-schema:
 
-```json
+```yaml
 
 description: "A collection of sequences, representing biological sequences including nucleotide or amino acid sequences. For example, a sequence collection may represent the set of chromosomes in a reference genome, the set of transcripts in a transcriptome, a collection of reference microbial sequences of a specific gene, or any other set of sequences."
 type: object
