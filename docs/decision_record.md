@@ -6,11 +6,11 @@
 
 [TOC]
 
-## 2022-02-01 - Structure for the return value of the comparison API endpoint
+## 2022-06-15 - Structure for the return value of the comparison API endpoint
 
 ### Decision
 
-The return value MUST return an object following the REQUIRED format specified below.
+The compare function return value MUST be an object following the REQUIRED format specified below.
 
 **REQUIRED**: The endpoint MUST return, in JSON format, an object with these 3 keys: "digests", "arrays", "elements". 
 
@@ -59,7 +59,7 @@ Example:
 The comparison return value computes an *order-match* boolean value for each array that is present in both collections. The defined value of this attribute is:
 
 - *undefined (null)* if there are fewer than 2 overlapping elements
-- *undefined (null)* if there are unbalanced duplicates present
+- *undefined (null)* if there are unbalanced duplicates present (see definition below)
 - *true* if all matching elements are in the same order in the two arrays
 - *false* otherwise.
 
