@@ -6,11 +6,11 @@
 
 [TOC]
 
-## We will define the elements of a sequence collections using a schema
+## 2022-06-15 We will define the elements of a sequence collections using a schema
 
 ### Decision
 
-The elements of a sequence collection will be defined and described using JSON-schema. Here is such a JSON-schema:
+The elements of a sequence collection will be defined and described using JSON Schema. The exact contents of the JSON Schema will be determined later. Here is an example JSON Schema as an illustration of the concept (encoded in YAML for readability):
 
 ```yaml
 
