@@ -6,7 +6,7 @@
 
 [TOC]
 
-## 2022-07-05 - How sequence collection are serialized prior to digestion
+## 2022-09-05 - How sequence collection are serialized prior to digestion
 
 ### Decision
 
