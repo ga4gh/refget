@@ -6,6 +6,78 @@
 
 [TOC]
 
+## 2022-07-05 - How sequence collection are serialized prior to digestion
+
+### Decision
+
+The serialisation of a sequence collection will use the following steps
+
+ 1. Convert all elements of level 2 arrays into UTF-8 string
+ 2. Apply RFC-8785 on each array of level 2
+ 3. Digest each the canonical representation of each array
+ 4. Create object representation of the seq-col using array names and digested arrays
+ 5. Apply RFC-8785 on the object representation
+ 6. Digest the final canonical representation
+
+
+#### For converting from level 2 to level 1
+
+Each array is converted into a canonical string representation.
+For example the length array at level 2:
+```
+[248956422, 242193529, 198295559]
+```
+
+Will have its element converted to strings and be serialised using RFC-8785 and digested as a binary string. Here the output of the python implementation: 
+
+```python
+b'["248956422","242193529","198295559"]'
+```
+
+And subsequently digested.
+
+It would also support any UTF-8 character. For example this array of names
+```
+["染色体-1","染色体-2","染色体-3"]
+```
+
+Would create the following serialisation:
+
+```python
+b'["\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x93-1","\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x93-2","\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x93-3"]'
+```
+
+#### Conversion from level 1 to level 0
+An object is created with the array name as properties and the digest as value.
+For Example the collection at level 1: 
+```
+{
+    'sequences': '8dd93796fa0225e92eb159a8779f1b254776557f748f8bfb',
+    'lengths': '501fd98e2fdcc276c47306bd72c9155489ed2b23123ddfa2',
+    'names': '7bc90a07cf25f2f64f33baee3d420ad1ae5f442055280d43',
+}
+```
+
+Is serialised as: 
+
+```
+b'{"lengths":"501fd98e2fdcc276c47306bd72c9155489ed2b23123ddfa2","names":"7bc90a07cf25f2f64f33baee3d420ad1ae5f442055280d43","sequences":"8dd93796fa0225e92eb159a8779f1b254776557f748f8bfb"}'
+```
+
+### Rationale
+Enforcing that all elements of the level 2 arrays would be converted to string ensure all implementation treat them similarly regardless of the original types.
+The decision to use the serialisation of array and object provided in RFC-8785 allows sequence collection to support any type of characters and rely on a documented standard that offer implementation in multiple languages.
+It also future-proofs the serialisation method if we ever allow complex object to be element of the array.
+
+### Linked issues
+
+ - [https://github.com/ga4gh/seqcol-spec/issues/1](https://github.com/ga4gh/seqcol-spec/issues/1)
+ - [https://github.com/ga4gh/seqcol-spec/issues/25](https://github.com/ga4gh/seqcol-spec/issues/25)
+
+### Known limitations
+
+The JSON cannonical serialisation defined in RFC-8785 has a limited set of reference implementation. It is possible that its implementation might make sequence collection implementation more difficult in other languages.  
+
 ## 2022-06-15 - Structure for the return value of the comparison API endpoint
 
 ### Decision
