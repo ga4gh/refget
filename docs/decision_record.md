@@ -12,12 +12,11 @@
 
 The serialisation of a sequence collection will use the following steps
 
- 1. Convert all elements of level 2 arrays into UTF-8 string
- 2. Apply RFC-8785 on each array of level 2
- 3. Digest each the canonical representation of each array
- 4. Create object representation of the seq-col using array names and digested arrays
- 5. Apply RFC-8785 on the object representation
- 6. Digest the final canonical representation
+ 1. Apply RFC-8785 on each array of level 2
+ 2. Digest each the canonical representation of each array
+ 3. Create object representation of the seq-col using array names and digested arrays
+ 4. Apply RFC-8785 on the object representation
+ 5. Digest the final canonical representation
 
 
 #### For converting from level 2 to level 1
@@ -31,7 +30,7 @@ For example the length array at level 2:
 Will have its element converted to strings and be serialised using RFC-8785 and digested as a binary string. Here the output of the python implementation: 
 
 ```python
-b'["248956422","242193529","198295559"]'
+b'[248956422,242193529,198295559]'
 ```
 
 And subsequently digested.
@@ -73,10 +72,12 @@ It also future-proofs the serialisation method if we ever allow complex object t
 
  - [https://github.com/ga4gh/seqcol-spec/issues/1](https://github.com/ga4gh/seqcol-spec/issues/1)
  - [https://github.com/ga4gh/seqcol-spec/issues/25](https://github.com/ga4gh/seqcol-spec/issues/25)
+ - [https://github.com/ga4gh/seqcol-spec/issues/33](https://github.com/ga4gh/seqcol-spec/issues/33)
+
 
 ### Known limitations
 
-The JSON cannonical serialisation defined in RFC-8785 has a limited set of reference implementation. It is possible that its implementation might make sequence collection implementation more difficult in other languages.  
+The JSON canonical serialisation defined in RFC-8785 has a limited set of reference implementation. It is possible that its implementation might make sequence collection implementation more difficult in other languages.  
 
 ## 2022-06-15 - Structure for the return value of the comparison API endpoint
 
