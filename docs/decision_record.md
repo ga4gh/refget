@@ -64,7 +64,6 @@ b'{"lengths":"501fd98e2fdcc276c47306bd72c9155489ed2b23123ddfa2","names":"7bc90a0
 ```
 
 ### Rationale
-Enforcing that all elements of the level 2 arrays would be converted to string ensure all implementation treat them similarly regardless of the original types.
 The decision to use the serialisation of array and object provided in RFC-8785 allows sequence collection to support any type of characters and rely on a documented standard that offer implementation in multiple languages.
 It also future-proofs the serialisation method if we ever allow complex object to be element of the array.
 
