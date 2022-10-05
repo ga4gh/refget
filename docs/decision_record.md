@@ -48,13 +48,13 @@ b'["\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x93-1","\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x9
 The canonical string representation is then digested. Assuming the use of GA4GH (sha512 trim to 24) digest, the following array of length
 
 ```json
-b'[248956422,242193529,198295559]'
+b"[248956422,242193529,198295559]"
 ```
 
 would be converted
 
 ```json
-'5K4odB173rjao1Cnbk5BnvLt9V7aPAa2'
+"5K4odB173rjao1Cnbk5BnvLt9V7aPAa2"
 ```
 
 #### 3. Creation of an object composed of the array names and the digested arrays
