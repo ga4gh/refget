@@ -47,8 +47,8 @@ b'["\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x93-1","\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x9
 
 The canonical string representation is then digested. Assuming the use of GA4GH (sha512 trim to 24) digest, the following array of length
 
-```json
-b"[248956422,242193529,198295559]"
+```python
+b'[248956422,242193529,198295559]'
 ```
 
 would be converted
