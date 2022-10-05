@@ -19,11 +19,10 @@ The serialisation of a sequence collection will use the following steps
  5. Digest the final canonical representation
 
 
-#### For converting from level 2 to level 1
+#### 1. Apply RFC-8785 for converting from level 2 to level 1
 
-Each array is converted into a canonical string representation.
 For example the length array at level 2:
-```
+```json
 [248956422, 242193529, 198295559]
 ```
 
@@ -33,10 +32,8 @@ Will have its element converted to strings and be serialised using RFC-8785 and 
 b'[248956422,242193529,198295559]'
 ```
 
-And subsequently digested.
-
 It would also support any UTF-8 character. For example this array of names
-```
+```json
 ["染色体-1","染色体-2","染色体-3"]
 ```
 
@@ -46,21 +43,43 @@ Would create the following serialisation:
 b'["\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x93-1","\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x93-2","\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x93-3"]'
 ```
 
-#### Conversion from level 1 to level 0
-An object is created with the array name as properties and the digest as value.
-For Example the collection at level 1: 
+#### 2. Digest of the canonical representation
+
+The canonical string representation is then digested. Assuming the use of GA4GH (sha512 trim to 24) digest, the following array of length
+
+```json
+b'[248956422,242193529,198295559]'
 ```
+
+would be converted
+
+```json
+'5K4odB173rjao1Cnbk5BnvLt9V7aPAa2'
+```
+
+#### 3. Creation of an object composed of the array names and the digested arrays
+An object is created with the array name as properties and the digest as value.
+Example the following collection: 
+```json
 {
-    'sequences': '8dd93796fa0225e92eb159a8779f1b254776557f748f8bfb',
-    'lengths': '501fd98e2fdcc276c47306bd72c9155489ed2b23123ddfa2',
-    'names': '7bc90a07cf25f2f64f33baee3d420ad1ae5f442055280d43',
+    "sequences": "EiYgJtUfGyad7wf5atL5OG4Fkzohp2qe",
+    "lengths": "5K4odB173rjao1Cnbk5BnvLt9V7aPAa2",
+    "names": "g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp"
 }
 ```
 
-Is serialised as: 
+#### 4. Use RFC-8785 on the object
+This will create a canonical representation of the object 
 
+```python
+b'{"lengths":"5K4odB173rjao1Cnbk5BnvLt9V7aPAa2","names":"g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp","sequences":"EiYgJtUfGyad7wf5atL5OG4Fkzohp2qe"}'
 ```
-b'{"lengths":"501fd98e2fdcc276c47306bd72c9155489ed2b23123ddfa2","names":"7bc90a07cf25f2f64f33baee3d420ad1ae5f442055280d43","sequences":"8dd93796fa0225e92eb159a8779f1b254776557f748f8bfb"}'
+
+#### 5. Digest the final canonical representation
+Finally the canonical, representation is digested again to produce the identifier
+
+```json
+"S3LCyI788LE6vq89Tc_LojEcsMZRixzP"
 ```
 
 ### Rationale
