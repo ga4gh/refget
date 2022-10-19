@@ -26,7 +26,7 @@ For example the length array at level 2:
 [248956422, 242193529, 198295559]
 ```
 
-Will have its element converted to strings and be serialised using RFC-8785 and digested as a binary string. Here the output of the python implementation: 
+Will be serialised using RFC-8785 and digested as a binary string. Here the output of the python implementation: 
 
 ```python
 b'[248956422,242193529,198295559]'
@@ -62,9 +62,9 @@ An object is created with the array name as properties and the digest as value.
 Example the following collection: 
 ```json
 {
-    "sequences": "EiYgJtUfGyad7wf5atL5OG4Fkzohp2qe",
-    "lengths": "5K4odB173rjao1Cnbk5BnvLt9V7aPAa2",
-    "names": "g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp"
+    "sequences": "ga4gh:sequences.EiYgJtUfGyad7wf5atL5OG4Fkzohp2qe",
+    "lengths": "ga4gh:lengths.5K4odB173rjao1Cnbk5BnvLt9V7aPAa2",
+    "names": "ga4gh:names.g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp"
 }
 ```
 
@@ -72,7 +72,7 @@ Example the following collection:
 This will create a canonical representation of the object 
 
 ```python
-b'{"lengths":"5K4odB173rjao1Cnbk5BnvLt9V7aPAa2","names":"g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp","sequences":"EiYgJtUfGyad7wf5atL5OG4Fkzohp2qe"}'
+b'{"lengths":"ga4gh:lengths.5K4odB173rjao1Cnbk5BnvLt9V7aPAa2","names":"ga4gh:names.g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp","sequences":"ga4gh:sequences.EiYgJtUfGyad7wf5atL5OG4Fkzohp2qe"}'
 ```
 
 #### 5. Digest the final canonical representation
