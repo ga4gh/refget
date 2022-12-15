@@ -6,19 +6,19 @@
 
 [TOC]
 
-## 2022-05-11 - Sequence identifier specification
+## 2022-05-11 - Sequence digest recommendation
 
 ### Decision
 
-The GA4GH identifier will be used as our default sequence identifier instead of MD5. Other identifiers can be provided in a separate array and should not be part of the collection checksum calculation.
+The GA4GH digest will be used as our default sequence checksum derived identifier instead of an MD5 generated one.
 
 ### Rationale 
 
-GA4GH identifiers were created as part of the [Variation Representation Specification standard](https://vrs.ga4gh.org/en/stable/impl-guide/computed_identifiers.html), which included a way of creating identifiers to be used with sequences e.g. ACGT results in the identifier `ga4gh:SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2`. The scheme uses the [`sha512t24u` function](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883) to create a base64 URL-safe representation of a sha512 digest. Adopting GA4GH identifiers ensures sequence collections remains inline with newer standards within the GA4GH ecosystem.
+The GA4GH digest was created as part of the [Variation Representation Specification standard](https://vrs.ga4gh.org/en/stable/impl-guide/computed_identifiers.html). This document included a way of creating identifiers to be used with sequences e.g. ACGT results in the identifier `ga4gh:SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2`. The scheme uses the [`sha512t24u` function](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883) to create a base64 URL-safe representation of a sha512 digest. Adopting this standard ensures sequence collections remains inline with newer standards within the GA4GH ecosystem.
 
 ### Limitations
 
-GA4GH identifiers are not the default identifier used by standards such as CRAM, which uses MD5. We expect sequence collection providers to offer additional identifier arrays to provide compatability with these other formats and to declare their sequence identifier support via service-info.
+A GA4GH digest of sequences is not the default identifier used by standards such as CRAM, which uses MD5. We expect sequence collection providers to offer additional checksum arrays to provide compatability with these other formats and to declare their sequence identifier support via service-info.
 
 ### Linked issues
 
