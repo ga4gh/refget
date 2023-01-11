@@ -6,6 +6,31 @@
 
 [TOC]
 
+## 2023-01-25 - No internal prefixes
+
+### Background
+
+In some situations, identifiers are prefixed. For example, these may be CURIEs, which specify namespaces or provide other information about what the identifier represents. This raises questions about when and where we should expect or use prefixes. This has to be determined because including prefixes in the content that gets digested changes it, so we have to be consistent.
+
+### Decision
+
+We determined that *internally*, we will not append prefixes to the strings we are going to digest. If a particular identifier defines some kind of a namespace as part of the identifier (*e.g.* a refget sequence identifier), then it's of course no problem, we take that identifier at face value. To summarize:
+
+- for internal identifiers (those generated within seqcol), we digest only digests, not prefixes of any kind
+- for external identifiers (like refget identifiers), we accept them at face value, so we wouldn't remove a prefix if you declare it is was part of your sequence identifier
+
+### Rationale
+
+According to the definition of CURIEs:
+
+    A host language MAY declare a default prefix value, or MAY provide a mechanism for defining a def
+
+We see no need to add prefixes to the identifiers we use internally, which we just assume belong to our namespace. Adding prefixes will complicate things and does not add benefits. Prefixes may be added to our identifiers by outside entities as needed to define for them the scope of our local digests.
+
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/37
+
 ## 2022-10-05 - Terminology decisions
 
 ### Decision
