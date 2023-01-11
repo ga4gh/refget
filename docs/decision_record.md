@@ -13,7 +13,7 @@
 The serialisation of a sequence collection will use the following steps
 
  1. Apply RFC-8785 on each array of level 2
- 2. Digest each the canonical representation of each array
+ 2. Digest the canonical representation of each array
  3. Create object representation of the seq-col using array names and digested arrays
  4. Apply RFC-8785 on the object representation
  5. Digest the final canonical representation
@@ -51,7 +51,7 @@ The canonical string representation is then digested. Assuming the use of GA4GH 
 b'[248956422,242193529,198295559]'
 ```
 
-would be converted
+would be converted to 
 
 ```json
 "5K4odB173rjao1Cnbk5BnvLt9V7aPAa2"
