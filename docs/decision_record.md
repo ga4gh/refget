@@ -2,6 +2,8 @@
 
 *This is a record of decisions made during specification development. Each entry describes a decision that has been approved by the team members. Collectively, this ADR describes an institutional memory for decisions and their rationales, including known limitations. The goal is to avoid repeated discussion of previous decisions, formally acknowledge limitations, preserve and articulate reasons behind the decisions, and share this information with the broader community.* 
 
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119.
+
 ## Contents: 
 
 [TOC]
@@ -10,7 +12,7 @@
 
 ### Decision
 
-We RECOMMEND that custom array names be ascii characters. We expect most implementations will require this. Nevertheless, implementers may choose to allow users to use UTF-8 characters as an extension to the spec. Implementing UTF-8 will not be required for an implementation. In this extension, array names MUST at least follow UTF-8.
+Custom array names SHOULD be ASCII characters. We expect most implementations will require this; nevertheless, implementers may choose to allow UTF-8 characters as an extension to the spec. Implementing UTF-8 is not required for an implementation. In this extension, array names MUST at least follow UTF-8.
 
 ### Rationale
 
