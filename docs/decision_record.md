@@ -8,7 +8,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
-## 2023-01-11 - Array names should, but are not required to be ASCII
+## 2023-01-11 - Array names SHOULD be ASCII
 
 ### Decision
 
@@ -16,9 +16,9 @@ Custom array names SHOULD be ASCII characters. We expect most implementations wi
 
 ### Rationale
 
-The sequence collection is a group of named arrays. These array names include built-in, defined arrays, like names, lengths, and sequences, but users may also use custom array names. Our spec-defined array names are all lowercase ascii characters, but this doesn't mean we must restrict custom array names in the same way.
+The sequence collection is a group of named arrays. These array names include built-in, defined arrays, like names, lengths, and sequences, but users may also use custom array names. Our spec-defined array names are all lowercase ASCII characters, but this doesn't mean we must restrict custom array names in the same way.
 
-While non-ascii array names would be compatible with our current specification, we identified 3 issues that could arise if someone uses non-ascii: 1) Normalization. We would probably need to define in the specification some normalization scheme to make sure things a user expects to be identical will hash to the same digest. 2) Sort order. However, this problem will be solved by following a JSON canonicalization standard. 3) Use of array names in other places will be restricted. For example, it seems natural to want to create API endpoints or table names or in columns in a database that correspond to array names. If array names are non-ascii, it may preclude this, increasing implementation complexity and may make some things impossible.
+While non-ASCII array names would be compatible with our current specification, we identified 3 issues that could arise if someone uses non-ASCII: 1) Normalization. We would probably need to define in the specification some normalization scheme to make sure things a user expects to be identical will hash to the same digest. 2) Sort order. However, this problem will be solved by following a JSON canonicalization standard. 3) Use of array names in other places will be restricted. For example, it seems natural to want to create API endpoints or table names or in columns in a database that correspond to array names. If array names are non-ASCII, it may preclude this, increasing implementation complexity and may make some things impossible.
 
 ### Linked issues
 
