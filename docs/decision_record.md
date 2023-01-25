@@ -9,6 +9,8 @@
 
 ## 2022-09-05 - How sequence collection are serialized prior to digestion
 
+The serialisation in this context is the conversion of the sequence collection object into a string that can be digested.
+
 ### Decision
 
 The serialisation of a sequence collection will use the following steps
@@ -86,7 +88,7 @@ Finally the canonical, representation is digested again to produce the identifie
 ### Rationale
 The decision to use the serialisation of array and object provided in RFC-8785 allows sequence collection to support any type of characters and rely on a documented standard that offer implementation in multiple languages.
 It also future-proofs the serialisation method if we ever allow complex object to be element of the array.
-
+ 
 ### Linked issues
 
  - [https://github.com/ga4gh/seqcol-spec/issues/1](https://github.com/ga4gh/seqcol-spec/issues/1)
@@ -96,7 +98,7 @@ It also future-proofs the serialisation method if we ever allow complex object t
 
 ### Known limitations
 
-The JSON canonical serialisation defined in RFC-8785 has a limited set of reference implementation. It is possible that its implementation might make sequence collection implementation more difficult in other languages.  
+The JSON canonical serialisation defined in RFC-8785 has a limited set of reference implementation. It is possible that its implementation makes sequence collection implementation more difficult in languages where the RFC is not implemented. In this cases it is valuable to note that the current specification of Sequence Collection do not require that all the features of RFC-8785 be implemented. 
 
 ## 2022-10-05 - Terminology decisions
 
