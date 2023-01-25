@@ -6,6 +6,7 @@
 
 [TOC]
 
+
 ## 2022-09-05 - How sequence collection are serialized prior to digestion
 
 ### Decision
@@ -96,6 +97,96 @@ It also future-proofs the serialisation method if we ever allow complex object t
 ### Known limitations
 
 The JSON canonical serialisation defined in RFC-8785 has a limited set of reference implementation. It is possible that its implementation might make sequence collection implementation more difficult in other languages.  
+
+## 2022-10-05 - Terminology decisions
+
+### Decision
+
+We refer to representations in "levels". The level number represents the number of "lookups" you'd have to do from the "top level" digest. So, we have:
+
+#### Level 0 (AKA "top level")
+
+Just a plain digest. This corresponds to **0 database lookups**. Example:
+```
+a6748aa0f6a1e165f871dbed5e54ba62
+```
+
+#### Level 1
+
+What you'd get when you look up the digest with **1 database lookup** and no recursion. Previously called "layer 0" or "reclimit 0" because there's no recursion. Also sometimes called the "array digests" because each entity represents an array.
+
+Example:
+```
+{
+  "lengths": "4925cdbd780a71e332d13145141863c1",
+  "names": "ce04be1226e56f48da55b6c130d45b94",
+  "sequences": "3b379221b4d6ea26da26cec571e5911c"
+}
+```
+
+#### Level 2
+
+What you'd get with **2 database lookups** (equivalently, 1 recursive call). This is the most common representation, more commonly used than either the "level 1" or the "level 3" representations.
+
+```
+{
+  "lengths": [
+    "1216",
+    "970",
+    "1788"
+  ],
+  "names": [
+    "A",
+    "B",
+    "C"
+  ],
+  "sequences": [
+    "76f9f3315fa4b831e93c36cd88196480",
+    "d5171e863a3d8f832f0559235987b1e5",
+    "b9b1baaa7abf206f6b70cf31654172db"
+  ]
+}
+```
+
+#### Level 3
+
+What you'd get with **3 database lookups** (equivalently, 2 recursive call). The only field that can be further populated is `sequences`, so the level 3 representation provides the complete data. This layer:
+- can potentially be very large
+- is the only level that requires outsourcing a query to a refget server
+- may reasonable be disabled on my seqcol server, since the point is not to retrieve actual sequences; 
+
+Example (sequences truncated for brevity):
+```
+{
+  "lengths": [
+    "1216",
+    "970",
+    "1788"
+  ],
+  "names": [
+    "A",
+    "B",
+    "C"
+  ],
+  "sequences": [
+    "CATAGAGCAGGTTTGAAACACTCTTTCTGTAGTATCTGCAAGCGGACGTTTCAAGCGCTTTCAGGCGT...",
+    "AAGTGGATATTTGGATAGCTTTGAGGATTTCGTTGGAAACGGGATTACATATAAAATCTAGAGAGAAGC...",
+    "GCTTGCAGATACTACAGAAAGAGTGTTTCAAACCTGCTCTATGAAAGGGAATGTTCAGTTCTGTGACTT..."
+  ]
+}
+```
+#### Summary
+
+We should be consistent by using these terms to refer to the above representation:
+-  "level 0 representation", "level 0 digest", top-level digest", or "primary digest";
+-  "level 1 representation" or "level 1 digests";
+-  "level 2 representation"; 
+-  "level 3 representation" of a sequence collection. 
+
+
+### Linked issues
+- https://github.com/ga4gh/seqcol-spec/issues/25
+
 
 ## 2022-06-15 - Structure for the return value of the comparison API endpoint
 
