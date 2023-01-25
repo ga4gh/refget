@@ -6,7 +6,7 @@
 
 [TOC]
 
-## 2023-01-25 - No internal prefixes
+## 2023-01-25 - Internal identifiers SHOULD NOT be prefixed
 
 ### Background
 
