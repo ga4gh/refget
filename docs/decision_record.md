@@ -2,12 +2,31 @@
 
 *This is a record of decisions made during specification development. Each entry describes a decision that has been approved by the team members. Collectively, this ADR describes an institutional memory for decisions and their rationales, including known limitations. The goal is to avoid repeated discussion of previous decisions, formally acknowledge limitations, preserve and articulate reasons behind the decisions, and share this information with the broader community.* 
 
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119.
+
 ## Contents: 
 
 [TOC]
 
 
-## 2022-09-05 - How sequence collection are serialized prior to digestion
+## 2023-02-08 - Array names SHOULD be ASCII
+
+### Decision
+
+Custom array names SHOULD be ASCII characters. We expect most implementations will require this; nevertheless, implementers may choose to allow UTF-8 characters as an extension to the spec. Implementing UTF-8 is not required for an implementation. In this extension, array names MUST at least follow UTF-8.
+
+### Rationale
+
+The sequence collection is a group of named arrays. These array names include built-in, defined arrays, like names, lengths, and sequences, but users may also use custom array names. Our spec-defined array names are all lowercase ASCII characters, but this doesn't mean we must restrict custom array names in the same way.
+
+While non-ASCII array names would be compatible with our current specification, we identified 3 issues that could arise if someone uses non-ASCII: 1) Normalization. We would probably need to define in the specification some normalization scheme to make sure things a user expects to be identical will hash to the same digest. 2) Sort order. However, this problem will be solved by following a JSON canonicalization standard. 3) Use of array names in other places will be restricted. For example, it seems natural to want to create API endpoints or table names or in columns in a database that correspond to array names. If array names are non-ASCII, it may preclude this, increasing implementation complexity and may make some things impossible.
+
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/33
+
+
+## 2023-01-12 - How sequence collection are serialized prior to digestion
 
 The serialisation in this context is the conversion of the sequence collection object into a string that can be digested.
 
@@ -99,6 +118,7 @@ It also future-proofs the serialisation method if we ever allow complex object t
 ### Known limitations
 
 The JSON canonical serialisation defined in RFC-8785 has a limited set of reference implementation. It is possible that its implementation makes sequence collection implementation more difficult in languages where the RFC is not implemented. In this cases it is valuable to note that the current specification of Sequence Collection do not require that all the features of RFC-8785 be implemented. 
+
 
 ## 2022-10-05 - Terminology decisions
 
