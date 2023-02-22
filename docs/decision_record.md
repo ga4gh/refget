@@ -2,11 +2,14 @@
 
 *This is a record of decisions made during specification development. Each entry describes a decision that has been approved by the team members. Collectively, this ADR describes an institutional memory for decisions and their rationales, including known limitations. The goal is to avoid repeated discussion of previous decisions, formally acknowledge limitations, preserve and articulate reasons behind the decisions, and share this information with the broader community.* 
 
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119.
+
 ## Contents: 
 
 [TOC]
 
-## 2023-01-25 - Internal identifiers SHOULD NOT be prefixed
+
+## 2023-XX-XX - Internal identifiers SHOULD NOT be prefixed
 
 ### Background
 
@@ -30,6 +33,117 @@ We see no need to add prefixes to the identifiers we use internally, which we ju
 ### Linked issues
 
 - https://github.com/ga4gh/seqcol-spec/issues/37
+
+## 2023-02-08 - Array names SHOULD be ASCII
+
+### Decision
+
+Custom array names SHOULD be ASCII characters. We expect most implementations will require this; nevertheless, implementers may choose to allow UTF-8 characters as an extension to the spec. Implementing UTF-8 is not required for an implementation. In this extension, array names MUST at least follow UTF-8.
+
+### Rationale
+
+The sequence collection is a group of named arrays. These array names include built-in, defined arrays, like names, lengths, and sequences, but users may also use custom array names. Our spec-defined array names are all lowercase ASCII characters, but this doesn't mean we must restrict custom array names in the same way.
+
+While non-ASCII array names would be compatible with our current specification, we identified 3 issues that could arise if someone uses non-ASCII: 1) Normalization. We would probably need to define in the specification some normalization scheme to make sure things a user expects to be identical will hash to the same digest. 2) Sort order. However, this problem will be solved by following a JSON canonicalization standard. 3) Use of array names in other places will be restricted. For example, it seems natural to want to create API endpoints or table names or in columns in a database that correspond to array names. If array names are non-ASCII, it may preclude this, increasing implementation complexity and may make some things impossible.
+
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/33
+
+
+## 2023-01-12 - How sequence collection are serialized prior to digestion
+
+The serialisation in this context is the conversion of the sequence collection object into a string that can be digested.
+
+### Decision
+
+The serialisation of a sequence collection will use the following steps
+
+ 1. Apply RFC-8785 on each array of level 2
+ 2. Digest the canonical representation of each array
+ 3. Create object representation of the seq-col using array names and digested arrays
+ 4. Apply RFC-8785 on the object representation
+ 5. Digest the final canonical representation
+
+
+#### 1. Apply RFC-8785 for converting from level 2 to level 1
+
+For example the length array at level 2:
+```json
+[248956422, 242193529, 198295559]
+```
+
+Will be serialised using RFC-8785 and digested as a binary string. Here the output of the python implementation: 
+
+```python
+b'[248956422,242193529,198295559]'
+```
+
+It would also support any UTF-8 character. For example this array of names
+```json
+["染色体-1","染色体-2","染色体-3"]
+```
+
+Would create the following serialisation:
+
+```python
+b'["\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x93-1","\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x93-2","\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x93-3"]'
+```
+
+#### 2. Digest of the canonical representation
+
+The canonical string representation is then digested. Assuming the use of GA4GH (sha512 trim to 24) digest, the following array of length
+
+```python
+b'[248956422,242193529,198295559]'
+```
+
+would be converted to 
+
+```json
+"5K4odB173rjao1Cnbk5BnvLt9V7aPAa2"
+```
+
+#### 3. Creation of an object composed of the array names and the digested arrays
+An object is created with the array name as properties and the digest as value.
+Example the following collection: 
+```json
+{
+    "sequences": "EiYgJtUfGyad7wf5atL5OG4Fkzohp2qe",
+    "lengths": "5K4odB173rjao1Cnbk5BnvLt9V7aPAa2",
+    "names": "g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp"
+}
+```
+
+#### 4. Use RFC-8785 on the object
+This will create a canonical representation of the object 
+
+```python
+b'{"lengths":"5K4odB173rjao1Cnbk5BnvLt9V7aPAa2","names":"g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp","sequences":"EiYgJtUfGyad7wf5atL5OG4Fkzohp2qe"}'
+```
+
+#### 5. Digest the final canonical representation
+Finally the canonical, representation is digested again to produce the identifier
+
+```json
+"S3LCyI788LE6vq89Tc_LojEcsMZRixzP"
+```
+
+### Rationale
+The decision to use the serialisation of array and object provided in RFC-8785 allows sequence collection to support any type of characters and rely on a documented standard that offer implementation in multiple languages.
+It also future-proofs the serialisation method if we ever allow complex object to be element of the array.
+ 
+### Linked issues
+
+ - [https://github.com/ga4gh/seqcol-spec/issues/1](https://github.com/ga4gh/seqcol-spec/issues/1)
+ - [https://github.com/ga4gh/seqcol-spec/issues/25](https://github.com/ga4gh/seqcol-spec/issues/25)
+ - [https://github.com/ga4gh/seqcol-spec/issues/33](https://github.com/ga4gh/seqcol-spec/issues/33)
+
+
+### Known limitations
+
+The JSON canonical serialisation defined in RFC-8785 has a limited set of reference implementation. It is possible that its implementation makes sequence collection implementation more difficult in languages where the RFC is not implemented. In this cases it is valuable to note that the current specification of Sequence Collection do not require that all the features of RFC-8785 be implemented. 
+
 
 ## 2022-10-05 - Terminology decisions
 
@@ -119,6 +233,7 @@ We should be consistent by using these terms to refer to the above representatio
 
 ### Linked issues
 - https://github.com/ga4gh/seqcol-spec/issues/25
+
 
 ## 2022-06-15 - Structure for the return value of the comparison API endpoint
 
