@@ -8,7 +8,6 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
-
 ## 202X-XX-XX - Order will be recognized by digesting arrays in the given order, and no unordered digests will be provided
 
 ### Decision
@@ -42,7 +41,6 @@ To conclude, option A seems simple and straightforward, satisfies for a basic im
 For use cases that require determination of whether two sequence collections differ only in element order, option A will not provide an answer based on digest comparison alone. Instead, the query will be required to use the compatibility API, which means retrieving the contents of the array to compare them.
 
 Therefore, to answer this 'order-equivalence' question will require a bit more work than if unordered digests were available; however, this functionality can be easily implemented on top of the basic functionality in a number of ways. And at the end of the day, the compatibility function is not particularly onerous of a calculation anyway.
-
 
 
 ## 2023-02-08 - Array names SHOULD be ASCII
@@ -435,7 +433,6 @@ For the `POST comparison` endpoint, we made 2 limitations to simplify the implem
 
 - [https://github.com/ga4gh/seqcol-spec/issues/21](https://github.com/ga4gh/seqcol-spec/issues/21)
 - [https://github.com/ga4gh/seqcol-spec/issues/23](https://github.com/ga4gh/seqcol-spec/issues/23)
-
 
 ## 2021-08-25 - Sequence collection digests will reflect sequence order
 
