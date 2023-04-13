@@ -8,7 +8,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
-## 2023-03-22 - Inherent attributes implementation will be REQUIRED
+## 2023-03-22 - Seqcol schemas MUST specify inherent attributes
 
 ### Decision
 
