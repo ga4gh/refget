@@ -8,11 +8,13 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
-## 202X-XX-XX - Order will be recognized by digesting arrays in the given order, and no unordered digests will be provided
+## 202X-XX-XX - Order will be recognized by digesting arrays in the given order, and unordered digests will not be part of the digest computation
 
 ### Decision
 
-The final sequence collection digests will reflect the order by digesting the arrays in the order provided. We will employ no additional 'order' array, and no additional unordered digests in the string-to-digest. To determine whether two sequence collections differ only in order will require either 1) using the compatibility testing API; or 2) implementing an additional functionality for unordered digests on top of the basic sequence collections specification.
+The final sequence collection digests will reflect the order by digesting the arrays in the order provided. We will employ no additional 'order' array, and no additional unordered digests in the string-to-digest.
+
+To determine whether two sequence collections differ only in order will require either 1) using the compatibility testing API; or 2) implementing additional functionality for unordered digests that is external to the attributes used to compute the digests (inherent attributes).
 
 ### Rationale
 
@@ -30,7 +32,7 @@ After lots of initial enthusiasm for option B, we determined that it fails to de
 
 While options C/D skirt this issue by having a separate order for each array, so that changes in one array do not affect the digest of another, they add significant complexity as everything needs to be stored twice.
 
-To conclude, option A seems simple and straightforward, satisfies for a basic implementation. We thus defer the question of determining whether two sequence collections differ only in order to the compatibility API.
+To conclude, option A seems simple and straightforward, satisfies for a basic implementation. We thus defer the question of determining whether two sequence collections differ only in order to the compatibility API, or to some other future way to do it that will not affect the actual digests (*e.g.* the 'sorted-names-lengths' attribute).
 
 ### Linked issues
 
@@ -40,7 +42,7 @@ To conclude, option A seems simple and straightforward, satisfies for a basic im
 
 For use cases that require determination of whether two sequence collections differ only in element order, option A will not provide an answer based on digest comparison alone. Instead, the query will be required to use the compatibility API, which means retrieving the contents of the array to compare them.
 
-Therefore, to answer this 'order-equivalence' question will require a bit more work than if unordered digests were available; however, this functionality can be easily implemented on top of the basic functionality in a number of ways. And at the end of the day, the compatibility function is not particularly onerous of a calculation anyway.
+Therefore, to answer this 'order-equivalence' question will require a bit more work than if unordered digests were available; however, this functionality can be easily implemented on top of the basic functionality in a number of ways, which we are continuing to consider.
 
 
 ## 2023-02-08 - Array names SHOULD be ASCII
