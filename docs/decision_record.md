@@ -8,6 +8,27 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+## 2023-03-22 - Inherent attributes implementation will be REQUIRED
+
+### Decision
+
+A seqcol schema provided by a seqcol API `MUST` define an `inherent` section. This section specifies a list of attributes, indicating the attributes that **do** contribute to the identity of the collection. As a corollary, attributes of a seqcol that are *not* listed in `inherent` `MUST NOT` contribute to the identifier; they are therefore excluded from the digest calculation.
+
+### Rationale
+
+We have found a lot of useful use cases for information that should go along with a seqcol, but should not contribute to the *identity* of that seqcol. This is a useful construct as it allows us to include information in a collection that does not affect the identifier that is computed for that collection. One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have a different identifier! Similarly, the 'sorted-names-lengths' idea provides lots of utility, but it doesn't change anything about the identity of the collection, so it would be nice to exclude it because then an implementation that didn't implement 'sorted-names-lengths' would end up with the same identifier, improving interoperability across servers.
+
+Thus, we introduce the idea of *inherent* vs *non-inherent attributes*. Inherent attributes contribute to the identifier; *non-inherent* attributes are not considered in computing the top-level digest. We previously called these *digested* and *non-digested* attributes, but this is not really a good name because, while these non-inherent attributes may not be part of the top-level digest calculation, they are still going to be digested at level 2.
+
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/40
+
+### Alternatives considered
+
+We considered using `extrinsic` to define the opposite of `inherent`, which would change it so that attributes were inherent by default; but we decided we liked the explicitness of forcing the schema to specify which attributes are to be included in the digest, because this brings clarity over the alternative, which is to assume everything is included unless it's excluded. We also liked that this makes the `inherent` keyword behave similarly to the `required` keyword in JSON-schema; if left off, we assume nothing is required. This means that in order for a seqcol schema to be valid, it must have at least one inherent attribute specified.
+
+
 
 ## 2023-02-08 - Array names SHOULD be ASCII
 
