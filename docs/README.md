@@ -18,7 +18,7 @@ extra_css: [extra.css]
                 <ol>
               <li>implementations of an algorithm for computing sequence identifiers;</li>
               <li>a lookup service to retrieve sequences given a seqcol identifier</li>
-              <li>programatic approach to assessing compatibility among sequence collections.</li>
+              <li>programmatic approach to assessing compatibility among sequence collections.</li>
               </ol>
             </p>
             <a href="specification">Read the complete specification</a>
