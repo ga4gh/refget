@@ -32,14 +32,14 @@ Seqcol also specifies a RESTful API to enable retrieving the sequence collection
 
 ## Definitions of key terms
 
-- **Sequence**: Seqcol uses refget to store actual sequences, so we use the term in the same way as refget. Refget was designed for nucleotide sequences; however, other sequences could be provided via the same mechanism, *e.g.*, cDNA, CDS, mRNA or proteins. Essentially any ordered list of valid characters qualifies.
-- **Sequence collection**: An ordered list of sequences.
+- **Sequence**: Seqcol uses refget to store actual sequences, so we generally use the term in the same way as refget. Refget was designed for nucleotide sequences; however, other sequences could be provided via the same mechanism, *e.g.*, cDNA, CDS, mRNA or proteins. Essentially any ordered list of refget-valid characters qualifies. However, sequence collections may also contain sequences of non-specified characters, which therefore have a length but no actual sequence content. 
+- **Sequence collection**: A representation of 1 or more sequences that is structured according to the sequence collection schema
 - **Digest**: A unique identifier resulting from a cryptographic hash function, such as `MD5` or `SHA512`, on input data.
 - **Seqcol digest**: A digest for a sequence collection, computed according to the seqcol algorithm.
 - **Seqcol algorithm**: The set of instructions used to compute a digest from a sequence collection.
 - **Sequence digest** or **refget digest**: A digest for a sequence, computed according to the refget protocol.
-- **Metadata**: Any extra data attached to a sequence collection, including a human-readable alias, source or provider of the collection, version information, etc.
 - **Length**: The number of characters in a sequence.
+- **Array**: An ordered list of elements
 - **Alias**: A human-readable identifier used to refer to a sequence collection.
 - **Seqcol API**: The set of endpoints defined in the *retrieval* and *comparison* components of the seqcol protocol.
 - **Seqcol protocol**: Collectively, the 3 operations outlined in this document, which include: 1. encoding of sequence collections; 2. retrieval of sequence collections; and 3. comparison of sequence collections.
@@ -48,13 +48,12 @@ Seqcol also specifies a RESTful API to enable retrieving the sequence collection
 
 ## Seqcol protocol functionality
 
-The core functionality of the seqcol protocol is to provide three operations:
+The seqcol protocol defines two functions:
 
 1. *Encoding* - An algorithm for computing a unique identifier given a collection of sequences;
-2. *Retrieval* - A RESTful lookup API specification for retrieving a collection of sequences from a database given a unique identifier.
-3. *Comparison* - A standardized API to assess compatibility of two collections
+2. *API* - A server RESTful API specification for retrieving and comparing sequence collections.
 
-An implementation of the seqcol protocol may implement only one of these functions, but to be fully compliant with the seqcol protocol an implementation must provide all `REQUIRED` capabilities of that function, as detailed below. 
+To be fully compliant with the seqcol protocol an implementation must provide all `REQUIRED` capabilities as detailed below. 
 
 The seqcol algorithm is based on the refget algorithm for individual sequences, and should use refget servers to store the actual sequence data. Seqcol servers therefore provide a lightweight organizational layer on top of refget servers.
 
@@ -65,7 +64,7 @@ The encoding function specifies an algorithm that takes as input a set of annota
 
 #### Standardized sequence collection object representation
 
-The first thing we have to do is create an object representation of the attributes of the sequence collection. The structure of this object is critical, and is strictly controlled by the seqcol protocol. It must be defined in a schema. For example, a basic general schema is:
+We first create an object representation of the attributes of the sequence collection. The structure of this object is critical, and is strictly controlled by the seqcol protocol. It must be defined in a JSON-schema. This is the general, minimal schema:
 
 
 ```YAML
@@ -84,10 +83,9 @@ properties:
       type: string
   sequences:
     type: array
-    description: "Digests of sequences computed using the GA4GH digest algorithm (sha512t24u)."
     items:
       type: string
-      description: "Actual sequence content"
+      description: "Digests of sequences computed using the GA4GH digest algorithm (sha512t24u)."
 required:
   - lengths
 inherent:
@@ -101,23 +99,25 @@ We refer to this as the *seqcol object representation*. An example of a sequence
 ```json
 {
   "lengths": [
-    8,
-    4,
-    4
+    248956422,
+    133797422,
+    135086622
   ],
   "names": [
-    "chrX",
     "chr1",
-    "chr2"
+    "chr2",
+    "chr3"
   ],
   "sequences": [
-    "5f63cfaa3ef61f88c9635fb9d18ec945",
-    "31fc6ca291a32fb9df82b85e5f077e31",
-    "92c6a56c9e9459d8a42b96f7884710bc"
+    "2648ae1bacce4ec4b6cf337dcae37816",
+    "907112d17fcb73bcab1ed1c72b97ce68",
+    "1511375dc2dd1b633af8cf439ae90cec"
   ],
 ```
 
-The object is a series of arrays with matching length (`3`), with the corresponding entries collated such that the first element of each array corresponds to the first element of each other array.
+The object is a series of arrays with matching length (`3`), with the corresponding entries collated such that the first element of each array corresponds to the first element of each other array. For rationale for this structure over an array of annotated sequences, see *Footnote F1*.
+
+`REQUIRED`: Implementations `MUST` at least provide the structure specified in this schema. Implementations `MAY` choose to extend this schema by adding additional attributes.
 
 
 #### Seqcol algorithm:
@@ -134,24 +134,43 @@ Once the content of the sequence collection has been organized in the *seqcol ob
 
 The digest algorithm is `TRUNC-512`. Details to follow.
 
-### 2. Retrieval: Retrieving sequence collections from digests
 
-The retrieval function specifies an API endpoint that retrieves original sequences from a database keyed by the unique digest.
+---
 
-#### Endpoints
+### 2. API
 
-- `GET /collection/:digest/` - (`REQUIRED`) Here `:digest` is the seqcol digest computed above. This returns the sequence collection identified by the `:digest` variable. The form of the return `MUST` match the seqcol object representation form defined above.
+The API has 3 top-level endpoints, for 3 functions: 1) `/service-info`, for describing information about the service; 2) `/collection`, for retrieving sequence collections; and 3) `/comparison` for comparing two sequence collections. Under these umbrella endpoints are a few more specific sub-endpoints, described in detail below:
 
-### 3. Comparison: Determining compatibility between sequence collections
+#### `GET /service-info`
+
+The service info endpoint provides information about the service
+
+##### Return value
+
+Must include
+
+####  `GET /collection/:digest?level=:level` 
+
+`REQUIRED`
+
+The retrieval function specifies an API endpoint that retrieves original sequences from a database keyed by the unique digest. Here `:digest` is the seqcol digest computed above. This returns the sequence collection identified by the `:digest` variable. The form of the return `MUST` match the seqcol object representation form defined above. The `:level` query parameter provides a way for the user to specify the structure of the return value. The level corresponds to the "expansion level" of the returned sequence collection returned. The default is `?level=2`, which returns the canonical structure. 
+
+- `?level=1` 
+
+
+#### `GET /comparison/{digest1}/{digest2}` 
+`REQUIRED`
 
 The comparison function specifies an API endpoint that allows a user to compare two sequence collections. The output is an assessment of compatibility between those sequence collections. 
 
-#### Endpoints
+ 
+#### `POST /comparison/{digest1}` 
 
-- `GET /comparison/{digest1}/{digest2}` (`REQUIRED`) for comparing two collections in the database
-- `POST /comparison/{digest1}` (`REQUIRED`) for comparing one database collection to a local user-provided collection.
+`REQUIRED`
 
-#### Return value
+Compares one database collection to a local user-provided collection.
+
+Return value:
 
 
 The `/comparison` endpoint must `MUST` return an object in JSON format with these 3 keys: "digests", "arrays", and "elements", as described below:
@@ -214,4 +233,10 @@ This output can be used to make the following comparisons:
 - Order-relaxed identity.
 - Name-relaxed identity. 
 - Length-only compatible. 
+
+## Footnotes
+
+### F1. Why use an array-oriented structure instead of a sequence-oriented structure?
+
+In the final structure, we first organize the sequence collection into what we called an "array-oriented" data structure, which is a set of collated arrays (names, lengths, sequences, *etc.*). An alternative we considered first was a "sequence-oriented" structure, with `{name, length, sequence}` first grouped as a unit, and then a collection structured as an array of such units. There are 3 reasons we settled on the array-based nature. 1) Flexibility of sequence attributes. This makes it straightforward to mix-and-match components of the collection. Because each component is independent, and not integrated in with the sequence, it is simpler to select and build subsets and permutations. 2) Backwards compatibility. Along the same lines, what happens for an implementation that adds a new attribute? For example, if an implementation adds a `topology` attribute to the sequences, in the sequence-oriented structure, this would alter the sequence object and thereby change its digest. In the array-based structure, since we digest the arrays individually, the array digest is not changed. 3) Conciseness. Sequence collections may be used for tens of thousands or even millions of sequences. For example, a transcriptome may containe a million possible transcripts. The array-oriented data structure is a more concise representation for digesting collections with many elements becuase the attributes are only specified once instead of once per element. Furthermore, the level 1 representation of the sequence collection is more concise for large collections, since we only need one digest per attribute, rather than one digest per sequence. 4) Utility of intermediate digests. The array-oriented approach provides useful intermediate digests for each attribute. This digest can be used to test for matching sets of sequences, or matching coordinate systems, using the individual component digests. With a sequence-oriented framework, this would require traversing down a layer deeper, to the individual elements, to establish identity of individual components.
 
