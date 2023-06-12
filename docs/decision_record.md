@@ -23,7 +23,7 @@ We determined that *internally*, we will not append prefixes to the strings we a
 
 According to the definition of CURIEs:
 
-    A host language MAY declare a default prefix value, or MAY provide a mechanism for defining a def
+    A host language MAY declare a default prefix value, or MAY provide a mechanism for defining a defining a default prefix value. In such a host language, when the prefix is omitted from a CURIE, the default prefix value MUST be used.
 
 We see no need to add prefixes to the identifiers we use internally, which we just assume belong to our namespace. Adding prefixes will complicate things and does not add benefits. Prefixes may be added to our identifiers by outside entities as needed to define for them the scope of our local digests.
 
