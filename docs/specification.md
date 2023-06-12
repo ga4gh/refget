@@ -112,7 +112,8 @@ We refer to this as the *seqcol object representation*. An example of a sequence
     "2648ae1bacce4ec4b6cf337dcae37816",
     "907112d17fcb73bcab1ed1c72b97ce68",
     "1511375dc2dd1b633af8cf439ae90cec"
-  ],
+  ]
+}
 ```
 
 The object is a series of arrays with matching length (`3`), with the corresponding entries collated such that the first element of each array corresponds to the first element of each other array. For rationale for this structure over an array of annotated sequences, see *Footnote F1*.
