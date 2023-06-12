@@ -126,7 +126,7 @@ Once the content of the sequence collection has been organized in the *seqcol ob
 
 1. **Step 1**. Put all attributes of the sequence collection (*e.g.* names, lengths, sequence digests) in seqcol object representation form, as defined above.
 2. **Step 2**. Apply [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) (JCS) to canonicalize the JSON of the seqcol object.
-3. **Step 3**. Digest the canonical representation of each attribute using the seqcol digest algorithm (defined below). This should convert the value of each attribute in the seqcol into a digest string.
+3. **Step 3**. Digest the canonical representation of each attribute's value using the seqcol digest algorithm (defined below). This should convert the value of each attribute in the seqcol into a digest string.
 4. **Step 4**. Apply [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) again to canonicalize the JSON of new seqcol object representation.
 5. **Step 5**. Digest the final canonical representation again. This is the *seqcol digest*, the final unique identifier for this sequence collection.
 
