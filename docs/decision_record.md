@@ -6,7 +6,7 @@
 
 [TOC]
 
-## 2023-01-25 - Internal identifiers SHOULD NOT be prefixed
+## 2023-06-14 - Internal identifiers SHOULD NOT be prefixed
 
 ### Background
 
@@ -18,6 +18,7 @@ We determined that *internally*, we will not append prefixes to the strings we a
 
 - for internal identifiers (those generated within seqcol), we digest only digests, not prefixes of any kind
 - for external identifiers (like refget identifiers), we accept them at face value, so we wouldn't remove a prefix if you declare it is was part of your sequence identifier
+- the seqcol specification should RECOMMEND using refget identifiers
 
 ### Rationale
 
