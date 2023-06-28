@@ -9,6 +9,32 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 [TOC]
 
 
+## 2023-06-28 - SeqCol JSONschema defines reserved attributes without additional namespacing
+
+### Decision
+
+One potential issue is the possibility for a future "official" attribute to clash with a custom attribute implemented by a third party. If a custom implementation uses an attribute that a future version of seqcol will add to the "official" schema, and if these attributes are defined differently, then the custom implementation wouldn't be compatible with the future seqcol schema. It would be nice if we could prevent such future clashes by keeping key words meaning the same thing across collections so that they are compatible. One way to solve this would be to define an "official" namespace, so that custom attributes look different from official attributes. This would guarantee that a custom attribute never clashes with an official attribute, thereby ensuring that custom implementations will be compatible with any future official schema updates.
+
+Despite the potential issue for custom attribute clashes, we decided:
+
+1. We will not use any additional namespacing. Instead, the SeqCol schema declares and defines the specific attributes of a sequence collection. We will "claim" any reserved keywords in the "official" schema we publish, not by defining a style or namespace of reserved keywords.
+
+2. We will try to add to this many things that we forsee as possible attributes that could be defined in a seqcol. Thus, we will provide an official set of definitions that should prevent many possible future clashes.
+
+3. We will specify that for custom attributes, you can do what you want outside the reserved keywords; but you should be aware that if a word becomes part of the official schema in the future, this could require a change of your custom attribute to maintain backwards compatibility. We will advise that if possibility of future clashes is important for an external schema, they could prevent that by prefixing custom attributes. However, this also means that if a future attribute *is* added to the schema to represent that concept, it would not follow the custom name.
+
+### Rationale
+
+Several reasons led us to this decisions:
+
+1. The likelihood of wanting to add custom attributes that will clash seems low, so we questioned whether it is worth the cost of defining separate namespaces.
+2. In the event that there is a clash in the future, this is not really a major problem. A new version of the official schema that adds new reserved keywords will basically mean a new major release of seqcol, which could potentially introduce backwards incompatibility with an existing custom attribute. This just means the custom implementation would need to be updated to follow the new schema, which is possible.
+3. It seems more likely that we would "claim" an official attribute that someone else had already used that *does* match the intended semantics of the word. In that case, our effort to prevent clashes would have actually created clashes, because it would have forced the custom attribute to use a different attribute name. Instead, it seems more prudent to just allow the custom implementations to use the same namespace of attribute names, and deal with any possible backwards incompatibilites if they ever actually arise in the future.
+4. Since we expect the major implementations to be few and driven by people connected with the project, it seems more likely that we would just adopt the custom attribute with its definition as an official attribute. We would not be able to do this if we enforced separate namespaces, which would create backwards compatibility.
+
+In other words, in short: the idea to prevent future backwards-incompatibility by creating a reserved word namespace seems, paradoxically, more likely to actually *create* a future backwards compatibility than to prevent one.
+
+
 ## 2023-02-08 - Array names SHOULD be ASCII
 
 ### Decision
