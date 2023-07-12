@@ -8,6 +8,26 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+## 2023-06-28 Details of endpoints
+
+### Decisions
+
+1. The specification for how to retrieve different representations of a sequence collection should be specified to the `/collection` endpoint with `?level=<level>`, where `<level>` interpretations are:
+	- `level` <= 0 is undefined
+	- the return value is JSON for all 
+	- `?level=1` MUST be allowed, and must return the level 1 seqcol representation
+	- `?level=2` MUST be allowed, and must return the level 2 seqcol representation
+	- `?level` is OPTIONAL, and when not provided, `level=2` is assumed
+
+2. The `/comparison` endpoint is RECOMMENDED.
+
+### Rationale
+
+1. The different levels of representation are useful for different things and it makes sense to make it possible to retrieve them. We debated about the best way to do this, and also considered using names instead of numbers.
+
+2. The comparison endpoint is very useful, but we can imagine use cases where it can cause problems or may not be needed. First, it will preclude the ability of creating an S3-only implementation. Since it's possible and useful to create an implementation that only implements the `/collection` endpoint, it makes sense that `/comparison` should not be required. Second, some services may view themselves as solely providing content, and nothing more. We recommend these services still implement `/comparison`, but acknowledge that the `/collection` endpoint will still be useful even without it, so this again fits with a `RECCOMEND` status.
+
+
 
 ## 2023-02-08 - Array names SHOULD be ASCII
 
