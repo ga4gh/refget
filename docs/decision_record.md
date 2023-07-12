@@ -27,7 +27,7 @@ Despite the potential issue for custom attribute clashes, we decided:
 
 Several reasons led us to this decisions:
 
-1. The likelihood of wanting to add custom attributes that will clash seems low, so we questioned whether it is worth the cost of defining separate namespaces.
+1. The likelihood of wanting to add custom attributes that will clash and have different definition seems low, so we questioned whether it is worth the cost of defining separate namespaces.
 2. In the event that there is a clash in the future, this is not really a major problem. A new version of the official schema that adds new reserved keywords will basically mean a new major release of seqcol, which could potentially introduce backwards incompatibility with an existing custom attribute. This just means the custom implementation would need to be updated to follow the new schema, which is possible.
 3. It seems more likely that we would "claim" an official attribute that someone else had already used that *does* match the intended semantics of the word. In that case, our effort to prevent clashes would have actually created clashes, because it would have forced the custom attribute to use a different attribute name. Instead, it seems more prudent to just allow the custom implementations to use the same namespace of attribute names, and deal with any possible backwards incompatibilites if they ever actually arise in the future.
 4. Since we expect the major implementations to be few and driven by people connected with the project, it seems more likely that we would just adopt the custom attribute with its definition as an official attribute. We would not be able to do this if we enforced separate namespaces, which would create backwards compatibility.
