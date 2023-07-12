@@ -24,6 +24,9 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 3. Similarly, we envisioned the possibilty of a minimal implementation built using object storage that could fulfill all the other specifications. So while we think that the comparison function will be very helpful, particularly if it's implemented everywhere, for a minimal implementation that's sole purpose is to provide sequences, it might make sense to opt out of this. Therefore, we call it recommended.
 
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/40
 
 ## 2023-06-28 Details of endpoints
 
