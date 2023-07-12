@@ -13,11 +13,11 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ### Decision
 
-One potential issue is the possibility for a future "official" attribute to clash with a custom attribute implemented by a third party. If a custom implementation uses an attribute that a future version of seqcol will add to the "official" schema, and if these attributes are defined differently, then the custom implementation wouldn't be compatible with the future seqcol schema. It would be nice if we could prevent such future clashes by keeping key words meaning the same thing across collections so that they are compatible. One way to solve this would be to define an "official" namespace, so that custom attributes look different from official attributes. This would guarantee that a custom attribute never clashes with an official attribute, thereby ensuring that custom implementations will be compatible with any future official schema updates.
+One potential issue may arise if a custom implementation uses an attribute that a future version of seqcol adds to the schema, and if these attributes are defined differently. This will create a name clash and the custom implementation wouldn't be compatible with the future seqcol schema. It would be nice to prevent such future clashes, which would require ensuring that future seqcol attributes mean the same thing across collections so they are compatible. One way to solve this would be to define an namespace reserved by the specification, so that custom attributes look different and will therefore guarantee that custom attribute never clashes with seqcol attributes, thereby ensuring that custom implementations will be compatible with any future schema updates.
 
 Despite the potential issue for custom attribute clashes, we decided:
 
-1. We will not use any additional namespacing. Instead, the SeqCol schema declares and defines the specific attributes of a sequence collection. We will "claim" any reserved keywords in the "official" schema we publish, not by defining a style or namespace of reserved keywords.
+1. We will not use any additional namespacing. Instead, the SeqCol schema declares and defines the specific attributes of a sequence collection. We will "claim" any reserved keywords in the secqol schema we publish, not by defining a style or namespace of reserved keywords.
 
 2. We will try to add to this many things that we forsee as possible attributes that could be defined in a seqcol. Thus, we will provide an official set of definitions that should prevent many possible future clashes.
 
