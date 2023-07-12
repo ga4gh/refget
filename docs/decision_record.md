@@ -23,6 +23,8 @@ Despite the potential issue for custom attribute clashes, we decided:
 
 3. We will specify that for custom attributes, you can do what you want outside the reserved keywords; but you should be aware that if a word becomes part of the official schema in the future, this could require a change of your custom attribute to maintain backwards compatibility. We will advise that if possibility of future clashes is important for an external schema, they could prevent that by prefixing custom attributes. However, this also means that if a future attribute *is* added to the schema to represent that concept, it would not follow the custom name.
 
+4. Third-party implementers may propose attributes that should be moved into the primary seqcol schema for subsequent release. These proposals could happen via raising an issue in the specification repository.
+
 ### Rationale
 
 Several reasons led us to this decisions:
