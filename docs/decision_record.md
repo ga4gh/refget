@@ -8,6 +8,23 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+## 2023-07-12 Implementations SHOULD provide sorted_name_length_pairs and comparison endpoint
+
+### Decisions
+
+1. Name of the "names-lengths" attribute should be `sorted-name-length-pairs`.
+2. The `sorted-name-length-pairs` is RECOMMENDED.
+3. The `/comparison` endpoint is RECOMMENDED.
+
+### Rationale and alternatives considered
+
+1. We considered `names-lengths`, `sorted-names-lengths`, `name-length-pairs`. In the end we are trying to strike a balance between descriptivity and conciseness. We decided the idea of "pairs" is really critical, and so is "sorted", so this seemed to us to be a minimal set of words to capture the intention of the attribute, though it is a bit long. But in the end the name itself just has to be *something* standardized, and nothing seems perfect.
+
+2. We debated whether it should be required or optional to provide the `sorted-name-length-pairs` attribute. We think it provides a lot of really nice benefits, particularly if everyone implements it; however, we also acknowledge that there are some use cases for seqcols (like just being a provider of sequence collections) where every collection will have sequences, and comparing among coordinate systems is not really in scope. For this use case, we acknowledge that the sorted-name-length-pairs may not have utility, so we make it RECOMMENDED.
+
+3. Similarly, we envisioned the possibilty of a minimal implementation built using object storage that could fulfill all the other specifications. So while we think that the comparison function will be very helpful, particularly if it's implemented everywhere, for a minimal implementation that's sole purpose is to provide sequences, it might make sense to opt out of this. Therefore, we call it recommended.
+
+
 ## 2023-06-28 Details of endpoints
 
 ### Decisions
