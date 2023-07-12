@@ -2,11 +2,14 @@
 
 *This is a record of decisions made during specification development. Each entry describes a decision that has been approved by the team members. Collectively, this ADR describes an institutional memory for decisions and their rationales, including known limitations. The goal is to avoid repeated discussion of previous decisions, formally acknowledge limitations, preserve and articulate reasons behind the decisions, and share this information with the broader community.* 
 
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119.
+
 ## Contents: 
 
 [TOC]
 
-## 2022-02-XX - Determined list of mandatory arrays
+
+## 2023-07-12 - Determined list of mandatory attributes
 
 ### Decision
 
@@ -14,19 +17,375 @@ A sequence collection consists of a set of arrays. The only arrays that MUST be 
 
 ### Rationale
 
-Debate around what should be mandatory as centered on 3 specific arras: sequences, names, and lengths:
+Debate around what should be mandatory as centered on 3 specific attributes: sequences, names, and lengths:
 
-At first, it feels like sequences are a fundamental component of a sequence collections, and therefore, the *sequences* array should be mandatory, and names and lengths may be superfluous. For reference genomes, for example, it's clear that collections of sequences are the main purpose. However, analysis of reference genome data also includes many analyses for which the sequences themselves do not matter, and the critical component is simply the name and length of the sequence. An array of names and lengths can be thought of as a *coordinate system*, and we have realized that the sequence collection specification is *also* extremely useful for representing and uniquely identifying coordinate systems. From this perspective, we envision a coordinate system as a sequence collection in which the actual sequence content is irrelevant, but in which the lengths and names of the sequences are critical. Analysis of coordinate systems like this is very frequent. For example, any sort of annotation analysis looking at genomic regions will rely on the lengths of the sequences to enforce that coordinates refer to the same thing, but do not rely on the underlying sequences. This is why "chrom-sizes" files are used so frequently (*e.g.* across many UCSC tools).
+At first, it feels like sequences are a fundamental component of a sequence collections, and therefore, the *sequences* array should be mandatory, and names and lengths may be superfluous. For reference genomes, for example, it's clear that collections of sequences are the main function of sequence collections. However, analysis of reference genome data also includes many analyses for which the sequences themselves do not matter, and the critical component is simply the name and length of the sequence. An array of names and lengths can be thought of as a *coordinate system*, and we have realized that the sequence collection specification is *also* extremely useful for representing and uniquely identifying coordinate systems. From this perspective, we envision a coordinate system as a sequence collection in which the actual sequence content is irrelevant, but in which the lengths and names of the sequences are critical. Analysis of coordinate systems like this is very frequent. For example, any sort of annotation analysis looking at genomic regions will rely on the lengths of the sequences to enforce that coordinates refer to the same thing, but do not rely on the underlying sequences. This is why "chrom-sizes" files are used so frequently (*e.g.* across many UCSC tools).
 
-This leads us to the conclusion that *sequences* should be optional, and *names* and *lengths* should be the only mandatory component. *Lengths* makes sense because if you have a sequence, you can always compute it's length, but if you don't have a sequence (all you have is a coordinate system), you may only have a length.
+This leads us to the conclusion that *sequences* should be optional, and *names* and *lengths* should be the only mandatory component. *Lengths* makes sense because if you have a sequence, you can always compute it's length, but if you don't have a sequence (all you have is a coordinate system), you may only have a length. We debated extensively whether *names* should be mandatory, and in the end, decided that it's unlikely to pose much of a difficulty to make it mandatory, and provides a lot of convenience. If sequences lack names altogether, it is trivial to name them by index of the order of the sequences. We reason that downstream use cases are very likely to require at least *some* type of identifier to refer to each of the sequences, even if it's just the index of the sequence in the list. While it may be possible to imagine a use case where an identifier for each sequence is not required, it's not difficult at all to just assign indexes. By making it required, we ensure that implementations will always have the same possible way to reference the sequences in the collection.
+
+## 2023-06-28 Details of endpoints
+
+### Decisions
+
+1. The specification for how to retrieve different representations of a sequence collection should be specified to the `/collection` endpoint with `?level=<level>`, where `<level>` interpretations are:
+	- `level` <= 0 is undefined
+	- the return value is JSON for all 
+	- `?level=1` MUST be provided
+	- `?level=2` MUST be provided
+	- `?level` is OPTIONAL, and when not provided, `level=2` is assumed
+
+2. The `/comparison` endpoint is RECOMMENDED.
+
+### Rationale
+
+1. The different levels of representation are useful for different things and it makes sense to make it possible to retrieve them. We debated about the best way to do this, and also considered using names instead of numbers.
+
+2. The comparison endpoint is very useful, but we can imagine use cases where it can cause problems or may not be needed. First, it will preclude the ability of creating an S3-only implementation. Since it's possible and useful to create an implementation that only implements the `/collection` endpoint, it makes sense that `/comparison` should not be required. Second, some services may view themselves as solely providing content, and nothing more. We recommend these services still implement `/comparison`, but acknowledge that the `/collection` endpoint will still be useful even without it, so this again fits with a `RECCOMEND` status.
+
+
+
+## 2023-02-08 - Array names SHOULD be ASCII
+
+### Decision
+
+Custom array names SHOULD be ASCII characters. We expect most implementations will require this; nevertheless, implementers may choose to allow UTF-8 characters as an extension to the spec. Implementing UTF-8 is not required for an implementation. In this extension, array names MUST at least follow UTF-8.
+
+### Rationale
+
+The sequence collection is a group of named arrays. These array names include built-in, defined arrays, like names, lengths, and sequences, but users may also use custom array names. Our spec-defined array names are all lowercase ASCII characters, but this doesn't mean we must restrict custom array names in the same way.
+
+While non-ASCII array names would be compatible with our current specification, we identified 3 issues that could arise if someone uses non-ASCII: 1) Normalization. We would probably need to define in the specification some normalization scheme to make sure things a user expects to be identical will hash to the same digest. 2) Sort order. However, this problem will be solved by following a JSON canonicalization standard. 3) Use of array names in other places will be restricted. For example, it seems natural to want to create API endpoints or table names or in columns in a database that correspond to array names. If array names are non-ASCII, it may preclude this, increasing implementation complexity and may make some things impossible.
+
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/33
+
+
+## 2023-01-12 - How sequence collection are serialized prior to digestion
+
+The serialisation in this context is the conversion of the sequence collection object into a string that can be digested.
+
+### Decision
+
+The serialisation of a sequence collection will use the following steps
+
+ 1. Apply RFC-8785 on each array of level 2
+ 2. Digest the canonical representation of each array
+ 3. Create object representation of the seq-col using array names and digested arrays
+ 4. Apply RFC-8785 on the object representation
+ 5. Digest the final canonical representation
+
+
+#### 1. Apply RFC-8785 for converting from level 2 to level 1
+
+For example the length array at level 2:
+```json
+[248956422, 242193529, 198295559]
+```
+
+Will be serialised using RFC-8785 and digested as a binary string. Here the output of the python implementation: 
+
+```python
+b'[248956422,242193529,198295559]'
+```
+
+It would also support any UTF-8 character. For example this array of names
+```json
+["染色体-1","染色体-2","染色体-3"]
+```
+
+Would create the following serialisation:
+
+```python
+b'["\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x93-1","\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x93-2","\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x93-3"]'
+```
+
+#### 2. Digest of the canonical representation
+
+The canonical string representation is then digested. Assuming the use of GA4GH (sha512 trim to 24) digest, the following array of length
+
+```python
+b'[248956422,242193529,198295559]'
+```
+
+would be converted to 
+
+```json
+"5K4odB173rjao1Cnbk5BnvLt9V7aPAa2"
+```
+
+#### 3. Creation of an object composed of the array names and the digested arrays
+An object is created with the array name as properties and the digest as value.
+Example the following collection: 
+```json
+{
+    "sequences": "EiYgJtUfGyad7wf5atL5OG4Fkzohp2qe",
+    "lengths": "5K4odB173rjao1Cnbk5BnvLt9V7aPAa2",
+    "names": "g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp"
+}
+```
+
+#### 4. Use RFC-8785 on the object
+This will create a canonical representation of the object 
+
+```python
+b'{"lengths":"5K4odB173rjao1Cnbk5BnvLt9V7aPAa2","names":"g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp","sequences":"EiYgJtUfGyad7wf5atL5OG4Fkzohp2qe"}'
+```
+
+#### 5. Digest the final canonical representation
+Finally the canonical, representation is digested again to produce the identifier
+
+```json
+"S3LCyI788LE6vq89Tc_LojEcsMZRixzP"
+```
+
+### Rationale
+The decision to use the serialisation of array and object provided in RFC-8785 allows sequence collection to support any type of characters and rely on a documented standard that offer implementation in multiple languages.
+It also future-proofs the serialisation method if we ever allow complex object to be element of the array.
+ 
+### Linked issues
+
+ - [https://github.com/ga4gh/seqcol-spec/issues/1](https://github.com/ga4gh/seqcol-spec/issues/1)
+ - [https://github.com/ga4gh/seqcol-spec/issues/25](https://github.com/ga4gh/seqcol-spec/issues/25)
+ - [https://github.com/ga4gh/seqcol-spec/issues/33](https://github.com/ga4gh/seqcol-spec/issues/33)
+
+
+### Known limitations
+
+The JSON canonical serialisation defined in RFC-8785 has a limited set of reference implementation. It is possible that its implementation makes sequence collection implementation more difficult in languages where the RFC is not implemented. In this cases it is valuable to note that the current specification of Sequence Collection do not require that all the features of RFC-8785 be implemented. 
+
+
+## 2022-10-05 - Terminology decisions
+
+### Decision
+
+We refer to representations in "levels". The level number represents the number of "lookups" you'd have to do from the "top level" digest. So, we have:
+
+#### Level 0 (AKA "top level")
+
+Just a plain digest. This corresponds to **0 database lookups**. Example:
+```
+a6748aa0f6a1e165f871dbed5e54ba62
+```
+
+#### Level 1
+
+What you'd get when you look up the digest with **1 database lookup** and no recursion. Previously called "layer 0" or "reclimit 0" because there's no recursion. Also sometimes called the "array digests" because each entity represents an array.
+
+Example:
+```
+{
+  "lengths": "4925cdbd780a71e332d13145141863c1",
+  "names": "ce04be1226e56f48da55b6c130d45b94",
+  "sequences": "3b379221b4d6ea26da26cec571e5911c"
+}
+```
+
+#### Level 2
+
+What you'd get with **2 database lookups** (equivalently, 1 recursive call). This is the most common representation, more commonly used than either the "level 1" or the "level 3" representations.
+
+```
+{
+  "lengths": [
+    "1216",
+    "970",
+    "1788"
+  ],
+  "names": [
+    "A",
+    "B",
+    "C"
+  ],
+  "sequences": [
+    "76f9f3315fa4b831e93c36cd88196480",
+    "d5171e863a3d8f832f0559235987b1e5",
+    "b9b1baaa7abf206f6b70cf31654172db"
+  ]
+}
+```
+
+#### Level 3
+
+What you'd get with **3 database lookups** (equivalently, 2 recursive call). The only field that can be further populated is `sequences`, so the level 3 representation provides the complete data. This layer:
+- can potentially be very large
+- is the only level that requires outsourcing a query to a refget server
+- may reasonable be disabled on my seqcol server, since the point is not to retrieve actual sequences; 
+
+Example (sequences truncated for brevity):
+```
+{
+  "lengths": [
+    "1216",
+    "970",
+    "1788"
+  ],
+  "names": [
+    "A",
+    "B",
+    "C"
+  ],
+  "sequences": [
+    "CATAGAGCAGGTTTGAAACACTCTTTCTGTAGTATCTGCAAGCGGACGTTTCAAGCGCTTTCAGGCGT...",
+    "AAGTGGATATTTGGATAGCTTTGAGGATTTCGTTGGAAACGGGATTACATATAAAATCTAGAGAGAAGC...",
+    "GCTTGCAGATACTACAGAAAGAGTGTTTCAAACCTGCTCTATGAAAGGGAATGTTCAGTTCTGTGACTT..."
+  ]
+}
+```
+#### Summary
+
+We should be consistent by using these terms to refer to the above representation:
+-  "level 0 representation", "level 0 digest", top-level digest", or "primary digest";
+-  "level 1 representation" or "level 1 digests";
+-  "level 2 representation"; 
+-  "level 3 representation" of a sequence collection. 
+
+
+### Linked issues
+- https://github.com/ga4gh/seqcol-spec/issues/25
+
+
+## 2022-06-15 - Structure for the return value of the comparison API endpoint
+
+### Decision
+
+The compare function return value MUST be an object following the REQUIRED format specified below.
+
+**REQUIRED**: The endpoint MUST return, in JSON format, an object with these 3 keys: "digests", "arrays", "elements". 
+
+- *digests*: an object with 2 elements, with keys *a* and *b*, and values either the level 0 seqcol digests for the compared collections, or *undefined (null)*. The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return *undefined (null)* in this element for any corresponding sequence collection.
+- *arrays*: an object with 3 elements, with keys *a-only*, *b-only*, and *a-and-b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
+- *elements*: An object with 3 elements: *total*, *a-and-b*, and *a-and-b-same-order*. *total* is an object with *a* and *b* keys, values corresponding to the total number of elements in the arrays for the corresponding collection. *a-and-b* is an object with names corresponding to each array present in both collections (in *arrays.a-and-b*), with values as the number of elements present in both collections for the given array. *a-and-b-same-order* is also an object with names corresponding to arrays, and the values a boolean following the same-order specification below.
+
+Example: 
+
+```
+{
+  "digests": {
+    "a": "514c871928a74885ce981faa61ccbb1a",
+    "b": "c345e091cce0b1df78bfc124b03fba1c"
+  },
+  "arrays": {
+    "a-only": [],
+    "b-only": [],
+    "a-and-b": [
+      "lengths",
+      "names",
+      "sequences"
+    ]
+  },
+  "elements": {
+    "total": {
+      "a": 195,
+      "b": 25
+    },
+    "a-and-b": {
+      "lengths": 25,
+      "names": 25,
+      "sequences": 0
+    },
+    "a-and-b-same-order": {
+      "lengths": false,
+      "names": false,
+      "sequences": null
+    }
+  }
+}
+```
+
+#### Same-order specification
+
+The comparison return includes an *a-and-b-same-order* boolean value for each array that is present in both collections. The defined value of this attribute is:
+
+- *undefined (null)* if there are fewer than 2 overlapping elements
+- *undefined (null)* if there are unbalanced duplicates present (see definition below)
+- *true* if all matching elements are in the same order in the two arrays
+- *false* otherwise.
+
+An *unbalanced duplicate* is used in contrast with a *balanced duplicate*. Balanced means the duplicates are the same in both arrays. When the duplicates are balanced, order is still defined; but if duplicates are unbalanced, this means an array has duplicates not present in the other, and in that case, order is not defined.
+
+### Rationale
+
+The primary purpose of the compare function is to provide a high-level view of how two sequence collections match and differ. The primary use cases are to see if collections are identical or subsets, and to assess the degree of overlap in each attribute (such as sharing all sequence digests, sequence names, or lengths). If more details are needed, the user will need to look in more depth at the raw elements of the sequence collection. It's important to have a fast, easy-to-implement, and minimal payload function to provide answers to the common question about "how compatible are these two collections".
+
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/21
+- https://github.com/ga4gh/seqcol-spec/issues/7
+
+### Alternatives considered
+
+We considered a simpler arrangement that would only return true/false values as to whether the arrays matched but in the different order, or contained any matching elements vs no matching elements. While this would have been faster to compute than the counting approach we settled on, there was concern that it would not be enough information to interpret the comparison. We also considered more information-rich values that would enumerate overlapping or non-overlapping elements. We finally concluded that the most useful would be the middle ground proposed here, where you get counts but no enumerated elements. This provides sufficient information to make a pretty detailed comparison, and can still be computed relatively quickly and keeps the payload size small and predictable.
+
+### Known limitations
+
+Someone may want to return more information than this, such as enumerating the specific elements in each category. However, this use case would be problematic for large collections, like a transcriptome. We may in the future provide an update to the specification that defines how this information should be returned, but for now, we leave the specification at this minimum requirement.
+
+## 2022-06-15 We will define the elements of a sequence collections using a schema
+
+### Decision
+
+The elements of a sequence collection will be defined and described using JSON Schema. The exact contents of the JSON Schema will be determined later. Here is an example JSON Schema as an illustration of the concept (encoded in YAML for readability):
+
+```yaml
+
+description: "A collection of sequences, representing biological sequences including nucleotide or amino acid sequences. For example, a sequence collection may represent the set of chromosomes in a reference genome, the set of transcripts in a transcriptome, a collection of reference microbial sequences of a specific gene, or any other set of sequences."
+type: object
+properties:
+  lengths:
+    type: array
+    description: "Number of elements, such as nucleotides or amino acids, in each sequence."
+    items:
+      type: integer
+  masks:
+    type: array
+    description: "Digests of subsequence masks indicating subsequences to be excluded from an analysis, such as repeats"
+    items:
+      type: string
+  names:
+    type: array
+    description: "Human-readable identifiers of each sequence, commonly called chromosome names."
+    items:
+      type: string
+  priorities:
+    type: array
+    description: "Annotation of whether each sequence is a primary or secondary component in the collection."
+    items:
+      type: boolean
+  sequences:
+    type: array
+    description: "Digests of sequences computed using the GA4GH digest algorithm (sha512t24u)."
+    items:
+      type: string
+      description: "Actual sequence content"
+  topologies:
+    type: array
+    description: "Annotation of whether each sequence represents a linear or other topology."
+    items:
+      type: string
+      enum: ["circular", "linear"]
+      default: "linear"
+required:
+  - lengths
+digested:
+  - lengths
+  - names
+  - masks
+  - priorities
+  - sequences
+  - topologies
+```
+
+
+
+### Rationale
+
+We need a formal definition of a sequence collection. The schema provides a machine-usable definition that specifies the names and types of what we envision as a sequence collection. It also provides a convenient way to describe those elements in human-understandable ways through the `description` field. Thus, this schema solves a number of issues. Most importantly, it answers the question of *what are the elements of the sequence collection, and how are they defined?* For example, this schema answers the more specific question: *what are the allowable or expected algorithms for items included in the sequence array (or possibly other, custom digested arrays?)*. The schema establishes a standard expectation for elements that will go into general sequence collections. Implementations are free to add to this schema for their instances as needed.
 
 ### Linked issues
 
 - https://github.com/ga4gh/seqcol-spec/issues/8
-
-### Known limitations
-
-- What is rationale for why *names* should be mandatory?
+- https://github.com/ga4gh/seqcol-spec/issues/6
 
 ## 2021-12-01 - Endpoint names and structure
 
