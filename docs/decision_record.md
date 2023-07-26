@@ -16,11 +16,13 @@ In some situations, identifiers are prefixed. For example, these may be CURIEs, 
 
 ### Decision
 
-We determined that *internally*, we will not append prefixes to the strings we are going to digest. If a particular identifier defines some kind of a namespace as part of the identifier (*e.g.* a refget sequence identifier), then it's of course no problem, we take that identifier at face value. To summarize:
+We determined that *internally*, we will not append prefixes to the strings we are going to digest. However, if a particular identifier defines some kind of a prefix *as part of the identifier* (*e.g.* a refget sequence identifier), then it's of course no problem, we take that identifier at face value. To summarize:
 
 - for internal identifiers (those generated within seqcol), we digest only digests, not prefixes of any kind
 - for external identifiers (like refget identifiers), we accept them at face value, so we wouldn't remove a prefix if you declare it is was part of your sequence identifier
 - the seqcol specification should RECOMMEND using refget identifiers
+
+More specifically, for refget, there are two types of prefix: the namespace prefix (`ga4gh:`) and type type prefix (`SQ.`). Right now, the refget server requires you to have the type prefix to request a lookup; the refget protocol declares that this type prefix is *part of the identifier*. However, the `ga4gh:` prefix is more of a namespace prefix and is *not* required, and therefore not considered part of the identifier. Therefore, the seqcol `sequence` values would *include* the `SQ.` but not the `ga4gh:`.
 
 ### Rationale
 
