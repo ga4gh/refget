@@ -15,8 +15,8 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 1. The specification for how to retrieve different representations of a sequence collection should be specified to the `/collection` endpoint with `?level=<level>`, where `<level>` interpretations are:
 	- `level` <= 0 is undefined
 	- the return value is JSON for all 
-	- `?level=1` MUST be provided
-	- `?level=2` MUST be provided
+	- `?level=1` MUST be allowed, and must return the level 1 seqcol representation
+	- `?level=2` MUST be allowed, and must return the level 2 seqcol representation
 	- `?level` is OPTIONAL, and when not provided, `level=2` is assumed
 
 2. The `/comparison` endpoint is RECOMMENDED.
