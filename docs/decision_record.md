@@ -8,13 +8,23 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
-## 2023-07-12 Implementations SHOULD provide sorted_name_length_pairs and comparison endpoint
+## 2023-07-12 Implementations SHOULD provide sorted-name-length-pairs and comparison endpoint
 
 ### Decisions
 
 1. Name of the "names-lengths" attribute should be `sorted-name-length-pairs`.
 2. The `sorted-name-length-pairs` is RECOMMENDED.
 3. The `/comparison` endpoint is RECOMMENDED.
+4. The algorithm for computing the `sorted-name-length-pairs` attribute should be as follows:
+
+### Algorithm for coputing `sorted-name-length-pairs`
+
+1. Lump together each name-length pair from the primary collated `names` and `lengths` into an object, like `{"length":123,"name":"chr1"}`.
+2. Canonicalize JSON according to the seqcol spec (using RFC-8785).
+3. Digest each name-length pair string individually.
+4. Sort the digests lexographically.
+5. Add as an undigested, uncollated array to the sequence collection.
+
 
 ### Rationale and alternatives considered
 
