@@ -57,6 +57,7 @@ The seqcol algorithm is based on the refget algorithm for individual sequences, 
 
 1. *Encoding* - An algorithm for computing an identifier given a collection of sequences.
 2. *API* - A server RESTful API specification for retrieving and comparing sequence collections.
+3. *Ancillary attribute management* - An optional specification for organizing non-inherent metadata as part of a sequence collection.
 
 ### 1. Encoding: Computing sequence digests from sequence collections
 
@@ -68,7 +69,7 @@ The encoding function specifies an algorithm that takes as input a set of annota
 - **Step 4**. Apply [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) again to canonicalize the JSON of new seqcol object representation.
 - **Step 5**. Digest the final canonical representation again.
 
-These steps are described in more detail below:
+Example Python code for computing a seqcol digest can be found in *Footnote F3*. These steps are described in more detail below:
 
 #### Step 1: Organize the sequence collection data into *canonical seqcol object representation*.
 
@@ -129,8 +130,9 @@ This schema is the *seqcol schema*, and sequence collection objects in this stru
 
 This object would validate against the JSON-schema above. The object is a series of arrays with matching length (`3`), with the corresponding entries collated such that the first element of each array corresponds to the first element of each other array. For rationale for this structure over an array of annotated sequences, see *Footnote F1*. Implementations `MUST` provide at least the structure specified in this schema. Implementations `MAY` choose to extend this schema by adding additional attributes.
 
+##### Step 1a: Filter non-inherent attributes
 
-
+The `inherent` section in the seqcol schema is an extension of the basic JSON-schema format that adds specific functionality. Inherent attributes are those that contribute to the identifier; *non-inherent* attributes are not considered in computing the top-level digest. Attributes of a seqcol that are *not* listed as `inherent` `MUST NOT` contribute to the identifier; they are therefore excluded from the digest calculation. Therefore, if the canonical seqcol representation includes any non-inherent attributes, these must be removed before proceeding to step 2. In the simple example, there are no non-inherent attributes. For further details about the rationale and examples of non-inherent attributes, see *Footnote F2*.
 
 #### Step 2: Apply RFC-8785 to canonicalize the value associated with each attribute individually.
 
@@ -149,7 +151,6 @@ This will turn the values into canonicalized string representations of the list 
 ```
 ["2648ae1bacce4ec4b6cf337dcae37816","907112d17fcb73bcab1ed1c72b97ce68","1511375dc2dd1b633af8cf439ae90cec"]
 ```
-
 
 #### Step 3: Digest each canonicalized attribute value using the GA4GH digest algorithm.
 
@@ -196,12 +197,13 @@ Under these umbrella endpoints are a few more specific sub-endpoints, described 
 - *Description*: The service info endpoint provides information about the service
 - *Return value*: Must include the Seqcol schema that this server uses.
 
-
 #### 2.2 Collection
 
 - *Endpoint*: `GET /collection/:digest?level=:level` (`REQUIRED`)
 - *Description*: The retrieval function specifies an API endpoint that retrieves original sequences from a database keyed by the unique digest. Here `:digest` is the seqcol digest computed above.  The level corresponds to the "expansion level" of the returned sequence collection returned. The default is `?level=2`, which returns the canonical structure.
 - *Return value*: The sequence collection identified by the `:digest` variable. The structure of the data `MUST` be modulated by the `:level` query parameter.  Specifying `?level=2` returns the canonical structure, and `?level=1` returns the collection with digested attributes.
+
+Non-inherent attributes `MUST` be stored and returned by the collection endpoint alongside inherent attributes.
 
 #### 2.3 Comparison
 
@@ -268,6 +270,23 @@ This output can be used to make the following comparisons:
 - Name-relaxed identity. 
 - Length-only compatible. 
 
+
+### 3. Ancillary attribute management: recommended non-inherent attributes
+
+In *Section 1: Encoding*, we distinguished between *inherent* and *non-inherent* attributes. Here, we specify standardized, useful non-inherent attributes.
+
+#### 3.2 The `sorted_name_length_pairs` attribute (`RECOMMENDED`)
+
+The `sorted_name_length_pairs` attribute is a *non-inherent* attribute of a sequence collection with a formal definition, provided here. It is `RECOMMENDED` that all seqcol implementations add this attribute to all sequence collections. When digested, this attribute provides an identifier for an order-invariant coordinate system for a sequence collection. Because it is *non-inherent*, it does not affect the identity (digest) of the collection. It is created deterministically from the `names` and `lengths` attributes in the collection; it *does not* depend on the actual sequence content, so it is consistent across two collections with different sequence content if they have the same `names` and `lengths`, in the same order.
+
+Algorithm: 
+
+1. Lump together each name-length pair from the primary collated `names` and `lengths` into an object, like `{"length":123,"name":"chr1"}`.
+2. Canonicalize JSON according to the seqcol spec (using RFC-8785).
+3. Digest each name-length pair string individually.
+4. Sort the digests lexographically.
+5. Add as a non-inherent, non-collated attribute to the sequence collection object.
+
 ## Footnotes
 
 ### F1. Why use an array-oriented structure instead of a sequence-oriented structure?
@@ -280,9 +299,11 @@ In the canonical seqcol object structure, we first organize the sequence collect
 
    3. Utility of intermediate digests. The array-oriented approach provides useful intermediate digests for each attribute. This digest can be used to test for matching sets of sequences, or matching coordinate systems, using the individual component digests. With a sequence-oriented framework, this would require traversing down a layer deeper, to the individual elements, to establish identity of individual components. The alternative advantage we would have from a sequence-oriented structure would be identifiers for *annotated sequences*. We gain the advantages of these digests through the *names-lengths* attribute.
 
+### F2. Details of inherent and non-inherent attributes
 
+The specification in section 1, *Encoding*, described how to structure a sequence collection and then apply an algorithm to compute a digest for it. What if you have ancillary information that goes with a collection, but shouldn't contribute to the digest? We have found a lot of useful use cases for information that should go along with a seqcol, but should not contribute to the *identity* of that seqcol. This is a useful construct as it allows us to include information in a collection that does not affect the identifier that is computed for that collection. One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have a different identifier! Seqcol refers to these as *non-inherent attributes*, meaning they are not part of the core identity of the sequence collection. Non-inherent attributes are defined in the seqcol schema, but excluded from the `inherent` list. 
 
-
+### F3. Example Python code for computing a seqcol encoding
 
 ```python
 # Demo for encoding a sequence collection
@@ -322,6 +343,10 @@ seqcol_obj = {
     "1511375dc2dd1b633af8cf439ae90cec"
   ]
 }
+
+# Step 1a: We would here need to remove any non-inherent attributes,
+# so that only the inherent attributes contribute to the digest.
+# In this example, all attributes are inherent.
 
 # Step 2: Apply RFC-8785 to canonicalize the value 
 # associated with each attribute individually.
