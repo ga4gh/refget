@@ -8,6 +8,38 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+
+## 2023-07-12 Implementations SHOULD provide sorted_name_length_pairs and comparison endpoint
+
+### Decisions
+
+1. Name of the "names-lengths" attribute should be `sorted_name_length_pairs`.
+2. The `sorted_name_length_pairs` is RECOMMENDED.
+3. The `/comparison` endpoint is RECOMMENDED.
+4. The algorithm for computing the `sorted_name_length_pairs` attribute should be as follows:
+
+### Algorithm for coputing `sorted_name_length_pairs`
+
+1. Lump together each name-length pair from the primary collated `names` and `lengths` into an object, like `{"length":123,"name":"chr1"}`.
+2. Canonicalize JSON according to the seqcol spec (using RFC-8785).
+3. Digest each name-length pair string individually.
+4. Sort the digests lexographically.
+5. Add as an undigested, uncollated array to the sequence collection.
+
+
+### Rationale and alternatives considered
+
+1. We considered `names_lengths`, `sorted_names_lengths`, `name_length_pairs`. In the end we are trying to strike a balance between descriptivity and conciseness. We decided the idea of "pairs" is really critical, and so is "sorted", so this seemed to us to be a minimal set of words to capture the intention of the attribute, though it is a bit long. But in the end the name itself just has to be *something* standardized, and nothing seems perfect.
+
+2. We debated whether it should be required or optional to provide the `sorted_name_length_pairs` attribute. We think it provides a lot of really nice benefits, particularly if everyone implements it; however, we also acknowledge that there are some use cases for seqcols (like just being a provider of sequence collections) where every collection will have sequences, and comparing among coordinate systems is not really in scope. For this use case, we acknowledge that the sorted-name-length-pairs may not have utility, so we make it RECOMMENDED.
+
+3. Similarly, we envisioned the possibilty of a minimal implementation built using object storage that could fulfill all the other specifications. So while we think that the comparison function will be very helpful, particularly if it's implemented everywhere, for a minimal implementation that's sole purpose is to provide sequences, it might make sense to opt out of this. Therefore, we call it recommended.
+
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/40
+
+
 ## 2023-06-14 - Internal identifiers SHOULD NOT be prefixed
 
 ### Background
@@ -35,6 +67,7 @@ We see no need to add prefixes to the identifiers we use internally, which we ju
 ### Linked issues
 
 - https://github.com/ga4gh/seqcol-spec/issues/37
+
 ## 2023-06-28 Details of endpoints
 
 ### Decisions
