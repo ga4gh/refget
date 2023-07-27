@@ -18,15 +18,20 @@ This specification is in **DRAFT** form. This is **NOT YET AN APPROVED GA4GH spe
 
 ## Introduction
 
-Reference sequences are fundamental to genomic analysis. To make analysis of reference sequences reproducible and efficient, we require tools that can identify, store, retrieve, and compare reference sequences. One such tool is the recent GA4GH standard [refget](http://samtools.github.io/hts-specs/refget.html), which provides a way to 1. compute deterministic sequence identifiers from sequences themselves, and 2) retrieve individual sequences using these identifiers. Refget thus provides a way to identify and retrieve sequences; however, many applications require working with *collections* of sequences. The *Sequence Collections* (seqcol) protocol is a pending GA4GH standard that works with collections of sequences. The seqcol protocol can be used to create unique identifiers derived from multiple sequences. Seqcol uses refget identifiers for individual sequences, adding new functionality to handle the complexity of collections, as well as attributes of sequences, such as names, lengths, or topologies. 
+Reference sequences are fundamental to genomic analysis. To make their analysis reproducible and efficient, we require tools that can identify, store, retrieve, and compare reference sequences. The primary goal of the *Sequence Collections* (seqcol) project is **to standardize identifiers for collections of sequences**. Seqcol can be used to identify genomes, transcriptomes, or proteomes -- anything that can be represented as a collection of sequences. In brief, the project specifies 3 procedures:
 
-The goal of the Seqcol project is **to standardize identifiers for collections of sequences derived from the collections themselves**. It can be used to identify genomes, transcriptomes, or proteomes -- anything that can be represented as a collection of sequences. Seqcol uses a hash algorithm to generate a digest of the underlying collection of sequences. These unique identifiers are defined by an algorithm, rather than an accession authority, and are thus de-centralized and therefore usable for many purposes, including private or new sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
+1. **An algorithm for encoding sequence identifiers from collections.**  The GA4GH standard [refget](http://samtools.github.io/hts-specs/refget.html) specifies a way to compute deterministic sequence identifiers from individual sequences themselves. Seqcol uses refget identifiers and adds functionality to wrap them into collections. Secol also handles sequence attributes, such as their names, lengths, or topologies. Seqcol identifiers are defined by a hash algorithm, rather than an accession authority, and are thus de-centralized and usable for many purposes, including private or new sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
+2. **A lookup API to retrieve a collection given an identifier.** Seqcol also specifies a RESTful API to enable retrieving the sequence collections given an identifier. This allows one to retrieve the exact reference genome used for an analysis. 
+3. **A comparison API to assess compatibility of two collections.** Finally, seqcol also provides a standardized method of comparing the contents of two sequence collections. This comparison function can be used to determine if analysis results that used different references genomes may still be compatible. 
 
-Seqcol also specifies a RESTful API to enable retrieving the sequence collections given an identifier, which can be used for reproducibility and efficiency, as results can use the identifier to specify the exact reference genome used for an analysis. Reproducing the analysis could look up the original genome used. Furthermore, seqcol also provides a standardized method of comparing the contents of two sequence collections. This comparison function can be used to determine if analysis results that used different references genomes may still be compatible. In summary, the project specifies 3 procedures:
 
-1. an algorithm for encoding sequence identifiers from collections
-2. a lookup API to retrieve a collection given an identifier
-3. a comparison API to assess compatibility of two collections
+## Use cases
+
+1. Given a collection identifier, retrieve the underlying sequence identifiers.
+2. Given a collection identifier, retrieve the underlying sequences.
+3. Given two collection identifiers, determine if downstream results are compatible.
+4. Given a collection identifier, retrieve metadata about the collection. This may include human-readable aliases, author of the collection, links to other collections, or other metadata.
+5. Given a sequence collection, compute its identifier.
 
 
 
@@ -48,21 +53,24 @@ Seqcol also specifies a RESTful API to enable retrieving the sequence collection
 
 ## Seqcol protocol functionality
 
-The seqcol protocol defines two functions:
+The seqcol algorithm is based on the refget algorithm for individual sequences, and should use refget servers to store the actual sequence data. Seqcol servers therefore provide a lightweight organizational layer on top of refget servers.  o be fully compliant with the seqcol protocol an implementation must provide all `REQUIRED` capabilities as detailed below.  The seqcol protocol defines two functions:
 
-1. *Encoding* - An algorithm for computing an identifier given a collection of sequences;
+1. *Encoding* - An algorithm for computing an identifier given a collection of sequences.
 2. *API* - A server RESTful API specification for retrieving and comparing sequence collections.
-
-To be fully compliant with the seqcol protocol an implementation must provide all `REQUIRED` capabilities as detailed below. 
-
-The seqcol algorithm is based on the refget algorithm for individual sequences, and should use refget servers to store the actual sequence data. Seqcol servers therefore provide a lightweight organizational layer on top of refget servers.
 
 ### 1. Encoding: Computing sequence digests from sequence collections
 
-The encoding function specifies an algorithm that takes as input a set of annotated sequences and produces a unique digest. This function is generally expected to be provided by local software that operates on a local set of sequences.
+The encoding function specifies an algorithm that takes as input a set of annotated sequences and produces a unique digest. This function is generally expected to be provided by local software that operates on a local set of sequences. These steps of the encoding process are:
 
+- **Step 1**. Organize the sequence collection data into *canonical seqcol object representation*.
+- **Step 2**. Apply [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) (JCS) to canonicalize the value associated with each attribute individually.
+- **Step 3**. Digest each canonicalized attribute value using the GA4GH digest algorithm.
+- **Step 4**. Apply [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) again to canonicalize the JSON of new seqcol object representation.
+- **Step 5**. Digest the final canonical representation again.
 
-#### Standardized sequence collection object representation
+These steps are described in more detail below:
+
+#### Step 1: Organize the sequence collection data into *canonical seqcol object representation*.
 
 We first create an object representation of the attributes of the sequence collection. The structure of this object is critical, and is strictly controlled by the seqcol protocol. It must be defined in a JSON-schema. This is the general, minimal schema:
 
@@ -73,16 +81,19 @@ type: object
 properties:
   lengths:
     type: array
+    collated: true
     description: "Number of elements, such as nucleotides or amino acids, in each sequence."
     items:
       type: integer
   names:
     type: array
+    collated: true
     description: "Human-readable identifiers of each sequence (chromosome names)."
     items:
       type: string
   sequences:
     type: array
+    collated: true
     items:
       type: string
       description: "Digests of sequences computed using the GA4GH digest algorithm (sha512t24u)."
@@ -94,7 +105,7 @@ inherent:
   - sequences
 ```
 
-We refer to this as the *canonical seqcol object representation*. An example of a sequence collection organized into the seqcol object representation would be this:
+This schema is the *seqcol schema*, and sequence collection objects in this structure are said to be the *canonical seqcol object representation*. Here's an example of a sequence collection organized into the canonical seqcol object representation:
 
 ```json
 {
@@ -116,72 +127,94 @@ We refer to this as the *canonical seqcol object representation*. An example of 
 }
 ```
 
-The object is a series of arrays with matching length (`3`), with the corresponding entries collated such that the first element of each array corresponds to the first element of each other array. For rationale for this structure over an array of annotated sequences, see *Footnote F1*.
-
-`REQUIRED`: Implementations `MUST` at least provide the structure specified in this schema. Implementations `MAY` choose to extend this schema by adding additional attributes.
+This object would validate against the JSON-schema above. The object is a series of arrays with matching length (`3`), with the corresponding entries collated such that the first element of each array corresponds to the first element of each other array. For rationale for this structure over an array of annotated sequences, see *Footnote F1*. Implementations `MUST` provide at least the structure specified in this schema. Implementations `MAY` choose to extend this schema by adding additional attributes.
 
 
-#### Seqcol algorithm:
 
-Once the content of the sequence collection has been organized in the *seqcol object representation*, we can then run the digest algorithm to compute the unique identifier for this sequence collection
 
-1. **Step 1**. Put all attributes of the sequence collection (*e.g.* names, lengths, sequence digests) in seqcol object representation form, as defined above.
-2. **Step 2**. Apply [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) (JCS) to canonicalize the value associated with each attribute individually.
-3. **Step 3**. Digest the canonical representation of each attribute's value using the seqcol digest algorithm (defined below). This should convert the value of each attribute in the seqcol into a digest string.
-4. **Step 4**. Apply [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) again to canonicalize the JSON of new seqcol object representation.
-5. **Step 5**. Digest the final canonical representation again. This is the *seqcol digest*, the final unique identifier for this sequence collection.
+#### Step 2: Apply RFC-8785 to canonicalize the value associated with each attribute individually.
 
-#### Digest algorithm
+The [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) (JCS) standardizes whitespace, character encodings, and other details that would cause inconsequential variations to yield different digests. For most use cases, the following Python fuction suffices:
 
-The digest algorithm is `TRUNC-512`. Details to follow.
+```python
+def canonical_str(item: dict) -> str:
+    """Convert a dict into a canonical string representation"""
+    return json.dumps(
+        item, separators=(",", ":"), ensure_ascii=False, allow_nan=False, sort_keys=True
+    )
+```
 
+This will turn the values into canonicalized string representations of the list objects, so lengths becomes the string `[248956422,133797422,135086622]`, names becomes the string `["chr1","chr2","chr3"]`, and sequences becomes the string 
+
+```
+["2648ae1bacce4ec4b6cf337dcae37816","907112d17fcb73bcab1ed1c72b97ce68","1511375dc2dd1b633af8cf439ae90cec"]
+```
+
+
+#### Step 3: Digest each canonicalized attribute value using the GA4GH digest algorithm.
+
+The GA4GH digest algorithm is `TRUNC-512`. This converts the value of each attribute in the seqcol into a digest string. You will end up with a structure that looks like this:
+
+```json
+{
+  "lengths": "20e95aade8e72d399dbf7f82a9e84ba5cc4047dc8d791d62",
+  "names": "834e2529dc6262d1b774e19e502e4074a1227f0eb91b45a9",
+  "sequences": "78f45f5aa3b36a2a8fe1eec415258a036b3753f69acf05df"
+}
+```
+
+#### Step 4: Apply RFC-8785 again to canonicalize the JSON of new seqcol object representation.
+
+Here, we repeat step 2, except instead of applying to each value separately, we apply to the entire object. This will result in a canonical string representation of the object, which is this string:
+
+```
+{"lengths":"20e95aade8e72d399dbf7f82a9e84ba5cc4047dc8d791d62","names":"834e2529dc6262d1b774e19e502e4074a1227f0eb91b45a9","sequences":"78f45f5aa3b36a2a8fe1eec415258a036b3753f69acf05df"}
+```
+
+#### Step 5: Digest the final canonical representation again.
+
+Again using the same approach as in step 3, we now apply the GA4GH digest algorithm to this string. The result is the final unique identifier for this sequence collection:
+
+```
+64ff00b85402a4dc821752e1e8d56d3ecc4e29b55a930748
+```
 
 ---
 
-### 2. API
+### 2. API: A server RESTful API specification for retrieving and comparing sequence collections.
 
-The API has 3 top-level endpoints, for 3 functions: 1) `/service-info`, for describing information about the service; 2) `/collection`, for retrieving sequence collections; and 3) `/comparison` for comparing two sequence collections. Under these umbrella endpoints are a few more specific sub-endpoints, described in detail below:
+The API has 3 top-level endpoints, for 3 functions:
 
-#### `GET /service-info`
+1. `/service-info`, for describing information about the service;
+2. `/collection`, for retrieving sequence collections; and
+3. `/comparison`, for comparing two sequence collections.
 
-The service info endpoint provides information about the service
+Under these umbrella endpoints are a few more specific sub-endpoints, described in detail below:
 
-##### Return value
-
-Must include
-
-####  `GET /collection/:digest?level=:level` 
-
-`REQUIRED`
-
-The retrieval function specifies an API endpoint that retrieves original sequences from a database keyed by the unique digest. Here `:digest` is the seqcol digest computed above. This returns the sequence collection identified by the `:digest` variable. The form of the return `MUST` match the seqcol object representation form defined above. The `:level` query parameter provides a way for the user to specify the structure of the return value. The level corresponds to the "expansion level" of the returned sequence collection returned. The default is `?level=2`, which returns the canonical structure. 
-
-- `?level=1` 
+#### 2.1 Service info 
+- *Endpoint*: `GET /service-info` (`REQUIRED`)
+- *Description*: The service info endpoint provides information about the service
+- *Return value*: Must include the Seqcol schema that this server uses.
 
 
-#### `GET /comparison/{digest1}/{digest2}` 
-`REQUIRED`
+#### 2.2 Collection
 
-The comparison function specifies an API endpoint that allows a user to compare two sequence collections. The output is an assessment of compatibility between those sequence collections. 
+- *Endpoint*: `GET /collection/:digest?level=:level` (`REQUIRED`)
+- *Description*: The retrieval function specifies an API endpoint that retrieves original sequences from a database keyed by the unique digest. Here `:digest` is the seqcol digest computed above.  The level corresponds to the "expansion level" of the returned sequence collection returned. The default is `?level=2`, which returns the canonical structure.
+- *Return value*: The sequence collection identified by the `:digest` variable. The structure of the data `MUST` be modulated by the `:level` query parameter.  Specifying `?level=2` returns the canonical structure, and `?level=1` returns the collection with digested attributes.
 
- 
-#### `POST /comparison/{digest1}` 
+#### 2.3 Comparison
 
-`REQUIRED`
+- *Endpoint variant 1*: Two-digest comparison`GET /comparison/{digest1}/{digest2}` (`REQUIRED`)  
+- *Endpoint variant 2*: POST comparison with one digest  `POST /comparison/{digest1}` (`REQUIRED`)  
+- *Description*: The comparison function specifies an API endpoint that allows a user to compare two sequence collections. The `POST` version Ccompares one database collection to a local user-provided collection.  
+- *Return value*: The output is an assessment of compatibility between those sequence collections. Both variants of the `/comparison` endpoint must `MUST` return an object in JSON format with these 3 keys: "digests", "arrays", and "elements", as described below:
+    - `digests`: an object with 2 elements, with keys *a* and *b*, and values either the level 0 seqcol digests for the compared collections, or *undefined (null)*. The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return *undefined (null)* in this element for any corresponding sequence collection.
+    - `arrays`: an object with 3 elements, with keys *a-only*, *b-only*, and *a-and-b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
+    - `elements`: An object with 3 elements: *total*, *a-and-b*, and *a-and-b-same-order*. *total* is an object with *a* and *b* keys, values corresponding to the total number of elements in the arrays for the corresponding collection. *a-and-b* is an object with names corresponding to each array present in both collections (in *arrays.a-and-b*), with values as the number of elements present in both collections for the given array. *a-and-b-same-order* is also an object with names corresponding to arrays, and the values a boolean following the same-order specification below.
 
-Compares one database collection to a local user-provided collection.
-
-Return value:
-
-
-The `/comparison` endpoint must `MUST` return an object in JSON format with these 3 keys: "digests", "arrays", and "elements", as described below:
-
-- `digests`: an object with 2 elements, with keys *a* and *b*, and values either the level 0 seqcol digests for the compared collections, or *undefined (null)*. The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return *undefined (null)* in this element for any corresponding sequence collection.
-- `arrays`: an object with 3 elements, with keys *a-only*, *b-only*, and *a-and-b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
-- `elements`: An object with 3 elements: *total*, *a-and-b*, and *a-and-b-same-order*. *total* is an object with *a* and *b* keys, values corresponding to the total number of elements in the arrays for the corresponding collection. *a-and-b* is an object with names corresponding to each array present in both collections (in *arrays.a-and-b*), with values as the number of elements present in both collections for the given array. *a-and-b-same-order* is also an object with names corresponding to arrays, and the values a boolean following the same-order specification below.
 
 Example: 
-
 ```
 {
   "digests": {
@@ -241,9 +274,80 @@ This output can be used to make the following comparisons:
 
 In the canonical seqcol object structure, we first organize the sequence collection into what we called an "array-oriented" data structure, which is a list of collated arrays (names, lengths, sequences, *etc.*). An alternative we considered was a "sequence-oriented" structure, which would group each sequence with some attributes, like `{name, length, sequence}`, and structure the collection as an array of such units. While this is intuitive, as it captures each sequence object with some accompanying attributes as independent entities, there are several reasons we settled on the array-oriented structure instead: 
 
-  1) Flexibility and backwards compatibility of sequence attributes. What happens for an implementation that adds a new attribute? For example, if an implementation adds a `topology` attribute to the sequences, in the sequence-oriented structure, this would alter the sequence object and thereby change its digest. In the array-based structure, since we digest the arrays individually, the array digest is not changed. Thus, the array-oriented structure emphasizes flexibility of attributes, where the sequence-oriented structure would emphasize flexibility of sequences. In other words, the array-based structure makes it straightforward to mix-and-match *attributes* of the collection. Because each attribute is independent, and not integrated into individual sequence objects, it is simpler to select and build subsets and permutations of attributes. We reasoned that flexibility of attributes was desirable.
+  1. Flexibility and backwards compatibility of sequence attributes. What happens for an implementation that adds a new attribute? For example, if an implementation adds a `topology` attribute to the sequences, in the sequence-oriented structure, this would alter the sequence object and thereby change its digest. In the array-based structure, since we digest the arrays individually, the array digest is not changed. Thus, the array-oriented structure emphasizes flexibility of attributes, where the sequence-oriented structure would emphasize flexibility of sequences. In other words, the array-based structure makes it straightforward to mix-and-match *attributes* of the collection. Because each attribute is independent, and not integrated into individual sequence objects, it is simpler to select and build subsets and permutations of attributes. We reasoned that flexibility of attributes was desirable.
 
-   2) Conciseness. Sequence collections may be used for tens of thousands or even millions of sequences. For example, a transcriptome may contain a million transcripts. The array-oriented data structure is a more concise representation for digesting collections with many elements because the attribute names are specified once *per collection* instead of once *per element*. Furthermore, the level 1 representation of the sequence collection is more concise for large collections, since we only need one digest *per attribute*, rather than one digest *per sequence*. 
+   2. Conciseness. Sequence collections may be used for tens of thousands or even millions of sequences. For example, a transcriptome may contain a million transcripts. The array-oriented data structure is a more concise representation for digesting collections with many elements because the attribute names are specified once *per collection* instead of once *per element*. Furthermore, the level 1 representation of the sequence collection is more concise for large collections, since we only need one digest *per attribute*, rather than one digest *per sequence*. 
 
-   3) Utility of intermediate digests. The array-oriented approach provides useful intermediate digests for each attribute. This digest can be used to test for matching sets of sequences, or matching coordinate systems, using the individual component digests. With a sequence-oriented framework, this would require traversing down a layer deeper, to the individual elements, to establish identity of individual components. The alternative advantage we would have from a sequence-oriented structure would be identifiers for *annotated sequences*. We gain the advantages of these digests through the *names-lengths* attribute.
+   3. Utility of intermediate digests. The array-oriented approach provides useful intermediate digests for each attribute. This digest can be used to test for matching sets of sequences, or matching coordinate systems, using the individual component digests. With a sequence-oriented framework, this would require traversing down a layer deeper, to the individual elements, to establish identity of individual components. The alternative advantage we would have from a sequence-oriented structure would be identifiers for *annotated sequences*. We gain the advantages of these digests through the *names-lengths* attribute.
 
+
+
+
+
+```python
+# Demo for encoding a sequence collection
+
+import binascii
+import hashlib
+import json
+
+def canonical_str(item: dict) -> str:
+    """Convert a dict into a canonical string representation"""
+    return json.dumps(
+        item, separators=(",", ":"), ensure_ascii=False, allow_nan=False, sort_keys=True
+    )
+
+def trunc512_digest(seq, offset=24):
+    """ GA4GH digest function """
+    digest = hashlib.sha512(seq.encode()).digest()
+    hex_digest = binascii.hexlify(digest[:offset])
+    return hex_digest.decode()
+
+# 1. Get data as canonical seqcol object representation
+
+seqcol_obj = {
+  "lengths": [
+    248956422,
+    133797422,
+    135086622
+  ],
+  "names": [
+    "chr1",
+    "chr2",
+    "chr3"
+  ],
+  "sequences": [
+    "2648ae1bacce4ec4b6cf337dcae37816",
+    "907112d17fcb73bcab1ed1c72b97ce68",
+    "1511375dc2dd1b633af8cf439ae90cec"
+  ]
+}
+
+# Step 2: Apply RFC-8785 to canonicalize the value 
+# associated with each attribute individually.
+
+seqcol_obj2 = {}
+for attribute in seqcol_obj:
+    seqcol_obj2[attribute] = canonical_str(seqcol_obj[attribute])
+seqcol_obj2  # visualize the result
+
+# Step 3: Digest each canonicalized attribute value
+# using the GA4GH digest algorithm.
+
+seqcol_obj3 = {}
+for attribute in seqcol_obj2:
+    seqcol_obj3[attribute] = trunc512_digest(seqcol_obj2[attribute])
+print(json.dumps(seqcol_obj3, indent=2))  # visualize the result
+
+# Step 4: Apply RFC-8785 again to canonicalize the JSON 
+# of new seqcol object representation.
+
+seqcol_obj4 = canonical_str(seqcol_obj3)
+seqcol_obj4  # visualize the result
+
+# Step 5: Digest the final canonical representation again.
+
+seqcol_digest = trunc512_digest(seqcol_obj4)
+
+
+```
