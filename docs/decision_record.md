@@ -9,6 +9,109 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 [TOC]
 
 
+## 2023-07-26 There will be no metadata endpoint
+
+### Decision
+
+We have no need for a `/metadata` endpoint
+
+### Rationale
+
+At one point (issue #3), we debated whether there should be a `/metadata` endpoint or something like that as a way to retrieve information about a sequence that might not be part of the digested sequence. However, after we distinguised between `inherent` and `non-inherent` attributes, we have realized that this satisifes the earlier requirement for a `/metadata` endpoint; in fact, the metadata can be returned to the user through the normal endpoint, and just flagged as `non-inherent` in the schema to indicate that it's not digested, and therefore not part of the identity of the object
+
+We distinguished between two types of metadata:
+
+- server-scoped metadata, like the schema we described above, should be served by `/service-info`
+- collection-scoped or sequence-scoped metadata don't fit under `/service-info`. For these, they will be served by the primary `/collection` endpoint, rather than by a separate `/metadata` endpoint.
+
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/3
+- https://github.com/ga4gh/seqcol-spec/issues/39
+- https://github.com/ga4gh/seqcol-spec/issues/40
+
+
+## 2023-07-12 Implementations SHOULD provide sorted_name_length_pairs and comparison endpoint
+
+### Decisions
+
+1. Name of the "names-lengths" attribute should be `sorted_name_length_pairs`.
+2. The `sorted_name_length_pairs` is RECOMMENDED.
+3. The `/comparison` endpoint is RECOMMENDED.
+4. The algorithm for computing the `sorted_name_length_pairs` attribute should be as follows:
+
+### Algorithm for coputing `sorted_name_length_pairs`
+
+1. Lump together each name-length pair from the primary collated `names` and `lengths` into an object, like `{"length":123,"name":"chr1"}`.
+2. Canonicalize JSON according to the seqcol spec (using RFC-8785).
+3. Digest each name-length pair string individually.
+4. Sort the digests lexographically.
+5. Add as an undigested, uncollated array to the sequence collection.
+
+
+### Rationale and alternatives considered
+
+1. We considered `names_lengths`, `sorted_names_lengths`, `name_length_pairs`. In the end we are trying to strike a balance between descriptivity and conciseness. We decided the idea of "pairs" is really critical, and so is "sorted", so this seemed to us to be a minimal set of words to capture the intention of the attribute, though it is a bit long. But in the end the name itself just has to be *something* standardized, and nothing seems perfect.
+
+2. We debated whether it should be required or optional to provide the `sorted_name_length_pairs` attribute. We think it provides a lot of really nice benefits, particularly if everyone implements it; however, we also acknowledge that there are some use cases for seqcols (like just being a provider of sequence collections) where every collection will have sequences, and comparing among coordinate systems is not really in scope. For this use case, we acknowledge that the sorted-name-length-pairs may not have utility, so we make it RECOMMENDED.
+
+3. Similarly, we envisioned the possibilty of a minimal implementation built using object storage that could fulfill all the other specifications. So while we think that the comparison function will be very helpful, particularly if it's implemented everywhere, for a minimal implementation that's sole purpose is to provide sequences, it might make sense to opt out of this. Therefore, we call it recommended.
+
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/40
+
+
+## 2023-06-14 - Internal identifiers SHOULD NOT be prefixed
+
+### Background
+
+In some situations, identifiers are prefixed. For example, these may be CURIEs, which specify namespaces or provide other information about what the identifier represents. This raises questions about when and where we should expect or use prefixes. This has to be determined because including prefixes in the content that gets digested changes it, so we have to be consistent.
+
+### Decision
+
+We determined that *internally*, we will not append prefixes to the strings we are going to digest. However, if a particular identifier defines some kind of a prefix *as part of the identifier* (*e.g.* a refget sequence identifier), then it's of course no problem, we take that identifier at face value. To summarize:
+
+- for internal identifiers (those generated within seqcol), we digest only digests, not prefixes of any kind
+- for external identifiers (like refget identifiers), we accept them at face value, so we wouldn't remove a prefix if you declare it is was part of your sequence identifier
+- the seqcol specification should RECOMMEND using refget identifiers
+
+More specifically, for refget, there are two types of prefix: the namespace prefix (`ga4gh:`) and type type prefix (`SQ.`). Right now, the refget server requires you to have the type prefix to request a lookup; the refget protocol declares that this type prefix is *part of the identifier*. However, the `ga4gh:` prefix is more of a namespace prefix and is *not* required, and therefore not considered part of the identifier. Therefore, the seqcol `sequence` values would *include* the `SQ.` but not the `ga4gh:`.
+
+### Rationale
+
+According to the definition of CURIEs:
+
+    A host language MAY declare a default prefix value, or MAY provide a mechanism for defining a defining a default prefix value. In such a host language, when the prefix is omitted from a CURIE, the default prefix value MUST be used.
+
+We see no need to add prefixes to the identifiers we use internally, which we just assume belong to our namespace. Adding prefixes will complicate things and does not add benefits. Prefixes may be added to our identifiers by outside entities as needed to define for them the scope of our local digests.
+
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/37
+
+
+## 2023-06-28 Details of endpoints
+
+### Decisions
+
+1. The specification for how to retrieve different representations of a sequence collection should be specified to the `/collection` endpoint with `?level=<level>`, where `<level>` interpretations are:
+	- `level` <= 0 is undefined
+	- the return value is JSON for all 
+	- `?level=1` MUST be allowed, and must return the level 1 seqcol representation
+	- `?level=2` MUST be allowed, and must return the level 2 seqcol representation
+	- `?level` is OPTIONAL, and when not provided, `level=2` is assumed
+
+2. The `/comparison` endpoint is RECOMMENDED.
+
+### Rationale
+
+1. The different levels of representation are useful for different things and it makes sense to make it possible to retrieve them. We debated about the best way to do this, and also considered using names instead of numbers.
+
+2. The comparison endpoint is very useful, but we can imagine use cases where it can cause problems or may not be needed. First, it will preclude the ability of creating an S3-only implementation. Since it's possible and useful to create an implementation that only implements the `/collection` endpoint, it makes sense that `/comparison` should not be required. Second, some services may view themselves as solely providing content, and nothing more. We recommend these services still implement `/comparison`, but acknowledge that the `/collection` endpoint will still be useful even without it, so this again fits with a `RECCOMEND` status.
+
+
+
 ## 2023-02-08 - Array names SHOULD be ASCII
 
 ### Decision
