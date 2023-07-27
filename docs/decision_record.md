@@ -9,6 +9,28 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 [TOC]
 
 
+## 2023-07-26 There will be no metadata endpoint
+
+### Decision
+
+We have no need for a `/metadata` endpoint
+
+### Rationale
+
+At one point (issue #3), we debated whether there should be a `/metadata` endpoint or something like that as a way to retrieve information about a sequence that might not be part of the digested sequence. However, after we distinguised between `inherent` and `non-inherent` attributes, we have realized that this satisifes the earlier requirement for a `/metadata` endpoint; in fact, the metadata can be returned to the user through the normal endpoint, and just flagged as `non-inherent` in the schema to indicate that it's not digested, and therefore not part of the identity of the object
+
+We distinguished between two types of metadata:
+
+- server-scoped metadata, like the schema we described above, should be served by `/service-info`
+- collection-scoped or sequence-scoped metadata don't fit under `/service-info`. For these, they will be served by the primary `/collection` endpoint, rather than by a separate `/metadata` endpoint.
+
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/3
+- https://github.com/ga4gh/seqcol-spec/issues/39
+- https://github.com/ga4gh/seqcol-spec/issues/40
+
+
 ## 2023-07-12 Implementations SHOULD provide sorted_name_length_pairs and comparison endpoint
 
 ### Decisions
@@ -67,6 +89,7 @@ We see no need to add prefixes to the identifiers we use internally, which we ju
 ### Linked issues
 
 - https://github.com/ga4gh/seqcol-spec/issues/37
+
 
 ## 2023-06-28 Details of endpoints
 
