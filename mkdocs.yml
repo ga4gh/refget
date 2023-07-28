@@ -1,5 +1,5 @@
 site_name: Seqcol Protocol Specification
-site_logo: img/collection.svg
+site_logo: img/seqcol_logo.svg
 site_url: http://seqcol.databio.org/
 repo_url: http://github.com/ga4gh/seqcol-spec
 nav:
