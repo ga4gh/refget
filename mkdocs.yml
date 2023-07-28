@@ -6,8 +6,9 @@ nav:
   - Getting Started: 
     - Seqcol specification: specification.md
   - Detailed how-to guides:
-    - Compute a digest given a FASTA file: digest_from_fasta.md
-    - Retrieve a fasta file given a digest: fasta_from_digest.md
+    - Compute a digest given a SeqCol: digest_from_collection.md
+    - Retrieve a SeqCol given a digest: sequences_from_digest.md
+    - Compare two sequence collections: compare_collections.md
   - Implementations:
     - Python: implementation_python.md
     - API: implementation_api.md
