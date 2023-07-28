@@ -11,15 +11,23 @@
 
 ### Decision
 
-The GA4GH digest will be used as our default sequence checksum derived identifier instead of an MD5 generated one.
+`sha512t24u` digests are preferred over `md5`.
 
 ### Rationale 
 
-The GA4GH digest was created as part of the [Variation Representation Specification standard](https://vrs.ga4gh.org/en/stable/impl-guide/computed_identifiers.html). This document included a way of creating identifiers to be used with sequences e.g. ACGT results in the identifier `ga4gh:SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2`. The scheme uses the [`sha512t24u` function](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883) to create a base64 URL-safe representation of a sha512 digest. Adopting this standard ensures sequence collections remains inline with newer standards within the GA4GH ecosystem.
+`sha512t24u` was created as part of the [Variation Representation Specification standard](https://vrs.ga4gh.org/en/stable/impl-guide/computed_identifiers.html) and used within VRS to calculate GA4GH identifiers for high-level domain objects in combination with a type prefix map. The `sha512t24u` function ([Hart _et al_. 2020](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883)) is described as:
+
+- performing a SHA-512 digest on a binary blob of data
+- truncate the resulting digest to 24 bytes
+- encodes the 24 bytes using `base64url` ([RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-5)) resulting in a 32 character string
+
+Under this scheme the string `ACGT` will result in the `sha512t24u` digest `aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2`. This digest can be converted into a valid refget identifier by prefixing `SQ.`. 
+
+`sha512t24u` was envisaged as a fast digest mechanism with a space-efficient representation that can be used for any data with low collision probability. Collisions have been (documented in `md5`)[https://en.wikipedia.org/wiki/MD5#Collision_vulnerabilities].
 
 ### Limitations
 
-A GA4GH digest of sequences is not the default identifier used by standards such as CRAM, which uses MD5. We expect sequence collection providers to offer additional checksum arrays to provide compatability with these other formats and to declare their sequence identifier support via service-info.
+`MD5` is easier to calculate and familiar as many systems ship with a command line `md5` binary. `sha512t24u` needs to be typed when used outside of an implementation to avoid issues of collision.
 
 ### Linked issues
 
