@@ -7,11 +7,11 @@
 [TOC]
 
 
-## 2023-01-25 - Sequence digest recommendation
+## 2023-01-25 - Digest algorithm
 
 ### Decision
 
-`sha512t24u` digests are preferred over `md5`.
+`sha512t24u` digests must be used instead of `md5` for sequence collection digests.
 
 ### Rationale 
 
@@ -23,7 +23,9 @@
 
 Under this scheme the string `ACGT` will result in the `sha512t24u` digest `aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2`. This digest can be converted into a valid refget identifier by prefixing `SQ.`. 
 
-`sha512t24u` was envisaged as a fast digest mechanism with a space-efficient representation that can be used for any data with low collision probability. Collisions have been (documented in `md5`)[https://en.wikipedia.org/wiki/MD5#Collision_vulnerabilities].
+`sha512t24u` was envisaged as a fast digest mechanism with a space-efficient representation that can be used for any data with low collision probability. Collisions have been (documented in `md5`)[https://en.wikipedia.org/wiki/MD5#Collision_vulnerabilities] leading to the belief MD5 was insufficient for our needs.
+
+`sha512t24u` must be used for any digest of data **by** the sequence collections standard. This decision does not dissalow the use of `md5` sequence checksums.
 
 ### Limitations
 
