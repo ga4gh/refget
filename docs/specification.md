@@ -20,8 +20,8 @@ This specification is in **DRAFT** form. This is **NOT YET AN APPROVED GA4GH spe
 
 Reference sequences are fundamental to genomic analysis. To make their analysis reproducible and efficient, we require tools that can identify, store, retrieve, and compare reference sequences. The primary goal of the *Sequence Collections* (seqcol) project is **to standardize identifiers for collections of sequences**. Seqcol can be used to identify genomes, transcriptomes, or proteomes -- anything that can be represented as a collection of sequences. In brief, the project specifies 3 procedures:
 
-1. **An algorithm for encoding sequence identifiers from collections.**  The GA4GH standard [refget](http://samtools.github.io/hts-specs/refget.html) specifies a way to compute deterministic sequence identifiers from individual sequences themselves. Seqcol uses refget identifiers and adds functionality to wrap them into collections. Seqcol also handles sequence attributes, such as their names, lengths, or topologies. Seqcol identifiers are defined by a hash algorithm, rather than an accession authority, and are thus de-centralized and usable for private sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
-2. **A lookup API to retrieve a collection given an identifier.** Seqcol also specifies a RESTful API to retrieve the sequence collections given an identifier, to reproduce the exact reference genome used for analysis. 
+1. **An algorithm for encoding sequence identifiers.**  The GA4GH standard [refget](http://samtools.github.io/hts-specs/refget.html) specifies a way to compute deterministic sequence identifiers from individual sequences. Seqcol uses refget identifiers and adds functionality to wrap them into collections of sequences. Seqcol also handles sequence attributes, such as their names, lengths, or topologies. Seqcol identifiers are defined by a hash algorithm, rather than an accession authority, and are thus de-centralized and usable for private sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
+2. **A lookup API to retrieve a collection given an identifier.** Seqcol specifies a RESTful API to retrieve the sequence collections given an identifier, to reproduce the exact reference genome used for analysis, instead of guessing based on a human-readable identifier. 
 3. **A comparison API to assess compatibility of two collections.** Finally, seqcol also provides a standardized method of comparing the contents of two sequence collections. This comparison function can be used to determine if analysis results based on different references genomes are compatible. 
 
 
@@ -157,7 +157,13 @@ This will turn the values into canonicalized string representations of the list 
 
 #### Step 3: Digest each canonicalized attribute value using the GA4GH digest algorithm.
 
-The GA4GH digest algorithm is `TRUNC-512`. This converts the value of each attribute in the seqcol into a digest string. You will end up with a structure that looks like this:
+The GA4GH digest algorithm, `sha512t24u`, was created as part of the [Variation Representation Specification standard](https://vrs.ga4gh.org/en/stable/impl-guide/computed_identifiers.html).  This procedure is described as ([Hart _et al_. 2020](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883)):
+
+- performing a SHA-512 digest on a binary blob of data
+- truncate the resulting digest to 24 bytes
+- encodes the 24 bytes using `base64url` ([RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-5)) resulting in a 32 character string
+
+This converts the value of each attribute in the seqcol into a digest string. Applying this to each value will produce a structure that looks like this:
 
 ```json
 {
@@ -267,32 +273,7 @@ An *unbalanced duplicate* is used in contrast with a *balanced duplicate*. Balan
 
 ##### Interpreting the result of the compare function
 
-The output of the comparison function provides rich details about the two collections. These details can be used to make a variety of inferences comparing two collections. For example, here are several practical interpretations:
-
-###### Strict identity
-
-Description: Some analyses may require that the collections be *strictly identical*. For example, a bowtie2 index produced from one sequence collection that differs in any aspect (sequence name, order difference, etc), will not necessarily produce the same output. Therefore, we must be able to identify that two sequence collections are identical in terms of sequence content, sequence name, and sequence order. 
-
-How to assess: This comparison can easily be done by simply comparing the seqcol digest; since two collections that are identical in all aspects will have the same digest, any difference in digest means they are not strictly identical.
-
-###### Order-relaxed identity
-
-Description: A downstream process that treats each sequence independently and re-orders its results will return identical results as long as the sequence content and names are identical, even if the order doesn't match. Therefore, we’d like to be able to say "these two sequence collections have identical content and sequence names, but differ in order".
-
-How to assess: If the `elements.total` is the same for `a` and `b`, and this number is also the same for all entries in `a-and-b`, but `a-and-b-same-order` is `false` for one or more attributes, then we know the sequence collection content is identical, but in a different order. 
-
-###### Name-relaxed identity
-
-Description: Some analysis (for example, a `salmon` alignment) will be identical regardless of the chromosome names, as it considers the digest of the sequence only. Thus, we'd like to be able to say "These sequence collections have identical content, even if their names and/or orders differ."
-
-How to assess: As long as the `a-and-b` number for `sequences` equals the values listed in `elements.total`, then the sequence content in the two collections is identical
-
-###### Length-only compatible (shared coordinate system)
-
-Description: A much weaker type of compatibility is two sequence collections that have the same set of lengths, though the sequences themselves may differ. In this case we may or may not require name identity. For example, a set of ATAC-seq peaks that are annotated on a particular genome could be used in a separate process that had been aligned to a different genome, with different sequences -- as long as the lengths and names were shared between the two analyses.
-
-How to assess: We will ignore the `sequences` attribute, but ensure that the `names` and `lengths` numbers for `a-and-b` match what we expect from `elements.total`. If the `a-and-b-same-order` is also true for both `names` and `lengths`, then we can be assured that the two collections share an ordered coordinate system. If however, their coordinate system matches but is not in the same order, then we require looking at the `sorted_name_length_pairs` attribute. If the `a-and-b` entry for `sorted_name_length_pairs` is the same as the number for `names` and `lengths`, then these collections share an (unordered) coordinate system.
-
+The output of the comparison function provides rich details about the two collections.  The comparison function gives information-rich feedback about the two collections. These details can be used to make a variety of inferences comparing two collections, but it can take some thought to interpret. For more details about how to interpret the results of the comparison function to determinine different types of compatibility, please see the [howto guide on comparing sequencing collections](compare_collections.md).
 ### 3. Ancillary attribute management: recommended non-inherent attributes
 
 In *Section 1: Encoding*, we distinguished between *inherent* and *non-inherent* attributes. Non-inherent attributes provide a standardized way for implementations to store and serve additional, third-party attributes that do not contribute to digest. As long as separate implementations keep such information in non-inherent attributes, the identifiers will remain compatibile. Furthermore, the structure for how such non-inherent metadata is retrieved will be standardized. Here, we specify standardized, useful non-inherent attributes that we recommend.
