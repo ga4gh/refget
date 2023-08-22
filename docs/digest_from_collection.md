@@ -1,11 +1,34 @@
 
-# How to: Digest from collection 
+# How to: Compute a seqcol digest given a sequence collection
 
 ## Use case
 
-You have a collection of sequences, like a reference genome or transcriptome, and you want to determine its seqcol identifier.
 
-## How to do it
+One of the most common uses of the seqcol specification is to compute a standard, universal identifier for a particular sequence collection. You have a collection of sequences, like a reference genome or transcriptome, and you want to determine its seqcol identifier. There are two ways to approach this: 1. Using an existing implementation; 2. Implement the seqcol digest algorithm yourself (it's not that hard).
+
+
+## 1. Using existing implementations
+
+### Reference implementation in Python
+
+If working from within Python, you can use the reference implementation like this:
+
+1. Install the seqcol package with some variant of `pip install seqcol`.
+2. Build up your canonical seqcol object
+3. Compute its digest:
+
+```
+import seqcol
+seqcol.digest(seqcol_obj)
+```
+
+If you have a FASTA file, you could get a canonical seqcol object like this:
+
+```
+seqcol_obj = seqcol.csc_from_fasta(fa_file)
+```
+
+## 2. Implement the seqcol digest algorithm yourself
 
 Follow the procedure under the section for [Encoding](/specification/#1-encoding-computing-sequence-digests-from-sequence-collections). Briefly, the steps are:
 
@@ -18,7 +41,7 @@ Follow the procedure under the section for [Encoding](/specification/#1-encoding
 Details on each step can be found in the specification.
 
 
-## Example Python code for computing a seqcol encoding
+### Example Python code for computing a seqcol encoding
 
 ```python
 # Demo for encoding a sequence collection
@@ -88,6 +111,4 @@ seqcol_obj4  # visualize the result
 # Step 5: Digest the final canonical representation again.
 
 seqcol_digest = trunc512_digest(seqcol_obj4)
-
-
 ```
