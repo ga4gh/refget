@@ -20,8 +20,8 @@ This specification is in **DRAFT** form. This is **NOT YET AN APPROVED GA4GH spe
 
 Reference sequences are fundamental to genomic analysis. To make their analysis reproducible and efficient, we require tools that can identify, store, retrieve, and compare reference sequences. The primary goal of the *Sequence Collections* (seqcol) project is **to standardize identifiers for collections of sequences**. Seqcol can be used to identify genomes, transcriptomes, or proteomes -- anything that can be represented as a collection of sequences. In brief, the project specifies 3 procedures:
 
-1. **An algorithm for encoding sequence identifiers from collections.**  The GA4GH standard [refget](http://samtools.github.io/hts-specs/refget.html) specifies a way to compute deterministic sequence identifiers from individual sequences themselves. Seqcol uses refget identifiers and adds functionality to wrap them into collections. Seqcol also handles sequence attributes, such as their names, lengths, or topologies. Seqcol identifiers are defined by a hash algorithm, rather than an accession authority, and are thus de-centralized and usable for private sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
-2. **A lookup API to retrieve a collection given an identifier.** Seqcol also specifies a RESTful API to retrieve the sequence collections given an identifier, to reproduce the exact reference genome used for analysis. 
+1. **An algorithm for encoding sequence identifiers.**  The GA4GH standard [refget](http://samtools.github.io/hts-specs/refget.html) specifies a way to compute deterministic sequence identifiers from individual sequences. Seqcol uses refget identifiers and adds functionality to wrap them into collections of sequences. Seqcol also handles sequence attributes, such as their names, lengths, or topologies. Seqcol identifiers are defined by a hash algorithm, rather than an accession authority, and are thus de-centralized and usable for private sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
+2. **A lookup API to retrieve a collection given an identifier.** Seqcol specifies a RESTful API to retrieve the sequence collections given an identifier, to reproduce the exact reference genome used for analysis, instead of guessing based on a human-readable identifier. 
 3. **A comparison API to assess compatibility of two collections.** Finally, seqcol also provides a standardized method of comparing the contents of two sequence collections. This comparison function can be used to determine if analysis results based on different references genomes are compatible. 
 
 
@@ -157,7 +157,13 @@ This will turn the values into canonicalized string representations of the list 
 
 #### Step 3: Digest each canonicalized attribute value using the GA4GH digest algorithm.
 
-The GA4GH digest algorithm is `TRUNC-512`. This converts the value of each attribute in the seqcol into a digest string. You will end up with a structure that looks like this:
+The GA4GH digest algorithm, `sha512t24u`, was created as part of the [Variation Representation Specification standard](https://vrs.ga4gh.org/en/stable/impl-guide/computed_identifiers.html).  This procedure is described as ([Hart _et al_. 2020](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883)):
+
+- performing a SHA-512 digest on a binary blob of data
+- truncate the resulting digest to 24 bytes
+- encodes the 24 bytes using `base64url` ([RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-5)) resulting in a 32 character string
+
+This converts the value of each attribute in the seqcol into a digest string. Applying this to each value will produce a structure that looks like this:
 
 ```json
 {
