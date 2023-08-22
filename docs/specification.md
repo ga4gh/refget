@@ -273,32 +273,7 @@ An *unbalanced duplicate* is used in contrast with a *balanced duplicate*. Balan
 
 ##### Interpreting the result of the compare function
 
-The output of the comparison function provides rich details about the two collections. These details can be used to make a variety of inferences comparing two collections. For example, here are several practical interpretations:
-
-###### Strict identity
-
-Description: Some analyses may require that the collections be *strictly identical*. For example, a bowtie2 index produced from one sequence collection that differs in any aspect (sequence name, order difference, etc), will not necessarily produce the same output. Therefore, we must be able to identify that two sequence collections are identical in terms of sequence content, sequence name, and sequence order. 
-
-How to assess: This comparison can easily be done by simply comparing the seqcol digest; since two collections that are identical in all aspects will have the same digest, any difference in digest means they are not strictly identical.
-
-###### Order-relaxed identity
-
-Description: A downstream process that treats each sequence independently and re-orders its results will return identical results as long as the sequence content and names are identical, even if the order doesn't match. Therefore, we’d like to be able to say "these two sequence collections have identical content and sequence names, but differ in order".
-
-How to assess: If the `elements.total` is the same for `a` and `b`, and this number is also the same for all entries in `a-and-b`, but `a-and-b-same-order` is `false` for one or more attributes, then we know the sequence collection content is identical, but in a different order. 
-
-###### Name-relaxed identity
-
-Description: Some analysis (for example, a `salmon` alignment) will be identical regardless of the chromosome names, as it considers the digest of the sequence only. Thus, we'd like to be able to say "These sequence collections have identical content, even if their names and/or orders differ."
-
-How to assess: As long as the `a-and-b` number for `sequences` equals the values listed in `elements.total`, then the sequence content in the two collections is identical
-
-###### Length-only compatible (shared coordinate system)
-
-Description: A much weaker type of compatibility is two sequence collections that have the same set of lengths, though the sequences themselves may differ. In this case we may or may not require name identity. For example, a set of ATAC-seq peaks that are annotated on a particular genome could be used in a separate process that had been aligned to a different genome, with different sequences -- as long as the lengths and names were shared between the two analyses.
-
-How to assess: We will ignore the `sequences` attribute, but ensure that the `names` and `lengths` numbers for `a-and-b` match what we expect from `elements.total`. If the `a-and-b-same-order` is also true for both `names` and `lengths`, then we can be assured that the two collections share an ordered coordinate system. If however, their coordinate system matches but is not in the same order, then we require looking at the `sorted_name_length_pairs` attribute. If the `a-and-b` entry for `sorted_name_length_pairs` is the same as the number for `names` and `lengths`, then these collections share an (unordered) coordinate system.
-
+The output of the comparison function provides rich details about the two collections.  The comparison function gives information-rich feedback about the two collections. These details can be used to make a variety of inferences comparing two collections, but it can take some thought to interpret. For more details about how to interpret the results of the comparison function to determinine different types of compatibility, please see the [howto guide on comparing sequencing collections](compare_collections.md).
 ### 3. Ancillary attribute management: recommended non-inherent attributes
 
 In *Section 1: Encoding*, we distinguished between *inherent* and *non-inherent* attributes. Non-inherent attributes provide a standardized way for implementations to store and serve additional, third-party attributes that do not contribute to digest. As long as separate implementations keep such information in non-inherent attributes, the identifiers will remain compatibile. Furthermore, the structure for how such non-inherent metadata is retrieved will be standardized. Here, we specify standardized, useful non-inherent attributes that we recommend.

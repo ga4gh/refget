@@ -1,5 +1,5 @@
 
-# How to: Collection from digest 
+# How to: Retrieve a collection given a digest 
 
 ## Use case
 
