@@ -8,6 +8,41 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+## 2023-08-22 - Seqcol schemas MUST specify collated attributes with a local qualifier
+
+### Decision
+
+Collated attributes are seqcol attributes where the values of the attribute are 1-to-1 with sequences in the collection, and represented in the same order as the sequences in the collection. Names, lengths, and sequences are examples of collated attributes. While not strictly required for the core functionality of sequence collections, we anticipate it downstream applications will benefit if the seqcol JSONschema specifies which attributes are collated. We therefore REQUIRE the seqcol JSONschema to specify which attributes are collated, and these will be specified using a local qualifier (defined below). 
+
+### Rationale
+
+For applications that will visualize or present to the user a representation of a sequence collection, it will be useful to know if any attributes have one-value-per-sequence, or something else. The collated attributes are those that belong to each sequence. It is possible that other attributes will exist on the seqcol object, but a generic visualization engine or other processor will benefit from knowing which ones are collated.
+
+But how to specify them in the JSONschema? In jsonschema, there are 2 ways to qualify properties: 1) a local qualifier, using a key under a property; or 2) an object-level qualifier, which is specified with a keyed list of properties up one level. For example, you annotate a property's `type` with a local qualifier, underneath the property, like this:
+
+```
+properties:
+  names:
+    type: array
+```
+
+However, you specify that a property is `required` by adding it to an object-level `required` list that's parallel to the `properties` keyword:
+
+```
+properties:
+  names:
+    type: array
+required:
+  - names
+```
+
+In sequence collections, we chose to use define `collated` as a local qualifier. Local qualifiers fit better for qualifiers independent of the object as a whole. They are qualities of a property that persist if the property were moved onto a different object. For example, the `type` of an attribute is consistent, regardless of what object that attribute were defined on. In contrast, object-level qualfier lists fit better for qualifiers that depend on the object as a whole. They are qualities of a property that depend on the object context in which the property is defined. For example, the `required` modifier is not really meaningful except in the context of the object as a whole. A particular property could be required for one object type, but not for another, and it's really the object that induces the requirement, not the property itself.
+
+We reasoned that `inherent`, like `required`, describes the role of an attribute in the context of the whole object; An attribute that is inherent to one type of object need not be inherent to another. Therefore, it makes sense to treat this concept the same way jsonschema treats `required`.  In contrast, the idea of `collated` describes a property independently: Whether an attribute is collated is part of the definition of the attribute; if the attribute were moved to a different object, it would still be collated.
+
+### Linked issues
+- https://github.com/ga4gh/seqcol-spec/issues/40
+
 ## 2023-03-22 - Seqcol schemas MUST specify inherent attributes
 
 ### Decision
