@@ -274,6 +274,8 @@ An *unbalanced duplicate* is used in contrast with a *balanced duplicate*. Balan
 ##### Interpreting the result of the compare function
 
 The output of the comparison function provides rich details about the two collections.  The comparison function gives information-rich feedback about the two collections. These details can be used to make a variety of inferences comparing two collections, but it can take some thought to interpret. For more details about how to interpret the results of the comparison function to determinine different types of compatibility, please see the [howto guide on comparing sequencing collections](compare_collections.md).
+
+---
 ### 3. Ancillary attribute management: recommended non-inherent attributes
 
 In *Section 1: Encoding*, we distinguished between *inherent* and *non-inherent* attributes. Non-inherent attributes provide a standardized way for implementations to store and serve additional, third-party attributes that do not contribute to digest. As long as separate implementations keep such information in non-inherent attributes, the identifiers will remain compatibile. Furthermore, the structure for how such non-inherent metadata is retrieved will be standardized. Here, we specify standardized, useful non-inherent attributes that we recommend.
@@ -403,7 +405,7 @@ For efficiency, if 2B is true one can add the corresponding sorted-name-length-p
 
 In jsonschema, there are 2 ways to qualify properties: 1) a local qualifier, using a key under a property; or 2) an object-level qualifier, which is specified with a keyed list of properties up one level. For example, you annotate a property's `type` with a local qualifier, underneath the property, like this:
 
-```
+```console
 properties:
   names:
     type: array
@@ -411,7 +413,7 @@ properties:
 
 However, you specify that a property is `required` by adding it to an object-level `required` list that's parallel to the `properties` keyword:
 
-```
+```console
 properties:
   names:
     type: array

@@ -9,6 +9,7 @@ nav:
     - Compute a digest given a SeqCol: digest_from_collection.md
     - Retrieve a SeqCol given a digest: sequences_from_digest.md
     - Compare two sequence collections: compare_collections.md
+    - Other recipes: recipes.md
   - Implementations:
     - Python: implementation_python.md
     - API: implementation_api.md

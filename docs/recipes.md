@@ -4,12 +4,11 @@
 
 ### Seqcol digest as input
 
-* **seqcol digest -> sequence digests**: Given a seqcol digest, sequence digests for all contained sequences can be retrieved by the `/seqcol/:digest/:reclimit` endpoint by setting the `reclimit` to 1.
-* **seqcol digest -> sequences**: Given a seqcol digest, sequences themselves for all contained sequences can be retrieved by the `/seqcol/:digest/:reclimit` endpoint by setting the `reclimit` to 2, or omitting it.
-* **seqcol digest -> metadata**: Retrieved by using the `metadata` endpoint.
-* **seqcol digest -> aliases of seqcol**: Does the API offer this? Should be consistent with refget.
-* **seqcol digest -> metadata of seqcol**: Provided by the `metadata` endpoint.
-* **2 seqcol digests -> assessment of compatibility**: Provided by the compatibility function of the seqcol protocol. First, retrieve the annotated sequence digests for each sequence collection using the *Retrieval* function, then use the *Comparison* function to assess compatibility.
+* **seqcol digest -> sequence digests**: Given a seqcol digest, retrieve sequence digests for all contained sequences with the `/collection/:digest/:level` endpoint by setting the `level` to 1, or omitting it.
+* **seqcol digest -> sequences**: Given a seqcol digest, sequences themselves for all contained sequences can be retrieved by the `/collection/:digest/:level` endpoint by setting the `level` to 2 (if this is allowed by the server). Or, you can use the sequence digests retrieve at `level=1` to look up actual sequences using a refget server.
+* **seqcol digest -> metadata**: Any metadata known by the server will be retrieved by using `/collection/:digest`.
+* **seqcol digest -> aliases of seqcol**: Aliases are a not a built-in part of the seqcol spec, so this capability will depend on the underlying provider. If the provider provides aliases, you can retrieve them using `/collection/:digest`.
+* **2 seqcol digests -> assessment of compatibility**: Provided by the `/comparison` endpoint.
 * **seqcol digest + sequences -> validation claim**: Use the *seqcol algorithm* to compute the digest of the set of sequences, and then use the *comarison* function to validate (or, if you validation requires strict identity, just confirm that the digests match).
 
 
