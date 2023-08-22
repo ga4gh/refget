@@ -20,12 +20,14 @@ This specification is in **DRAFT** form. This is **NOT YET AN APPROVED GA4GH spe
 
 Reference sequences are fundamental to genomic analysis. To make their analysis reproducible and efficient, we require tools that can identify, store, retrieve, and compare reference sequences. The primary goal of the *Sequence Collections* (seqcol) project is **to standardize identifiers for collections of sequences**. Seqcol can be used to identify genomes, transcriptomes, or proteomes -- anything that can be represented as a collection of sequences. In brief, the project specifies 3 procedures:
 
-1. **An algorithm for encoding sequence identifiers from collections.**  The GA4GH standard [refget](http://samtools.github.io/hts-specs/refget.html) specifies a way to compute deterministic sequence identifiers from individual sequences themselves. Seqcol uses refget identifiers and adds functionality to wrap them into collections. Seqcol also handles sequence attributes, such as their names, lengths, or topologies. Seqcol identifiers are defined by a hash algorithm, rather than an accession authority, and are thus de-centralized and usable for many purposes, including private or new sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
-2. **A lookup API to retrieve a collection given an identifier.** Seqcol also specifies a RESTful API to enable retrieving the sequence collections given an identifier. This allows one to retrieve the exact reference genome used for an analysis. 
-3. **A comparison API to assess compatibility of two collections.** Finally, seqcol also provides a standardized method of comparing the contents of two sequence collections. This comparison function can be used to determine if analysis results that used different references genomes may still be compatible. 
+1. **An algorithm for encoding sequence identifiers from collections.**  The GA4GH standard [refget](http://samtools.github.io/hts-specs/refget.html) specifies a way to compute deterministic sequence identifiers from individual sequences themselves. Seqcol uses refget identifiers and adds functionality to wrap them into collections. Seqcol also handles sequence attributes, such as their names, lengths, or topologies. Seqcol identifiers are defined by a hash algorithm, rather than an accession authority, and are thus de-centralized and usable for private sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
+2. **A lookup API to retrieve a collection given an identifier.** Seqcol also specifies a RESTful API to retrieve the sequence collections given an identifier, to reproduce the exact reference genome used for analysis. 
+3. **A comparison API to assess compatibility of two collections.** Finally, seqcol also provides a standardized method of comparing the contents of two sequence collections. This comparison function can be used to determine if analysis results based on different references genomes are compatible. 
 
 
 ## Use cases
+
+Sequence collections presents fundamental concepts, and therefore the specification can be used for many downstream use cases. For example, we envision that seqcol identifiers could replace or live alongside the human-readable identifiers currently used to identify reference genomes (*e.g.* "hg38" or "GRCh38"), which would provide improved reproducibility. Some other examples of common use cases it helps with include:
 
 1. Given a collection identifier, retrieve the underlying sequence identifiers.
 2. Given a collection identifier, retrieve the underlying sequences.
@@ -37,23 +39,24 @@ Reference sequences are fundamental to genomic analysis. To make their analysis 
 
 ## Definitions of key terms
 
-- **Sequence**: Seqcol uses refget to store actual sequences, so we generally use the term in the same way as refget. Refget was designed for nucleotide sequences; however, other sequences could be provided via the same mechanism, *e.g.*, cDNA, CDS, mRNA or proteins. Essentially any ordered list of refget-valid characters qualifies. However, sequence collections may also contain sequences of non-specified characters, which therefore have a length but no actual sequence content. 
-- **Sequence collection**: A representation of 1 or more sequences that is structured according to the sequence collection schema
-- **Digest**: An identifier resulting from a cryptographic hash function, such as `MD5` or `SHA512`, on input data.
-- **Seqcol digest**: A digest for a sequence collection, computed according to the seqcol algorithm.
-- **Seqcol algorithm**: The set of instructions used to compute a digest from a sequence collection.
-- **Sequence digest** or **refget digest**: A digest for a sequence, computed according to the refget protocol.
-- **Length**: The number of characters in a sequence.
-- **Array**: An ordered list of elements
 - **Alias**: A human-readable identifier used to refer to a sequence collection.
-- **Seqcol API**: The set of endpoints defined in the *retrieval* and *comparison* components of the seqcol protocol.
-- **Seqcol protocol**: Collectively, the 3 operations outlined in this document, which include: 1. encoding of sequence collections; 2. retrieval of sequence collections; and 3. comparison of sequence collections.
+- **Array**: An ordered list of elements
+- **Collated**: A qualifier applied to a seqcol attribute indicating the values of the attribute are 1-to-1 with sequences in the collection, and represented in the same order as the sequences in the collection.
 - **Coordinate system**: A set of named sequence lengths, but without actual sequences.
-
+- **Digest**: An identifier resulting from a cryptographic hash function, such as `MD5` or `SHA512`, on input data.
+- **Inherent**: A qualifier applied to a seqcol attribute indicating that the attribute is part of the definition of the sequence collection, and therefore contributes to its digest.
+- **Length**: The number of characters in a sequence.
+- **Seqcol algorithm**: The set of instructions used to compute a digest from a sequence collection.
+- **Seqcol API**: The set of endpoints defined in the *retrieval* and *comparison* components of the seqcol protocol.
+- **Seqcol digest**: A digest for a sequence collection, computed according to the seqcol algorithm.
+- **Seqcol protocol**: Collectively, the 3 operations outlined in this document, which include: 1. encoding of sequence collections; 2. retrieval of sequence collections; and 3. comparison of sequence collections.
+- **Sequence**: Seqcol uses refget to store actual sequences, so we generally use the term in the same way as refget. Refget was designed for nucleotide sequences; however, other sequences could be provided via the same mechanism, *e.g.*, cDNA, CDS, mRNA or proteins. Essentially any ordered list of refget-valid characters qualifies. But sequence collections also goes further, since sequence collections may contain sequences of non-specified characters, which therefore have a length but no actual sequence content.
+- **Sequence digest** or **refget digest**: A digest for a sequence, computed according to the refget protocol.
+- **Sequence collection**: A representation of 1 or more sequences that is structured according to the sequence collection schema
 
 ## Seqcol protocol functionality
 
-The seqcol algorithm is based on the refget algorithm for individual sequences, and should use refget servers to store the actual sequence data. Seqcol servers therefore provide a lightweight organizational layer on top of refget servers.  o be fully compliant with the seqcol protocol an implementation must provide all `REQUIRED` capabilities as detailed below.  The seqcol protocol defines two functions:
+The seqcol algorithm is based on the refget algorithm for individual sequences, and should use refget servers to store the actual sequence data. Seqcol servers therefore provide a lightweight organizational layer on top of refget servers.  o be fully compliant with the seqcol protocol an implementation must provide all `REQUIRED` capabilities as detailed below. The seqcol protocol defines the following:
 
 1. *Encoding* - An algorithm for computing an identifier given a collection of sequences.
 2. *API* - A server RESTful API specification for retrieving and comparing sequence collections.
@@ -130,7 +133,7 @@ This schema is the *seqcol schema*, and sequence collection objects in this stru
 
 This object would validate against the JSON-schema above. The object is a series of arrays with matching length (`3`), with the corresponding entries collated such that the first element of each array corresponds to the first element of each other array. For rationale for this structure over an array of annotated sequences, see *Footnote F1*. Implementations `MUST` provide at least the structure specified in this schema. Implementations `MAY` choose to extend this schema by adding additional attributes.
 
-##### Step 1a: Filter non-inherent attributes
+##### Filter non-inherent attributes
 
 The `inherent` section in the seqcol schema is an extension of the basic JSON-schema format that adds specific functionality. Inherent attributes are those that contribute to the identifier; *non-inherent* attributes are not considered in computing the top-level digest. Attributes of a seqcol that are *not* listed as `inherent` `MUST NOT` contribute to the identifier; they are therefore excluded from the digest calculation. Therefore, if the canonical seqcol representation includes any non-inherent attributes, these must be removed before proceeding to step 2. In the simple example, there are no non-inherent attributes. For further details about the rationale and examples of non-inherent attributes, see *Footnote F2*.
 
@@ -207,16 +210,16 @@ Non-inherent attributes `MUST` be stored and returned by the collection endpoint
 
 #### 2.3 Comparison
 
-- *Endpoint variant 1*: Two-digest comparison`GET /comparison/{digest1}/{digest2}` (`REQUIRED`)  
+- *Endpoint variant 1*: Two-digest comparison `GET /comparison/{digest1}/{digest2}` (`REQUIRED`)  
 - *Endpoint variant 2*: POST comparison with one digest  `POST /comparison/{digest1}` (`REQUIRED`)  
-- *Description*: The comparison function specifies an API endpoint that allows a user to compare two sequence collections. The `POST` version Ccompares one database collection to a local user-provided collection.  
+- *Description*: The comparison function specifies an API endpoint that allows a user to compare two sequence collections. The `POST` version Compares one database collection to a local user-provided collection.  
 - *Return value*: The output is an assessment of compatibility between those sequence collections. Both variants of the `/comparison` endpoint must `MUST` return an object in JSON format with these 3 keys: "digests", "arrays", and "elements", as described below:
     - `digests`: an object with 2 elements, with keys *a* and *b*, and values either the level 0 seqcol digests for the compared collections, or *undefined (null)*. The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return *undefined (null)* in this element for any corresponding sequence collection.
     - `arrays`: an object with 3 elements, with keys *a-only*, *b-only*, and *a-and-b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
     - `elements`: An object with 3 elements: *total*, *a-and-b*, and *a-and-b-same-order*. *total* is an object with *a* and *b* keys, values corresponding to the total number of elements in the arrays for the corresponding collection. *a-and-b* is an object with names corresponding to each array present in both collections (in *arrays.a-and-b*), with values as the number of elements present in both collections for the given array. *a-and-b-same-order* is also an object with names corresponding to arrays, and the values a boolean following the same-order specification below.
 
 
-Example: 
+Example `/comparison` return value: 
 ```
 {
   "digests": {
@@ -251,7 +254,7 @@ Example:
 }
 ```
 
-#### Same-order specification
+##### Same-order specification
 
 The comparison return includes an *a-and-b-same-order* boolean value for each array that is present in both collections. The defined value of this attribute is:
 
@@ -262,22 +265,41 @@ The comparison return includes an *a-and-b-same-order* boolean value for each ar
 
 An *unbalanced duplicate* is used in contrast with a *balanced duplicate*. Balanced means the duplicates are the same in both arrays. When the duplicates are balanced, order is still defined; but if duplicates are unbalanced, this means an array has duplicates not present in the other, and in that case, order is not defined.
 
+##### Interpreting the result of the compare function
 
-This output can be used to make the following comparisons:
+The output of the comparison function provides rich details about the two collections. These details can be used to make a variety of inferences comparing two collections. For example, here are several practical interpretations:
 
-- Strict identity. 
-- Order-relaxed identity.
-- Name-relaxed identity. 
-- Length-only compatible. 
+###### Strict identity
 
+Description: Some analyses may require that the collections be *strictly identical*. For example, a bowtie2 index produced from one sequence collection that differs in any aspect (sequence name, order difference, etc), will not necessarily produce the same output. Therefore, we must be able to identify that two sequence collections are identical in terms of sequence content, sequence name, and sequence order. 
+
+How to assess: This comparison can easily be done by simply comparing the seqcol digest; since two collections that are identical in all aspects will have the same digest, any difference in digest means they are not strictly identical.
+
+###### Order-relaxed identity
+
+Description: A downstream process that treats each sequence independently and re-orders its results will return identical results as long as the sequence content and names are identical, even if the order doesn't match. Therefore, we’d like to be able to say "these two sequence collections have identical content and sequence names, but differ in order".
+
+How to assess: If the `elements.total` is the same for `a` and `b`, and this number is also the same for all entries in `a-and-b`, but `a-and-b-same-order` is `false` for one or more attributes, then we know the sequence collection content is identical, but in a different order. 
+
+###### Name-relaxed identity
+
+Description: Some analysis (for example, a `salmon` alignment) will be identical regardless of the chromosome names, as it considers the digest of the sequence only. Thus, we'd like to be able to say "These sequence collections have identical content, even if their names and/or orders differ."
+
+How to assess: As long as the `a-and-b` number for `sequences` equals the values listed in `elements.total`, then the sequence content in the two collections is identical
+
+###### Length-only compatible (shared coordinate system)
+
+Description: A much weaker type of compatibility is two sequence collections that have the same set of lengths, though the sequences themselves may differ. In this case we may or may not require name identity. For example, a set of ATAC-seq peaks that are annotated on a particular genome could be used in a separate process that had been aligned to a different genome, with different sequences -- as long as the lengths and names were shared between the two analyses.
+
+How to assess: We will ignore the `sequences` attribute, but ensure that the `names` and `lengths` numbers for `a-and-b` match what we expect from `elements.total`. If the `a-and-b-same-order` is also true for both `names` and `lengths`, then we can be assured that the two collections share an ordered coordinate system. If however, their coordinate system matches but is not in the same order, then we require looking at the `sorted_name_length_pairs` attribute. If the `a-and-b` entry for `sorted_name_length_pairs` is the same as the number for `names` and `lengths`, then these collections share an (unordered) coordinate system.
 
 ### 3. Ancillary attribute management: recommended non-inherent attributes
 
-In *Section 1: Encoding*, we distinguished between *inherent* and *non-inherent* attributes. Here, we specify standardized, useful non-inherent attributes.
+In *Section 1: Encoding*, we distinguished between *inherent* and *non-inherent* attributes. Non-inherent attributes provide a standardized way for implementations to store and serve additional, third-party attributes that do not contribute to digest. As long as separate implementations keep such information in non-inherent attributes, the identifiers will remain compatibile. Furthermore, the structure for how such non-inherent metadata is retrieved will be standardized. Here, we specify standardized, useful non-inherent attributes that we recommend.
 
 #### 3.2 The `sorted_name_length_pairs` attribute (`RECOMMENDED`)
 
-The `sorted_name_length_pairs` attribute is a *non-inherent* attribute of a sequence collection with a formal definition, provided here. It is `RECOMMENDED` that all seqcol implementations add this attribute to all sequence collections. When digested, this attribute provides an identifier for an order-invariant coordinate system for a sequence collection. Because it is *non-inherent*, it does not affect the identity (digest) of the collection. It is created deterministically from the `names` and `lengths` attributes in the collection; it *does not* depend on the actual sequence content, so it is consistent across two collections with different sequence content if they have the same `names` and `lengths`, in the same order.
+The `sorted_name_length_pairs` attribute is a *non-inherent* attribute of a sequence collection with a formal definition, provided here. It is `RECOMMENDED` that all seqcol implementations add this attribute to all sequence collections. When digested, this attribute provides an identifier for an order-invariant coordinate system for a sequence collection. Because it is *non-inherent*, it does not affect the identity (digest) of the collection. It is created deterministically from the `names` and `lengths` attributes in the collection; it *does not* depend on the actual sequence content, so it is consistent across two collections with different sequence content if they have the same `names` and `lengths`, which are correctly collated, but with pairs not necessarily in the same order.
 
 Algorithm: 
 
@@ -318,7 +340,7 @@ def canonical_str(item: dict) -> str:
         item, separators=(",", ":"), ensure_ascii=False, allow_nan=False, sort_keys=True
     )
 
-def trunc512_digest(seq, offset=24):
+def trunc512_digest(seq, offset=24) -> str:
     """ GA4GH digest function """
     digest = hashlib.sha512(seq.encode()).digest()
     hex_digest = binascii.hexlify(digest[:offset])
@@ -376,3 +398,47 @@ seqcol_digest = trunc512_digest(seqcol_obj4)
 
 
 ```
+
+
+### F4. Sequence collections without sequences
+
+Typically, we think of a sequence collection as consisting of real sequences, but in fact, sequence collections can also be used to specify collections where the actual sequence content is irrelevant. Since this concept can be a bit abstract for those not familiar, we'll try here to explain the rationale and benefit of this. First, consider that in a sequence comparison, for some use cases, we may be primarily concerned only with the *length* of the sequence, and not the actual sequence of characters. For example, BED files provide start and end coordinates of genomic regions of interest, which are defined on a particular sequence. On the surface, it seems that two genomic regions are only comparable if they are defined on the same sequence. However, this not *strictly* true; in fact, really, as long as the underlying sequences are homologous, and the position in one sequence references an equivalent position in the other, then it makes sense to compare the coordinates. In other words, even if the underlying sequences aren't *exactly* the same, as long as they represent something equivalent, then the coordinates can be compared. A prerequisite for this is that the *lengths* of the sequence must match; it wouldn't make sense to compare position 5,673 on a sequence of length 8,000 against the same position on a sequence of length 9,000 becuase those positions don't clearly represent the same thing; but if the sequences have the same length and represent a homology statement, then it may be meaningful to compare the positions. 
+
+We realized that we could gain a lot of power from the seqcol comparision function by comparing just the name and length vectors, which typically correspond to a coordinate system. Thus, actual sequence content is optional for sequence collections. We still think it's correct to refer to a sequence-content-less sequence collection as a "sequence collection" -- because it is still an abstract concept that *is* representing a collection of sequences: we know their names, and their lengths, we just don't care about the actual characters in the sequence in this case. Thus, we can think of these as a sequence collection without sequence characters.
+
+### F5. Use cases for the `sorted_name_length_pairs` non-inherent attribute
+
+To illustrate the value of this attribute, we provide a short example. Consider a genome browser which allows users to display BED files identifying genomic loci of interest. The genome browser should only show BED files if they annotate the same reference genome coordinate system. This is looser than strict identity, since we don't really care what the underlying sequence characters are, as long as the positions are comparable. We also don't care about the order of the sequences. What we need can be fully defined logically by the level 1 digest of the `sorted_name_length_pairs` attribute.
+
+To check whether a BED file can be viewed for a particular genome, we simply compare the `sorted_name_length_pairs` digest of our reference genome with the sequence collection used to generate the file. There are only two possibilities for compatibility:
+
+2A) If the digests are equal, then the data file is directly compatible.
+
+2B) If not, one can check the `comparison` endpoint to see whether the `sorted_name_length_pairs` attribute of the sequence collection attached to the data file is a direct subset of the same array in the sequence collection attached to the genome browser instance. If so, the data file is still compatible. 
+
+For efficiency, if 2B is true one can add the corresponding sorted-name-length-pairs level 1 digest (for the data file) to a list of cached digests that are known to be compatible for a particular genome browser instance. In practice, this list will be short as only a handful of variants will appear in a real-life scenario (e.g. including or excluding chrM and/or alternative sequences, reference genome patches (possibly removing some unplaced sequences) and similar).Thus, in a production setting, the full compatibility check can be reduced to a lookup into a short, pre-generated list of sorted-name-length-pairs level-1 digests known to be compatible with a specific genome browser instance. One would not even need to contact a seqcol server at all if all data files to be considered for compatibility come pre-annotated with such level-1 digests.
+
+### F6. Collated attributes
+
+In jsonschema, there are 2 ways to qualify properties: 1) a local qualifier, using a key under a property; or 2) an object-level qualifier, which is specified with a keyed list of properties up one level. For example, you annotate a property's `type` with a local qualifier, underneath the property, like this:
+
+```
+properties:
+  names:
+    type: array
+```
+
+However, you specify that a property is `required` by adding it to an object-level `required` list that's parallel to the `properties` keyword:
+
+```
+properties:
+  names:
+    type: array
+required:
+  - names
+```
+
+In sequence collections, we chose to use define `collated` as a local qualifier. Local qualifiers fit better for qualifiers independent of the object as a whole. They are qualities of a property that persist if the property were moved onto a different object. For example, the `type` of an attribute is consistent, regardless of what object that attribute were defined on. In contrast, object-level qualfier lists fit better for qualifiers that depend on the object as a whole. They are qualities of a property that depend on the object context in which the property is defined. For example, the `required` modifier is not really meaningful except in the context of the object as a whole. A particular property could be required for one object type, but not for another, and it's really the object that induces the requirement, not the property itself.
+
+We reasoned that `inherent`, like `required`, describes the role of an attribute in the context of the whole object; An attribute that is inherent to one type of object need not be inherent to another. Therefore, it makes sense to treat this concept the same way jsonschema treats `required`.  In contrast, the idea of `collated` describes a property independently: Whether an attribute is collated is part of the definition of the attribute; if the attribute were moved to a different object, it would still be collated.
+
