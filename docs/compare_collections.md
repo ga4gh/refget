@@ -30,7 +30,7 @@ Then, we know the sequence collection content is identical, without controlling 
 
 ###### Name-relaxed identity
 
-Some analysis (for example, a `salmon` alignment) will be identical regardless of the chromosome names, as it considers the digest of the sequence only. Thus, we'd like to be able to say "These sequence collections have identical content, even if their names and/or orders differ."
+Some analysis (for example, a [`salmon` RNA pseudo-alignment](https://salmon.readthedocs.io/en/latest/salmon.html)) will be identical regardless of the chromosome names, as it considers the digest of the sequence only. Thus, we'd like to be able to say "These sequence collections have identical content, even if their names and/or orders differ."
 
 How to assess: As long as the `a-and-b` number for `sequences` equals the values listed in `elements.total`, then the sequence content in the two collections is identical
 
