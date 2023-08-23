@@ -89,7 +89,7 @@ We distinguished between two types of metadata:
 3. The `/comparison` endpoint is RECOMMENDED.
 4. The algorithm for computing the `sorted_name_length_pairs` attribute should be as follows:
 
-### Algorithm for coputing `sorted_name_length_pairs`
+### Algorithm for computing `sorted_name_length_pairs`
 
 1. Lump together each name-length pair from the primary collated `names` and `lengths` into an object, like `{"length":123,"name":"chr1"}`.
 2. Canonicalize JSON according to the seqcol spec (using RFC-8785).
