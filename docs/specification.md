@@ -158,13 +158,7 @@ This will turn the values into canonicalized string representations of the list 
 
 #### Step 3: Digest each canonicalized attribute value using the GA4GH digest algorithm.
 
-The GA4GH digest algorithm, `sha512t24u`, was created as part of the [Variation Representation Specification standard](https://vrs.ga4gh.org/en/stable/impl-guide/computed_identifiers.html).  This procedure is described as ([Hart _et al_. 2020](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883)):
-
-- performing a SHA-512 digest on a binary blob of data
-- truncate the resulting digest to 24 bytes
-- encodes the 24 bytes using `base64url` ([RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-5)) resulting in a 32 character string
-
-This converts the value of each attribute in the seqcol into a digest string. Applying this to each value will produce a structure that looks like this:
+Apply the GA4GH digest algorithm to each attribute value. The GA4GH digest algorithm is described in detail in *Footnote F5*. This converts the value of each attribute in the seqcol into a digest string. Applying this to each value will produce a structure that looks like this:
 
 ```json
 {
@@ -283,7 +277,7 @@ In *Section 1: Encoding*, we distinguished between *inherent* and *non-inherent*
 
 #### 3.2 The `sorted_name_length_pairs` attribute (`RECOMMENDED`)
 
-The `sorted_name_length_pairs` attribute is a *non-inherent* attribute of a sequence collection with a formal definition, provided here. It is `RECOMMENDED` that all seqcol implementations add this attribute to all sequence collections. When digested, this attribute provides an identifier for an order-invariant coordinate system for a sequence collection. Because it is *non-inherent*, it does not affect the identity (digest) of the collection. It is created deterministically from the `names` and `lengths` attributes in the collection; it *does not* depend on the actual sequence content, so it is consistent across two collections with different sequence content if they have the same `names` and `lengths`, which are correctly collated, but with pairs not necessarily in the same order. For rationale and use cases of `sorted_name_length_pairs`, see *Footnote F5*.
+The `sorted_name_length_pairs` attribute is a *non-inherent* attribute of a sequence collection with a formal definition, provided here. It is `RECOMMENDED` that all seqcol implementations add this attribute to all sequence collections. When digested, this attribute provides an identifier for an order-invariant coordinate system for a sequence collection. Because it is *non-inherent*, it does not affect the identity (digest) of the collection. It is created deterministically from the `names` and `lengths` attributes in the collection; it *does not* depend on the actual sequence content, so it is consistent across two collections with different sequence content if they have the same `names` and `lengths`, which are correctly collated, but with pairs not necessarily in the same order. For rationale and use cases of `sorted_name_length_pairs`, see *Footnote F6*.
 
 Algorithm: 
 
@@ -341,7 +335,26 @@ Typically, we think of a sequence collection as consisting of real sequences, bu
 
 We realized that we could gain a lot of power from the seqcol comparision function by comparing just the name and length vectors, which typically correspond to a coordinate system. Thus, actual sequence content is optional for sequence collections. We still think it's correct to refer to a sequence-content-less sequence collection as a "sequence collection" -- because it is still an abstract concept that *is* representing a collection of sequences: we know their names, and their lengths, we just don't care about the actual characters in the sequence in this case. Thus, we can think of these as a sequence collection without sequence characters.
 
-### F5. Use cases for the `sorted_name_length_pairs` non-inherent attribute
+
+### F5. The GA4GH digest algorithm
+
+The GA4GH digest algorithm, `sha512t24u`, was created as part of the [Variation Representation Specification standard](https://vrs.ga4gh.org/en/stable/impl-guide/computed_identifiers.html).  This procedure is described as ([Hart _et al_. 2020](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883)):
+
+- performing a SHA-512 digest on a binary blob of data
+- truncate the resulting digest to 24 bytes
+- encodes the 24 bytes using `base64url` ([RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-5)) resulting in a 32 character string
+
+In Python, the digest can be computed with this function:
+
+```python
+def trunc512_digest(seq, offset=24):
+    """ GA4GH digest function """
+    digest = hashlib.sha512(seq.encode()).digest()
+    hex_digest = binascii.hexlify(digest[:offset])
+    return hex_digest.decode()
+```
+
+### F6. Use cases for the `sorted_name_length_pairs` non-inherent attribute
 
 To illustrate the value of this attribute, we provide a short example. Consider a genome browser which allows users to display BED files identifying genomic loci of interest. The genome browser should only show BED files if they annotate the same reference genome coordinate system. This is looser than strict identity, since we don't really care what the underlying sequence characters are, as long as the positions are comparable. We also don't care about the order of the sequences. What we need can be fully defined logically by the level 1 digest of the `sorted_name_length_pairs` attribute.
 
