@@ -140,7 +140,7 @@ The `inherent` section in the seqcol schema is an extension of the basic JSON-sc
 
 #### Step 2: Apply RFC-8785 to canonicalize the value associated with each attribute individually.
 
-The [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) (JCS) standardizes whitespace, character encodings, and other details that would cause inconsequential variations to yield different digests. For most use cases, the following Python fuction suffices:
+The [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) (JCS) standardizes whitespace, character encodings, and other details that would cause inconsequential variations to yield different digests. For most use cases, the following Python function suffices:
 
 ```python
 def canonical_str(item: dict) -> str:
