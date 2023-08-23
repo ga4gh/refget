@@ -24,9 +24,9 @@ Two collections meet the criteria for order-relaxed identity if:
 
 1. the value of the `elements.total.a` and `elements.total.b` match, (the collections have the same number of elements).
 2. this value is the same as `elements.a-and-b.<attribute>` for all attributes (the content is the same)
-3. all entries in `elements.a-and-b-same-order.<attribute>` are false (the order differs for all attributes)
+3. any entries in `elements.a-and-b-same-order.<attribute>` may be true (indicating the order matches) or false (indicating the order differs)
 
-Then, we know the sequence collection content is identical, but in a different order. 
+Then, we know the sequence collection content is identical, without controlling for order. 
 
 ###### Name-relaxed identity
 
