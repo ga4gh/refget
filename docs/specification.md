@@ -201,6 +201,10 @@ Under these umbrella endpoints are a few more specific sub-endpoints, described 
 - *Description*: The service info endpoint provides information about the service
 - *Return value*: Must include the Seqcol schema that this server uses.
 
+The `/service-info` endpoint should follow the [GA4GH-wide specification for service info](https://github.com/ga4gh-discovery/ga4gh-service-info/) for general description of the service.
+Then, it should also add a few specific pieces of information under a `seqcol` property:
+ - `schema`: should return the JSON-schema implemented by the server.
+
 #### 2.2 Collection
 
 - *Endpoint*: `GET /collection/:digest?level=:level` (`REQUIRED`)
