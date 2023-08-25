@@ -8,6 +8,36 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+
+
+## 2023-01-25 - Digest algorithm
+
+### Decision
+
+`sha512t24u` digests must be used instead of `md5` for sequence collection digests.
+
+### Rationale 
+
+`sha512t24u` was created as part of the [Variation Representation Specification standard](https://vrs.ga4gh.org/en/stable/impl-guide/computed_identifiers.html) and used within VRS to calculate GA4GH identifiers for high-level domain objects in combination with a type prefix map. The `sha512t24u` function ([Hart _et al_. 2020](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883)) is described as:
+
+- performing a SHA-512 digest on a binary blob of data
+- truncate the resulting digest to 24 bytes
+- encodes the 24 bytes using `base64url` ([RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-5)) resulting in a 32 character string
+
+Under this scheme the string `ACGT` will result in the `sha512t24u` digest `aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2`. This digest can be converted into a valid refget identifier by prefixing `SQ.`. 
+
+`sha512t24u` was envisaged as a fast digest mechanism with a space-efficient representation that can be used for any data with low collision probability. Collisions have been (documented in `md5`)[https://en.wikipedia.org/wiki/MD5#Collision_vulnerabilities] leading to the belief MD5 was insufficient for our needs.
+
+`sha512t24u` must be used for any digest of data **by** the sequence collections standard. This decision does not dissalow the use of `md5` sequence checksums.
+
+### Limitations
+
+`MD5` is easier to calculate and familiar as many systems ship with a command line `md5` binary. `sha512t24u` needs to be typed when used outside of an implementation to avoid issues of collision.
+
+### Linked issues
+
+- [https://github.com/ga4gh/seqcol-spec/issues/30](https://github.com/ga4gh/seqcol-spec/issues/30)
+
 ## 2023-03-22 - Seqcol schemas MUST specify inherent attributes
 
 ### Decision
@@ -272,6 +302,7 @@ It also future-proofs the serialisation method if we ever allow complex object t
 The JSON canonical serialisation defined in RFC-8785 has a limited set of reference implementation. It is possible that its implementation makes sequence collection implementation more difficult in languages where the RFC is not implemented. In this cases it is valuable to note that the current specification of Sequence Collection do not require that all the features of RFC-8785 be implemented. 
 
 
+
 ## 2022-10-05 - Terminology decisions
 
 ### Decision
@@ -503,6 +534,7 @@ We need a formal definition of a sequence collection. The schema provides a mach
 
 - https://github.com/ga4gh/seqcol-spec/issues/8
 - https://github.com/ga4gh/seqcol-spec/issues/6
+
 
 
 
