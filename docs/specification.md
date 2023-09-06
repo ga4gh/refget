@@ -18,7 +18,9 @@ This specification is in **DRAFT** form. This is **NOT YET AN APPROVED GA4GH spe
 
 ## Introduction
 
-Reference sequences are fundamental to genomic analysis. To make their analysis reproducible and efficient, we require tools that can identify, store, retrieve, and compare reference sequences. The primary goal of the *Sequence Collections* (seqcol) project is **to standardize identifiers for collections of sequences**. Seqcol can be used to identify genomes, transcriptomes, or proteomes -- anything that can be represented as a collection of sequences. In brief, the project specifies 3 procedures:
+Reference sequences are fundamental to genomic analysis. To make their analysis reproducible and efficient, we require tools that can identify, store, retrieve, and compare reference sequences.
+The primary goal of the *Sequence Collections* (seqcol) project is **to standardize identifiers for collections of sequences**. Seqcol can be used to identify genomes, transcriptomes, or proteomes -- anything that can be represented as a collection of sequences.
+In brief, the project specifies 3 procedures:
 
 1. **An algorithm for encoding sequence identifiers.**  The GA4GH standard [refget](http://samtools.github.io/hts-specs/refget.html) specifies a way to compute deterministic sequence identifiers from individual sequences. Seqcol uses refget identifiers and adds functionality to wrap them into collections of sequences. Seqcol also handles sequence attributes, such as their names, lengths, or topologies. Seqcol identifiers are defined by a hash algorithm, rather than an accession authority, and are thus de-centralized and usable for private sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
 2. **A lookup API to retrieve a collection given an identifier.** Seqcol specifies a RESTful API to retrieve the sequence collections given an identifier, to reproduce the exact reference genome used for analysis, instead of guessing based on a human-readable identifier. 
@@ -27,7 +29,9 @@ Reference sequences are fundamental to genomic analysis. To make their analysis 
 
 ## Use cases
 
-Sequence collections presents fundamental concepts, and therefore the specification can be used for many downstream use cases. For example, we envision that seqcol identifiers could replace or live alongside the human-readable identifiers currently used to identify reference genomes (*e.g.* "hg38" or "GRCh38"), which would provide improved reproducibility. Some other examples of common use cases it helps with include:
+Sequence collections presents fundamental concepts, and therefore the specification can be used for many downstream use cases.
+For example, we envision that seqcol identifiers could replace or live alongside the human-readable identifiers currently used to identify reference genomes (*e.g.* "hg38" or "GRCh38"), which would provide improved reproducibility.
+Some other examples of common use cases it helps with include:
 
 1. Given a collection identifier, retrieve the underlying sequence identifiers.
 2. Given a collection identifier, retrieve the underlying sequences.
@@ -132,7 +136,15 @@ This schema is the *seqcol schema*, and sequence collection objects in this stru
 }
 ```
 
-This object would validate against the JSON-schema above. The object is a series of arrays with matching length (`3`), with the corresponding entries collated such that the first element of each array corresponds to the first element of each other array. For rationale for this structure over an array of annotated sequences, see *Footnote F1*. Implementations `MUST` provide at least the structure specified in this schema. Implementations `MAY` choose to extend this schema by adding additional attributes. This schema extends vanilla JSON-schema in two ways; first, it provides the `collated` qualifier. For further details about the rationale behind collated attributes, see *Footnote F2*. Second, it specifies the `inherent` qualifier. For further details about the rationale and examples of non-inherent attributes, see *Footnote F3*. Finally, another detail that may be unintuitive at first is that the `sequences` attribute is optional; for an explanation of why, see *Footnote F4*.
+This object would validate against the JSON-schema above.
+The object is a series of arrays with matching length (`3`), with the corresponding entries collated such that the first element of each array corresponds to the first element of each other array.
+For rationale for this structure over an array of annotated sequences, see *Footnote F1*.
+Implementations `MUST` provide at least the structure specified in this schema.
+Implementations `MAY` choose to extend this schema by adding additional attributes.
+This schema extends vanilla JSON-schema in two ways; first, it provides the `collated` qualifier.
+For further details about the rationale behind collated attributes, see *Footnote F2*.
+Second, it specifies the `inherent` qualifier. For further details about the rationale and examples of non-inherent attributes, see *Footnote F3*.
+Finally, another detail that may be unintuitive at first is that the `sequences` attribute is optional; for an explanation of why, see *Footnote F4*.
 
 ##### Filter non-inherent attributes
 
