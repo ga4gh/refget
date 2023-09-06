@@ -19,11 +19,13 @@ This specification is in **DRAFT** form. This is **NOT YET AN APPROVED GA4GH spe
 ## Introduction
 
 Reference sequences are fundamental to genomic analysis. To make their analysis reproducible and efficient, we require tools that can identify, store, retrieve, and compare reference sequences.
-The primary goal of the *Sequence Collections* (seqcol) project is **to standardize identifiers for collections of sequences**. Seqcol can be used to identify genomes, transcriptomes, or proteomes -- anything that can be represented as a collection of sequences.
+The primary goal of the *Sequence Collections* (seqcol) project is **to standardize identifiers for collections of sequences**.
+Seqcol can be used to identify genomes, transcriptomes, or proteomes -- anything that can be represented as a collection of sequences.
+A common example and primary use case of sequence collections is for reference genome, so documentation somes refers to reference genomes for convenience; really, it can be applied to any collection of sequences.
 In brief, the project specifies 3 procedures:
 
 1. **An algorithm for encoding sequence identifiers.**  The GA4GH standard [refget](http://samtools.github.io/hts-specs/refget.html) specifies a way to compute deterministic sequence identifiers from individual sequences. Seqcol uses refget identifiers and adds functionality to wrap them into collections of sequences. Seqcol also handles sequence attributes, such as their names, lengths, or topologies. Seqcol identifiers are defined by a hash algorithm, rather than an accession authority, and are thus de-centralized and usable for private sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
-2. **A lookup API to retrieve a collection given an identifier.** Seqcol specifies a RESTful API to retrieve the sequence collections given an identifier, to reproduce the exact reference genome used for analysis, instead of guessing based on a human-readable identifier. 
+2. **A lookup API to retrieve a collection given an identifier.** Seqcol specifies a RESTful API to retrieve the sequence collections given an identifier, to reproduce the exact sequence collection (*e.g.* reference genome) used for analysis, instead of guessing based on a human-readable identifier. 
 3. **A comparison API to assess compatibility of two collections.** Finally, seqcol also provides a standardized method of comparing the contents of two sequence collections. This comparison function can be used to determine if analysis results based on different references genomes are compatible. 
 
 
