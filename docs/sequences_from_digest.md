@@ -9,7 +9,7 @@ You have a seqcol digest, and you'd like to retrieve the underlying sequence ide
 
 To look up the contents of a digest will require a seqcol service that stores the collection in a database.
 
-### 1. Retriving the sequence identifiers
+### 1. Retrieving the sequence identifiers
 
 You can retrieve the canonical seqcol representation by hitting the `/collection/:digest` endpoint, where `:digest` should be changed to the digest in question. If all you need is sequence identifiers, then you're done.
 
