@@ -59,6 +59,7 @@ Some other examples of common use cases it helps with include:
 - **Sequence**: Seqcol uses refget to store actual sequences, so we generally use the term in the same way as refget. Refget was designed for nucleotide sequences; however, other sequences could be provided via the same mechanism, *e.g.*, cDNA, CDS, mRNA or proteins. Essentially any ordered list of refget-valid characters qualifies. But sequence collections also goes further, since sequence collections may contain sequences of non-specified characters, which therefore have a length but no actual sequence content.
 - **Sequence digest** or **refget digest**: A digest for a sequence, computed according to the refget protocol.
 - **Sequence collection**: A representation of 1 or more sequences that is structured according to the sequence collection schema
+- **Sequence collection attribute**: A property of feature of a sequence collection (*e.g.* names, lengths, sequences, or topologies).
 
 ## Seqcol protocol functionality
 
@@ -112,7 +113,7 @@ properties:
     collated: true
     items:
       type: string
-      description: "Digests of sequences computed using the GA4GH digest algorithm (sha512t24u)."
+      description: "Refget v2 identifiers of sequences."
 required:
   - names
   - lengths
@@ -250,7 +251,7 @@ Non-inherent attributes `MUST` be stored and returned by the collection endpoint
 - *Endpoint variant 2*: POST comparison with one digest  `POST /comparison/{digest1}` (`REQUIRED`)  
 - *Description*: The comparison function specifies an API endpoint that allows a user to compare two sequence collections. The `POST` version Compares one database collection to a local user-provided collection.  
 - *Return value*: The output is an assessment of compatibility between those sequence collections. Both variants of the `/comparison` endpoint must `MUST` return an object in JSON format with these 3 keys: "digests", "arrays", and "elements", as described below:
-    - `digests`: an object with 2 elements, with keys *a* and *b*, and values either the level 0 seqcol digests for the compared collections, or *undefined (null)*. The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return *undefined (null)* in this element for any corresponding sequence collection.
+    - `digests`: an object with 2 elements, with keys *a* and *b*, and values either the level 0 seqcol digests for the compared collections, or *null* (undefined). The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return *null* (undefined) in this element for any corresponding sequence collection.
     - `arrays`: an object with 3 elements, with keys *a_only*, *b_only*, and *a_and_b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
     - `elements`: An object with 3 elements: *total*, *a_and_b*, and *a_and_b-same-order*. *total* is an object with *a* and *b* keys, values corresponding to the total number of elements in the arrays for the corresponding collection. *a_and_b* is an object with names corresponding to each array present in both collections (in *arrays.a_and_b*), with values as the number of elements present in both collections for the given array. *a_and_b-same-order* is also an object with names corresponding to arrays, and the values a boolean following the same-order specification below.
 
@@ -294,8 +295,8 @@ Example `/comparison` return value:
 
 The comparison return includes an *a_and_b-same-order* boolean value for each array that is present in both collections. The defined value of this attribute is:
 
-- *undefined (null)* if there are fewer than 2 overlapping elements
-- *undefined (null)* if there are unbalanced duplicates present (see definition below)
+- undefined (*null*) if there are fewer than 2 overlapping elements
+- undefined (*null*) if there are unbalanced duplicates present (see definition below)
 - *true* if all matching elements are in the same order in the two arrays
 - *false* otherwise.
 
