@@ -56,11 +56,12 @@ def canonical_str(item: dict) -> str:
         item, separators=(",", ":"), ensure_ascii=False, allow_nan=False, sort_keys=True
     )
 
-def trunc512_digest(seq, offset=24):
+def sha512t24u_digest(seq):
     """ GA4GH digest function """
+    offset = 24
     digest = hashlib.sha512(seq.encode()).digest()
-    hex_digest = binascii.hexlify(digest[:offset])
-    return hex_digest.decode()
+    tdigest_b64us = base64.urlsafe_b64encode(digest[:offset])
+    return tdigest_b64us.decode("ascii")
 
 # 1. Get data as canonical seqcol object representation
 
@@ -99,7 +100,7 @@ seqcol_obj2  # visualize the result
 
 seqcol_obj3 = {}
 for attribute in seqcol_obj2:
-    seqcol_obj3[attribute] = trunc512_digest(seqcol_obj2[attribute])
+    seqcol_obj3[attribute] = sha512t24u_digest(seqcol_obj2[attribute])
 print(json.dumps(seqcol_obj3, indent=2))  # visualize the result
 
 # Step 4: Apply RFC-8785 again to canonicalize the JSON 
@@ -110,5 +111,5 @@ seqcol_obj4  # visualize the result
 
 # Step 5: Digest the final canonical representation again.
 
-seqcol_digest = trunc512_digest(seqcol_obj4)
+seqcol_digest = sha512t24u_digest(seqcol_obj4)
 ```

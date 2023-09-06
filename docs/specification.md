@@ -317,10 +317,12 @@ In the canonical seqcol object structure, we first organize the sequence collect
 
    3. Utility of intermediate digests. The array-oriented approach provides useful intermediate digests for each attribute. This digest can be used to test for matching sets of sequences, or matching coordinate systems, using the individual component digests. With a sequence-oriented framework, this would require traversing down a layer deeper, to the individual elements, to establish identity of individual components. The alternative advantage we would have from a sequence-oriented structure would be identifiers for *annotated sequences*. We gain the advantages of these digests through the *names-lengths* attribute.
 
+See [ADR on 2021-06-30 on array-oriented structure](/decision_record/#2021-06-30-use-array-based-data-structure-and-multi-tiered-digests)
+
 
 ### F2. Collated attributes
 
-In jsonschema, there are 2 ways to qualify properties: 1) a local qualifier, using a key under a property; or 2) an object-level qualifier, which is specified with a keyed list of properties up one level. For example, you annotate a property's `type` with a local qualifier, underneath the property, like this:
+In JSON schema, there are 2 ways to qualify properties: 1) a local qualifier, using a key under a property; or 2) an object-level qualifier, which is specified with a keyed list of properties up one level. For example, you annotate a property's `type` with a local qualifier, underneath the property, like this:
 
 ```console
 properties:
@@ -340,12 +342,14 @@ required:
 
 In sequence collections, we chose to use define `collated` as a local qualifier. Local qualifiers fit better for qualifiers independent of the object as a whole. They are qualities of a property that persist if the property were moved onto a different object. For example, the `type` of an attribute is consistent, regardless of what object that attribute were defined on. In contrast, object-level qualfier lists fit better for qualifiers that depend on the object as a whole. They are qualities of a property that depend on the object context in which the property is defined. For example, the `required` modifier is not really meaningful except in the context of the object as a whole. A particular property could be required for one object type, but not for another, and it's really the object that induces the requirement, not the property itself.
 
-We reasoned that `inherent`, like `required`, describes the role of an attribute in the context of the whole object; An attribute that is inherent to one type of object need not be inherent to another. Therefore, it makes sense to treat this concept the same way jsonschema treats `required`.  In contrast, the idea of `collated` describes a property independently: Whether an attribute is collated is part of the definition of the attribute; if the attribute were moved to a different object, it would still be collated.
+We reasoned that `inherent`, like `required`, describes the role of an attribute in the context of the whole object; An attribute that is inherent to one type of object need not be inherent to another. Therefore, it makes sense to treat this concept the same way JSON schema treats `required`.  In contrast, the idea of `collated` describes a property independently: Whether an attribute is collated is part of the definition of the attribute; if the attribute were moved to a different object, it would still be collated.
 
 
 ### F3. Details of inherent and non-inherent attributes
 
 The specification in section 1, *Encoding*, described how to structure a sequence collection and then apply an algorithm to compute a digest for it. What if you have ancillary information that goes with a collection, but shouldn't contribute to the digest? We have found a lot of useful use cases for information that should go along with a seqcol, but should not contribute to the *identity* of that seqcol. This is a useful construct as it allows us to include information in a collection that does not affect the identifier that is computed for that collection. One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have a different identifier! Seqcol refers to these as *non-inherent attributes*, meaning they are not part of the core identity of the sequence collection. Non-inherent attributes are defined in the seqcol schema, but excluded from the `inherent` list. 
+
+See: [ADR on 2023-03-22 regarding inherent attributes](/decision_record/#2023-03-22-seqcol-schemas-must-specify-inherent-attributes)
 
 ### F4. Sequence collections without sequences
 
@@ -356,7 +360,8 @@ We realized that we could gain a lot of power from the seqcol comparision functi
 
 ### F5. The GA4GH digest algorithm
 
-The GA4GH digest algorithm, `sha512t24u`, was created as part of the [Variation Representation Specification standard](https://vrs.ga4gh.org/en/stable/impl-guide/computed_identifiers.html).  This procedure is described as ([Hart _et al_. 2020](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883)):
+The GA4GH digest algorithm, `sha512t24u`, was created as part of the [Variation Representation Specification standard](https://vrs.ga4gh.org/en/stable/impl-guide/computed_identifiers.html). 
+This procedure is described as ([Hart _et al_. 2020](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883)):
 
 - performing a SHA-512 digest on a binary blob of data
 - truncate the resulting digest to 24 bytes
@@ -371,15 +376,14 @@ def sha512t24u_digest(seq):
     digest = hashlib.sha512(seq.encode()).digest()
     tdigest_b64us = base64.urlsafe_b64encode(digest[:offset])
     return tdigest_b64us.decode("ascii")
+```
+
+See: [ADR from 2023-01-25 on digest algorithm](/decision_record/#2023-01-25-digest-algorithm)
 
 ### F6. Use cases for the `sorted_name_length_pairs` non-inherent attribute
 
-To illustrate the value of this attribute, we provide a short example. Consider a genome browser which allows users to display BED files identifying genomic loci of interest. The genome browser should only show BED files if they annotate the same reference genome coordinate system. This is looser than strict identity, since we don't really care what the underlying sequence characters are, as long as the positions are comparable. We also don't care about the order of the sequences. What we need can be fully defined logically by the level 1 digest of the `sorted_name_length_pairs` attribute.
+One motivation for this attribute comes from genome browsers, which may display genomic loci of interest (BED files). The genome browser should only show BED files if they annotate the same coordinate system as the reference genome. This is looser than strict identity, since we don't really care what the underlying sequence characters are, as long as the positions are comparable. We also don't care about the order of the sequences. Instead, we need them to match level 1 digest of the `sorted_name_length_pairs` attribute. Thus, to assert that a BED file can be viewed for a particular genome, we compare the `sorted_name_length_pairs` digest of our reference genome with the sequence collection used to generate the file. There are only two possibilities for compatibility: 1) If the digests are equal, then the data file is directly compatible; 2) If not, we must check the `comparison` endpoint to see whether the `sorted_name_length_pairs` attribute of the sequence collection is a direct subset of the same array in the sequence collection attached to the genome browser instance. If so, the data file is still compatible. 
 
-To check whether a BED file can be viewed for a particular genome, we simply compare the `sorted_name_length_pairs` digest of our reference genome with the sequence collection used to generate the file. There are only two possibilities for compatibility:
+For efficiency, if the second case is true, we may cache the `sorted_name_length_pairs` digest in a list of known compatible reference genomes. In practice, this list will be short. Thus, in a production setting, the full compatibility check can be reduced to a lookup into a short, pre-generated list of `sorted_name_length_pairs` digests.
 
-2A) If the digests are equal, then the data file is directly compatible.
-
-2B) If not, one can check the `comparison` endpoint to see whether the `sorted_name_length_pairs` attribute of the sequence collection attached to the data file is a direct subset of the same array in the sequence collection attached to the genome browser instance. If so, the data file is still compatible. 
-
-For efficiency, if 2B is true one can add the corresponding sorted-name-length-pairs level 1 digest (for the data file) to a list of cached digests that are known to be compatible for a particular genome browser instance. In practice, this list will be short as only a handful of variants will appear in a real-life scenario (e.g. including or excluding chrM and/or alternative sequences, reference genome patches (possibly removing some unplaced sequences) and similar).Thus, in a production setting, the full compatibility check can be reduced to a lookup into a short, pre-generated list of sorted-name-length-pairs level-1 digests known to be compatible with a specific genome browser instance. One would not even need to contact a seqcol server at all if all data files to be considered for compatibility come pre-annotated with such level-1 digests.
+See: [ADR from 2023-07-12 on sorted name-length pairs](/decision_record/#2023-07-12-implementations-should-provide-sorted_name_length_pairs-and-comparison-endpoint)

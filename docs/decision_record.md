@@ -55,7 +55,7 @@ We distinguished between two types of metadata:
 
 1. We considered `names_lengths`, `sorted_names_lengths`, `name_length_pairs`. In the end we are trying to strike a balance between descriptivity and conciseness. We decided the idea of "pairs" is really critical, and so is "sorted", so this seemed to us to be a minimal set of words to capture the intention of the attribute, though it is a bit long. But in the end the name itself just has to be *something* standardized, and nothing seems perfect.
 
-2. We debated whether it should be required or optional to provide the `sorted_name_length_pairs` attribute. We think it provides a lot of really nice benefits, particularly if everyone implements it; however, we also acknowledge that there are some use cases for seqcols (like just being a provider of sequence collections) where every collection will have sequences, and comparing among coordinate systems is not really in scope. For this use case, we acknowledge that the sorted-name-length-pairs may not have utility, so we make it RECOMMENDED.
+2. We debated whether it should be required or optional to provide the `sorted_name_length_pairs` attribute. We think it provides a lot of really nice benefits, particularly if everyone implements it; however, we also acknowledge that there are some use cases for seqcols (like just being a provider of sequence collections) where every collection will have sequences, and comparing among coordinate systems is not really in scope. For this use case, we acknowledge that the sorted_name_length_pairs may not have utility, so we make it RECOMMENDED.
 
 3. Similarly, we envisioned the possibilty of a minimal implementation built using object storage that could fulfill all the other specifications. So while we think that the comparison function will be very helpful, particularly if it's implemented everywhere, for a minimal implementation that's sole purpose is to provide sequences, it might make sense to opt out of this. Therefore, we call it recommended.
 
@@ -78,22 +78,26 @@ We determined that *internally*, we will not append prefixes to the strings we a
 - for external identifiers (like refget identifiers), we accept them at face value, so we wouldn't remove a prefix if you declare it is was part of your sequence identifier
 - the seqcol specification should RECOMMEND using refget identifiers
 
-More specifically, for refget, there are two types of prefix: the namespace prefix (`ga4gh:`) and type type prefix (`SQ.`). Right now, the refget server requires you to have the type prefix to request a lookup; the refget protocol declares that this type prefix is *part of the identifier*. However, the `ga4gh:` prefix is more of a namespace prefix and is *not* required, and therefore not considered part of the identifier. Therefore, the seqcol `sequence` values would *include* the `SQ.` but not the `ga4gh:`.
+More specifically, for refget, there are two types of prefix: the namespace prefix (`ga4gh:`) and type type prefix (`SQ.`).
+Right now, the refget server requires you to have the type prefix to request a lookup; the refget protocol declares that this type prefix is *part of the identifier*.
+However, the `ga4gh:` prefix is more of a namespace prefix and is *not* required, and therefore not considered part of the identifier.
+Therefore, the seqcol `sequence` values would *include* the `SQ.` but not the `ga4gh:`.
 
 ### Rationale
 
 According to the definition of CURIEs:
 
-    A host language MAY declare a default prefix value, or MAY provide a mechanism for defining a defining a default prefix value. In such a host language, when the prefix is omitted from a CURIE, the default prefix value MUST be used.
+> A host language MAY declare a default prefix value, or MAY provide a mechanism for defining a defining a default prefix value. In such a host language, when the prefix is omitted from a CURIE, the default prefix value MUST be used.
 
-We see no need to add prefixes to the identifiers we use internally, which we just assume belong to our namespace. Adding prefixes will complicate things and does not add benefits. Prefixes may be added to our identifiers by outside entities as needed to define for them the scope of our local digests.
+We see no need to add prefixes to the identifiers we use internally, which we just assume belong to our namespace.
+Adding prefixes will complicate things and does not add benefits. Prefixes may be added to our identifiers by outside entities as needed to define for them the scope of our local digests.
 
 ### Linked issues
 
 - <https://github.com/ga4gh/seqcol-spec/issues/37>
 
 
-## 2023-06-28 - SeqCol JSONschema defines reserved attributes without additional namespacing
+## 2023-06-28 - SeqCol JSON schema defines reserved attributes without additional namespacing
 
 ### Decision
 
@@ -149,7 +153,7 @@ A seqcol schema provided by a seqcol API `MUST` define an `inherent` section. Th
 
 ### Rationale
 
-We have found a lot of useful use cases for information that should go along with a seqcol, but should not contribute to the *identity* of that seqcol. This is a useful construct as it allows us to include information in a collection that does not affect the identifier that is computed for that collection. One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have a different identifier! Similarly, the 'sorted-names-lengths' idea provides lots of utility, but it doesn't change anything about the identity of the collection, so it would be nice to exclude it because then an implementation that didn't implement 'sorted-names-lengths' would end up with the same identifier, improving interoperability across servers.
+We have found a lot of useful use cases for information that should go along with a seqcol, but should not contribute to the *identity* of that seqcol. This is a useful construct as it allows us to include information in a collection that does not affect the identifier that is computed for that collection. One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have a different identifier! Similarly, the 'sorted_name_length_pairs' idea provides lots of utility, but it doesn't change anything about the identity of the collection, so it would be nice to exclude it because then an implementation that didn't implement 'sorted_name_length_pairs' would end up with the same identifier, improving interoperability across servers.
 
 Thus, we introduce the idea of *inherent* vs *non-inherent attributes*. Inherent attributes contribute to the identifier; *non-inherent* attributes are not considered in computing the top-level digest. We previously called these *digested* and *non-digested* attributes, but this is not really a good name because, while these non-inherent attributes may not be part of the top-level digest calculation, they are still going to be digested at level 2.
 
@@ -179,7 +183,7 @@ While non-ASCII array names would be compatible with our current specification, 
 - <https://github.com/ga4gh/seqcol-spec/issues/33>
 
 
-## 2023-01-25 - Digest algorithm
+## 2023-01-25 - The digest algorithm will be the GA4GH digest
 
 ### Decision
 
@@ -469,7 +473,7 @@ We considered a simpler arrangement that would only return true/false values as 
 
 Someone may want to return more information than this, such as enumerating the specific elements in each category. However, this use case would be problematic for large collections, like a transcriptome. We may in the future provide an update to the specification that defines how this information should be returned, but for now, we leave the specification at this minimum requirement.
 
-## 2022-06-15 We will define the elements of a sequence collections using a schema
+## 2022-06-15 - We will define the elements of a sequence collections using a schema
 
 ### Decision
 
