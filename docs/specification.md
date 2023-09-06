@@ -365,12 +365,12 @@ The GA4GH digest algorithm, `sha512t24u`, was created as part of the [Variation 
 In Python, the digest can be computed with this function:
 
 ```python
-def trunc512_digest(seq, offset=24):
+def sha512t24u_digest(seq):
     """ GA4GH digest function """
+    offset = 24
     digest = hashlib.sha512(seq.encode()).digest()
-    hex_digest = binascii.hexlify(digest[:offset])
-    return hex_digest.decode()
-```
+    tdigest_b64us = base64.urlsafe_b64encode(digest[:offset])
+    return tdigest_b64us.decode("ascii")
 
 ### F6. Use cases for the `sorted_name_length_pairs` non-inherent attribute
 
