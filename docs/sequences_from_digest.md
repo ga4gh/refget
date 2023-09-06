@@ -16,4 +16,4 @@ You can retrieve the canonical seqcol representation by hitting the `/collection
 
 ### 2. Retrieving underlying sequences
 
-If you need sequences, then you'll also need a refget server. Sequence collection services don't necessarily store sequences themselves; this task is typically outsource to a refget server. The seqcol server simply stores the group information, and metadata accompanying the sequences. Therefore, to retrieve the underlying sequences, you can first retrieve the sequence identifiers, and then use these identifiers to query a refget service.
+If you need sequences, then you'll also need a [refget](http://samtools.github.io/hts-specs/refget.html) server. Sequence collection services don't necessarily store sequences themselves; this task is typically outsource to a refget server. The seqcol server simply stores the group information, and metadata accompanying the sequences. Therefore, to retrieve the underlying sequences, you can first retrieve the sequence identifiers, and then use these identifiers to query a refget service.
