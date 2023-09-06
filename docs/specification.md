@@ -220,8 +220,8 @@ Non-inherent attributes `MUST` be stored and returned by the collection endpoint
 - *Description*: The comparison function specifies an API endpoint that allows a user to compare two sequence collections. The `POST` version Compares one database collection to a local user-provided collection.  
 - *Return value*: The output is an assessment of compatibility between those sequence collections. Both variants of the `/comparison` endpoint must `MUST` return an object in JSON format with these 3 keys: "digests", "arrays", and "elements", as described below:
     - `digests`: an object with 2 elements, with keys *a* and *b*, and values either the level 0 seqcol digests for the compared collections, or *undefined (null)*. The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return *undefined (null)* in this element for any corresponding sequence collection.
-    - `arrays`: an object with 3 elements, with keys *a-only*, *b-only*, and *a-and-b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
-    - `elements`: An object with 3 elements: *total*, *a-and-b*, and *a-and-b-same-order*. *total* is an object with *a* and *b* keys, values corresponding to the total number of elements in the arrays for the corresponding collection. *a-and-b* is an object with names corresponding to each array present in both collections (in *arrays.a-and-b*), with values as the number of elements present in both collections for the given array. *a-and-b-same-order* is also an object with names corresponding to arrays, and the values a boolean following the same-order specification below.
+    - `arrays`: an object with 3 elements, with keys *a_only*, *b_only*, and *a_and_b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
+    - `elements`: An object with 3 elements: *total*, *a_and_b*, and *a_and_b-same-order*. *total* is an object with *a* and *b* keys, values corresponding to the total number of elements in the arrays for the corresponding collection. *a_and_b* is an object with names corresponding to each array present in both collections (in *arrays.a_and_b*), with values as the number of elements present in both collections for the given array. *a_and_b-same-order* is also an object with names corresponding to arrays, and the values a boolean following the same-order specification below.
 
 
 Example `/comparison` return value: 
@@ -232,9 +232,9 @@ Example `/comparison` return value:
     "b": "c345e091cce0b1df78bfc124b03fba1c"
   },
   "arrays": {
-    "a-only": [],
-    "b-only": [],
-    "a-and-b": [
+    "a_only": [],
+    "b_only": [],
+    "a_and_b": [
       "lengths",
       "names",
       "sequences"
@@ -245,12 +245,12 @@ Example `/comparison` return value:
       "a": 195,
       "b": 25
     },
-    "a-and-b": {
+    "a_and_b": {
       "lengths": 25,
       "names": 25,
       "sequences": 0
     },
-    "a-and-b-same-order": {
+    "a_and_b-same-order": {
       "lengths": false,
       "names": false,
       "sequences": null
@@ -261,7 +261,7 @@ Example `/comparison` return value:
 
 ##### Same-order specification
 
-The comparison return includes an *a-and-b-same-order* boolean value for each array that is present in both collections. The defined value of this attribute is:
+The comparison return includes an *a_and_b-same-order* boolean value for each array that is present in both collections. The defined value of this attribute is:
 
 - *undefined (null)* if there are fewer than 2 overlapping elements
 - *undefined (null)* if there are unbalanced duplicates present (see definition below)

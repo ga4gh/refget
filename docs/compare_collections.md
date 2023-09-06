@@ -23,8 +23,8 @@ A process that treats each sequence independently and re-orders its results will
 Two collections meet the criteria for order-relaxed identity if:
 
 1. the value of the `elements.total.a` and `elements.total.b` match, (the collections have the same number of elements).
-2. this value is the same as `elements.a-and-b.<attribute>` for all attributes (the content is the same)
-3. any entries in `elements.a-and-b-same-order.<attribute>` may be true (indicating the order matches) or false (indicating the order differs)
+2. this value is the same as `elements.a_and_b.<attribute>` for all attributes (the content is the same)
+3. any entries in `elements.a_and_b-same-order.<attribute>` may be true (indicating the order matches) or false (indicating the order differs)
 
 Then, we know the sequence collection content is identical, without controlling for order. 
 
@@ -32,13 +32,13 @@ Then, we know the sequence collection content is identical, without controlling 
 
 Some analysis (for example, a [`salmon` RNA pseudo-alignment](https://salmon.readthedocs.io/en/latest/salmon.html)) will be identical regardless of the chromosome names, as it considers the digest of the sequence only. Thus, we'd like to be able to say "These sequence collections have identical content, even if their names and/or orders differ."
 
-How to assess: As long as the `a-and-b` number for `sequences` equals the values listed in `elements.total`, then the sequence content in the two collections is identical
+How to assess: As long as the `a_and_b` number for `sequences` equals the values listed in `elements.total`, then the sequence content in the two collections is identical
 
 ###### Length-only compatible (shared coordinate system)
 
 A much weaker type of compatibility is two sequence collections that have the same set of lengths, though the sequences themselves may differ. In this case we may or may not require name identity. For example, a set of ATAC-seq peaks that are annotated on a particular genome could be used in a separate process that had been aligned to a different genome, with different sequences -- as long as the lengths and names were shared between the two analyses.
 
-How to assess: We will ignore the `sequences` attribute, but ensure that the `names` and `lengths` numbers for `a-and-b` match what we expect from `elements.total`. If the `a-and-b-same-order` is also true for both `names` and `lengths`, then we can be assured that the two collections share an ordered coordinate system. If however, their coordinate system matches but is not in the same order, then we require looking at the `sorted_name_length_pairs` attribute. If the `a-and-b` entry for `sorted_name_length_pairs` is the same as the number for `names` and `lengths`, then these collections share an (unordered) coordinate system.
+How to assess: We will ignore the `sequences` attribute, but ensure that the `names` and `lengths` numbers for `a_and_b` match what we expect from `elements.total`. If the `a_and_b-same-order` is also true for both `names` and `lengths`, then we can be assured that the two collections share an ordered coordinate system. If however, their coordinate system matches but is not in the same order, then we require looking at the `sorted_name_length_pairs` attribute. If the `a_and_b` entry for `sorted_name_length_pairs` is the same as the number for `names` and `lengths`, then these collections share an (unordered) coordinate system.
 
 ### Others...
 
