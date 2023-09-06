@@ -28,9 +28,9 @@ We distinguished between two types of metadata:
 
 ### Linked issues
 
-- https://github.com/ga4gh/seqcol-spec/issues/3
-- https://github.com/ga4gh/seqcol-spec/issues/39
-- https://github.com/ga4gh/seqcol-spec/issues/40
+- <https://github.com/ga4gh/seqcol-spec/issues/3>
+- <https://github.com/ga4gh/seqcol-spec/issues/39>
+- <https://github.com/ga4gh/seqcol-spec/issues/40>
 
 
 ## 2023-07-12 Implementations SHOULD provide sorted_name_length_pairs and comparison endpoint
@@ -61,7 +61,7 @@ We distinguished between two types of metadata:
 
 ### Linked issues
 
-- https://github.com/ga4gh/seqcol-spec/issues/40
+- <https://github.com/ga4gh/seqcol-spec/issues/40>
 
 
 ## 2023-06-14 - Internal identifiers SHOULD NOT be prefixed
@@ -90,7 +90,7 @@ We see no need to add prefixes to the identifiers we use internally, which we ju
 
 ### Linked issues
 
-- https://github.com/ga4gh/seqcol-spec/issues/37
+- <https://github.com/ga4gh/seqcol-spec/issues/37>
 
 
 ## 2023-06-28 - SeqCol JSONschema defines reserved attributes without additional namespacing
@@ -155,7 +155,7 @@ Thus, we introduce the idea of *inherent* vs *non-inherent attributes*. Inherent
 
 ### Linked issues
 
-- https://github.com/ga4gh/seqcol-spec/issues/40
+- <https://github.com/ga4gh/seqcol-spec/issues/40>
 
 ### Alternatives considered
 
@@ -176,7 +176,7 @@ While non-ASCII array names would be compatible with our current specification, 
 
 ### Linked issues
 
-- https://github.com/ga4gh/seqcol-spec/issues/33
+- <https://github.com/ga4gh/seqcol-spec/issues/33>
 
 
 ## 2023-01-25 - Digest algorithm
@@ -390,7 +390,7 @@ We should be consistent by using these terms to refer to the above representatio
 
 
 ### Linked issues
-- https://github.com/ga4gh/seqcol-spec/issues/25
+- <https://github.com/ga4gh/seqcol-spec/issues/25>
 
 
 ## 2022-06-15 - Structure for the return value of the comparison API endpoint
@@ -458,8 +458,8 @@ The primary purpose of the compare function is to provide a high-level view of h
 
 ### Linked issues
 
-- https://github.com/ga4gh/seqcol-spec/issues/21
-- https://github.com/ga4gh/seqcol-spec/issues/7
+- <https://github.com/ga4gh/seqcol-spec/issues/21>
+- <https://github.com/ga4gh/seqcol-spec/issues/7>
 
 ### Alternatives considered
 
@@ -532,8 +532,8 @@ We need a formal definition of a sequence collection. The schema provides a mach
 
 ### Linked issues
 
-- https://github.com/ga4gh/seqcol-spec/issues/8
-- https://github.com/ga4gh/seqcol-spec/issues/6
+- <https://github.com/ga4gh/seqcol-spec/issues/8>
+- <https://github.com/ga4gh/seqcol-spec/issues/6>
 
 
 
