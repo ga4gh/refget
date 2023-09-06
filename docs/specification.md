@@ -23,12 +23,11 @@ To make their analysis reproducible and efficient, we require tools that can ide
 The primary goal of the *Sequence Collections* (seqcol) project is **to standardize identifiers for collections of sequences**.
 Seqcol can be used to identify genomes, transcriptomes, or proteomes -- anything that can be represented as a collection of sequences.
 A common example and primary use case of sequence collections is for reference genome, so documentation somes refers to reference genomes for convenience; really, it can be applied to any collection of sequences.
-In brief, the project specifies 3 procedures:
+In brief, the project specifies several procedures:
 
 1. **An algorithm for encoding sequence identifiers.**  The GA4GH standard [refget](http://samtools.github.io/hts-specs/refget.html) specifies a way to compute deterministic sequence identifiers from individual sequences. Seqcol uses refget identifiers and adds functionality to wrap them into collections of sequences. Seqcol also handles sequence attributes, such as their names, lengths, or topologies. Seqcol identifiers are defined by a hash algorithm, rather than an accession authority, and are thus decentralized and usable for private sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
-2. **A lookup API to retrieve a collection given an identifier.** Seqcol specifies a RESTful API to retrieve the sequence collections given an identifier, to reproduce the exact sequence collection (*e.g.* reference genome) used for analysis, instead of guessing based on a human-readable identifier. 
-3. **A comparison API to assess compatibility of two collections.** Finally, seqcol also provides a standardized method of comparing the contents of two sequence collections. This comparison function can be used to determine if analysis results based on different references genomes are compatible. 
-
+2. **A API describing lookup and comparison of sequence collections identifier.** Seqcol specifies a RESTful API to retrieve the sequence collections given an identifier, to reproduce the exact sequence collection (*e.g.* reference genome) used for analysis, instead of guessing based on a human-readable identifier. It also provides a standardized method of comparing the contents of two sequence collections. This comparison function can be used to determine if analysis results based on different references genomes are compatible. 
+3. **Recommended ancillary, non-inherent attributes.** Finally, the protocol defines several recommended procedures that will improve the compability across seqcol servers.
 
 ## Use cases
 
@@ -56,7 +55,7 @@ Some other examples of common use cases it helps with include:
 - **Seqcol algorithm**: The set of instructions used to compute a digest from a sequence collection.
 - **Seqcol API**: The set of endpoints defined in the *retrieval* and *comparison* components of the seqcol protocol.
 - **Seqcol digest**: A digest for a sequence collection, computed according to the seqcol algorithm.
-- **Seqcol protocol**: Collectively, the 3 operations outlined in this document, which include: 1. encoding of sequence collections; 2. retrieval of sequence collections; and 3. comparison of sequence collections.
+- **Seqcol protocol**: Collectively, the 3 operations outlined in this document, which include: 1. encoding of sequence collections; 2. API describing retrieval and comparison ; and 3. specifications for ancillary recommended attributes.
 - **Sequence**: Seqcol uses refget to store actual sequences, so we generally use the term in the same way as refget. Refget was designed for nucleotide sequences; however, other sequences could be provided via the same mechanism, *e.g.*, cDNA, CDS, mRNA or proteins. Essentially any ordered list of refget-valid characters qualifies. But sequence collections also goes further, since sequence collections may contain sequences of non-specified characters, which therefore have a length but no actual sequence content.
 - **Sequence digest** or **refget digest**: A digest for a sequence, computed according to the refget protocol.
 - **Sequence collection**: A representation of 1 or more sequences that is structured according to the sequence collection schema
