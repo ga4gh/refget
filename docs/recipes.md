@@ -9,7 +9,7 @@
 * **seqcol digest -> metadata**: Any metadata known by the server will be retrieved by using `/collection/:digest`.
 * **seqcol digest -> aliases of seqcol**: Aliases are a not a built-in part of the seqcol spec, so this capability will depend on the underlying provider. If the provider provides aliases, you can retrieve them using `/collection/:digest`.
 * **2 seqcol digests -> assessment of compatibility**: Provided by the `/comparison` endpoint.
-* **seqcol digest + sequences -> validation claim**: Use the *seqcol algorithm* to compute the digest of the set of sequences, and then use the *comarison* function to validate (or, if you validation requires strict identity, just confirm that the digests match).
+* **seqcol digest + sequences -> validation claim**: Use the *seqcol algorithm* to compute the digest of the set of sequences, and then use the *comparison* function to validate (or, if you validation requires strict identity, just confirm that the digests match).
 
 
 ### Sequence collection as input
