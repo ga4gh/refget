@@ -7,6 +7,7 @@ We welcome more participants! If you are interested in contributing, one of the 
 - <a href="http://databio.org">Nathan Sheffield</a>, Center for Public Health Genomics, University of Virginia
 - Andy Yates
 - Tim Cezard
+- Sveinung Gundersen, ELIXIR Norway/Centre for Bioinformatics, University of Oslo
 - Add your name here!
 
 
