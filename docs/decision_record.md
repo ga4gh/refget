@@ -8,29 +8,101 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
-## 2023-03-22 - Seqcol schemas MUST specify inherent attributes
+## 2023-08-25 The user-facing API will neither expect to provide prefixes
+
+## Rationale
+
+We have debated whether the digests returned by the API should be prefixed in any way (either a namespace-type prefix, or a type prefix). We have also debated whether the API should *accept* prefixed versions of digests. We decided (for now) that neither should be true; our protocol is simply to use and provide the seqcol digests straight up. We view the prefixes as being something useful for an external context to determine where a digest came from or belongs; but this seems external to how our service should behave internally. Therefore, any sort of prefix should be happening by whatever is *using* this service, not by the service itself. For example, a ga4gh-wide broker that could disambiguate between different types of digests may require an incoming digest to have a type prefix, but this would be governed by such a context-oriented service, not by the seqcol service itself.
+
+In the future, when it becomes more clear how this service will fit in with other services in the ga4gh ecosystem, we could revisit this decision.
+
+## 2023-07-26 There will be no metadata endpoint
 
 ### Decision
 
-A seqcol schema provided by a seqcol API `MUST` define an `inherent` section. This section specifies a list of attributes, indicating the attributes that **do** contribute to the identity of the collection. As a corollary, attributes of a seqcol that are *not* listed in `inherent` `MUST NOT` contribute to the identifier; they are therefore excluded from the digest calculation.
+We have no need for a `/metadata` endpoint
 
 ### Rationale
 
-We have found a lot of useful use cases for information that should go along with a seqcol, but should not contribute to the *identity* of that seqcol. This is a useful construct as it allows us to include information in a collection that does not affect the identifier that is computed for that collection. One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have a different identifier! Similarly, the 'sorted-names-lengths' idea provides lots of utility, but it doesn't change anything about the identity of the collection, so it would be nice to exclude it because then an implementation that didn't implement 'sorted-names-lengths' would end up with the same identifier, improving interoperability across servers.
+At one point (issue #3), we debated whether there should be a `/metadata` endpoint or something like that as a way to retrieve information about a sequence that might not be part of the digested sequence. However, after we distinguised between `inherent` and `non-inherent` attributes, we have realized that this satisifes the earlier requirement for a `/metadata` endpoint; in fact, the metadata can be returned to the user through the normal endpoint, and just flagged as `non-inherent` in the schema to indicate that it's not digested, and therefore not part of the identity of the object
 
-Thus, we introduce the idea of *inherent* vs *non-inherent attributes*. Inherent attributes contribute to the identifier; *non-inherent* attributes are not considered in computing the top-level digest. We previously called these *digested* and *non-digested* attributes, but this is not really a good name because, while these non-inherent attributes may not be part of the top-level digest calculation, they are still going to be digested at level 2.
+We distinguished between two types of metadata:
+
+- server-scoped metadata, like the schema we described above, should be served by `/service-info`
+- collection-scoped or sequence-scoped metadata don't fit under `/service-info`. For these, they will be served by the primary `/collection` endpoint, rather than by a separate `/metadata` endpoint.
 
 ### Linked issues
 
-- https://github.com/ga4gh/seqcol-spec/issues/40
-
-### Alternatives considered
-
-We considered using `extrinsic` to define the opposite of `inherent`, which would change it so that attributes were inherent by default; but we decided we liked the explicitness of forcing the schema to specify which attributes are to be included in the digest, because this brings clarity over the alternative, which is to assume everything is included unless it's excluded. We also liked that this makes the `inherent` keyword behave similarly to the `required` keyword in JSON-schema; if left off, we assume nothing is required. This means that in order for a seqcol schema to be valid, it must have at least one inherent attribute specified.
+- <https://github.com/ga4gh/seqcol-spec/issues/3>
+- <https://github.com/ga4gh/seqcol-spec/issues/39>
+- <https://github.com/ga4gh/seqcol-spec/issues/40>
 
 
+## 2023-07-12 Implementations SHOULD provide sorted_name_length_pairs and comparison endpoint
 
-## 2023-06-28 - SeqCol JSONschema defines reserved attributes without additional namespacing
+### Decisions
+
+1. Name of the "names-lengths" attribute should be `sorted_name_length_pairs`.
+2. The `sorted_name_length_pairs` is RECOMMENDED.
+3. The `/comparison` endpoint is RECOMMENDED.
+4. The algorithm for computing the `sorted_name_length_pairs` attribute should be as follows:
+
+### Algorithm for computing `sorted_name_length_pairs`
+
+1. Lump together each name-length pair from the primary collated `names` and `lengths` into an object, like `{"length":123,"name":"chr1"}`.
+2. Canonicalize JSON according to the seqcol spec (using RFC-8785).
+3. Digest each name-length pair string individually.
+4. Sort the digests lexographically.
+5. Add as an undigested, uncollated array to the sequence collection.
+
+
+### Rationale and alternatives considered
+
+1. We considered `names_lengths`, `sorted_names_lengths`, `name_length_pairs`. In the end we are trying to strike a balance between descriptiveness and conciseness. We decided the idea of "pairs" is really critical, and so is "sorted", so this seemed to us to be a minimal set of words to capture the intention of the attribute, though it is a bit long. But in the end the name itself just has to be *something* standardized, and nothing seems perfect.
+
+2. We debated whether it should be required or optional to provide the `sorted_name_length_pairs` attribute. We think it provides a lot of really nice benefits, particularly if everyone implements it; however, we also acknowledge that there are some use cases for seqcols (like just being a provider of sequence collections) where every collection will have sequences, and comparing among coordinate systems is not really in scope. For this use case, we acknowledge that the sorted_name_length_pairs may not have utility, so we make it RECOMMENDED.
+
+3. Similarly, we envisioned the possibility of a minimal implementation built using object storage that could fulfill all the other specifications. So while we think that the comparison function will be very helpful, particularly if it's implemented everywhere, for a minimal implementation that's sole purpose is to provide sequences, it might make sense to opt out of this. Therefore, we call it recommended.
+
+### Linked issues
+
+- <https://github.com/ga4gh/seqcol-spec/issues/40>
+
+
+## 2023-06-14 - Internal identifiers SHOULD NOT be prefixed
+
+### Background
+
+In some situations, identifiers are prefixed. For example, these may be CURIEs, which specify namespaces or provide other information about what the identifier represents. This raises questions about when and where we should expect or use prefixes. This has to be determined because including prefixes in the content that gets digested changes it, so we have to be consistent.
+
+### Decision
+
+We determined that *internally*, we will not append prefixes to the strings we are going to digest. However, if a particular identifier defines some kind of a prefix *as part of the identifier* (*e.g.* a refget sequence identifier), then it's of course no problem, we take that identifier at face value. To summarize:
+
+- for internal identifiers (those generated within seqcol), we digest only digests, not prefixes of any kind
+- for external identifiers (like refget identifiers), we accept them at face value, so we wouldn't remove a prefix if you declare it is was part of your sequence identifier
+- the seqcol specification should RECOMMEND using refget identifiers
+
+More specifically, for refget, there are two types of prefix: the namespace prefix (`ga4gh:`) and type type prefix (`SQ.`).
+Right now, the refget server requires you to have the type prefix to request a lookup; the refget protocol declares that this type prefix is *part of the identifier*.
+However, the `ga4gh:` prefix is more of a namespace prefix and is *not* required, and therefore not considered part of the identifier.
+Therefore, the seqcol `sequence` values would *include* the `SQ.` but not the `ga4gh:`.
+
+### Rationale
+
+According to the definition of CURIEs:
+
+> A host language MAY declare a default prefix value, or MAY provide a mechanism for defining a defining a default prefix value. In such a host language, when the prefix is omitted from a CURIE, the default prefix value MUST be used.
+
+We see no need to add prefixes to the identifiers we use internally, which we just assume belong to our namespace.
+Adding prefixes will complicate things and does not add benefits. Prefixes may be added to our identifiers by outside entities as needed to define for them the scope of our local digests.
+
+### Linked issues
+
+- <https://github.com/ga4gh/seqcol-spec/issues/37>
+
+
+## 2023-06-28 - SeqCol JSON schema defines reserved attributes without additional namespacing
 
 ### Decision
 
@@ -57,6 +129,47 @@ Several reasons led us to this decisions:
 
 In other words, in short: the idea to prevent future backwards-incompatibility by creating a reserved word namespace seems, paradoxically, more likely to actually *create* a future backwards compatibility than to prevent one.
 
+## 2023-06-28 Details of endpoints
+
+### Decisions
+
+1. The specification for how to retrieve different representations of a sequence collection should be specified to the `/collection` endpoint with `?level=<level>`, where `<level>` interpretations are:
+	- `level` <= 0 is undefined
+	- the return value is JSON for all 
+	- `?level=1` MUST be allowed, and must return the level 1 seqcol representation
+	- `?level=2` MUST be allowed, and must return the level 2 seqcol representation
+	- `?level` is OPTIONAL, and when not provided, `level=2` is assumed
+
+2. The `/comparison` endpoint is RECOMMENDED.
+
+### Rationale
+
+1. The different levels of representation are useful for different things and it makes sense to make it possible to retrieve them. We debated about the best way to do this, and also considered using names instead of numbers.
+
+2. The comparison endpoint is very useful, but we can imagine use cases where it can cause problems or may not be needed. First, it will preclude the ability of creating an S3-only implementation. Since it's possible and useful to create an implementation that only implements the `/collection` endpoint, it makes sense that `/comparison` should not be required. Second, some services may view themselves as solely providing content, and nothing more. We recommend these services still implement `/comparison`, but acknowledge that the `/collection` endpoint will still be useful even without it, so this again fits with a `RECOMMEND` status.
+
+
+
+## 2023-03-22 - Seqcol schemas MUST specify inherent attributes
+
+### Decision
+
+A seqcol schema provided by a seqcol API `MUST` define an `inherent` section. This section specifies a list of attributes, indicating the attributes that **do** contribute to the identity of the collection. As a corollary, attributes of a seqcol that are *not* listed in `inherent` `MUST NOT` contribute to the identifier; they are therefore excluded from the digest calculation.
+
+### Rationale
+
+We have found a lot of useful use cases for information that should go along with a seqcol, but should not contribute to the *identity* of that seqcol. This is a useful construct as it allows us to include information in a collection that does not affect the identifier that is computed for that collection. One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have a different identifier! Similarly, the 'sorted_name_length_pairs' idea provides lots of utility, but it doesn't change anything about the identity of the collection, so it would be nice to exclude it because then an implementation that didn't implement 'sorted_name_length_pairs' would end up with the same identifier, improving interoperability across servers.
+
+Thus, we introduce the idea of *inherent* vs *non-inherent attributes*. Inherent attributes contribute to the identifier; *non-inherent* attributes are not considered in computing the top-level digest. We previously called these *digested* and *non-digested* attributes, but this is not really a good name because, while these non-inherent attributes may not be part of the top-level digest calculation, they are still going to be digested at level 2.
+
+### Linked issues
+
+- <https://github.com/ga4gh/seqcol-spec/issues/40>
+
+### Alternatives considered
+
+We considered using `extrinsic` to define the opposite of `inherent`, which would change it so that attributes were inherent by default; but we decided we liked the explicitness of forcing the schema to specify which attributes are to be included in the digest, because this brings clarity over the alternative, which is to assume everything is included unless it's excluded. We also liked that this makes the `inherent` keyword behave similarly to the `required` keyword in JSON-schema; if left off, we assume nothing is required. This means that in order for a seqcol schema to be valid, it must have at least one inherent attribute specified.
+
 
 ## 2023-02-08 - Array names SHOULD be ASCII
 
@@ -72,7 +185,36 @@ While non-ASCII array names would be compatible with our current specification, 
 
 ### Linked issues
 
-- https://github.com/ga4gh/seqcol-spec/issues/33
+- <https://github.com/ga4gh/seqcol-spec/issues/33>
+
+
+## 2023-01-25 - The digest algorithm will be the GA4GH digest
+
+### Decision
+
+`sha512t24u` digests must be used instead of `md5` for sequence collection digests.
+
+### Rationale 
+
+`sha512t24u` was created as part of the [Variation Representation Specification standard](https://vrs.ga4gh.org/en/stable/impl-guide/computed_identifiers.html) and used within VRS to calculate GA4GH identifiers for high-level domain objects in combination with a type prefix map. The `sha512t24u` function ([Hart _et al_. 2020](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883)) is described as:
+
+- performing a SHA-512 digest on a binary blob of data
+- truncate the resulting digest to 24 bytes
+- encodes the 24 bytes using `base64url` ([RFC 4648](https://datatracker.ietf.org/doc/html/rfc4648#section-5)) resulting in a 32 character string
+
+Under this scheme the string `ACGT` will result in the `sha512t24u` digest `aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2`. This digest can be converted into a valid refget identifier by prefixing `SQ.`. 
+
+`sha512t24u` was envisaged as a fast digest mechanism with a space-efficient representation that can be used for any data with low collision probability. Collisions have been (documented in `md5`)[https://en.wikipedia.org/wiki/MD5#Collision_vulnerabilities] leading to the belief MD5 was insufficient for our needs.
+
+`sha512t24u` must be used for any digest of data **by** the sequence collections standard. This decision does not dissalow the use of `md5` sequence checksums.
+
+### Limitations
+
+`MD5` is easier to calculate and familiar as many systems ship with a command line `md5` binary. `sha512t24u` needs to be typed when used outside of an implementation to avoid issues of collision.
+
+### Linked issues
+
+- [https://github.com/ga4gh/seqcol-spec/issues/30](https://github.com/ga4gh/seqcol-spec/issues/30)
 
 
 ## 2023-01-12 - How sequence collection are serialized prior to digestion
@@ -169,6 +311,7 @@ It also future-proofs the serialisation method if we ever allow complex object t
 The JSON canonical serialisation defined in RFC-8785 has a limited set of reference implementation. It is possible that its implementation makes sequence collection implementation more difficult in languages where the RFC is not implemented. In this cases it is valuable to note that the current specification of Sequence Collection do not require that all the features of RFC-8785 be implemented. 
 
 
+
 ## 2022-10-05 - Terminology decisions
 
 ### Decision
@@ -256,7 +399,7 @@ We should be consistent by using these terms to refer to the above representatio
 
 
 ### Linked issues
-- https://github.com/ga4gh/seqcol-spec/issues/25
+- <https://github.com/ga4gh/seqcol-spec/issues/25>
 
 
 ## 2022-06-15 - Structure for the return value of the comparison API endpoint
@@ -268,8 +411,8 @@ The compare function return value MUST be an object following the REQUIRED forma
 **REQUIRED**: The endpoint MUST return, in JSON format, an object with these 3 keys: "digests", "arrays", "elements". 
 
 - *digests*: an object with 2 elements, with keys *a* and *b*, and values either the level 0 seqcol digests for the compared collections, or *undefined (null)*. The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return *undefined (null)* in this element for any corresponding sequence collection.
-- *arrays*: an object with 3 elements, with keys *a-only*, *b-only*, and *a-and-b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
-- *elements*: An object with 3 elements: *total*, *a-and-b*, and *a-and-b-same-order*. *total* is an object with *a* and *b* keys, values corresponding to the total number of elements in the arrays for the corresponding collection. *a-and-b* is an object with names corresponding to each array present in both collections (in *arrays.a-and-b*), with values as the number of elements present in both collections for the given array. *a-and-b-same-order* is also an object with names corresponding to arrays, and the values a boolean following the same-order specification below.
+- *arrays*: an object with 3 elements, with keys *a_only*, *b_only*, and *a_and_b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
+- *elements*: An object with 3 elements: *total*, *a_and_b*, and *a_and_b-same-order*. *total* is an object with *a* and *b* keys, values corresponding to the total number of elements in the arrays for the corresponding collection. *a_and_b* is an object with names corresponding to each array present in both collections (in *arrays.a_and_b*), with values as the number of elements present in both collections for the given array. *a_and_b-same-order* is also an object with names corresponding to arrays, and the values a boolean following the same-order specification below.
 
 Example: 
 
@@ -280,9 +423,9 @@ Example:
     "b": "c345e091cce0b1df78bfc124b03fba1c"
   },
   "arrays": {
-    "a-only": [],
-    "b-only": [],
-    "a-and-b": [
+    "a_only": [],
+    "b_only": [],
+    "a_and_b": [
       "lengths",
       "names",
       "sequences"
@@ -293,12 +436,12 @@ Example:
       "a": 195,
       "b": 25
     },
-    "a-and-b": {
+    "a_and_b": {
       "lengths": 25,
       "names": 25,
       "sequences": 0
     },
-    "a-and-b-same-order": {
+    "a_and_b-same-order": {
       "lengths": false,
       "names": false,
       "sequences": null
@@ -309,7 +452,7 @@ Example:
 
 #### Same-order specification
 
-The comparison return includes an *a-and-b-same-order* boolean value for each array that is present in both collections. The defined value of this attribute is:
+The comparison return includes an *a_and_b-same-order* boolean value for each array that is present in both collections. The defined value of this attribute is:
 
 - *undefined (null)* if there are fewer than 2 overlapping elements
 - *undefined (null)* if there are unbalanced duplicates present (see definition below)
@@ -324,8 +467,8 @@ The primary purpose of the compare function is to provide a high-level view of h
 
 ### Linked issues
 
-- https://github.com/ga4gh/seqcol-spec/issues/21
-- https://github.com/ga4gh/seqcol-spec/issues/7
+- <https://github.com/ga4gh/seqcol-spec/issues/21>
+- <https://github.com/ga4gh/seqcol-spec/issues/7>
 
 ### Alternatives considered
 
@@ -335,7 +478,7 @@ We considered a simpler arrangement that would only return true/false values as 
 
 Someone may want to return more information than this, such as enumerating the specific elements in each category. However, this use case would be problematic for large collections, like a transcriptome. We may in the future provide an update to the specification that defines how this information should be returned, but for now, we leave the specification at this minimum requirement.
 
-## 2022-06-15 We will define the elements of a sequence collections using a schema
+## 2022-06-15 - We will define the elements of a sequence collections using a schema
 
 ### Decision
 
@@ -398,8 +541,9 @@ We need a formal definition of a sequence collection. The schema provides a mach
 
 ### Linked issues
 
-- https://github.com/ga4gh/seqcol-spec/issues/8
-- https://github.com/ga4gh/seqcol-spec/issues/6
+- <https://github.com/ga4gh/seqcol-spec/issues/8>
+- <https://github.com/ga4gh/seqcol-spec/issues/6>
+
 
 
 
@@ -438,7 +582,7 @@ The POST body for the local comparison is a "level 2" sequence collection, like 
 
 ### Rationale
 
-We wanted to stick with the REST guideline of noun endpoints with GET that describe what you are retrieving. As recommended in the [service-info specification](https://github.com/ga4gh-discovery/ga4gh-service-info#how-do-i-describe-a-service-implementing-multiple-specifications), a prefix, like `/seqcol/...` could be added by a service that implemented multiple specifications, but this kind of namespace it outside the scope of the specification itself. We considered doing `/{digest1}/compare/{digest2}` and that would have been fine. In the end we liked the symmetry of `/comparison` and `/collection` as parallel endpoints. For the retrieval endpoint we considered `/secol` or `/sequence-collection` or `/seqCol`, but wanted to keep structure parallel to the refget `/sequence` endpoint.
+We wanted to stick with the REST guideline of noun endpoints with GET that describe what you are retrieving. As recommended in the [service-info specification](https://github.com/ga4gh-discovery/ga4gh-service-info#how-do-i-describe-a-service-implementing-multiple-specifications), a prefix, like `/seqcol/...` could be added by a service that implemented multiple specifications, but this kind of namespace it outside the scope of the specification itself. We considered doing `/{digest1}/compare/{digest2}` and that would have been fine. In the end we liked the symmetry of `/comparison` and `/collection` as parallel endpoints. For the retrieval endpoint we considered `/seqcol` or `/sequence-collection` or `/seqCol`, but wanted to keep structure parallel to the refget `/sequence` endpoint.
 
 ### Limitations
 
