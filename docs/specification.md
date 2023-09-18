@@ -150,13 +150,13 @@ Here's an example of a sequence collection organized into the canonical seqcol o
 
 This object would validate against the JSON Schema above.
 The object is a series of arrays with matching length (`3`), with the corresponding entries collated such that the first element of each array corresponds to the first element of each other array.
-For the rationale why this structure was chosen instead of an array of annotated sequences, see *Footnote F1*
+For the rationale why this structure was chosen instead of an array of annotated sequences, see [*Footnote F1*](#f1-why-use-an-array-oriented-structure-instead-of-a-sequence-oriented-structure).
 Implementations `MUST` provide at least the structure specified in this schema.
 Implementations `MAY` choose to extend this schema by adding additional attributes.
 This schema extends vanilla JSON Schema in two ways; first, it provides the `collated` qualifier.
-For further details about the rationale behind collated attributes, see *Footnote F2*.
-Second, it specifies the `inherent` qualifier. For further details about the rationale and examples of non-inherent attributes, see *Footnote F3*.
-Finally, another detail that may be unintuitive at first is that the `sequences` attribute is optional; for an explanation of why, see *Footnote F4*.
+For further details about the rationale behind collated attributes, see [*Footnote F2*](#f2-collated-attributes).
+Second, it specifies the `inherent` qualifier. For further details about the rationale and examples of non-inherent attributes, see [*Footnote F3*](#f3-details-of-inherent-and-non-inherent-attributes).
+Finally, another detail that may be unintuitive at first is that the `sequences` attribute is optional; for an explanation of why, see [*Footnote F4*](#f4-sequence-collections-without-sequences).
 
 ##### Filter non-inherent attributes
 
@@ -192,7 +192,7 @@ _* The above Python function suffices if (1) attribute keys are restricted to AS
 #### Step 3: Digest each canonicalized attribute value using the GA4GH digest algorithm.
 
 Apply the GA4GH digest algorithm to each attribute value.
-The GA4GH digest algorithm is described in detail in *Footnote F5*.
+The GA4GH digest algorithm is described in detail in [*Footnote F5*](#f5-the-ga4gh-digest-algorithm).
 This converts the value of each attribute in the seqcol into a digest string.
 Applying this to each value will produce a structure that looks like this:
 
@@ -331,7 +331,7 @@ It is `RECOMMENDED` that all seqcol implementations add this attribute to all se
 When digested, this attribute provides an identifier for an order-invariant coordinate system for a sequence collection.
 Because it is *non-inherent*, it does not affect the identity (digest) of the collection.
 It is created deterministically from the `names` and `lengths` attributes in the collection; it *does not* depend on the actual sequence content, so it is consistent across two collections with different sequence content if they have the same `names` and `lengths`, which are correctly collated, but with pairs not necessarily in the same order.
-For rationale and use cases of `sorted_name_length_pairs`, see *Footnote F6*.
+For rationale and use cases of `sorted_name_length_pairs`, see [*Footnote F6*](#f6-use-cases-for-the-sortednamelengthpairs-non-inherent-attribute).
 
 Algorithm: 
 
