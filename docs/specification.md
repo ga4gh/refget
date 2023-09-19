@@ -353,14 +353,14 @@ While the latter is intuitive, as it captures each sequence object with some acc
 
   2. Conciseness. Sequence collections may be used for tens of thousands or even millions of sequences. For example, a transcriptome may contain a million transcripts. The array-oriented data structure is a more concise representation for digesting collections with many elements because the attribute names are specified once *per collection* instead of once *per element*. Furthermore, the level 1 representation of the sequence collection is more concise for large collections, since we only need one digest *per attribute*, rather than one digest *per sequence*. 
 
-  3. Utility of intermediate digests. The array-oriented approach provides useful intermediate digests for each attribute. This digest can be used to test for matching sets of sequences, or matching coordinate systems, using the individual component digests. With a sequence-oriented framework, this would require traversing down a layer deeper, to the individual elements, to establish identity of individual components. The alternative advantage we would have from a sequence-oriented structure would be identifiers for *annotated sequences*. We gain the advantages of these digests through the *names-lengths* attribute.
+  3. Utility of intermediate digests. The array-oriented approach provides useful intermediate digests for each attribute. This digest can be used to test for matching sets of sequences, or matching coordinate systems, using the individual component digests. With a sequence-oriented framework, this would require traversing down a layer deeper, to the individual elements, to establish identity of individual components. The alternative advantage we would have from a sequence-oriented structure would be identifiers for *annotated sequences*. We can gain the advantages of these digests through adding a custom non-inherent, but collated attribute that calculates a unique digest for each element based on the selected attributes of interest, *e.g.* `named_sequences` (digest of *e.g.* `b'{"name":"chr1","sequence":"SQ.2648ae1bacce4ec4b6cf337dcae37816"}'`).
 
 See [ADR on 2021-06-30 on array-oriented structure](/decision_record/#2021-06-30-use-array-based-data-structure-and-multi-tiered-digests)
 
 
 ### F2. Collated attributes
 
-In JSON schema, there are 2 ways to qualify properties: 1) a local qualifier, using a key under a property; or 2) an object-level qualifier, which is specified with a keyed list of properties up one level.
+In JSON Schema, there are 2 ways to qualify properties: 1) a local qualifier, using a key under a property; or 2) an object-level qualifier, which is specified with a keyed list of properties up one level.
 For example, you annotate a property's `type` with a local qualifier, underneath the property, like this:
 
 ```console
@@ -379,7 +379,7 @@ required:
   - names
 ```
 
-In sequence collections, we chose to use define `collated` as a local qualifier. Local qualifiers fit better for qualifiers independent of the object as a whole.
+In sequence collections, we chose to define `collated` as a local qualifier. Local qualifiers fit better for qualifiers independent of the object as a whole.
 They are qualities of a property that persist if the property were moved onto a different object.
 For example, the `type` of an attribute is consistent, regardless of what object that attribute were defined on.
 In contrast, object-level qualifier lists fit better for qualifiers that depend on the object as a whole.
@@ -442,7 +442,7 @@ See: [ADR from 2023-01-25 on digest algorithm](/decision_record/#2023-01-25-dige
 
 ### F6. Use cases for the `sorted_name_length_pairs` non-inherent attribute
 
-One motivation for this attribute comes from genome browsers, which may display genomic loci of interest (BED files).
+One motivation for this attribute comes from genome browsers, which may display genomic loci of interest (*e.g.* BED files).
 The genome browser should only show BED files if they annotate the same coordinate system as the reference genome.
 This is looser than strict identity, since we don't really care what the underlying sequence characters are, as long as the positions are comparable.
 We also don't care about the order of the sequences.
