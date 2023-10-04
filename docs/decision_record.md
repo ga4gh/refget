@@ -40,6 +40,22 @@ In sequence collections, we chose to use define `collated` as a local qualifier.
 
 We reasoned that `inherent`, like `required`, describes the role of an attribute in the context of the whole object; An attribute that is inherent to one type of object need not be inherent to another. Therefore, it makes sense to treat this concept the same way jsonschema treats `required`.  In contrast, the idea of `collated` describes a property independently: Whether an attribute is collated is part of the definition of the attribute; if the attribute were moved to a different object, it would still be collated.
 
+For example, here the collated attribute is specified as a local attribute. It is a boolean value:
+
+```
+description: "A collection of biological sequences."
+type: object
+properties:
+  lengths:
+    type: array
+    collated: true
+    description: "Number of elements, such as nucleotides or amino acids, in each sequence."
+    items:
+      type: integer
+...
+```
+
+
 ### Linked issues
 - https://github.com/ga4gh/seqcol-spec/issues/40
 
