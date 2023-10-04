@@ -12,7 +12,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ### Decision
 
-Collated attributes are seqcol attributes where the values of the attribute are 1-to-1 with sequences in the collection, and represented in the same order as the sequences in the collection. Names, lengths, and sequences are examples of collated attributes. While not strictly required for the core functionality of sequence collections, we anticipate downstream applications will benefit if the seqcol JSONschema specifies which attributes are collated. We therefore REQUIRE the seqcol JSONschema to specify which attributes are collated, and these will be specified using a local qualifier (defined below). 
+Collated attributes are seqcol attributes where the values of the attribute are 1-to-1 with sequences in the collection, and represented in the same order as the sequences in the collection. Names, lengths, and sequences are examples of collated attributes. While not strictly required for the core functionality of sequence collections, we anticipate downstream applications will benefit if the seqcol JSONschema specifies which attributes are collated. We therefore REQUIRE the seqcol JSONschema to specify which attributes are collated, and these will be specified using a local boolean qualifier (defined below). 
 
 ### Rationale
 
@@ -40,7 +40,7 @@ In sequence collections, we chose to use define `collated` as a local qualifier.
 
 We reasoned that `inherent`, like `required`, describes the role of an attribute in the context of the whole object; An attribute that is inherent to one type of object need not be inherent to another. Therefore, it makes sense to treat this concept the same way jsonschema treats `required`.  In contrast, the idea of `collated` describes a property independently: Whether an attribute is collated is part of the definition of the attribute; if the attribute were moved to a different object, it would still be collated.
 
-For example, here the collated attribute is specified as a local attribute. It is a boolean value:
+For example, here the `lengths` attribute is maraked as collated using a local qualifier. The `author` attribute is marked as *not* collated in the same way:
 
 ```
 description: "A collection of biological sequences."
@@ -52,6 +52,10 @@ properties:
     description: "Number of elements, such as nucleotides or amino acids, in each sequence."
     items:
       type: integer
+  author:
+    type: string
+    collated: false
+    description: "The author of this sequence collection"
 ...
 ```
 
