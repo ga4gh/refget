@@ -12,7 +12,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ### Decision
 
-Collated attributes are seqcol attributes where the values of the attribute are 1-to-1 with sequences in the collection, and represented in the same order as the sequences in the collection. Names, lengths, and sequences are examples of collated attributes. While not strictly required for the core functionality of sequence collections, we anticipate it downstream applications will benefit if the seqcol JSONschema specifies which attributes are collated. We therefore REQUIRE the seqcol JSONschema to specify which attributes are collated, and these will be specified using a local qualifier (defined below). 
+Collated attributes are seqcol attributes where the values of the attribute are 1-to-1 with sequences in the collection, and represented in the same order as the sequences in the collection. Names, lengths, and sequences are examples of collated attributes. While not strictly required for the core functionality of sequence collections, we anticipate downstream applications will benefit if the seqcol JSONschema specifies which attributes are collated. We therefore REQUIRE the seqcol JSONschema to specify which attributes are collated, and these will be specified using a local qualifier (defined below). 
 
 ### Rationale
 
