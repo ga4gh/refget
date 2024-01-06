@@ -8,9 +8,33 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+## 2024-01-06 The comparison function use more descriptive attribute names
+
+### Decision
+
+This decision complements and updates the one taken on 2022-06-15.
+It changes the attribute names to describe specifically what is being returned.
+In the top level object:
+ - rename `arrays` to `attributes`, and it should describe all attributes regardless of their types.
+ - rename `elements` to `array_elements`, and it should describe only attribute of type arrays regardless of the `collated` attribute
+
+In the `array_elements` (previously `elements`):
+- remove the `total` and replace it with `a_count` and `b_count` where `a_count` list all the arrays from `a` and the number of element they contain and `b_count` does the same for `b`.
+- replace `a_and_b` with `a_and_b_count` -- the content stay the same
+
+
+### Rationale
+
+The comparison function is designed to provide a way of comparing two sequence collection by interrogating the content of the collated arrays. Because of this was implicitly assumed, the initial attribute names were not specifically stating that they only applied to arrays. 
+
+
+### Linked issues
+https://github.com/ga4gh/seqcol-spec/issues/57
+
+
 ## 2023-08-25 The user-facing API will neither expect to provide prefixes
 
-## Rationale
+### Rationale
 
 We have debated whether the digests returned by the API should be prefixed in any way (either a namespace-type prefix, or a type prefix). We have also debated whether the API should *accept* prefixed versions of digests. We decided (for now) that neither should be true; our protocol is simply to use and provide the seqcol digests straight up. We view the prefixes as being something useful for an external context to determine where a digest came from or belongs; but this seems external to how our service should behave internally. Therefore, any sort of prefix should be happening by whatever is *using* this service, not by the service itself. For example, a ga4gh-wide broker that could disambiguate between different types of digests may require an incoming digest to have a type prefix, but this would be governed by such a context-oriented service, not by the seqcol service itself.
 
