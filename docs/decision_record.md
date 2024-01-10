@@ -8,9 +8,37 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+## 2024-01-10 Clarifications on the purpose and form of the JSON schema in service-info
+
+### Decision
+
+We made a series of decisions regarding how the JSON-schema should be used to specify the data that a seqcol server will serve.
+
+- we RECOMMEND you produce an openapi.json for your service.
+- you MUST provide a single schema, this MUST include all possible attributes your service may provide (you cannot have a collection with an attribute that is not defined in your schema).
+- we RECOMMEND your schema use property-level refs to point to terms defined by a central, approved seqcol schema.
+- we RECOMMEND your schema only define terms actually used in at least one collection you serve.
+
+### Rationale
+
+This set of decisions is oriented around solving a series of related problems.
+
+A JSON schema really serves multiple purposes: 1. validation; 2. configuration of a server; 3. providing information to users about what a server does. Here, the JSON-schema in the service info is really primarily for the third point.
+
+Allowing the JSON schema to use refs introduces some challenges, because now a third-party using that schema will need to resolve those refs. While an existing JSON-schema validator would have a built-in dereferencer, currently, these are only useful if you're using the JSON-schema for validation, which may not be the goal. So, we acknowledge that allowing refs in the JSON schema has potential to make it a bit harder use; but the benefit of being able to share definitions is too great to ignore. The goal here is to increase sharability, and this will be done most effectively if users can easily point to other JSON schemas -- in particular, a central, approved one that is released with recommended terms as part of the seqcol spec.
+
+Another issue is that we wanted to the schema to be a place where a user could see what the shape of the data in the server would look like, but we realized this is basically impossible, because different collections in a given server could possibly have differnet attributes, and therefore, different schemas. Therefore, the only thing that makes sense is for the schema served by the service-info endpoint to have all possible attributes that could be included in any collection hosted by a particular server. This way, you're at least guaranteed that you won't encounter an attribute that is not defined by the schema, though we cannot guarantee that your schema will not contain an attribute that is not present in a particular sequence collection.
+
+### Linked issues
+
+- <https://github.com/ga4gh/seqcol-spec/issues/50>
+- <https://github.com/ga4gh/seqcol-spec/issues/39>
+
+
+
 ## 2023-08-25 The user-facing API will neither expect to provide prefixes
 
-## Rationale
+### Rationale
 
 We have debated whether the digests returned by the API should be prefixed in any way (either a namespace-type prefix, or a type prefix). We have also debated whether the API should *accept* prefixed versions of digests. We decided (for now) that neither should be true; our protocol is simply to use and provide the seqcol digests straight up. We view the prefixes as being something useful for an external context to determine where a digest came from or belongs; but this seems external to how our service should behave internally. Therefore, any sort of prefix should be happening by whatever is *using* this service, not by the service itself. For example, a ga4gh-wide broker that could disambiguate between different types of digests may require an incoming digest to have a type prefix, but this would be governed by such a context-oriented service, not by the seqcol service itself.
 
