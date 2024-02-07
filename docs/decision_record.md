@@ -14,10 +14,13 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 We made a series of decisions regarding how the JSON-schema should be used to specify the data that a seqcol server will serve.
 
-- we RECOMMEND you produce an openapi.json for your service.
-- you MUST provide a single schema, this MUST include all possible attributes your service may provide (you cannot have a collection with an attribute that is not defined in your schema).
-- we RECOMMEND your schema use property-level refs to point to terms defined by a central, approved seqcol schema.
+- you MUST provide a single schema.
+- the provided schema MUST include all possible attributes your service may provide (you cannot have a collection with an attribute that is not defined in your schema).
+- the seqcol spec will include a central, approved seqcol schema
+- for any terms defined by the central, approved seqcol schema, any implementations MUST use definitions provided, either by using refs or by duplicating the terms
+- we RECOMMEND your schema use property-level refs to point to terms defined by a central, approved seqcol schema, rather than duplicating terms
 - we RECOMMEND your schema only define terms actually used in at least one collection you serve.
+
 
 ### Rationale
 
