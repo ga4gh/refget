@@ -25,11 +25,12 @@ In the `array_elements` (previously `elements`):
 
 ### Rationale
 
-The comparison function is designed to provide a way of comparing two sequence collection by interrogating the content of the collated arrays. Because of this was implicitly assumed, the initial attribute names were not specifically stating that they only applied to arrays. 
+The comparison function is designed to compare two sequence collections by interrogating the content of the collated arrays. The initial attribute names were not specifically stating that they only applied to arrays, since originally, we had only been envisioning array attributes. Now that it's more clear how non-array attributes could be included, these updates to the comparison return value clarify which attributes are being referenced.
 
 
 ### Linked issues
-https://github.com/ga4gh/seqcol-spec/issues/57
+
+- <https://github.com/ga4gh/seqcol-spec/issues/57>
 
 
 ## 2023-08-25 The user-facing API will neither expect to provide prefixes
