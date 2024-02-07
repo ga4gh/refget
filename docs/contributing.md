@@ -6,7 +6,7 @@ We welcome more participants! If you are interested in contributing, one of the 
 
 - <a href="http://databio.org">Nathan Sheffield</a>, Center for Public Health Genomics, University of Virginia
 - Andy Yates, EMBL-EBI
-- Tim Cezard, EMBL-EBI
+- Timothee Cezard, EMBL-EBI
 
 ## Contributors
 
