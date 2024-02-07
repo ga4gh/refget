@@ -232,6 +232,8 @@ The API has 3 top-level endpoints, for 3 functions:
 2. `/collection`, for retrieving sequence collections; and
 3. `/comparison`, for comparing two sequence collections.
 
+In addition, a RECOMMENDED endpoint at `/openapi.json` SHOULD provide OpenAPI documentation.
+
 Under these umbrella endpoints are a few more specific sub-endpoints, described in detail below:
 
 #### 2.1 Service info 
@@ -241,7 +243,37 @@ Under these umbrella endpoints are a few more specific sub-endpoints, described 
 
 The `/service-info` endpoint should follow the [GA4GH-wide specification for service info](https://github.com/ga4gh-discovery/ga4gh-service-info/) for general description of the service.
 Then, it should also add a few specific pieces of information under a `seqcol` property:
- - `schema`: should return the JSON Schema implemented by the server.
+ - `schema`: MUST return the JSON Schema implemented by the server.
+
+##### The service-info JSON-schema document
+
+The `schema` attribute of `service-info` return value MUST provide a single schema, this MUST include all possible attributes your service may provide. In other words, you cannot have a collection with an attribute that is not defined in your schema.
+
+We RECOMMEND the schema only define terms actually used in at least one collection served; however, it is allowed for the schema to contain extra terms that are not used in any collections in the server.
+
+We RECOMMEND your schema use property-level refs to point to terms defined by a central, approved seqcol schema. However, it is also allowed for the schema to embed all definitions locally. The central, approved seqcol schema will be made available as the spec is finalized.
+
+For example, here's a JSON schema that uses a `ref` to reference the approved seqcol schema:
+
+```yaml
+description: "A collection of biological sequences."
+type: object
+"$id": "https://example.com/sequence_collection",  # URI to main seqcol definition
+properties:
+  lengths:
+    "$ref": "/lengths"
+  names:
+    "$ref": "/names"
+  sequences:
+    "$ref": "/sequences"
+required:
+  - names
+  - lengths
+inherent:
+  - lengths
+  - names
+  - sequences
+```
 
 #### 2.2 Collection
 
@@ -320,6 +352,10 @@ When the duplicates are balanced, order is still defined; but if duplicates are 
 The output of the comparison function provides information-rich feedback about the two collections.
 These details can be used to make a variety of inferences comparing two collections, but it can take some thought to interpret.
 For more details about how to interpret the results of the comparison function to determine different types of compatibility, please see the [howto guide on comparing sequencing collections](compare_collections.md).
+
+### 2.4 OpenAPI documentation
+
+In addition to the primary top-level endpoints, it is RECOMMENDED that the service provide `/openapi.json`, an OpenAPI-compatible description of the endpoints.
 
 ---
 ### 3. Ancillary attribute management: recommended non-inherent attributes

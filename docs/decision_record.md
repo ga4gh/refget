@@ -8,6 +8,33 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+## 2024-01-10 Clarifications on the purpose and form of the JSON schema in service-info
+
+### Decision
+
+We made a series of decisions regarding how the JSON-schema should be used to specify the data that a seqcol server will serve.
+
+- you MUST provide a single schema.
+- the provided schema MUST include all possible attributes your service may provide (you cannot have a collection with an attribute that is not defined in your schema).
+- the seqcol spec will include a central, approved seqcol schema
+- for any terms defined by the central, approved seqcol schema, any implementations MUST use definitions provided, either by using refs or by duplicating the terms
+- we RECOMMEND your schema use property-level refs to point to terms defined by a central, approved seqcol schema, rather than duplicating terms
+- we RECOMMEND your schema only define terms actually used in at least one collection you serve.
+
+### Rationale
+This set of decisions is oriented around solving a series of related problems.
+
+A JSON schema really serves multiple purposes: 1. validation; 2. configuration of a server; 3. providing information to users about what a server does. Here, the JSON-schema in the service info is really primarily for the third point.
+
+Allowing the JSON schema to use refs introduces some challenges, because now a third-party using that schema will need to resolve those refs. While an existing JSON-schema validator would have a built-in dereferencer, currently, these are only useful if you're using the JSON-schema for validation, which may not be the goal. So, we acknowledge that allowing refs in the JSON schema has potential to make it a bit harder use; but the benefit of being able to share definitions is too great to ignore. The goal here is to increase sharability, and this will be done most effectively if users can easily point to other JSON schemas -- in particular, a central, approved one that is released with recommended terms as part of the seqcol spec.
+
+Another issue is that we wanted the schema to be a place where a user could see what the shape of the data in the server would look like, but we realized this is basically impossible, because different collections in a given server could possibly have different attributes, and therefore, different schemas. Therefore, the only thing that makes sense is for the schema served by the service-info endpoint to have all possible attributes that could be included in any collection hosted by a particular server. This way, you're at least guaranteed that you won't encounter an attribute that is not defined by the schema, though we cannot guarantee that all sequence collections will contain all attributes defined in the schema.
+
+### Linked issues
+
+- <https://github.com/ga4gh/seqcol-spec/issues/50>
+- <https://github.com/ga4gh/seqcol-spec/issues/39>
+
 ## 2024-01-06 The comparison function use more descriptive attribute names
 
 ### Decision
@@ -22,11 +49,9 @@ In the `array_elements` (previously `elements`):
 - remove the `total` and replace it with `a_count` and `b_count` where `a_count` list all the arrays from `a` and the number of element they contain and `b_count` does the same for `b`.
 - replace `a_and_b` with `a_and_b_count` -- the content stay the same
 
-
 ### Rationale
 
 The comparison function is designed to compare two sequence collections by interrogating the content of the collated arrays. The initial attribute names were not specifically stating that they only applied to arrays, since originally, we had only been envisioning array attributes. Now that it's more clear how non-array attributes could be included, these updates to the comparison return value clarify which attributes are being referenced.
-
 
 ### Linked issues
 
