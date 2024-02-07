@@ -21,9 +21,7 @@ We made a series of decisions regarding how the JSON-schema should be used to sp
 - we RECOMMEND your schema use property-level refs to point to terms defined by a central, approved seqcol schema, rather than duplicating terms
 - we RECOMMEND your schema only define terms actually used in at least one collection you serve.
 
-
 ### Rationale
-
 This set of decisions is oriented around solving a series of related problems.
 
 A JSON schema really serves multiple purposes: 1. validation; 2. configuration of a server; 3. providing information to users about what a server does. Here, the JSON-schema in the service info is really primarily for the third point.
@@ -37,6 +35,27 @@ Another issue is that we wanted the schema to be a place where a user could see 
 - <https://github.com/ga4gh/seqcol-spec/issues/50>
 - <https://github.com/ga4gh/seqcol-spec/issues/39>
 
+## 2024-01-06 The comparison function use more descriptive attribute names
+
+### Decision
+
+This decision complements and updates the one taken on 2022-06-15.
+It changes the attribute names to describe specifically what is being returned.
+In the top level object:
+ - rename `arrays` to `attributes`, and it should describe all attributes regardless of their types.
+ - rename `elements` to `array_elements`, and it should describe only attribute of type arrays regardless of the `collated` attribute
+
+In the `array_elements` (previously `elements`):
+- remove the `total` and replace it with `a_count` and `b_count` where `a_count` list all the arrays from `a` and the number of element they contain and `b_count` does the same for `b`.
+- replace `a_and_b` with `a_and_b_count` -- the content stay the same
+
+### Rationale
+
+The comparison function is designed to compare two sequence collections by interrogating the content of the collated arrays. The initial attribute names were not specifically stating that they only applied to arrays, since originally, we had only been envisioning array attributes. Now that it's more clear how non-array attributes could be included, these updates to the comparison return value clarify which attributes are being referenced.
+
+### Linked issues
+
+- <https://github.com/ga4gh/seqcol-spec/issues/57>
 
 
 ## 2023-08-25 The user-facing API will neither expect to provide prefixes
