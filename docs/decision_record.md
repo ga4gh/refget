@@ -201,7 +201,6 @@ Thus, we introduce the idea of *inherent* vs *non-inherent attributes*. Inherent
 
 We considered using `extrinsic` to define the opposite of `inherent`, which would change it so that attributes were inherent by default; but we decided we liked the explicitness of forcing the schema to specify which attributes are to be included in the digest, because this brings clarity over the alternative, which is to assume everything is included unless it's excluded. We also liked that this makes the `inherent` keyword behave similarly to the `required` keyword in JSON-schema; if left off, we assume nothing is required. This means that in order for a seqcol schema to be valid, it must have at least one inherent attribute specified.
 
-
 ## 2023-02-08 - Array names SHOULD be ASCII
 
 ### Decision
@@ -623,6 +622,41 @@ For the `POST comparison` endpoint, we made 2 limitations to simplify the implem
 
 - [https://github.com/ga4gh/seqcol-spec/issues/21](https://github.com/ga4gh/seqcol-spec/issues/21)
 - [https://github.com/ga4gh/seqcol-spec/issues/23](https://github.com/ga4gh/seqcol-spec/issues/23)
+
+## 2021-09-21 - Order will be recognized by digesting arrays in the given order, and unordered digests will be handled as extensions through additional attribuetes
+
+### Decision
+
+The final sequence collection digests will reflect the order by digesting the arrays in the order provided. We will employ no additional 'order' array, and no additional unordered digests *in the string-to-digest*. Any additional attributes designed to handle questions with order, such as `sorted_name_length_pairs`, will not contribute to the digest. Thus, to determine whether two sequence collections differ only in order will require either 1. using the comparison API; or 2. implementing additional functionality via digests outside the inherent attributes.
+
+### Rationale
+
+Our earlier decision determined that order *must* be reflected in the sequence digests, but did not determine the way to ensure that. After months of debate we came up with 3 competing ideas that could do this:
+
+A. Digest arrays in given order. 
+
+B. Reorder all given arrays according to a single canonical order, and encode order in a separate 'order' array that provides an index into the canonically ordered arrays.
+
+C. Reorder each given array individually, and then provide a separate 'order_ATTR' array as an index for each array.
+
+D. Store each array in both ordered and unordered form.
+
+After lots of initial enthusiasm for option B, we determined that it fails to deliver on the promise of staying invariant when order changes, because if there is a change in any array on which the canonical order is based, this changes the canonical ordering, which in turn changes all the array digests. So these 'unordered' (or canonically ordered) digests are in fact not fit for their main purpose. We therefore agreed to discard this option.
+
+While options C/D skirt this issue by having a separate order for each array, so that changes in one array do not affect the digest of another, they add significant complexity as everything needs to be stored twice.
+
+To conclude, option A seems simple and straightforward, satisfies for a basic implementation. We thus defer the question of determining whether two sequence collections differ only in order to the comparison API, or to some other future way to do it that will not affect the actual digests (*e.g.* the 'sorted_name_length_pairs' attribute).
+
+### Linked issues
+
+- https://github.com/ga4gh/seqcol-spec/issues/5
+
+### Known limitations
+
+For use cases that require determination of whether two sequence collections differ only in element order, option A will not provide an answer based on digest comparison alone. Instead, the query will be required to use the compatibility API, which means retrieving the contents of the array to compare them.
+
+Therefore, to answer this 'order-equivalence' question will require a bit more work than if unordered digests were available; however, this functionality can be easily implemented on top of the basic functionality in a number of ways, which we are continuing to consider.
+
 
 ## 2021-08-25 - Sequence collection digests will reflect sequence order
 
