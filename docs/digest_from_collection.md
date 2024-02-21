@@ -54,7 +54,7 @@ def canonical_str(item: dict) -> bytes:
     """Convert a dict into a canonical string representation"""
     return json.dumps(
         item, separators=(",", ":"), ensure_ascii=False, allow_nan=False, sort_keys=True
-    ).encode('utf8')
+    ).encode("utf8")
 
 def sha512t24u_digest(seq: bytes) -> str:
     """ GA4GH digest function """

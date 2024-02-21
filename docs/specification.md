@@ -178,7 +178,7 @@ def canonical_str(item: [list, dict]) -> bytes:
     """Convert a list or dict into a canonicalized UTF8-encoded bytestring representation"""
     return json.dumps(
         item, separators=(",", ":"), ensure_ascii=False, allow_nan=False, sort_keys=True
-    ).encode('utf8')
+    ).encode("utf8")
 ```
 
 This will turn the values into canonicalized UTF8-encoded bytestring representations of the list objects. Using Python notation, the value of the lengths attribute becomes `b'[248956422,133797422,135086622]'`, the value of the names attribute becomes `b'["chr1","chr2","chr3"]'`, and the value of the sequences attribute becomes 
