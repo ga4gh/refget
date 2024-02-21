@@ -472,10 +472,13 @@ This procedure is described as ([Hart _et al_. 2020](https://journals.plos.org/p
 In Python, the digest can be computed with this function:
 
 ```python
-def sha512t24u_digest(seq):
+import base64
+import hashlib
+
+def sha512t24u_digest(seq: bytes) -> str:
     """ GA4GH digest function """
     offset = 24
-    digest = hashlib.sha512(seq.encode()).digest()
+    digest = hashlib.sha512(seq).digest()
     tdigest_b64us = base64.urlsafe_b64encode(digest[:offset])
     return tdigest_b64us.decode("ascii")
 ```
