@@ -16,11 +16,8 @@ nav:
   - Reference:
     - Decision record: decision_record.md
     - Contributing: contributing.md
-theme:
-  name: databio
-  custom_dir: theme_dir
-plugins:
-- search
+
+
 copyright: GA4GH Genomic Knowledge Standards Workstream, Seqcol team
 home_link: null
 navbar:
@@ -34,3 +31,29 @@ navbar:
   - text: Contributing
     icon: fa-users
     href: contributing
+
+theme:
+  logo: img/bedbase_logo.svg
+  favicon: img/bedbase_bug.svg
+  name: material
+
+  features:
+    - header.autohide
+    - navigation.sections
+    - navigation.expand
+    - navigation.footer
+    # - navigation.indexes 
+    - toc.follow
+    - content.action.edit
+    - content.action.view
+    # - navigation.tabs
+    - navigation.top
+
+markdown_extensions:
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: "!!python/name:pymdownx.superfences.fence_code_format"

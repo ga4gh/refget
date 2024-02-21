@@ -1,6 +1,3 @@
-template: jumbotron.html
-extra_css: [extra.css]
-
 <div class="header-container jumbotron">
     <div class="container">
         <h1>Seqcol: Sequence Collections</h1>
