@@ -623,11 +623,11 @@ For the `POST comparison` endpoint, we made 2 limitations to simplify the implem
 - [https://github.com/ga4gh/seqcol-spec/issues/21](https://github.com/ga4gh/seqcol-spec/issues/21)
 - [https://github.com/ga4gh/seqcol-spec/issues/23](https://github.com/ga4gh/seqcol-spec/issues/23)
 
-## 2021-09-21 - Order will be recognized by digesting arrays in the given order, and unordered digests will not be part of the core digest computation
+## 2021-09-21 - Order will be recognized by digesting arrays in the given order, and unordered digests will be handled as extensions through additional attribuetes
 
 ### Decision
 
-The final sequence collection digests will reflect the order by digesting the arrays in the order provided. We will employ no additional 'order' array, and no additional unordered digests in the string-to-digest. To determine whether two sequence collections differ only in order will require either 1. using the comparison API; or 2. implementing additional functionality for unordered digests that is external to the attributes used to compute the digests (inherent attributes).
+The final sequence collection digests will reflect the order by digesting the arrays in the order provided. We will employ no additional 'order' array, and no additional unordered digests *in the string-to-digest*. Any additional attributes designed to handle questions with order, such as `sorted_name_length_pairs`, will not contribute to the digest. Thus, to determine whether two sequence collections differ only in order will require either 1. using the comparison API; or 2. implementing additional functionality via digests outside the inherent attributes.
 
 ### Rationale
 
