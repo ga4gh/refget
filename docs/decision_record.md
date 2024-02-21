@@ -58,13 +58,70 @@ The comparison function is designed to compare two sequence collections by inter
 - <https://github.com/ga4gh/seqcol-spec/issues/57>
 
 
-## 2023-08-25 The user-facing API will neither expect to provide prefixes
+## 2023-08-25 The user-facing API will neither expect nor provide prefixes
 
 ### Rationale
 
 We have debated whether the digests returned by the API should be prefixed in any way (either a namespace-type prefix, or a type prefix). We have also debated whether the API should *accept* prefixed versions of digests. We decided (for now) that neither should be true; our protocol is simply to use and provide the seqcol digests straight up. We view the prefixes as being something useful for an external context to determine where a digest came from or belongs; but this seems external to how our service should behave internally. Therefore, any sort of prefix should be happening by whatever is *using* this service, not by the service itself. For example, a ga4gh-wide broker that could disambiguate between different types of digests may require an incoming digest to have a type prefix, but this would be governed by such a context-oriented service, not by the seqcol service itself.
 
 In the future, when it becomes more clear how this service will fit in with other services in the ga4gh ecosystem, we could revisit this decision.
+
+
+## 2023-08-22 - Seqcol schemas MUST specify collated attributes with a local qualifier
+
+### Decision
+
+Collated attributes are seqcol attributes where the values of the attribute are 1-to-1 with sequences in the collection, and represented in the same order as the sequences in the collection. Names, lengths, and sequences are examples of collated attributes. While not strictly required for the core functionality of sequence collections, we anticipate downstream applications will benefit if the seqcol JSONschema specifies which attributes are collated. We therefore REQUIRE the seqcol JSONschema to specify which attributes are collated, and these will be specified using a local boolean qualifier (defined below). 
+
+### Rationale
+
+For applications that will visualize or present to the user a representation of a sequence collection, it will be useful to know if any attributes have one-value-per-sequence, or something else. The collated attributes are those that belong to each sequence. It is possible that other attributes will exist on the seqcol object, but a generic visualization engine or other processor will benefit from knowing which ones are collated.
+
+But how to specify them in the JSONschema? In jsonschema, there are 2 ways to qualify properties: 1) a local qualifier, using a key under a property; or 2) an object-level qualifier, which is specified with a keyed list of properties up one level. For example, you annotate a property's `type` with a local qualifier, underneath the property, like this:
+
+```
+properties:
+  names:
+    type: array
+```
+
+However, you specify that a property is `required` by adding it to an object-level `required` list that's parallel to the `properties` keyword:
+
+```
+properties:
+  names:
+    type: array
+required:
+  - names
+```
+
+In sequence collections, we chose to use define `collated` as a local qualifier. Local qualifiers fit better for qualifiers independent of the object as a whole. They are qualities of a property that persist if the property were moved onto a different object. For example, the `type` of an attribute is consistent, regardless of what object that attribute were defined on. In contrast, object-level qualfier lists fit better for qualifiers that depend on the object as a whole. They are qualities of a property that depend on the object context in which the property is defined. For example, the `required` modifier is not really meaningful except in the context of the object as a whole. A particular property could be required for one object type, but not for another, and it's really the object that induces the requirement, not the property itself.
+
+We reasoned that `inherent`, like `required`, describes the role of an attribute in the context of the whole object; An attribute that is inherent to one type of object need not be inherent to another. Therefore, it makes sense to treat this concept the same way jsonschema treats `required`.  In contrast, the idea of `collated` describes a property independently: Whether an attribute is collated is part of the definition of the attribute; if the attribute were moved to a different object, it would still be collated.
+
+For example, here the `lengths` attribute is maraked as collated using a local qualifier. The `author` attribute is marked as *not* collated in the same way:
+
+```
+description: "A collection of biological sequences."
+type: object
+properties:
+  lengths:
+    type: array
+    collated: true
+    description: "Number of elements, such as nucleotides or amino acids, in each sequence."
+    items:
+      type: integer
+  author:
+    type: string
+    collated: false
+    description: "The author of this sequence collection"
+...
+```
+
+
+### Linked issues
+- https://github.com/ga4gh/seqcol-spec/issues/40
+
 
 ## 2023-07-26 There will be no metadata endpoint
 
