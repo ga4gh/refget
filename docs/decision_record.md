@@ -8,6 +8,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+
 ## 2024-01-10 Clarifications on the purpose and form of the JSON schema in service-info
 
 ### Decision
@@ -68,6 +69,19 @@ We distinguished between two types of metadata:
 - <https://github.com/ga4gh/seqcol-spec/issues/39>
 - <https://github.com/ga4gh/seqcol-spec/issues/40>
 
+## 2023-07-12 - Required attributes are: lengths and names
+
+### Decision
+
+A sequence collection consists of a set of arrays. The only arrays that MUST be included for a valid sequence collection are *lengths* and *names*. All other possible arrays, including *sequences* and other controlled vocabulary arrays, are not required.
+
+### Rationale
+
+Debate around what should be mandatory as centered on 3 specific attributes: sequences, names, and lengths:
+
+At first, it feels like sequences are a fundamental component of a sequence collections, and therefore, the *sequences* array should be mandatory, and names and lengths may be superfluous. For reference genomes, for example, it's clear that collections of sequences are the main function of sequence collections. However, analysis of reference genome data also includes many analyses for which the sequences themselves do not matter, and the critical component is simply the name and length of the sequence. An array of names and lengths can be thought of as a *coordinate system*, and we have realized that the sequence collection specification is *also* extremely useful for representing and uniquely identifying coordinate systems. From this perspective, we envision a coordinate system as a sequence collection in which the actual sequence content is irrelevant, but in which the lengths and names of the sequences are critical. Analysis of coordinate systems like this is very frequent. For example, any sort of annotation analysis looking at genomic regions will rely on the lengths of the sequences to enforce that coordinates refer to the same thing, but do not rely on the underlying sequences. This is why "chrom-sizes" files are used so frequently (*e.g.* across many UCSC tools).
+
+This leads us to the conclusion that *sequences* should be optional, and *names* and *lengths* should be the only mandatory component. *Lengths* makes sense because if you have a sequence, you can always compute it's length, but if you don't have a sequence (all you have is a coordinate system), you may only have a length. We debated extensively whether *names* should be mandatory, and in the end, decided that it's unlikely to pose much of a difficulty to make it mandatory, and provides a lot of convenience. If sequences lack names altogether, it is trivial to name them by index of the order of the sequences. We reason that downstream use cases are very likely to require at least *some* type of identifier to refer to each of the sequences, even if it's just the index of the sequence in the list. While it may be possible to imagine a use case where an identifier for each sequence is not required, it's not difficult at all to just assign indexes. By making it required, we ensure that implementations will always have the same possible way to reference the sequences in the collection.
 
 ## 2023-07-12 Implementations SHOULD provide sorted_name_length_pairs and comparison endpoint
 
@@ -573,8 +587,6 @@ We need a formal definition of a sequence collection. The schema provides a mach
 
 - <https://github.com/ga4gh/seqcol-spec/issues/8>
 - <https://github.com/ga4gh/seqcol-spec/issues/6>
-
-
 
 
 ## 2021-12-01 - Endpoint names and structure
