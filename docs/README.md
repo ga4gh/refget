@@ -26,7 +26,7 @@ extra_css: [extra.css]
         </div>
         <div class="col-md-4 text-center">
             <br><br>
-            <img src="druids.svg" alt="" class="img-responsive">
+            <img src="seqcol_abstract_simple.svg" alt="" class="img-responsive">
         </div>
     </div>
     <hr>
