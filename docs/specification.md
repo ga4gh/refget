@@ -189,10 +189,12 @@ b'["SQ.2648ae1bacce4ec4b6cf337dcae37816","SQ.907112d17fcb73bcab1ed1c72b97ce68","
 
 _* The above Python function suffices if (1) attribute keys are restricted to ASCII, (2) there are no floating point values, and (3) for all integer values `i`:  `-2**63 < i < 2**63`_
 
+ Also, notice that in this process, RFC-8785 is applied only to objects; we assume the sequence digests are computed through an external process (the refget sequences protocol), and are not computed as part of the sequence collection. The refget sequences protocol digests sequence strings without JSON-canonicalization. For more details, see [*Footnote F5*](#f5-rfc-8785-does-not-apply-to-refget-sequences).
+
 #### Step 3: Digest each canonicalized attribute value using the GA4GH digest algorithm.
 
 Apply the GA4GH digest algorithm to each attribute value.
-The GA4GH digest algorithm is described in detail in [*Footnote F5*](#f5-the-ga4gh-digest-algorithm).
+The GA4GH digest algorithm is described in detail in [*Footnote F6*](#f6-the-ga4gh-digest-algorithm).
 This converts the value of each attribute in the seqcol into a digest string.
 Applying this to each value will produce a structure that looks like this:
 
@@ -221,6 +223,8 @@ The result is the final unique digest for this sequence collection:
 ```
 64ff00b85402a4dc821752e1e8d56d3ecc4e29b55a930748
 ```
+
+
 
 ---
 
@@ -367,7 +371,7 @@ It is `RECOMMENDED` that all seqcol implementations add this attribute to all se
 When digested, this attribute provides a digest for an order-invariant coordinate system for a sequence collection.
 Because it is *non-inherent*, it does not affect the identity (digest) of the collection.
 It is created deterministically from the `names` and `lengths` attributes in the collection; it *does not* depend on the actual sequence content, so it is consistent across two collections with different sequence content if they have the same `names` and `lengths`, which are correctly collated, but with pairs not necessarily in the same order.
-For rationale and use cases of `sorted_name_length_pairs`, see [*Footnote F6*](#f6-use-cases-for-the-sortednamelengthpairs-non-inherent-attribute).
+For rationale and use cases of `sorted_name_length_pairs`, see [*Footnote F7*](#f7-use-cases-for-the-sorted_name_length_pairs-non-inherent-attribute).
 
 Algorithm: 
 
@@ -453,8 +457,12 @@ Thus, actual sequence content is optional for sequence collections.
 We still think it's correct to refer to a sequence-content-less sequence collection as a "sequence collection" -- because it is still an abstract concept that *is* representing a collection of sequences: we know their names, and their lengths, we just don't care about the actual characters in the sequence in this case.
 Thus, we can think of these as a sequence collection without sequence characters.
 
+### F5. RFC-8785 does not apply to refget sequences
 
-### F5. The GA4GH digest algorithm
+A note to clarify potential confusion with RFC-8785. While the sequence collection specification determines that RFC-8785 will be used to canonicalize the JSON before digesting, this is specific to sequence collections, it *does not apply to the original refget sequences protocol*. According to the sequences protocol, sequences are digested as un-quoted strings. If RFC-8785 were applied at the level of individual sequences, they would be quoted to become valid JSON, which would change the digest. Since the sequences protocol predated the sequence collections protocol, it did not use RFC-8785; and anyway, the sequences are just primitive types so a canonicalization scheme doesn't add anything. This leads to the slight confusion that RFC-8785 canonicalization is only applied to the objects in the sequence collections, and not to the primitives when the underlying sequences are digested.
+
+
+### F6. The GA4GH digest algorithm
 
 The GA4GH digest algorithm, `sha512t24u`, was created as part of the [Variation Representation Specification standard](https://vrs.ga4gh.org/en/stable/impl-guide/computed_identifiers.html). 
 This procedure is described as ([Hart _et al_. 2020](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883)):
@@ -476,7 +484,7 @@ def sha512t24u_digest(seq):
 
 See: [ADR from 2023-01-25 on digest algorithm](/decision_record/#2023-01-25-digest-algorithm)
 
-### F6. Use cases for the `sorted_name_length_pairs` non-inherent attribute
+### F7. Use cases for the `sorted_name_length_pairs` non-inherent attribute
 
 One motivation for this attribute comes from genome browsers, which may display genomic loci of interest (*e.g.* BED files).
 The genome browser should only show BED files if they annotate the same coordinate system as the reference genome.
@@ -492,3 +500,4 @@ In practice, this list will be short.
 Thus, in a production setting, the full compatibility check can be reduced to a lookup into a short, pre-generated list of `sorted_name_length_pairs` digests.
 
 See: [ADR from 2023-07-12 on sorted name-length pairs](/decision_record/#2023-07-12-implementations-should-provide-sorted_name_length_pairs-and-comparison-endpoint)
+
