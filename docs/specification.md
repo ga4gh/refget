@@ -178,7 +178,7 @@ def canonical_str(item: [list, dict]) -> bytes:
     """Convert a list or dict into a canonicalized UTF8-encoded bytestring representation"""
     return json.dumps(
         item, separators=(",", ":"), ensure_ascii=False, allow_nan=False, sort_keys=True
-    ).encode('utf8')
+    ).encode("utf8")
 ```
 
 This will turn the values into canonicalized UTF8-encoded bytestring representations of the list objects. Using Python notation, the value of the lengths attribute becomes `b'[248956422,133797422,135086622]'`, the value of the names attribute becomes `b'["chr1","chr2","chr3"]'`, and the value of the sequences attribute becomes 
@@ -194,13 +194,13 @@ _* The above Python function suffices if (1) attribute keys are restricted to AS
 Apply the GA4GH digest algorithm to each attribute value.
 The GA4GH digest algorithm is described in detail in [*Footnote F5*](#f5-the-ga4gh-digest-algorithm).
 This converts the value of each attribute in the seqcol into a digest string.
-Applying this to each value will produce a structure that looks like this:
+Applying this to each value will produce the following structure:
 
 ```json
 {
-  "lengths": "20e95aade8e72d399dbf7f82a9e84ba5cc4047dc8d791d62",
-  "names": "834e2529dc6262d1b774e19e502e4074a1227f0eb91b45a9",
-  "sequences": "78f45f5aa3b36a2a8fe1eec415258a036b3753f69acf05df"
+  "lengths": "IOlarejnLTmdv3-CqehLpcxAR9yNeR1i",
+  "names": "g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp",
+  "sequences": "ixJdEJlNBgz5U49vfIUqmq3kD4oOtLpd"
 }
 ```
 
@@ -210,7 +210,7 @@ Here, we repeat step 2, except instead of applying RFC-8785 to each value separa
 This will result in a canonical bytestring representation of the object, shown here using Python notation:
 
 ```
-b'{"lengths":"20e95aade8e72d399dbf7f82a9e84ba5cc4047dc8d791d62","names":"834e2529dc6262d1b774e19e502e4074a1227f0eb91b45a9","sequences":"78f45f5aa3b36a2a8fe1eec415258a036b3753f69acf05df"}'
+b'{"lengths":"IOlarejnLTmdv3-CqehLpcxAR9yNeR1i","names":"g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp","sequences":"ixJdEJlNBgz5U49vfIUqmq3kD4oOtLpd"}'
 ```
 
 #### Step 5: Digest the final canonical representation again using the GA4GH digest algorithm.
@@ -219,7 +219,7 @@ Again using the same approach as in step 3, we now apply the GA4GH digest algori
 The result is the final unique identifier for this sequence collection:
 
 ```
-64ff00b85402a4dc821752e1e8d56d3ecc4e29b55a930748
+wqet7IWbw2j2lmGuoKCaFlYS_R7szczz
 ```
 
 ---
@@ -472,10 +472,13 @@ This procedure is described as ([Hart _et al_. 2020](https://journals.plos.org/p
 In Python, the digest can be computed with this function:
 
 ```python
-def sha512t24u_digest(seq):
+import base64
+import hashlib
+
+def sha512t24u_digest(seq: bytes) -> str:
     """ GA4GH digest function """
     offset = 24
-    digest = hashlib.sha512(seq.encode()).digest()
+    digest = hashlib.sha512(seq).digest()
     tdigest_b64us = base64.urlsafe_b64encode(digest[:offset])
     return tdigest_b64us.decode("ascii")
 ```
