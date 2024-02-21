@@ -26,21 +26,21 @@ A common example and primary use case of sequence collections is for reference g
 
 In brief, the project specifies several procedures:
 
-1. **An algorithm for encoding sequence collection identifiers.**  The GA4GH standard [refget](http://samtools.github.io/hts-specs/refget.html) specifies a way to compute deterministic sequence identifiers from individual sequences. Seqcol uses refget identifiers and adds functionality to wrap them into collections of sequences. Seqcol also handles sequence attributes, such as their names, lengths, or topologies. Seqcol identifiers are defined by a hash algorithm, rather than an accession authority, and are thus decentralized and usable for private sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
-2. **An API describing lookup and comparison of sequence collections.** Seqcol specifies a RESTful API to retrieve the sequence collection given an identifier. A main use case is to reproduce the exact sequence collection (*e.g.* reference genome) used for analysis, instead of guessing based on a human-readable identifier. Seqcol also provides a standardized method of comparing the contents of two sequence collections. This comparison function can *e.g.* be used to determine if analysis results based on different references genomes are compatible. 
+1. **An algorithm for encoding sequence collection identifiers.**  The GA4GH standard [refget](http://samtools.github.io/hts-specs/refget.html) specifies a way to compute deterministic sequence identifiers from individual sequences. Seqcol uses refget identifiers and adds functionality to wrap them into collections of sequences. Seqcol also handles sequence attributes, such as their names, lengths, or topologies. Seqcol digest are defined by a hash algorithm, rather than an accession authority, and are thus decentralized and usable for private sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
+2. **An API describing lookup and comparison of sequence collections.** Seqcol specifies a RESTful API to retrieve the sequence collection given a digest. A main use case is to reproduce the exact sequence collection (*e.g.* reference genome) used for analysis, instead of guessing based on a human-readable identifier. Seqcol also provides a standardized method of comparing the contents of two sequence collections. This comparison function can *e.g.* be used to determine if analysis results based on different references genomes are compatible. 
 3. **Recommended ancillary, non-inherent attributes.** Finally, the protocol defines several recommended procedures that will improve the compatibility across Seqcol servers, and beyond.
 
 ## Use cases
 
 Sequence collections represents fundamental concepts; therefore the specification can be used for many downstream use cases.
-For example, we envision that seqcol identifiers could replace or live alongside the human-readable identifiers currently used to identify reference genomes (*e.g.* "hg38" or "GRCh38"). This would provide improved reproducibility.
+For example, we envision that seqcol digests could replace or live alongside the human-readable identifiers currently used to identify reference genomes (*e.g.* "hg38" or "GRCh38"). This would provide improved reproducibility.
 Some other examples of common use cases where the use of seqcol is beneficial include:
 
-1. Given a collection identifier, retrieve the list of refget sequence identifiers for the contained sequences.
-2. Given a collection identifier, retrieve the contained sequences.
-3. Given two collection identifiers, determine if downstream results are compatible.
-4. Given a collection identifier, retrieve metadata about the collection. This may include human-readable aliases, author of the collection, links to other collections, or other metadata.
-5. Given a sequence collection, compute its identifier.
+1. Given a collection digest, retrieve the list of refget sequence identifiers for the contained sequences.
+2. Given a collection digest, retrieve the contained sequences.
+3. Given two collection digests, determine if downstream results are compatible.
+4. Given a collection digest, retrieve metadata about the collection. This may include human-readable aliases, author of the collection, links to other collections, or other metadata.
+5. Given a sequence collection, compute its digest.
 
 
 
@@ -50,7 +50,7 @@ Some other examples of common use cases where the use of seqcol is beneficial in
 - **Array**: An ordered list of elements.
 - **Collated**: A qualifier applied to a seqcol attribute indicating that the values of the attribute matches 1-to-1 with the sequences in the collection and are represented in the same order.
 - **Coordinate system**: An ordered list of named sequence lengths, but without actual sequences.
-- **Digest**: An identifier resulting from a cryptographic hash function, such as `MD5` or `SHA512`, on input data.
+- **Digest**: A string resulting from a cryptographic hash function, such as `MD5` or `SHA512`, on input data.
 - **Inherent**: A qualifier applied to a seqcol attribute indicating that the attribute is part of the definition of the sequence collection and therefore contributes to its digest.
 - **Length**: The number of characters in a sequence.
 - **Seqcol algorithm**: The set of instructions used to compute a digest from a sequence collection.
@@ -70,7 +70,7 @@ To be fully compliant with the seqcol protocol an implementation must provide al
 
 The seqcol protocol defines the following:
 
-1. *Encoding* - An algorithm for computing an identifier given a collection of sequences.
+1. *Encoding* - An algorithm for computing a digest given a collection of sequences.
 2. *API* - A server RESTful API specification for retrieving and comparing sequence collections.
 3. *Ancillary attribute management* - An optional specification for organizing non-inherent metadata as part of a sequence collection.
 
@@ -107,7 +107,7 @@ properties:
   names:
     type: array
     collated: true
-    description: "Human-readable identifiers of each sequence (chromosome names)."
+    description: "Human-readable labels of each sequence (chromosome names)."
     items:
       type: string
   sequences:
@@ -161,8 +161,8 @@ Finally, another detail that may be unintuitive at first is that the `sequences`
 ##### Filter non-inherent attributes
 
 The `inherent` section in the seqcol schema is an extension of the basic JSON Schema format that adds specific functionality.
-Inherent attributes are those that contribute to the identifier; *non-inherent* attributes are not considered when computing the top-level digest.
-Attributes of a seqcol that are *not* listed as `inherent` `MUST NOT` contribute to the identifier; they are therefore excluded from the digest calculation.
+Inherent attributes are those that contribute to the digest; *non-inherent* attributes are not considered when computing the top-level digest.
+Attributes of a seqcol that are *not* listed as `inherent` `MUST NOT` contribute to the digest; they are therefore excluded from the digest calculation.
 Therefore, if the canonical seqcol representation includes any non-inherent attributes, these must be removed before proceeding to step 2.
 In the simple example, there are no non-inherent attributes.
 
@@ -216,7 +216,7 @@ b'{"lengths":"20e95aade8e72d399dbf7f82a9e84ba5cc4047dc8d791d62","names":"834e252
 #### Step 5: Digest the final canonical representation again using the GA4GH digest algorithm.
 
 Again using the same approach as in step 3, we now apply the GA4GH digest algorithm to the canonicalized bytestring.
-The result is the final unique identifier for this sequence collection:
+The result is the final unique digest for this sequence collection:
 
 ```
 64ff00b85402a4dc821752e1e8d56d3ecc4e29b55a930748
@@ -356,7 +356,7 @@ In addition to the primary top-level endpoints, it is RECOMMENDED that the servi
 
 In *Section 1: Encoding*, we distinguished between *inherent* and *non-inherent* attributes.
 Non-inherent attributes provide a standardized way for implementations to store and serve additional, third-party attributes that do not contribute to the digest.
-As long as separate implementations keep such information in non-inherent attributes, the identifiers will remain compatible.
+As long as separate implementations keep such information in non-inherent attributes, the digests will remain compatible.
 Furthermore, the structure for how such non-inherent metadata is retrieved will be standardized.
 Here, we specify standardized, useful non-inherent attributes that we recommend.
 
@@ -364,7 +364,7 @@ Here, we specify standardized, useful non-inherent attributes that we recommend.
 
 The `sorted_name_length_pairs` attribute is a *non-inherent* attribute of a sequence collection with a formal definition, provided here.
 It is `RECOMMENDED` that all seqcol implementations add this attribute to all sequence collections.
-When digested, this attribute provides an identifier for an order-invariant coordinate system for a sequence collection.
+When digested, this attribute provides a digest for an order-invariant coordinate system for a sequence collection.
 Because it is *non-inherent*, it does not affect the identity (digest) of the collection.
 It is created deterministically from the `names` and `lengths` attributes in the collection; it *does not* depend on the actual sequence content, so it is consistent across two collections with different sequence content if they have the same `names` and `lengths`, which are correctly collated, but with pairs not necessarily in the same order.
 For rationale and use cases of `sorted_name_length_pairs`, see [*Footnote F6*](#f6-use-cases-for-the-sortednamelengthpairs-non-inherent-attribute).
@@ -432,8 +432,8 @@ In contrast, the idea of `collated` describes a property independently: Whether 
 The specification in section 1, *Encoding*, described how to structure a sequence collection and then apply an algorithm to compute a digest for it.
 What if you have ancillary information that goes with a collection, but shouldn't contribute to the digest?
 We have found a lot of useful use cases for information that should go along with a seqcol, but should not contribute to the *identity* of that seqcol.
-This is a useful construct as it allows us to include information in a collection that does not affect the identifier that is computed for that collection.
-One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have a different identifier! Seqcol refers to these as *non-inherent attributes*, meaning they are not part of the core identity of the sequence collection.
+This is a useful construct as it allows us to include information in a collection that does not affect the digest that is computed for that collection.
+One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have a different digest! Seqcol refers to these as *non-inherent attributes*, meaning they are not part of the core identity of the sequence collection.
 Non-inherent attributes are defined in the seqcol schema, but excluded from the `inherent` list. 
 
 See: [ADR on 2023-03-22 regarding inherent attributes](/decision_record/#2023-03-22-seqcol-schemas-must-specify-inherent-attributes)

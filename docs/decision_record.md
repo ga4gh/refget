@@ -114,11 +114,11 @@ This leads us to the conclusion that *sequences* should be optional, and *names*
 - <https://github.com/ga4gh/seqcol-spec/issues/40>
 
 
-## 2023-06-14 - Internal identifiers SHOULD NOT be prefixed
+## 2023-06-14 - Internal digest SHOULD NOT be prefixed
 
 ### Background
 
-In some situations, identifiers are prefixed. For example, these may be CURIEs, which specify namespaces or provide other information about what the identifier represents. This raises questions about when and where we should expect or use prefixes. This has to be determined because including prefixes in the content that gets digested changes it, so we have to be consistent.
+In some situations, digest are prefixed. For example, these may be CURIEs, which specify namespaces or provide other information about what the digest represents. This raises questions about when and where we should expect or use prefixes. This has to be determined because including prefixes in the content that gets digested changes it, so we have to be consistent.
 
 ### Decision
 
