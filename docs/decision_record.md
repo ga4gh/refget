@@ -8,6 +8,31 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+## 2024-02-21 Schema definition for the sequence collection attributes and process for adding new attribute
+
+### Decision
+
+The sequence collection specification will sanction a number of attributes for which a clear and common accepted definition can be found 
+These attributes will be defined in the sequence collection schema and will be part of the specification.
+
+Additional attributes can be requested to be added to the schema via opening an issue on the sequence collection specification GitHub. These will be tagged with "schema-term"
+
+The set of opened tagged issues will provide an extended seqcol schema with all attributes proposed by the community that implementer can monitor to increase forward interoperability
+
+### Rationale
+
+It is important for the interoperability of services that attributes used in different implementations have the same definition.
+To ensure this, the centrally defined schema will provide clear definition of the most important attributes. 
+However it is clear that the maintainers cannot define all possible attributes that implementations might need, so it became apparent that an extended list of attributes that have not been fully defined yet would be useful.
+
+Choosing to host this list as a list of issue allows the list to always be up to date and also contain thread where the community can discuss the definition and approval of the attribute.
+
+### Linked issues
+
+ - https://github.com/ga4gh/seqcol-spec/issues/50
+ - https://github.com/ga4gh/seqcol-spec/issues/46
+ - https://github.com/ga4gh/seqcol-spec/issues?q=is%3Aissue+is%3Aopen+label%3Aschema-term
+
 ## 2024-01-10 Clarifications on the purpose and form of the JSON schema in service-info
 
 ### Decision
