@@ -354,7 +354,9 @@ It also future-proofs the serialisation method if we ever allow complex object t
 
 The JSON canonical serialisation defined in RFC-8785 has a limited set of reference implementation. It is possible that its implementation makes sequence collection implementation more difficult in languages where the RFC is not implemented. In this cases it is valuable to note that the current specification of Sequence Collection do not require that all the features of RFC-8785 be implemented. 
 
+### Alternatives considered
 
+We spent a huge amount of time discussing approaches for what essentially amounts to a custom standard for creating the string-to-digest. A lot of this revolved around what delimiters to use. We made a lot of progress there and came up with some really interesting encoding schemas, which had many desirable characteristics. However, ultimately we decided that the value derived from using a third-party standard would trump the elegance, efficiency, and other benefits we recieved from our custom encoding schema. In particular, adopting the standard would make developers more likely to be able to rely on third-party implementations, reducing the burden to implement our standard. Also, this standard accommodates other sources that we had struggled with a bit, such as UTF-encoding.
 
 ## 2022-10-05 - Terminology decisions
 
