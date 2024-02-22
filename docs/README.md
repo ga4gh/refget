@@ -6,7 +6,7 @@ extra_css: [extra.css]
         <h1>Seqcol: Sequence Collections</h1>
         <p>Unique identifiers and lookup service for sequence collections.
           </p>
-        <p><a class="btn btn-primary btn-lg" href="specification" role="button">Learn more</a></p>
+        <p><a class="btn btn-primary btn-lg" href="specification.md" role="button">Learn more</a></p>
     </div>
 </div>
 <div class="container">
@@ -21,7 +21,7 @@ extra_css: [extra.css]
               <li>programmatic approach to assessing compatibility among sequence collections.</li>
               </ol>
             </p>
-            <a href="specification">Read the complete specification</a>
+            <a href="specification.md">Read the complete specification</a>
             </blockquote>
         </div>
         <div class="col-md-4 text-center">
