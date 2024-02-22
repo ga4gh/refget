@@ -8,7 +8,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
-## 2024-02-21 Schema definition for the sequence collection attributes and process for adding new attribute
+## 2024-02-21 Schema definition for the sequence collection attributes and process for adding new attributes
 
 ### Decision
 
