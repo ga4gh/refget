@@ -12,7 +12,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ### Decision
 
-The sequence collection specification will sanction a number of attributes for which a clear and common accepted definition can be found 
+The sequence collection specification will sanction a number of attributes for which a clear and commonly accepted definition will be provided.
 These attributes will be defined in the sequence collection schema and will be part of the specification.
 
 Additional attributes can be requested to be added to the schema via opening an issue on the sequence collection specification GitHub. These will be tagged with "schema-term"
