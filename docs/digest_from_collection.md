@@ -3,8 +3,7 @@
 
 ## Use case
 
-
-One of the most common uses of the seqcol specification is to compute a standard, universal identifier for a particular sequence collection. You have a collection of sequences, like a reference genome or transcriptome, and you want to determine its seqcol identifier. There are two ways to approach this: 1. Using an existing implementation; 2. Implement the seqcol digest algorithm yourself (it's not that hard).
+One of the most common uses of the seqcol specification is to compute a standard, universal digest for a particular sequence collection. You have a collection of sequences, like a reference genome or transcriptome, and you want to determine its seqcol digest. There are two ways to approach this: 1. Using an existing implementation; 2. Implement the seqcol digest algorithm yourself (it's not that hard).
 
 
 ## 1. Using existing implementations
