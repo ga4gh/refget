@@ -15,17 +15,17 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 The sequence collection specification will sanction a number of attributes for which a clear and commonly accepted definition will be provided.
 These attributes will be defined in the sequence collection schema and will be part of the specification.
 
-Additional attributes can be requested to be added to the schema via opening an issue on the sequence collection specification GitHub. These will be tagged with "schema-term"
+Additional attributes can be requested to be added to the schema via opening an issue on the sequence collection specification GitHub repo. These will be tagged with "schema-term"
 
-The set of opened tagged issues will provide an extended seqcol schema with all attributes proposed by the community that implementer can monitor to increase forward interoperability
+The set of open issues with this tag can be viewed as an extended seqcol schema that includes all attributes proposed by the community. It is recommended that implementers monitor this set to increase forward interoperability.
 
 ### Rationale
 
 It is important for the interoperability of services that attributes used in different implementations have the same definition.
-To ensure this, the centrally defined schema will provide clear definition of the most important attributes. 
+To ensure this, the centrally defined schema will provide clear definitions of the most important attributes. 
 However it is clear that the maintainers cannot define all possible attributes that implementations might need, so it became apparent that an extended list of attributes that have not been fully defined yet would be useful.
 
-Choosing to host this list as a list of issue allows the list to always be up to date and also contain thread where the community can discuss the definition and approval of the attribute.
+Choosing to host this list as a list of issues allows the list to always be up to date and also contain comment threads where the community can discuss the definition and approval of each attribute.
 
 ### Linked issues
 
