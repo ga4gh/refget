@@ -178,7 +178,7 @@ def canonical_str(item: [list, dict]) -> bytes:
     """Convert a list or dict into a canonicalized UTF8-encoded bytestring representation"""
     return json.dumps(
         item, separators=(",", ":"), ensure_ascii=False, allow_nan=False, sort_keys=True
-    ).encode('utf8')
+    ).encode("utf8")
 ```
 
 This will turn the values into canonicalized UTF8-encoded bytestring representations of the list objects. Using Python notation, the value of the lengths attribute becomes `b'[248956422,133797422,135086622]'`, the value of the names attribute becomes `b'["chr1","chr2","chr3"]'`, and the value of the sequences attribute becomes 
@@ -196,13 +196,13 @@ _* The above Python function suffices if (1) attribute keys are restricted to AS
 Apply the GA4GH digest algorithm to each attribute value.
 The GA4GH digest algorithm is described in detail in [*Footnote F6*](#f6-the-ga4gh-digest-algorithm).
 This converts the value of each attribute in the seqcol into a digest string.
-Applying this to each value will produce a structure that looks like this:
+Applying this to each value will produce the following structure:
 
 ```json
 {
-  "lengths": "20e95aade8e72d399dbf7f82a9e84ba5cc4047dc8d791d62",
-  "names": "834e2529dc6262d1b774e19e502e4074a1227f0eb91b45a9",
-  "sequences": "78f45f5aa3b36a2a8fe1eec415258a036b3753f69acf05df"
+  "lengths": "IOlarejnLTmdv3-CqehLpcxAR9yNeR1i",
+  "names": "g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp",
+  "sequences": "ixJdEJlNBgz5U49vfIUqmq3kD4oOtLpd"
 }
 ```
 
@@ -212,7 +212,7 @@ Here, we repeat step 2, except instead of applying RFC-8785 to each value separa
 This will result in a canonical bytestring representation of the object, shown here using Python notation:
 
 ```
-b'{"lengths":"20e95aade8e72d399dbf7f82a9e84ba5cc4047dc8d791d62","names":"834e2529dc6262d1b774e19e502e4074a1227f0eb91b45a9","sequences":"78f45f5aa3b36a2a8fe1eec415258a036b3753f69acf05df"}'
+b'{"lengths":"IOlarejnLTmdv3-CqehLpcxAR9yNeR1i","names":"g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp","sequences":"ixJdEJlNBgz5U49vfIUqmq3kD4oOtLpd"}'
 ```
 
 #### Step 5: Digest the final canonical representation again using the GA4GH digest algorithm.
@@ -221,7 +221,7 @@ Again using the same approach as in step 3, we now apply the GA4GH digest algori
 The result is the final unique digest for this sequence collection:
 
 ```
-64ff00b85402a4dc821752e1e8d56d3ecc4e29b55a930748
+wqet7IWbw2j2lmGuoKCaFlYS_R7szczz
 ```
 
 
@@ -294,8 +294,8 @@ Non-inherent attributes `MUST` be stored and returned by the collection endpoint
 - *Description*: The comparison function specifies an API endpoint that allows a user to compare two sequence collections. The `POST` version compares one database collection to a local user-provided collection.  
 - *Return value*: The output is an assessment of compatibility between those sequence collections. Both variants of the `/comparison` endpoint must `MUST` return an object in JSON format with these 3 keys: "digests", "arrays", and "elements", as described below:
     - `digests`: an object with 2 elements, with keys *a* and *b*, and values either the level 0 seqcol digests for the compared collections, or *null* (undefined). The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return *null* (undefined) in this element for any corresponding sequence collection.
-    - `arrays`: an object with 3 elements, with keys *a_only*, *b_only*, and *a_and_b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
-    - `elements`: An object with 3 elements: *total*, *a_and_b*, and *a_and_b_same_order*. *total* is an object with *a* and *b* keys, values corresponding to the total number of elements in the arrays for the corresponding collection. *a_and_b* is an object with names corresponding to each array present in both collections (in *arrays.a_and_b*), with values as the number of elements present in both collections for the given array. *a_and_b_same_order* is also an object with names corresponding to arrays, and the values a boolean following the same-order specification below.
+    - `attributes`: an object with 3 elements, with keys *a_only*, *b_only*, and *a_and_b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
+    - `array_elements`: An object with 4 elements: *a_count*, *b_count*, *a_and_b_count*, and *a_and_b_same_order*. The 3 attributes with *_count* are objects with names corresponding to each array present in the collection, or in both  collections (for *a_and_b_count*), with values as the number of elements present either in one collection, or in both collections for the given array. *a_and_b_same_order* is also an object with names corresponding to arrays, and the values a boolean following the same-order specification below.
 
 
 Example `/comparison` return value: 
@@ -305,7 +305,7 @@ Example `/comparison` return value:
     "a": "514c871928a74885ce981faa61ccbb1a",
     "b": "c345e091cce0b1df78bfc124b03fba1c"
   },
-  "arrays": {
+  "attributes": {
     "a_only": [],
     "b_only": [],
     "a_and_b": [
@@ -314,12 +314,18 @@ Example `/comparison` return value:
       "sequences"
     ]
   },
-  "elements": {
-    "total": {
-      "a": 195,
-      "b": 25
+  "array_elements": {
+    "a_count": {
+      "lengths": 195,
+      "names": 195,
+      "sequences: 195
     },
-    "a_and_b": {
+    "b_count": {
+      "lengths": 25,
+      "names": 25,
+      "sequences: 25
+    }
+    "a_and_b_count": {
       "lengths": 25,
       "names": 25,
       "sequences": 0
@@ -474,10 +480,13 @@ This procedure is described as ([Hart _et al_. 2020](https://journals.plos.org/p
 In Python, the digest can be computed with this function:
 
 ```python
-def sha512t24u_digest(seq):
+import base64
+import hashlib
+
+def sha512t24u_digest(seq: bytes) -> str:
     """ GA4GH digest function """
     offset = 24
-    digest = hashlib.sha512(seq.encode()).digest()
+    digest = hashlib.sha512(seq).digest()
     tdigest_b64us = base64.urlsafe_b64encode(digest[:offset])
     return tdigest_b64us.decode("ascii")
 ```
