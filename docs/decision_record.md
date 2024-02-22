@@ -17,7 +17,7 @@ These attributes will be defined in the sequence collection schema and will be p
 
 Additional attributes can be requested to be added to the schema via opening an issue on the sequence collection specification GitHub repo. These will be labeled "schema-term".
 
-The set of open issues with this tag can be viewed as an extended seqcol schema that includes all attributes proposed by the community. It is recommended that implementers monitor this set to increase forward interoperability.
+The set of open issues with this tag can be viewed as an extended seqcol schema that includes all attributes proposed by the community. We RECOMMEND implementers monitor this set to increase forward interoperability.
 
 ### Rationale
 
