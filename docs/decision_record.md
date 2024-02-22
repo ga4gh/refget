@@ -456,7 +456,7 @@ The JSON canonical serialisation defined in RFC-8785 has a limited set of refere
 
 ### Alternatives considered
 
-We spent a huge amount of time discussing approaches for what essentially amounts to a custom standard for creating the string-to-digest. A lot of this revolved around what delimiters to use. We made a lot of progress there and came up with some really interesting encoding schemas, which had many desirable characteristics. However, ultimately we decided that the value derived from using a third-party standard would trump the elegance, efficiency, and other benefits we recieved from our custom encoding schema. In particular, adopting the standard would make developers more likely to be able to rely on third-party implementations, reducing the burden to implement our standard. Also, this standard accommodates other sources that we had struggled with a bit, such as UTF-encoding.
+We spent a significant amount of time discussing approaches for what essentially amounts to a custom standard for creating the string-to-digest. A lot of this revolved around what delimiters to use. We made a lot of progress there and came up with some really interesting encoding schemas, which had many desirable characteristics. However, ultimately we decided that the value derived from using a comprehensive and well-developed third-party solution would trump the elegance, efficiency, and other benefits we received from our custom encoding schema. In particular, adopting the RFC-8785 would make developers more likely to be able to rely on third-party implementations, reducing the burden to implement our standard. Also, this solution accommodates other sources that we had struggled with a bit, such as UTF-encoding.
 
 ## 2022-10-05 - Terminology decisions
 
