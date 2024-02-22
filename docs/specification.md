@@ -26,7 +26,7 @@ A common example and primary use case of sequence collections is for reference g
 
 In brief, the project specifies several procedures:
 
-1. **An algorithm for encoding sequence collection identifiers.**  The GA4GH standard [refget](http://samtools.github.io/hts-specs/refget.html) specifies a way to compute deterministic sequence identifiers from individual sequences. Seqcol uses refget identifiers and adds functionality to wrap them into collections of sequences. Seqcol also handles sequence attributes, such as their names, lengths, or topologies. Seqcol digest are defined by a hash algorithm, rather than an accession authority, and are thus decentralized and usable for private sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
+1. **An algorithm for encoding sequence collection identifiers.**  The GA4GH standard [refget sequences](http://samtools.github.io/hts-specs/refget.html) specifies a way to compute deterministic sequence identifiers from individual sequences. Seqcol uses refget sequence identifiers and adds functionality to wrap them into collections of sequences. Seqcol also handles sequence attributes, such as their names, lengths, or topologies. Seqcol digest are defined by a hash algorithm, rather than an accession authority, and are thus decentralized and usable for private sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
 2. **An API describing lookup and comparison of sequence collections.** Seqcol specifies a RESTful API to retrieve the sequence collection given a digest. A main use case is to reproduce the exact sequence collection (*e.g.* reference genome) used for analysis, instead of guessing based on a human-readable identifier. Seqcol also provides a standardized method of comparing the contents of two sequence collections. This comparison function can *e.g.* be used to determine if analysis results based on different references genomes are compatible. 
 3. **Recommended ancillary, non-inherent attributes.** Finally, the protocol defines several recommended procedures that will improve the compatibility across Seqcol servers, and beyond.
 
@@ -57,15 +57,15 @@ Some other examples of common use cases where the use of seqcol is beneficial in
 - **Seqcol API**: The set of endpoints defined in the *retrieval* and *comparison* components of the seqcol protocol.
 - **Seqcol digest**: A digest for a sequence collection, computed according to the seqcol algorithm.
 - **Seqcol protocol**: Collectively, the 3 operations outlined in this document, which include: 1. encoding of sequence collections; 2. API describing retrieval and comparison ; and 3. specifications for ancillary recommended attributes.
-- **Sequence**: Seqcol uses refget to store actual sequences, so we generally use the term in the same way as refget. Refget was designed for nucleotide sequences; however, other sequences could be provided via the same mechanism, *e.g.*, cDNA, CDS, mRNA or proteins. Essentially any ordered list of refget-valid characters qualifies. Sequence collections also goes further, since sequence collections may contain sequences of non-specified characters, which therefore have a length but no actual sequence content.
-- **Sequence digest** or **refget digest**: A digest for a sequence, computed according to the refget protocol.
+- **Sequence**: Seqcol uses refget sequences to identify actual sequences, so we generally use the term "sequence" in the same way. Refget sequences was designed for nucleotide sequences; however, other sequences could be provided via the same mechanism, *e.g.*, cDNA, CDS, mRNA or proteins. Essentially any ordered list of refget-sequences-valid characters qualifies. Sequence collections also goes further, since sequence collections may contain sequences of non-specified characters, which therefore have a length but no actual sequence content.
+- **Sequence digest** or **refget sequence digest**: A digest for a sequence, computed according to the refget sequence protocol.
 - **Sequence collection**: A representation of 1 or more sequences that is structured according to the sequence collection schema
 - **Sequence collection attribute**: A property or feature of a sequence collection (*e.g.* names, lengths, sequences, or topologies).
 
 ## Seqcol protocol functionality
 
-The seqcol algorithm is based on the refget algorithm for individual sequences and should use refget servers to store the actual sequence data.
-Seqcol servers therefore provide a lightweight organizational layer on top of refget servers.
+The seqcol algorithm is based on the refget sequence algorithm for individual sequences and should use refget sequence servers to store the actual sequence data.
+Seqcol servers therefore provide a lightweight organizational layer on top of refget sequence servers.
 To be fully compliant with the seqcol protocol an implementation must provide all `REQUIRED` capabilities as detailed below.
 
 The seqcol protocol defines the following:
@@ -115,7 +115,7 @@ properties:
     collated: true
     items:
       type: string
-      description: "Refget v2 identifiers of sequences."
+      description: "Refget sequences v2 identifiers for sequences."
 required:
   - names
   - lengths
