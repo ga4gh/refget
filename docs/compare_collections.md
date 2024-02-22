@@ -2,7 +2,7 @@
 
 ## Use case
 
-- You have a local sequence collection, and an digest for a collection in a server. You want to compare the two to see if they have the same coordinate system.
+- You have a local sequence collection, and a digest for a collection in a server. You want to compare the two to see if they have the same coordinate system.
 - You have two digests for collections you know are stored by a server. You want to compare them.
 
 ## How to do it
@@ -19,7 +19,7 @@ Therefore, we must be able to identify that two sequence collections are identic
 This comparison can easily be done by simply comparing the seqcol digest, you don't need the `/comparison` endpoint.
 **Two collections will have the same digest if they are identical in content and order for all `inherent` attributes.**
 Therefore, if the digests differ, then you know the collections differ in at least one inherent attribute.
-If you have a local sequence collection, and an digest, then you can compare them for strict identity by computing the digest for the local collection and seeing if they match.
+If you have a local sequence collection and a digest, then you can compare them for strict identity by computing the digest for the local collection and seeing if they match.
 
 ### Order-relaxed identity
 
