@@ -12,19 +12,19 @@ One of the most common uses of the seqcol specification is to compute a standard
 
 If working from within Python, you can use the reference implementation like this:
 
-1. Install the seqcol package with some variant of `pip install seqcol`.
+1. Install the seqcol package with some variant of `pip install refget`.
 2. Build up your canonical seqcol object
 3. Compute its digest:
 
 ```
-import seqcol
-seqcol.digest(seqcol_obj)
+import refget
+refget.seqcol_digest(seqcol_obj)
 ```
 
 If you have a FASTA file, you could get a canonical seqcol object like this:
 
 ```
-seqcol_obj = seqcol.csc_from_fasta(fa_file)
+seqcol_obj = refget.fasta_file_to_seqcol(fa_file)
 ```
 
 ## 2. Implement the seqcol digest algorithm yourself
