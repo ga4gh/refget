@@ -401,7 +401,7 @@ While the latter is intuitive, as it captures each sequence object with some acc
 
   3. Utility of intermediate digests. The array-oriented approach provides useful intermediate digests for each attribute. This digest can be used to test for matching sets of sequences, or matching coordinate systems, using the individual component digests. With a sequence-oriented framework, this would require traversing down a layer deeper, to the individual elements, to establish identity of individual components. The alternative advantage we would have from a sequence-oriented structure would be identifiers for *annotated sequences*. We can gain the advantages of these digests through adding a custom non-inherent, but collated attribute that calculates a unique digest for each element based on the selected attributes of interest, *e.g.* `named_sequences` (digest of *e.g.* `b'{"name":"chr1","sequence":"SQ.2648ae1bacce4ec4b6cf337dcae37816"}'`).
 
-See [ADR on 2021-06-30 on array-oriented structure](/decision_record/#2021-06-30-use-array-based-data-structure-and-multi-tiered-digests)
+See [ADR on 2021-06-30 on array-oriented structure](decision_record.md#2021-06-30-use-array-based-data-structure-and-multi-tiered-digests)
 
 
 ### F2. Collated attributes
@@ -446,7 +446,7 @@ This is a useful construct as it allows us to include information in a collectio
 One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have a different digest! Seqcol refers to these as *non-inherent attributes*, meaning they are not part of the core identity of the sequence collection.
 Non-inherent attributes are defined in the seqcol schema, but excluded from the `inherent` list. 
 
-See: [ADR on 2023-03-22 regarding inherent attributes](/decision_record/#2023-03-22-seqcol-schemas-must-specify-inherent-attributes)
+See: [ADR on 2023-03-22 regarding inherent attributes](decision_record.md#2023-03-22-seqcol-schemas-must-specify-inherent-attributes)
 
 ### F4. Sequence collections without sequences
 
@@ -491,7 +491,7 @@ def sha512t24u_digest(seq: bytes) -> str:
     return tdigest_b64us.decode("ascii")
 ```
 
-See: [ADR from 2023-01-25 on digest algorithm](/decision_record/#2023-01-25-digest-algorithm)
+See: [ADR from 2023-01-25 on digest algorithm](decision_record.md#2023-01-25-digest-algorithm)
 
 ### F7. Use cases for the `sorted_name_length_pairs` non-inherent attribute
 
@@ -508,5 +508,5 @@ For efficiency, if the second case is true, we may cache the `sorted_name_length
 In practice, this list will be short.
 Thus, in a production setting, the full compatibility check can be reduced to a lookup into a short, pre-generated list of `sorted_name_length_pairs` digests.
 
-See: [ADR from 2023-07-12 on sorted name-length pairs](/decision_record/#2023-07-12-implementations-should-provide-sorted_name_length_pairs-and-comparison-endpoint)
+See: [ADR from 2023-07-12 on sorted name-length pairs](decision_record.md#2023-07-12-implementations-should-provide-sorted_name_length_pairs-and-comparison-endpoint)
 
