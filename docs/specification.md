@@ -33,16 +33,31 @@ In brief, the project specifies several procedures:
 ## Use cases
 
 Sequence collections represents fundamental concepts; therefore the specification can be used for many downstream use cases.
-For example, we envision that seqcol digests could replace or live alongside the human-readable identifiers currently used to identify reference genomes (*e.g.* "hg38" or "GRCh38"). This would provide improved reproducibility.
+A primary goal is that that seqcol digests could replace or live alongside the human-readable identifiers currently used to identify reference genomes (*e.g.* "hg38" or "GRCh38"). 
+Reference genomes are an indispensable resource for genome analysis.
+Such reference data is provided in many versions by various sources.
+Unfortunately, this reference variation leads to fundamental problems in analysis of reference genomes: computational results are often irreproducible or incompatible because reference genome data they use is either not matching or unidentifiable.
+These issues are partially caused by our tradition of simple human-readable reference identifiers; this is sub-optimal because such identifiers can refer to references with subtle (or not so subtle) differences, undermining the utility of the identifiers, as is well-known for "hg38" or "GRCh38" monikers.
+One solution is to use unique identifiers that unambiguously identify a particular assembly, such as those provided by the NCBI Assembly database; however, this approach relies on a central authority, and therefore can not apply to custom genomes.
+Another weakness of centralized unique identifiers is that they are insufficient to *confirm* identity, which must also consider the content of the genome.
+A related problem is determining compatibility among reference genomes.
+Analytical results based on different genome references may still be integrable, as long as certain conditions about those references are met.
+However, there are no existing tools or standards to formalize and simplify answering the question of reference genome compatibility.
+
+An earlier standard, the refget sequences protocol, partially addressed this issue for individual sequences, such as a single chromosome, but is not directly applicable to collections of sequences, such as a linear reference genome.
+Building on refget sequences, sequence collections presents fundamental concepts, and therefore the specification can be used for many downstream use cases.
+For example, we envision that seqcol identifiers could replace or live alongside the human-readable identifiers currently used to identify reference genomes (e.g. "hg38" or "GRCh38"), which would provide improved reproducibility.
+This would provide improved reproducibility.
+
 Some other examples of common use cases where the use of seqcol is beneficial include:
 
-1. Given a collection digest, retrieve the list of refget sequence identifiers for the contained sequences.
-2. Given a collection digest, retrieve the contained sequences.
-3. Given two collection digests, determine if downstream results are compatible.
-4. Given a collection digest, retrieve metadata about the collection. This may include human-readable aliases, author of the collection, links to other collections, or other metadata.
-5. Given a sequence collection, compute its digest.
-
-
+- As a user I wish to know what sequences are inside a specific collection, so that I can further access those sequences
+- As a user, I want to compare the two sequence collections used by two separate analyses so I can understand how comparable and compatible their resulting data are.
+- As a user I am interested in a genome sequence collection but want to extract those sequences which compose the chromosomes/karyotype of a genome
+- As a submission system, I want to know what exactly a sequence collection contained so I can validate a data file submission.
+- As a software developer, I want to embed a sequence collection digest in my tool's output so that downstream tools can identify the exact sequence collection that was used
+- As a data processor, my input data didn't include information about the reference genome used, and I want to generate it and attach it so that further processing can benefit from the sequence collection features.
+- I have a chromosome sizes file (a set of lengths and names), and I want to ask whether a given sequence collection is length-compatible with and/or name-compatible with this chromosome sizes file.
 
 ## Definitions of key terms
 
