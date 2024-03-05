@@ -6,11 +6,11 @@ title: Seqcol specification version 0.1.0
 * The generated Toc will be an unordered list
 {:toc} -->
 
-<h1>Seqcol specification version 0.1.0</h1>
+# Seqcol specification version 0.1.0
 
-Table of contents:
+<!-- Table of contents:
 
-[TOC]
+[TOC] -->
 
 ## Specification version
 
