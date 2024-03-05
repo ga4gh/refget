@@ -1,5 +1,5 @@
 
 # Seqcol in Python
 
-You can find a draft package at [https://github.com/refgenie/seqcol](https://github.com/refgenie/seqcol).
+You can find a draft package at [https://github.com/refgenie/refget](https://github.com/refgenie/refget).
 

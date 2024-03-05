@@ -26,21 +26,21 @@ A common example and primary use case of sequence collections is for reference g
 
 In brief, the project specifies several procedures:
 
-1. **An algorithm for encoding sequence collection identifiers.**  The GA4GH standard [refget](http://samtools.github.io/hts-specs/refget.html) specifies a way to compute deterministic sequence identifiers from individual sequences. Seqcol uses refget identifiers and adds functionality to wrap them into collections of sequences. Seqcol also handles sequence attributes, such as their names, lengths, or topologies. Seqcol identifiers are defined by a hash algorithm, rather than an accession authority, and are thus decentralized and usable for private sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
-2. **An API describing lookup and comparison of sequence collections.** Seqcol specifies a RESTful API to retrieve the sequence collection given an identifier. A main use case is to reproduce the exact sequence collection (*e.g.* reference genome) used for analysis, instead of guessing based on a human-readable identifier. Seqcol also provides a standardized method of comparing the contents of two sequence collections. This comparison function can *e.g.* be used to determine if analysis results based on different references genomes are compatible. 
+1. **An algorithm for encoding sequence collection identifiers.**  The GA4GH standard [refget sequences](http://samtools.github.io/hts-specs/refget.html) specifies a way to compute deterministic sequence identifiers from individual sequences. Seqcol uses refget sequence identifiers and adds functionality to wrap them into collections of sequences. Seqcol also handles sequence attributes, such as their names, lengths, or topologies. Seqcol digests are defined by a hash algorithm, rather than an accession authority, and are thus decentralized and usable for private sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
+2. **An API describing lookup and comparison of sequence collections.** Seqcol specifies a RESTful API to retrieve the sequence collection given a digest. A main use case is to reproduce the exact sequence collection (*e.g.* reference genome) used for analysis, instead of guessing based on a human-readable identifier. Seqcol also provides a standardized method of comparing the contents of two sequence collections. This comparison function can *e.g.* be used to determine if analysis results based on different references genomes are compatible. 
 3. **Recommended ancillary, non-inherent attributes.** Finally, the protocol defines several recommended procedures that will improve the compatibility across Seqcol servers, and beyond.
 
 ## Use cases
 
 Sequence collections represents fundamental concepts; therefore the specification can be used for many downstream use cases.
-For example, we envision that seqcol identifiers could replace or live alongside the human-readable identifiers currently used to identify reference genomes (*e.g.* "hg38" or "GRCh38"). This would provide improved reproducibility.
+For example, we envision that seqcol digests could replace or live alongside the human-readable identifiers currently used to identify reference genomes (*e.g.* "hg38" or "GRCh38"). This would provide improved reproducibility.
 Some other examples of common use cases where the use of seqcol is beneficial include:
 
-1. Given a collection identifier, retrieve the list of refget sequence identifiers for the contained sequences.
-2. Given a collection identifier, retrieve the contained sequences.
-3. Given two collection identifiers, determine if downstream results are compatible.
-4. Given a collection identifier, retrieve metadata about the collection. This may include human-readable aliases, author of the collection, links to other collections, or other metadata.
-5. Given a sequence collection, compute its identifier.
+1. Given a collection digest, retrieve the list of refget sequence identifiers for the contained sequences.
+2. Given a collection digest, retrieve the contained sequences.
+3. Given two collection digests, determine if downstream results are compatible.
+4. Given a collection digest, retrieve metadata about the collection. This may include human-readable aliases, author of the collection, links to other collections, or other metadata.
+5. Given a sequence collection, compute its digest.
 
 
 
@@ -50,27 +50,27 @@ Some other examples of common use cases where the use of seqcol is beneficial in
 - **Array**: An ordered list of elements.
 - **Collated**: A qualifier applied to a seqcol attribute indicating that the values of the attribute matches 1-to-1 with the sequences in the collection and are represented in the same order.
 - **Coordinate system**: An ordered list of named sequence lengths, but without actual sequences.
-- **Digest**: An identifier resulting from a cryptographic hash function, such as `MD5` or `SHA512`, on input data.
+- **Digest**: A string resulting from a cryptographic hash function, such as `MD5` or `SHA512`, on input data.
 - **Inherent**: A qualifier applied to a seqcol attribute indicating that the attribute is part of the definition of the sequence collection and therefore contributes to its digest.
 - **Length**: The number of characters in a sequence.
 - **Seqcol algorithm**: The set of instructions used to compute a digest from a sequence collection.
 - **Seqcol API**: The set of endpoints defined in the *retrieval* and *comparison* components of the seqcol protocol.
 - **Seqcol digest**: A digest for a sequence collection, computed according to the seqcol algorithm.
 - **Seqcol protocol**: Collectively, the 3 operations outlined in this document, which include: 1. encoding of sequence collections; 2. API describing retrieval and comparison ; and 3. specifications for ancillary recommended attributes.
-- **Sequence**: Seqcol uses refget to store actual sequences, so we generally use the term in the same way as refget. Refget was designed for nucleotide sequences; however, other sequences could be provided via the same mechanism, *e.g.*, cDNA, CDS, mRNA or proteins. Essentially any ordered list of refget-valid characters qualifies. Sequence collections also goes further, since sequence collections may contain sequences of non-specified characters, which therefore have a length but no actual sequence content.
-- **Sequence digest** or **refget digest**: A digest for a sequence, computed according to the refget protocol.
+- **Sequence**: Seqcol uses refget sequences to identify actual sequences, so we generally use the term "sequence" in the same way. Refget sequences was designed for nucleotide sequences; however, other sequences could be provided via the same mechanism, *e.g.*, cDNA, CDS, mRNA or proteins. Essentially any ordered list of refget-sequences-valid characters qualifies. Sequence collections also goes further, since sequence collections may contain sequences of non-specified characters, which therefore have a length but no actual sequence content.
+- **Sequence digest** or **refget sequence digest**: A digest for a sequence, computed according to the refget sequence protocol.
 - **Sequence collection**: A representation of 1 or more sequences that is structured according to the sequence collection schema
 - **Sequence collection attribute**: A property or feature of a sequence collection (*e.g.* names, lengths, sequences, or topologies).
 
 ## Seqcol protocol functionality
 
-The seqcol algorithm is based on the refget algorithm for individual sequences and should use refget servers to store the actual sequence data.
-Seqcol servers therefore provide a lightweight organizational layer on top of refget servers.
+The seqcol algorithm is based on the refget sequence algorithm for individual sequences and should use refget sequence servers to store the actual sequence data.
+Seqcol servers therefore provide a lightweight organizational layer on top of refget sequence servers.
 To be fully compliant with the seqcol protocol an implementation must provide all `REQUIRED` capabilities as detailed below.
 
 The seqcol protocol defines the following:
 
-1. *Encoding* - An algorithm for computing an identifier given a collection of sequences.
+1. *Encoding* - An algorithm for computing a digest given a collection of sequences.
 2. *API* - A server RESTful API specification for retrieving and comparing sequence collections.
 3. *Ancillary attribute management* - An optional specification for organizing non-inherent metadata as part of a sequence collection.
 
@@ -107,7 +107,7 @@ properties:
   names:
     type: array
     collated: true
-    description: "Human-readable identifiers of each sequence (chromosome names)."
+    description: "Human-readable labels of each sequence (chromosome names)."
     items:
       type: string
   sequences:
@@ -115,7 +115,7 @@ properties:
     collated: true
     items:
       type: string
-      description: "Refget v2 identifiers of sequences."
+      description: "Refget sequences v2 identifiers for sequences."
 required:
   - names
   - lengths
@@ -161,8 +161,8 @@ Finally, another detail that may be unintuitive at first is that the `sequences`
 ##### Filter non-inherent attributes
 
 The `inherent` section in the seqcol schema is an extension of the basic JSON Schema format that adds specific functionality.
-Inherent attributes are those that contribute to the identifier; *non-inherent* attributes are not considered when computing the top-level digest.
-Attributes of a seqcol that are *not* listed as `inherent` `MUST NOT` contribute to the identifier; they are therefore excluded from the digest calculation.
+Inherent attributes are those that contribute to the digest; *non-inherent* attributes are not considered when computing the top-level digest.
+Attributes of a seqcol that are *not* listed as `inherent` `MUST NOT` contribute to the digest; they are therefore excluded from the digest calculation.
 Therefore, if the canonical seqcol representation includes any non-inherent attributes, these must be removed before proceeding to step 2.
 In the simple example, there are no non-inherent attributes.
 
@@ -178,7 +178,7 @@ def canonical_str(item: [list, dict]) -> bytes:
     """Convert a list or dict into a canonicalized UTF8-encoded bytestring representation"""
     return json.dumps(
         item, separators=(",", ":"), ensure_ascii=False, allow_nan=False, sort_keys=True
-    ).encode('utf8')
+    ).encode("utf8")
 ```
 
 This will turn the values into canonicalized UTF8-encoded bytestring representations of the list objects. Using Python notation, the value of the lengths attribute becomes `b'[248956422,133797422,135086622]'`, the value of the names attribute becomes `b'["chr1","chr2","chr3"]'`, and the value of the sequences attribute becomes 
@@ -189,18 +189,20 @@ b'["SQ.2648ae1bacce4ec4b6cf337dcae37816","SQ.907112d17fcb73bcab1ed1c72b97ce68","
 
 _* The above Python function suffices if (1) attribute keys are restricted to ASCII, (2) there are no floating point values, and (3) for all integer values `i`:  `-2**63 < i < 2**63`_
 
+ Also, notice that in this process, RFC-8785 is applied only to objects; we assume the sequence digests are computed through an external process (the refget sequences protocol), and are not computed as part of the sequence collection. The refget sequences protocol digests sequence strings without JSON-canonicalization. For more details, see [*Footnote F5*](#f5-rfc-8785-does-not-apply-to-refget-sequences).
+
 #### Step 3: Digest each canonicalized attribute value using the GA4GH digest algorithm.
 
 Apply the GA4GH digest algorithm to each attribute value.
-The GA4GH digest algorithm is described in detail in [*Footnote F5*](#f5-the-ga4gh-digest-algorithm).
+The GA4GH digest algorithm is described in detail in [*Footnote F6*](#f6-the-ga4gh-digest-algorithm).
 This converts the value of each attribute in the seqcol into a digest string.
-Applying this to each value will produce a structure that looks like this:
+Applying this to each value will produce the following structure:
 
 ```json
 {
-  "lengths": "20e95aade8e72d399dbf7f82a9e84ba5cc4047dc8d791d62",
-  "names": "834e2529dc6262d1b774e19e502e4074a1227f0eb91b45a9",
-  "sequences": "78f45f5aa3b36a2a8fe1eec415258a036b3753f69acf05df"
+  "lengths": "IOlarejnLTmdv3-CqehLpcxAR9yNeR1i",
+  "names": "g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp",
+  "sequences": "ixJdEJlNBgz5U49vfIUqmq3kD4oOtLpd"
 }
 ```
 
@@ -210,17 +212,19 @@ Here, we repeat step 2, except instead of applying RFC-8785 to each value separa
 This will result in a canonical bytestring representation of the object, shown here using Python notation:
 
 ```
-b'{"lengths":"20e95aade8e72d399dbf7f82a9e84ba5cc4047dc8d791d62","names":"834e2529dc6262d1b774e19e502e4074a1227f0eb91b45a9","sequences":"78f45f5aa3b36a2a8fe1eec415258a036b3753f69acf05df"}'
+b'{"lengths":"IOlarejnLTmdv3-CqehLpcxAR9yNeR1i","names":"g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp","sequences":"ixJdEJlNBgz5U49vfIUqmq3kD4oOtLpd"}'
 ```
 
 #### Step 5: Digest the final canonical representation again using the GA4GH digest algorithm.
 
 Again using the same approach as in step 3, we now apply the GA4GH digest algorithm to the canonicalized bytestring.
-The result is the final unique identifier for this sequence collection:
+The result is the final unique digest for this sequence collection:
 
 ```
-64ff00b85402a4dc821752e1e8d56d3ecc4e29b55a930748
+wqet7IWbw2j2lmGuoKCaFlYS_R7szczz
 ```
+
+
 
 ---
 
@@ -290,8 +294,8 @@ Non-inherent attributes `MUST` be stored and returned by the collection endpoint
 - *Description*: The comparison function specifies an API endpoint that allows a user to compare two sequence collections. The `POST` version compares one database collection to a local user-provided collection.  
 - *Return value*: The output is an assessment of compatibility between those sequence collections. Both variants of the `/comparison` endpoint must `MUST` return an object in JSON format with these 3 keys: "digests", "arrays", and "elements", as described below:
     - `digests`: an object with 2 elements, with keys *a* and *b*, and values either the level 0 seqcol digests for the compared collections, or *null* (undefined). The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return *null* (undefined) in this element for any corresponding sequence collection.
-    - `arrays`: an object with 3 elements, with keys *a_only*, *b_only*, and *a_and_b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
-    - `elements`: An object with 3 elements: *total*, *a_and_b*, and *a_and_b_same_order*. *total* is an object with *a* and *b* keys, values corresponding to the total number of elements in the arrays for the corresponding collection. *a_and_b* is an object with names corresponding to each array present in both collections (in *arrays.a_and_b*), with values as the number of elements present in both collections for the given array. *a_and_b_same_order* is also an object with names corresponding to arrays, and the values a boolean following the same-order specification below.
+    - `attributes`: an object with 3 elements, with keys *a_only*, *b_only*, and *a_and_b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
+    - `array_elements`: An object with 4 elements: *a_count*, *b_count*, *a_and_b_count*, and *a_and_b_same_order*. The 3 attributes with *_count* are objects with names corresponding to each array present in the collection, or in both  collections (for *a_and_b_count*), with values as the number of elements present either in one collection, or in both collections for the given array. *a_and_b_same_order* is also an object with names corresponding to arrays, and the values a boolean following the same-order specification below.
 
 
 Example `/comparison` return value: 
@@ -301,7 +305,7 @@ Example `/comparison` return value:
     "a": "514c871928a74885ce981faa61ccbb1a",
     "b": "c345e091cce0b1df78bfc124b03fba1c"
   },
-  "arrays": {
+  "attributes": {
     "a_only": [],
     "b_only": [],
     "a_and_b": [
@@ -310,12 +314,18 @@ Example `/comparison` return value:
       "sequences"
     ]
   },
-  "elements": {
-    "total": {
-      "a": 195,
-      "b": 25
+  "array_elements": {
+    "a_count": {
+      "lengths": 195,
+      "names": 195,
+      "sequences: 195
     },
-    "a_and_b": {
+    "b_count": {
+      "lengths": 25,
+      "names": 25,
+      "sequences: 25
+    }
+    "a_and_b_count": {
       "lengths": 25,
       "names": 25,
       "sequences": 0
@@ -356,7 +366,7 @@ In addition to the primary top-level endpoints, it is RECOMMENDED that the servi
 
 In *Section 1: Encoding*, we distinguished between *inherent* and *non-inherent* attributes.
 Non-inherent attributes provide a standardized way for implementations to store and serve additional, third-party attributes that do not contribute to the digest.
-As long as separate implementations keep such information in non-inherent attributes, the identifiers will remain compatible.
+As long as separate implementations keep such information in non-inherent attributes, the digests will remain compatible.
 Furthermore, the structure for how such non-inherent metadata is retrieved will be standardized.
 Here, we specify standardized, useful non-inherent attributes that we recommend.
 
@@ -364,10 +374,10 @@ Here, we specify standardized, useful non-inherent attributes that we recommend.
 
 The `sorted_name_length_pairs` attribute is a *non-inherent* attribute of a sequence collection with a formal definition, provided here.
 It is `RECOMMENDED` that all seqcol implementations add this attribute to all sequence collections.
-When digested, this attribute provides an identifier for an order-invariant coordinate system for a sequence collection.
+When digested, this attribute provides a digest for an order-invariant coordinate system for a sequence collection.
 Because it is *non-inherent*, it does not affect the identity (digest) of the collection.
 It is created deterministically from the `names` and `lengths` attributes in the collection; it *does not* depend on the actual sequence content, so it is consistent across two collections with different sequence content if they have the same `names` and `lengths`, which are correctly collated, but with pairs not necessarily in the same order.
-For rationale and use cases of `sorted_name_length_pairs`, see [*Footnote F6*](#f6-use-cases-for-the-sortednamelengthpairs-non-inherent-attribute).
+For rationale and use cases of `sorted_name_length_pairs`, see [*Footnote F7*](#f7-use-cases-for-the-sorted_name_length_pairs-non-inherent-attribute).
 
 Algorithm: 
 
@@ -391,7 +401,7 @@ While the latter is intuitive, as it captures each sequence object with some acc
 
   3. Utility of intermediate digests. The array-oriented approach provides useful intermediate digests for each attribute. This digest can be used to test for matching sets of sequences, or matching coordinate systems, using the individual component digests. With a sequence-oriented framework, this would require traversing down a layer deeper, to the individual elements, to establish identity of individual components. The alternative advantage we would have from a sequence-oriented structure would be identifiers for *annotated sequences*. We can gain the advantages of these digests through adding a custom non-inherent, but collated attribute that calculates a unique digest for each element based on the selected attributes of interest, *e.g.* `named_sequences` (digest of *e.g.* `b'{"name":"chr1","sequence":"SQ.2648ae1bacce4ec4b6cf337dcae37816"}'`).
 
-See [ADR on 2021-06-30 on array-oriented structure](/decision_record/#2021-06-30-use-array-based-data-structure-and-multi-tiered-digests)
+See [ADR on 2021-06-30 on array-oriented structure](decision_record.md#2021-06-30-use-array-based-data-structure-and-multi-tiered-digests)
 
 
 ### F2. Collated attributes
@@ -432,11 +442,11 @@ In contrast, the idea of `collated` describes a property independently: Whether 
 The specification in section 1, *Encoding*, described how to structure a sequence collection and then apply an algorithm to compute a digest for it.
 What if you have ancillary information that goes with a collection, but shouldn't contribute to the digest?
 We have found a lot of useful use cases for information that should go along with a seqcol, but should not contribute to the *identity* of that seqcol.
-This is a useful construct as it allows us to include information in a collection that does not affect the identifier that is computed for that collection.
-One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have a different identifier! Seqcol refers to these as *non-inherent attributes*, meaning they are not part of the core identity of the sequence collection.
+This is a useful construct as it allows us to include information in a collection that does not affect the digest that is computed for that collection.
+One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have a different digest! Seqcol refers to these as *non-inherent attributes*, meaning they are not part of the core identity of the sequence collection.
 Non-inherent attributes are defined in the seqcol schema, but excluded from the `inherent` list. 
 
-See: [ADR on 2023-03-22 regarding inherent attributes](/decision_record/#2023-03-22-seqcol-schemas-must-specify-inherent-attributes)
+See: [ADR on 2023-03-22 regarding inherent attributes](decision_record.md#2023-03-22-seqcol-schemas-must-specify-inherent-attributes)
 
 ### F4. Sequence collections without sequences
 
@@ -453,8 +463,12 @@ Thus, actual sequence content is optional for sequence collections.
 We still think it's correct to refer to a sequence-content-less sequence collection as a "sequence collection" -- because it is still an abstract concept that *is* representing a collection of sequences: we know their names, and their lengths, we just don't care about the actual characters in the sequence in this case.
 Thus, we can think of these as a sequence collection without sequence characters.
 
+### F5. RFC-8785 does not apply to refget sequences
 
-### F5. The GA4GH digest algorithm
+A note to clarify potential confusion with RFC-8785. While the sequence collection specification determines that RFC-8785 will be used to canonicalize the JSON before digesting, this is specific to sequence collections, it *does not apply to the original refget sequences protocol*. According to the sequences protocol, sequences are digested as un-quoted strings. If RFC-8785 were applied at the level of individual sequences, they would be quoted to become valid JSON, which would change the digest. Since the sequences protocol predated the sequence collections protocol, it did not use RFC-8785; and anyway, the sequences are just primitive types so a canonicalization scheme doesn't add anything. This leads to the slight confusion that RFC-8785 canonicalization is only applied to the objects in the sequence collections, and not to the primitives when the underlying sequences are digested.
+
+
+### F6. The GA4GH digest algorithm
 
 The GA4GH digest algorithm, `sha512t24u`, was created as part of the [Variation Representation Specification standard](https://vrs.ga4gh.org/en/stable/impl-guide/computed_identifiers.html). 
 This procedure is described as ([Hart _et al_. 2020](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883)):
@@ -466,17 +480,20 @@ This procedure is described as ([Hart _et al_. 2020](https://journals.plos.org/p
 In Python, the digest can be computed with this function:
 
 ```python
-def sha512t24u_digest(seq):
+import base64
+import hashlib
+
+def sha512t24u_digest(seq: bytes) -> str:
     """ GA4GH digest function """
     offset = 24
-    digest = hashlib.sha512(seq.encode()).digest()
+    digest = hashlib.sha512(seq).digest()
     tdigest_b64us = base64.urlsafe_b64encode(digest[:offset])
     return tdigest_b64us.decode("ascii")
 ```
 
-See: [ADR from 2023-01-25 on digest algorithm](/decision_record/#2023-01-25-digest-algorithm)
+See: [ADR from 2023-01-25 on digest algorithm](decision_record.md#2023-01-25-digest-algorithm)
 
-### F6. Use cases for the `sorted_name_length_pairs` non-inherent attribute
+### F7. Use cases for the `sorted_name_length_pairs` non-inherent attribute
 
 One motivation for this attribute comes from genome browsers, which may display genomic loci of interest (*e.g.* BED files).
 The genome browser should only show BED files if they annotate the same coordinate system as the reference genome.
@@ -491,4 +508,5 @@ For efficiency, if the second case is true, we may cache the `sorted_name_length
 In practice, this list will be short.
 Thus, in a production setting, the full compatibility check can be reduced to a lookup into a short, pre-generated list of `sorted_name_length_pairs` digests.
 
-See: [ADR from 2023-07-12 on sorted name-length pairs](/decision_record/#2023-07-12-implementations-should-provide-sorted_name_length_pairs-and-comparison-endpoint)
+See: [ADR from 2023-07-12 on sorted name-length pairs](decision_record.md#2023-07-12-implementations-should-provide-sorted_name_length_pairs-and-comparison-endpoint)
+
