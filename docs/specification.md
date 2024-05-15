@@ -257,7 +257,7 @@ wqet7IWbw2j2lmGuoKCaFlYS_R7szczz
 
 ---
 
-### 2. API: A server RESTful API specification for retrieving and comparing sequence collections.
+### 3. API: A server RESTful API specification for retrieving and comparing sequence collections.
 
 The API has 3 top-level endpoints, for 3 functions:
 
@@ -269,7 +269,7 @@ In addition, a RECOMMENDED endpoint at `/openapi.json` SHOULD provide OpenAPI do
 
 Under these umbrella endpoints are a few more specific sub-endpoints, described in detail below:
 
-#### 2.1 Service info 
+#### 3.1 Service info 
 - *Endpoint*: `GET /service-info` (`REQUIRED`)
 - *Description*: The service info endpoint provides information about the service
 - *Return value*: Must include the Seqcol JSON Schema that is used by this server
@@ -308,7 +308,7 @@ inherent:
   - sequences
 ```
 
-#### 2.2 Collection
+#### 3.2 Collection
 
 - *Endpoint*: `GET /collection/:digest?level=:level` (`REQUIRED`)
 - *Description*: The retrieval function specifies an API endpoint that retrieves original sequences from a database keyed by the unique digest. Here `:digest` is the seqcol digest computed above.  The level corresponds to the "expansion level" of the returned sequence collection returned. The default is `?level=2`, which returns the canonical structure.
@@ -316,7 +316,7 @@ inherent:
 
 Non-inherent attributes `MUST` be stored and returned by the collection endpoint alongside inherent attributes.
 
-#### 2.3 Comparison
+#### 3.3 Comparison
 
 - *Endpoint variant 1*: Two-digest comparison `GET /comparison/{digest1}/{digest2}` (`REQUIRED`)  
 - *Endpoint variant 2*: POST comparison with one digest  `POST /comparison/{digest1}` (`REQUIRED`)  
@@ -386,12 +386,12 @@ The output of the comparison function provides information-rich feedback about t
 These details can be used to make a variety of inferences comparing two collections, but it can take some thought to interpret.
 For more details about how to interpret the results of the comparison function to determine different types of compatibility, please see the [howto guide on comparing sequencing collections](compare_collections.md).
 
-### 2.4 OpenAPI documentation
+### 3.4 OpenAPI documentation
 
 In addition to the primary top-level endpoints, it is RECOMMENDED that the service provide `/openapi.json`, an OpenAPI-compatible description of the endpoints.
 
 ---
-### 3. Ancillary attribute management: recommended non-inherent attributes
+### 4. Ancillary attribute management: recommended non-inherent attributes
 
 In *Section 1: Encoding*, we distinguished between *inherent* and *non-inherent* attributes.
 Non-inherent attributes provide a standardized way for implementations to store and serve additional, third-party attributes that do not contribute to the digest.
@@ -399,7 +399,7 @@ As long as separate implementations keep such information in non-inherent attrib
 Furthermore, the structure for how such non-inherent metadata is retrieved will be standardized.
 Here, we specify standardized, useful non-inherent attributes that we recommend.
 
-#### 3.2 The `sorted_name_length_pairs` attribute (`RECOMMENDED`)
+#### 4.1 The `sorted_name_length_pairs` attribute (`RECOMMENDED`)
 
 The `sorted_name_length_pairs` attribute is a *non-inherent* attribute of a sequence collection with a formal definition, provided here.
 It is `RECOMMENDED` that all seqcol implementations add this attribute to all sequence collections.
