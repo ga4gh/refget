@@ -32,7 +32,7 @@ In brief, the project specifies several procedures:
 
 ## Use cases
 
-Sequence collections represents fundamental concepts; therefore the specification can be used for many downstream use cases.
+Sequence collections represent fundamental concepts; therefore the specification can be used for many downstream use cases.
 A primary goal is that that seqcol digests could replace or live alongside the human-readable identifiers currently used to identify reference genomes (*e.g.* "hg38" or "GRCh38"). 
 Reference genomes are an indispensable resource for genome analysis.
 Such reference data is provided in many versions by various sources.
@@ -52,7 +52,7 @@ Some other examples of common use cases where the use of seqcol is beneficial in
 - As a user I wish to know what sequences are inside a specific collection, so that I can further access those sequences
 - As a user, I want to compare the two sequence collections used by two separate analyses so I can understand how comparable and compatible their resulting data are.
 - As a user I am interested in a genome sequence collection but want to extract those sequences which compose the chromosomes/karyotype of a genome
-- As a submission system, I want to know what exactly a sequence collection contained so I can validate a data file submission.
+- As a submission system, I want to know what exactly a sequence collection contains so I can validate a data file submission.
 - As a software developer, I want to embed a sequence collection digest in my tool's output so that downstream tools can identify the exact sequence collection that was used
 - As a submission system, I want to know what exactly a sequence collection contains so I can validate a data file submission.
 - I have a chromosome sizes file (a set of lengths and names), and I want to ask whether a given sequence collection is length-compatible with and/or name-compatible with this chromosome sizes file.
@@ -91,7 +91,7 @@ The seqcol protocol defines the following:
 
 ### 1. Schema: Defining the attributes in the collection
 
-The first step for a Sequence Collections implementation is to define the *list of contents*, that is, what attributes are allowed in the collection, and which of these affect the digest. The sequence collections standard is flexible with respect to the schema used, so implementations of the standard can use the standard with different schemas, as required by a particular use case. This divides out the choice of content from the choice of algorithm, allowing the algorithm to be consistent even in situations where the content is not.
+The first step for a Sequence Collections implementation is to define the *list of contents*, that is, what attributes are allowed in the collection, and which of these affect the digest. The sequence collections standard is flexible with respect to the schema used, so implementations of the standard can use the standard with different schemas, as required by a particular use case. This divides the choice of content from the choice of algorithm, allowing the algorithm to be consistent even in situations where the content is not.
 
 This is an example of a general, minimal schema:
 
@@ -237,7 +237,7 @@ Applying this to each value will produce the following structure:
 
 #### Step 4: Apply RFC-8785 again to canonicalize the JSON of the new seqcol object representation.
 
-Here, we repeat step 2, except instead of applying RFC-8785 to each value separately, we apply to the entire object.
+Here, we repeat step 2, except instead of applying RFC-8785 to each value separately, we apply it to the entire object.
 This will result in a canonical bytestring representation of the object, shown here using Python notation:
 
 ```
@@ -416,6 +416,23 @@ Algorithm:
 4. Sort the digests lexicographically.
 5. Add as a non-inherent, non-collated attribute to the sequence collection object.
 
+#### 3.3 The `sorted_sequences` attribute (`OPTIONAL`)
+
+The `sorted_sequences` attribute is a *non-inherent* attribute of a sequence collection, with a formal definition.
+Providing this attribute is `OPTIONAL`.
+When digested, this attribute provides a digest representing an order-invariant set of unnamed sequences.
+It provides a way to compare two sequence collections to see if their sequence content is identical, but just in a different order.
+Such a comparison can, of course, be made by the comparison function, so why might you want to include this attribute as well?
+Simply that for some large-scale use cases, comparing the sequence content without considering order is something that needs to be done repeatedly and for a huge number of collections.
+In these cases, using the comparison function could be computationally prohibitive.
+This digest allows the comparison to be pre-computed, and more easily compared.
+
+Algorithm:
+
+1. Take the `sequences` attribute and canonicalize the JSON (using RFC-8785).
+2. Sort the resulting digests lexicographically.
+3. Add to the sequence collection object as the `sorted_sequences` attribute, which is non-inherent and non-collated.
+
 ## Footnotes
 
 ### F1. Why use an array-oriented structure instead of a sequence-oriented structure?
@@ -543,10 +560,10 @@ See: [ADR from 2023-07-12 on sorted name-length pairs](decision_record.md#2023-0
 
 A strength of this standard is that the schema definition can be modified for particular use cases, for example, by adding new attributes into a sequence collection.
 This will allow different communities to use the standard without necessarily needing to subscribe to identical schemas, allowing the standard to be more general useful.
-However, if communites start to definte too many custom attributes, this leads to the possibilty of fragmentation.
-For example, two implementations may start using the same attribute name to refer to differnet things.
+However, if communities define too many custom attributes, this leads to the possibility of fragmentation.
+For example, two implementations may start using the same attribute name to refer to different things.
 While this will not cause major problems, as the attributes will be formally defined in the respective schemas provided by each implementation, it would come at the cost of some interoperability.
 Therefore, the standard will also include in the schema a list of formally defined attributes, to encourage interoperability of these attributes.
-The goal is not to include all possible attributes in the schema, but just a set that are likely to be used repeatedly, to encourage interoperable use of those attribute names.
+The goal is not to include all possible attributes in the schema, but just those likely to be used repeatedly, to encourage interoperable use of those attribute names.
 An implementation may propose a new attribute to be added to this extended schema by raising an issue on the GitHub repository.
 The proposed attributes and definition can then be approved through discussion during the refget working group calls and ultimately added to the approved extended seqcol schema.
