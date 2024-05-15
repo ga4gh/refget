@@ -46,8 +46,6 @@ However, there are no existing tools or standards to formalize and simplify answ
 
 An earlier standard, the refget sequences protocol, partially addressed this issue for individual sequences, such as a single chromosome, but is not directly applicable to collections of sequences, such as a linear reference genome.
 Building on refget sequences, sequence collections presents fundamental concepts, and therefore the specification can be used for many downstream use cases.
-For example, we envision that seqcol identifiers could replace or live alongside the human-readable identifiers currently used to identify reference genomes (e.g. "hg38" or "GRCh38"), which would provide improved reproducibility.
-This would provide improved reproducibility.
 
 Some other examples of common use cases where the use of seqcol is beneficial include:
 
@@ -56,8 +54,9 @@ Some other examples of common use cases where the use of seqcol is beneficial in
 - As a user I am interested in a genome sequence collection but want to extract those sequences which compose the chromosomes/karyotype of a genome
 - As a submission system, I want to know what exactly a sequence collection contained so I can validate a data file submission.
 - As a software developer, I want to embed a sequence collection digest in my tool's output so that downstream tools can identify the exact sequence collection that was used
-- As a data processor, my input data didn't include information about the reference genome used, and I want to generate it and attach it so that further processing can benefit from the sequence collection features.
+- As a submission system, I want to know what exactly a sequence collection contains so I can validate a data file submission.
 - I have a chromosome sizes file (a set of lengths and names), and I want to ask whether a given sequence collection is length-compatible with and/or name-compatible with this chromosome sizes file.
+- As a genome browser, I have a sequence collection defining a coordinate system, and I want to know if a given BED file is compatible.
 
 ## Definitions of key terms
 
@@ -85,29 +84,16 @@ To be fully compliant with the seqcol protocol an implementation must provide al
 
 The seqcol protocol defines the following:
 
-1. *Encoding* - An algorithm for computing a digest given a collection of sequences.
-2. *API* - A server RESTful API specification for retrieving and comparing sequence collections.
-3. *Ancillary attribute management* - An optional specification for organizing non-inherent metadata as part of a sequence collection.
+1. *Schema* - 
+2. *Encoding* - An algorithm for computing a digest given a collection of sequences.
+3. *API* - A server RESTful API specification for retrieving and comparing sequence collections.
+4. *Ancillary attribute management* - An optional specification for organizing non-inherent metadata as part of a sequence collection.
 
-### 1. Encoding: Computing sequence digests from sequence collections
+### 1. Schema: Defining the attributes in the collection
 
-The encoding function specifies an algorithm that takes as input a set of annotated sequences and produces a unique digest. This function is generally expected to be provided by local software that operates on a local set of sequences. These steps of the encoding process are:
+The first step for a Sequence Collections implementation is to define the *list of contents*, that is, what attributes are allowed in the collection, and which of these affect the digest. The sequence collections standard is flexible with respect to the schema used, so implementations of the standard can use the standard with different schemas, as required by a particular use case. This divides out the choice of content from the choice of algorithm, allowing the algorithm to be consistent even in situations where the content is not.
 
-- **Step 1**. Organize the sequence collection data into *canonical seqcol object representation* and filter the non-inherent attributes.
-- **Step 2**. Apply [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) (JCS) to canonicalize the value associated with each attribute individually.
-- **Step 3**. Digest each canonicalized attribute value using the GA4GH digest algorithm.
-- **Step 4**. Apply [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) again to canonicalize the JSON of the new seqcol object representation.
-- **Step 5**. Digest the final canonical representation again using the GA4GH digest algorithm.
-
-Example Python code for computing a seqcol digest can be found in the [tutorial for computing seqcol digests](digest_from_collection.md). These steps are described in more detail below:
-
-#### Step 1: Organize the sequence collection data into *canonical seqcol object representation*.
-
-We first create an object representation of the attributes of the sequence collection.
-The structure of this object is critical, and is strictly controlled by the seqcol protocol.
-It must be defined in a JSON Schema.
-This is the general, minimal schema:
-
+This is an example of a general, minimal schema:
 
 ```YAML
 description: "A collection of biological sequences."
@@ -131,6 +117,12 @@ properties:
     items:
       type: string
       description: "Refget sequences v2 identifiers for sequences."
+  accessions:
+    type: array
+    collated: true
+    items:
+      type: string
+      description: "Unique external accessions for the sequences"
 required:
   - names
   - lengths
@@ -140,8 +132,30 @@ inherent:
   - sequences
 ```
 
-This schema is the *seqcol schema*, and sequence collection objects in this structure are said to be the *canonical seqcol object representation*.
-Here's an example of a sequence collection organized into the canonical seqcol object representation:
+This schema is the *seqcol schema*, and sequence collection objects in this structure are said to be the *canonical seqcol object representation*. We RECOMMEND that all implementations use this as a base schema, adding additional attributes as needed but without changing the inherent attributes list, because this will allow the ultimate identifiers to be compatible across implementations. Adding custom attributes does not break interoperability, but changing the list of *inherent* attributes does. Nevertheless, implementations are still considered compliant with the general specification even if using custom schemas with custom inherent attributes.
+
+For more information about community-driven updates to the standard schema, see [*Footnote F8*](#f8-adding-new-schema-attributes).
+
+### 2. Encoding: Computing sequence digests from sequence collections
+
+The encoding function specifies an algorithm that takes as input a set of annotated sequences and produces a unique digest. This function is generally expected to be provided by local software that operates on a local set of sequences. These steps of the encoding process are:
+
+- **Step 1**. Organize the sequence collection data into *canonical seqcol object representation* and filter the non-inherent attributes.
+- **Step 2**. Apply [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) (JCS) to canonicalize the value associated with each attribute individually.
+- **Step 3**. Digest each canonicalized attribute value using the GA4GH digest algorithm.
+- **Step 4**. Apply [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) again to canonicalize the JSON of the new seqcol object representation.
+- **Step 5**. Digest the final canonical representation again using the GA4GH digest algorithm.
+
+Example Python code for computing a seqcol digest can be found in the [tutorial for computing seqcol digests](digest_from_collection.md). These steps are described in more detail below:
+
+#### Step 1: Organize the sequence collection data into *canonical seqcol object representation*.
+
+We first create an object representation of the attributes of the sequence collection.
+The structure of this object is critical, and is strictly controlled by the seqcol protocol.
+It must be defined in a JSON Schema (defined in step 1).
+Then, the sequence collection object must be structured according to the schema definition.
+
+Here's an example of a sequence collection organized into the canonical seqcol object representation following the minimal schema example above:
 
 ```json
 {
@@ -525,3 +539,14 @@ Thus, in a production setting, the full compatibility check can be reduced to a 
 
 See: [ADR from 2023-07-12 on sorted name-length pairs](decision_record.md#2023-07-12-implementations-should-provide-sorted_name_length_pairs-and-comparison-endpoint)
 
+### F8. Adding new schema attributes
+
+A strength of this standard is that the schema definition can be modified for particular use cases, for example, by adding new attributes into a sequence collection.
+This will allow different communities to use the standard without necessarily needing to subscribe to identical schemas, allowing the standard to be more general useful.
+However, if communites start to definte too many custom attributes, this leads to the possibilty of fragmentation.
+For example, two implementations may start using the same attribute name to refer to differnet things.
+While this will not cause major problems, as the attributes will be formally defined in the respective schemas provided by each implementation, it would come at the cost of some interoperability.
+Therefore, the standard will also include in the schema a list of formally defined attributes, to encourage interoperability of these attributes.
+The goal is not to include all possible attributes in the schema, but just a set that are likely to be used repeatedly, to encourage interoperable use of those attribute names.
+An implementation may propose a new attribute to be added to this extended schema by raising an issue on the GitHub repository.
+The proposed attributes and definition can then be approved through discussion during the refget working group calls and ultimately added to the approved extended seqcol schema.
