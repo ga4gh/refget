@@ -8,6 +8,24 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+## 2024-05-16 The `sorted_sequences` attribute will be in the spec as an optional ancillary attribute
+
+### Decision
+
+We decided to add `sorted_sequences` to the spec as OPTIONAL.
+
+### Rationale
+
+This attribute isn't that important, since you can easily get this result from the comparison function.
+But it has crept up repeatedly by different users for different use cases, and it provides a good example of an ancillary attribute that could be useful for a specific use case where you want to pre-compute this comparison instead of relying on the comparison function.
+Thus, it makes sense to include as an example, and we make it optional, since we think most use cases will not have a need for it.
+
+In the future if the number of proposed ancillary attributes grows, it could move to a separate document together with other ideas for ancillary attributes.
+
+### Linked issues
+- https://github.com/ga4gh/seqcol-spec/issues/71
+
+
 ## 2024-02-21 We will specify core sequence collection attributes and a process for adding new ones
 
 ### Decision
