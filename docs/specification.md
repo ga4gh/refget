@@ -636,3 +636,5 @@ Therefore, the standard will also include in the schema a list of formally defin
 The goal is not to include all possible attributes in the schema, but just those likely to be used repeatedly, to encourage interoperable use of those attribute names.
 An implementation may propose a new attribute to be added to this extended schema by raising an issue on the GitHub repository.
 The proposed attributes and definition can then be approved through discussion during the refget working group calls and ultimately added to the approved extended seqcol schema.
+These issues should have the label 'schema-term'.
+You can follow these issues (or raise your own) at <https://github.com/ga4gh/seqcol-spec/issues?q=is%3Aissue+label%3Aschema-term+>.
