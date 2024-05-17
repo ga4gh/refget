@@ -491,7 +491,7 @@ Algorithm:
 4. Sort the digests lexicographically.
 5. Add as a non-inherent, non-collated attribute to the sequence collection object.
 
-#### 3.3 The `sorted_sequences` attribute (`OPTIONAL`)
+#### 4.2 The `sorted_sequences` attribute (`OPTIONAL`)
 
 The `sorted_sequences` attribute is a *non-inherent* attribute of a sequence collection, with a formal definition.
 Providing this attribute is `OPTIONAL`.
