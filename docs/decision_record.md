@@ -16,9 +16,15 @@ We decided to add `sorted_sequences` to the spec as OPTIONAL.
 
 ### Rationale
 
-This attribute isn't that important, since you can easily get this result from the comparison function.
-But it has crept up repeatedly by different users for different use cases, and it provides a good example of an ancillary attribute that could be useful for a specific use case where you want to pre-compute this comparison instead of relying on the comparison function.
-Thus, it makes sense to include as an example, and we make it optional, since we think most use cases will not have a need for it.
+When digested, this attribute provides a digest representing an order-invariant set of unnamed sequences.
+It provides a way to compare two sequence collections to see if their sequence content is identical, but just in a different order.
+Such a comparison can, of course, be made by the comparison function, so why might you want to include this attribute as well?
+Simply that for some large-scale use cases, comparing the sequence content without considering order is something that needs to be done repeatedly and for a huge number of collections.
+In these cases, using the comparison function could be computationally prohibitive.
+This digest allows the comparison to be pre-computed, and more easily compared.
+
+This attribute has crept up for different use cases, and it provides a good example of an ancillary attribute that could be useful for a specific use case where you want to pre-compute this comparison instead of relying on the comparison function.
+Thus, it makes sense to include as an example, but made optional since many use cases will not need it.
 
 In the future if the number of proposed ancillary attributes grows, it could move to a separate document together with other ideas for ancillary attributes.
 
