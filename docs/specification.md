@@ -285,7 +285,7 @@ What you'd get when you look up the digest with **1 database lookup** (no recurs
 
 ##### Level 2
 
-What you'd get with **2 database lookups** (1 recursive call). This is the most common representation. Example:
+What you'd get with **2 database lookups** (1 recursive call). This is the most common representation, and hence, it the level of the *canonical seqcol representation*. Example:
 
 ```
 {
@@ -551,7 +551,8 @@ Typically, we think of a sequence collection as consisting of real sequences, bu
 Since this concept can be a bit abstract for those not familiar, we'll try here to explain the rationale and benefit of this.
 First, consider that in a sequence comparison, for some use cases, we may be primarily concerned only with the *length* of the sequence, and not the actual sequence of characters.
 For example, BED files provide start and end coordinates of genomic regions of interest, which are defined on a particular sequence.
-On the surface, it seems that two genomic regions are only comparable if they are defined on the same sequence. However, this not *strictly* true; in fact, really, as long as the underlying sequences are homologous, and the position in one sequence references an equivalent position in the other, then it makes sense to compare the coordinates.
+On the surface, it seems that two genomic regions are only comparable if they are defined on the same sequence.
+However, this not *strictly* true; in fact, really, as long as the underlying sequences are homologous, and the position in one sequence references an equivalent position in the other, then it makes sense to compare the coordinates.
 In other words, even if the underlying sequences aren't *exactly* the same, as long as they represent something equivalent, then the coordinates can be compared.
 A prerequisite for this is that the *lengths* of the sequence must match; it wouldn't make sense to compare position 5,673 on a sequence of length 8,000 against the same position on a sequence of length 9,000 because those positions don't clearly represent the same thing; but if the sequences have the same length and represent a homology statement, then it may be meaningful to compare the positions. 
 
@@ -559,6 +560,23 @@ We realized that we could gain a lot of power from the seqcol comparison functio
 Thus, actual sequence content is optional for sequence collections.
 We still think it's correct to refer to a sequence-content-less sequence collection as a "sequence collection" -- because it is still an abstract concept that *is* representing a collection of sequences: we know their names, and their lengths, we just don't care about the actual characters in the sequence in this case.
 Thus, we can think of these as a sequence collection without sequence characters.
+
+An example of a canonical representation (level 2) of a sequence collection with unspecified sequences would be:
+
+```
+{
+  "lengths": [
+    "1216",
+    "970",
+    "1788"
+  ],
+  "names": [
+    "A",
+    "B",
+    "C"
+  ]
+}
+```
 
 ### F5. RFC-8785 does not apply to refget sequences
 
