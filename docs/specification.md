@@ -83,14 +83,15 @@ To be fully compliant with the seqcol protocol an implementation must provide al
 
 The seqcol protocol defines the following:
 
-1. *Schema* - 
-2. *Encoding* - An algorithm for computing a digest given a collection of sequences.
+1. *Schema* - The way an implementation should define the attributes of sequence collections it holds.
+2. *Encoding* - An algorithm for computing a digest given a sequence collection.
 3. *API* - A server RESTful API specification for retrieving and comparing sequence collections.
-4. *Ancillary attribute management* - An optional specification for organizing non-inherent metadata as part of a sequence collection.
+4. *Ancillary attribute management* - A specification for organizing non-inherent metadata as part of a sequence collection.
 
 ### 1. Schema: Defining the attributes in the collection
 
-The first step for a Sequence Collections implementation is to define the *list of contents*, that is, what attributes are allowed in the collection, and which of these affect the digest. The sequence collections standard is flexible with respect to the schema used, so implementations of the standard can use the standard with different schemas, as required by a particular use case. This divides the choice of content from the choice of algorithm, allowing the algorithm to be consistent even in situations where the content is not.
+The first step for a Sequence Collections implementation is to define the *list of contents*, that is, what attributes are allowed in each collection, and which of these affect the digest.
+The sequence collections standard is flexible with respect to the schema used, so implementations of the standard can use the standard with different schemas, as required by a particular use case. This divides the choice of content from the choice of algorithm, allowing the algorithm to be consistent even in situations where the content is not.
 
 This is an example of a general, minimal schema:
 
@@ -131,13 +132,19 @@ inherent:
   - sequences
 ```
 
-This schema is the *seqcol schema*, and sequence collection objects in this structure are said to be the *canonical seqcol object representation*. We RECOMMEND that all implementations use this as a base schema, adding additional attributes as needed but without changing the inherent attributes list, because this will allow the ultimate identifiers to be compatible across implementations. Adding custom attributes does not break interoperability, but changing the list of *inherent* attributes does. Nevertheless, implementations are still considered compliant with the general specification even if using custom schemas with custom inherent attributes.
+This example schema is the minimal standard schema. We RECOMMEND that all implementations use this as a base schema, adding additional attributes as needed, but *without changing the inherent attributes list*, because this will keep the identifiers compatible across implementations.
+Sequence collection objects that follow this basic minimal structure are said to be the *canonical seqcol object representation*.
+Adding custom attributes to this schema will not break interoperability.
+Nevertheless, extending this schema is only RECOMMENDED; implementations are still compliant if using custom schemas with custom inherent attributes.
 
 For more information about community-driven updates to the standard schema, see [*Footnote F8*](#f8-adding-new-schema-attributes).
 
 ### 2. Encoding: Computing sequence digests from sequence collections
 
-The encoding function specifies an algorithm that takes as input a set of annotated sequences and produces a unique digest. This function is generally expected to be provided by local software that operates on a local set of sequences. These steps of the encoding process are:
+The encoding function is the algorithm that produces a unique digest for the sequence collection.
+The input to the function is a set of annotated sequences.
+This function is generally expected to be provided by local software that operates on a local set of sequences.
+The steps of the encoding process are:
 
 - **Step 1**. Organize the sequence collection data into *canonical seqcol object representation* and filter the non-inherent attributes.
 - **Step 2**. Apply [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) (JCS) to canonicalize the value associated with each attribute individually.
@@ -151,8 +158,7 @@ Example Python code for computing a seqcol digest can be found in the [tutorial 
 
 We first create an object representation of the attributes of the sequence collection.
 The structure of this object is critical, and is strictly controlled by the seqcol protocol.
-It must be defined in a JSON Schema (defined in step 1).
-Then, the sequence collection object must be structured according to the schema definition.
+The sequence collection object MUST first be structured according to the schema definition for the implementation.
 
 Here's an example of a sequence collection organized into the canonical seqcol object representation following the minimal schema example above:
 
@@ -179,12 +185,14 @@ Here's an example of a sequence collection organized into the canonical seqcol o
 This object would validate against the JSON Schema above.
 The object is a series of arrays with matching length (`3`), with the corresponding entries collated such that the first element of each array corresponds to the first element of each other array.
 For the rationale why this structure was chosen instead of an array of annotated sequences, see [*Footnote F1*](#f1-why-use-an-array-oriented-structure-instead-of-a-sequence-oriented-structure).
-Implementations `MUST` provide at least the structure specified in this schema.
+The implementation `MUST` define its structure in a JSON Schema, such as the example schema defined in step 1.
 Implementations `MAY` choose to extend this schema by adding additional attributes.
+Implmentations `MAY` also use a schema, but we `RECOMMEND` the schema extend the base schema defined above.
 This schema extends vanilla JSON Schema in two ways; first, it provides the `collated` qualifier.
 For further details about the rationale behind collated attributes, see [*Footnote F2*](#f2-collated-attributes).
-Second, it specifies the `inherent` qualifier. For further details about the rationale and examples of non-inherent attributes, see [*Footnote F3*](#f3-details-of-inherent-and-non-inherent-attributes).
-Finally, another detail that may be unintuitive at first is that the `sequences` attribute is optional; for an explanation of why, see [*Footnote F4*](#f4-sequence-collections-without-sequences).
+Second, it specifies the `inherent` qualifier.
+For further details about the rationale and examples of non-inherent attributes, see [*Footnote F3*](#f3-details-of-inherent-and-non-inherent-attributes).
+Finally, another detail that may be unintuitive at first is that in the minimal schema, the `sequences` attribute is optional; for an explanation of why, see [*Footnote F4*](#f4-sequence-collections-without-sequences).
 
 ##### Filter non-inherent attributes
 
@@ -266,9 +274,7 @@ a6748aa0f6a1e165f871dbed5e54ba62
 
 ##### Level 1
 
-What you'd get when you look up the digest with **1 database lookup** and no recursion. Previously called "layer 0" or "reclimit 0" because there's no recursion. Also sometimes called the "array digests" because each entity represents an array.
-
-Example:
+What you'd get when you look up the digest with **1 database lookup** (no recursion). We sometimes refer to this as the "array digests" or "attribute digests", because it is made up a digest for each attribute in the sequence collection. Example:
 ```
 {
   "lengths": "4925cdbd780a71e332d13145141863c1",
@@ -279,7 +285,7 @@ Example:
 
 ##### Level 2
 
-What you'd get with **2 database lookups** (equivalently, 1 recursive call). This is the most common representation, more commonly used than either the "level 1" or the "level 3" representations.
+What you'd get with **2 database lookups** (1 recursive call). This is the most common representation. Example:
 
 ```
 {
@@ -301,35 +307,6 @@ What you'd get with **2 database lookups** (equivalently, 1 recursive call). Thi
 }
 ```
 
-##### Level 3
-
-What you'd get with **3 database lookups** (equivalently, 2 recursive call). The only field that can be further populated is `sequences`, so the level 3 representation provides the complete data. This layer:
-- can potentially be very large
-- is the only level that requires outsourcing a query to a refget server
-- may reasonable be disabled on my seqcol server, since the point is not to retrieve actual sequences; 
-
-Example (sequences truncated for brevity):
-```
-{
-  "lengths": [
-    "1216",
-    "970",
-    "1788"
-  ],
-  "names": [
-    "A",
-    "B",
-    "C"
-  ],
-  "sequences": [
-    "CATAGAGCAGGTTTGAAACACTCTTTCTGTAGTATCTGCAAGCGGACGTTTCAAGCGCTTTCAGGCGT...",
-    "AAGTGGATATTTGGATAGCTTTGAGGATTTCGTTGGAAACGGGATTACATATAAAATCTAGAGAGAAGC...",
-    "GCTTGCAGATACTACAGAAAGAGTGTTTCAAACCTGCTCTATGAAAGGGAATGTTCAGTTCTGTGACTT..."
-  ]
-}
-```
-
----
 
 ### 3. API: A server RESTful API specification for retrieving and comparing sequence collections.
 
