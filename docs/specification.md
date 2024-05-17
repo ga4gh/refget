@@ -54,7 +54,6 @@ Some other examples of common use cases where the use of seqcol is beneficial in
 - As a user I am interested in a genome sequence collection but want to extract those sequences which compose the chromosomes/karyotype of a genome
 - As a submission system, I want to know what exactly a sequence collection contains so I can validate a data file submission.
 - As a software developer, I want to embed a sequence collection digest in my tool's output so that downstream tools can identify the exact sequence collection that was used
-- As a submission system, I want to know what exactly a sequence collection contains so I can validate a data file submission.
 - I have a chromosome sizes file (a set of lengths and names), and I want to ask whether a given sequence collection is length-compatible with and/or name-compatible with this chromosome sizes file.
 - As a genome browser, I have a sequence collection defining a coordinate system, and I want to know if a given BED file is compatible.
 
