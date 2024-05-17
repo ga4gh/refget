@@ -503,7 +503,7 @@ This digest allows the comparison to be pre-computed, and more easily compared.
 
 Algorithm:
 
-1. Take the array of the `sequences` attribute and sort it content lexicographically.
+1. Take the array of the `sequences` attribute (an array of sequence digests) and sort it lexicographically.
 2. Canonicalize the resulting array (using RFC-8785).
 3. Add to the sequence collection object as the `sorted_sequences` attribute, which is non-inherent and non-collated.
 
