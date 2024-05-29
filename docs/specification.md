@@ -627,7 +627,7 @@ See: [ADR from 2023-07-12 on sorted name-length pairs](decision_record.md#2023-0
 
 ### F8. Adding new schema attributes
 
-A strength of this standard is that the schema definition can be modified for particular use cases, for example, by adding new attributes into a sequence collection.
+A strength of the seqcol standard is that the schema definition can be modified for particular use cases, for example, by adding new attributes into a sequence collection.
 This will allow different communities to use the standard without necessarily needing to subscribe to identical schemas, allowing the standard to be more general useful.
 However, if communities define too many custom attributes, this leads to the possibility of fragmentation.
 For example, two implementations may start using the same attribute name to refer to different things.
