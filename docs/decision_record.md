@@ -23,7 +23,7 @@ In some large-scale use cases, comparing the sequence content without considerin
 In these cases, using the comparison function could be computationally prohibitive.
 This digest allows the comparison to be pre-computed, and more easily compared.
 
-This attribute has crept up for different use cases, and it provides a good example of an ancillary attribute that could be useful for a specific use case where you want to pre-compute this comparison instead of relying on the comparison function.
+This attribute has been suggested by users for different use cases, and it provides a good example of an ancillary attribute that could be useful for a specific use case where you want to pre-compute this comparison instead of relying on the comparison function.
 Thus, it makes sense to include as an example, but made optional since many use cases will not need it.
 
 In the future if the number of proposed ancillary attributes grows, it could move to a separate document together with other ideas for ancillary attributes.
