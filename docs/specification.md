@@ -630,7 +630,7 @@ See: [ADR from 2023-07-12 on sorted name-length pairs](decision_record.md#2023-0
 A strength of the seqcol standard is that the schema definition can be modified for particular use cases, for example, by adding new attributes into a sequence collection.
 This will allow different communities to use the standard without necessarily needing to subscribe to identical schemas, allowing the standard to be more generally useful.
 However, if communities define too many custom attributes, this leads to the possibility of fragmentation.
-For example, two implementations may start using the same attribute name to refer to different things.
+For example, two implementations may start using the same attribute name to refer to different concepts.
 While this will not cause major problems, as the attributes will be formally defined in the respective schemas provided by each implementation, it would come at the cost of some interoperability.
 Therefore, the standard will also include in the schema a list of formally defined attributes, to encourage interoperability of these attributes.
 The goal is not to include all possible attributes in the schema, but just those likely to be used repeatedly, to encourage interoperable use of those attribute names.
