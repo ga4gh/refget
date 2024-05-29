@@ -19,7 +19,7 @@ We decided to add `sorted_sequences` to the spec as OPTIONAL.
 When digested, this attribute provides a digest representing an order-invariant set of unnamed sequences.
 It provides a way to compare two sequence collections to see if their sequence content is identical, but just in a different order.
 Such a comparison can be made by the comparison function, so why might you want to include this attribute as well?
-Simply that for some large-scale use cases, comparing the sequence content without considering order is something that needs to be done repeatedly and for a huge number of collections.
+In some large-scale use cases, comparing the sequence content without considering order is something that needs to be done repeatedly and for a huge number of collections.
 In these cases, using the comparison function could be computationally prohibitive.
 This digest allows the comparison to be pre-computed, and more easily compared.
 
