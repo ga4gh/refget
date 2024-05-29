@@ -46,16 +46,18 @@ However, there are no existing tools or standards to formalize and simplify answ
 
 An earlier standard, the refget sequences protocol, partially addressed this issue for individual sequences, such as a single chromosome, but is not directly applicable to collections of sequences, such as a linear reference genome.
 Building on refget sequences, sequence collections presents fundamental concepts, and therefore the specification can be used for many downstream use cases.
+For example, we envision that seqcol identifiers could replace or live alongside the human-readable identifiers currently used to identify reference genomes (e.g. "hg38" or "GRCh38"), which would provide improved reproducibility.
 
 Some other examples of common use cases where the use of seqcol is beneficial include:
 
-- As a user I wish to know what sequences are inside a specific collection, so that I can further access those sequences
+- As a user, I wish to know what sequences are inside a specific collection, so that I can further access those sequences
 - As a user, I want to compare the two sequence collections used by two separate analyses so I can understand how comparable and compatible their resulting data are.
-- As a user I am interested in a genome sequence collection but want to extract those sequences which compose the chromosomes/karyotype of a genome
+- As a user, I am interested in a genome sequence collection but want to extract those sequences which compose the chromosomes/karyotype of a genome
 - As a submission system, I want to know what exactly a sequence collection contains so I can validate a data file submission.
 - As a software developer, I want to embed a sequence collection digest in my tool's output so that downstream tools can identify the exact sequence collection that was used
 - I have a chromosome sizes file (a set of lengths and names), and I want to ask whether a given sequence collection is length-compatible with and/or name-compatible with this chromosome sizes file.
 - As a genome browser, I have one sequence collection that the coordinate system displayed, and I want to know if a digest representing the coordinate system of a given BED file is compatible with the genome browser.
+- As a data processor, my input data didn't include information about the reference genome used, and I want to generate the sequence collection digest and attach it so that further processing can benefit from the sequence collection features.
 
 ## Definitions of key terms
 
