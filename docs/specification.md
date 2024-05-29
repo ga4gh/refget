@@ -631,7 +631,7 @@ A strength of the seqcol standard is that the schema definition can be modified 
 This will allow different communities to use the standard without necessarily needing to subscribe to identical schemas, allowing the standard to be more generally useful.
 However, if communities define too many custom attributes, this leads to the possibility of fragmentation.
 For example, two implementations may start using the same attribute name to refer to different concepts.
-While this will not cause major problems, as the attributes will be formally defined in the respective schemas provided by each implementation, it would come at the cost of some interoperability.
+While the attributes would still be formally defined in the respective schemas provided by each implementation, calling different concepts by the same name would come at the cost of interoperability.
 Therefore, the standard will also include in the schema a list of formally defined attributes, to encourage interoperability of these attributes.
 The goal is not to include all possible attributes in the schema, but just those likely to be used repeatedly, to encourage interoperable use of those attribute names.
 An implementation may propose a new attribute to be added to this extended schema by raising an issue on the GitHub repository.
