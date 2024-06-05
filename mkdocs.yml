@@ -4,8 +4,8 @@ repo_url: http://github.com/ga4gh/seqcol-spec
 nav:
 
   - Specifications: 
-    - Sequences: spec_sequences.md
-    - Sequence Collections: spec_seqcol.md
+    - Sequences: sequences.md
+    - Sequence Collections: seqcol.md
   - Detailed how-to guides:
     - Compute a digest given a SeqCol: digest_from_collection.md
     - Retrieve a SeqCol given a digest: sequences_from_digest.md
