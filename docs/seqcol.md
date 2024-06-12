@@ -14,7 +14,10 @@ title: Seqcol specification version 0.1.0
 
 ## Specification version
 
-This specification is in **DRAFT** form. This is **NOT YET AN APPROVED GA4GH specification**.
+This specification is in **DRAFT** form. This is **NOT YET AN APPROVED GA4GH specification**. This document is **formal technical explanation for implementers**. See also:
+
+- [Architectural decision record](decision_record.md), a chronological record of spec decisions.
+- [Sequence collection rationale](seqcol_rationale.md), motivation for our major design decisions.
 
 ## Introduction
 
