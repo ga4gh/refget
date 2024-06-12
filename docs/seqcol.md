@@ -374,8 +374,8 @@ Non-inherent attributes `MUST` be stored and returned by the collection endpoint
 
 #### 3.3 Comparison
 
-- *Endpoint 1*: `GET /comparison/{digest1}/{digest2}` (`RECOMMENDED`) Two-digest comparison    
-- *Endpoint 2*: `POST /comparison/{digest1}` (`RECOMMENDED`) One-digest POST comparison 
+- *Endpoint 1*: `GET /comparison/:digest1/:digest2` (`RECOMMENDED`) Two-digest comparison    
+- *Endpoint 2*: `POST /comparison/:digest1` (`RECOMMENDED`) One-digest POST comparison 
 - *Description*: The comparison function specifies an API endpoint that allows a user to compare two sequence collections. The collections are provided either as two digests (the `GET` endpoint) or as one digest representing a database collection, and one local user-provided collection provided via `POST`. For the `POST` endpoint variant, the user-provided local collection should be provided as a [level 2 representation](#terminology) (AKA the canonical seqcol representation) in the `BODY` of the `POST` request.
 - *Return value*: The output is an assessment of compatibility between those sequence collections. If implemented, both variants of the `/comparison` endpoint must `MUST` return an object in JSON format with these 3 keys: `digests`, `arrays`, and `elements`, as described below (see also an example after the descriptions):
     - `digests`: an object with 2 elements, with keys *a* and *b*, and values either the [level 0 seqcol digests](#terminology) for the compared collections, or *null* (undefined). The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return *null* (undefined) in this element for any corresponding sequence collection.
