@@ -35,7 +35,7 @@ In brief, the project specifies several procedures:
 
 ## Use cases
 
-Sequence collections represent fundamental concepts; therefore the specification can be used for many downstream use cases.
+Sequence collections represent fundamental concepts; therefore the specification can be used for many use cases.
 A primary goal is that that seqcol digests could replace or live alongside the human-readable identifiers currently used to identify reference genomes (*e.g.* "hg38" or "GRCh38"). 
 Reference genomes are an indispensable resource for genome analysis.
 Such reference data is provided in many versions by various sources.
@@ -48,7 +48,7 @@ Analytical results based on different genome references may still be integrable,
 However, there are no existing tools or standards to formalize and simplify answering the question of reference genome compatibility.
 
 An earlier standard, the refget sequences protocol, partially addressed this issue for individual sequences, such as a single chromosome, but is not directly applicable to collections of sequences, such as a linear reference genome.
-Building on refget sequences, sequence collections presents fundamental concepts, and therefore the specification can be used for many downstream use cases.
+Building on refget sequences, sequence collections presents fundamental concepts, and therefore the specification can be used for many use cases.
 For example, we envision that seqcol identifiers could replace or live alongside the human-readable identifiers currently used to identify reference genomes (e.g. "hg38" or "GRCh38"), which would provide improved reproducibility.
 
 Some other examples of common use cases where the use of seqcol is beneficial include:
@@ -270,9 +270,9 @@ wqet7IWbw2j2lmGuoKCaFlYS_R7szczz
 
 Because the encoding algorithm is recursive, this leads to a few different ways to represent a sequence collection. We refer to these representations in "levels". The level number represents the number of "lookups" you'd have to do from the "top level" digest. So, we have:
 
-##### Level 0 (AKA "top level")
+##### Level 0
 
-Just a plain digest. This corresponds to **0 database lookups**. Example:
+Just a plain digest, also known as the "top-level digest". This corresponds to **0 database lookups**. Example:
 ```
 a6748aa0f6a1e165f871dbed5e54ba62
 ```
@@ -374,11 +374,11 @@ Non-inherent attributes `MUST` be stored and returned by the collection endpoint
 
 #### 3.3 Comparison
 
-- *Endpoint variant 1*: Two-digest comparison `GET /comparison/{digest1}/{digest2}` (`RECOMMENDED`)  
-- *Endpoint variant 2*: POST comparison with one digest  `POST /comparison/{digest1}` (`RECOMMENDED`)  
-- *Description*: The comparison function specifies an API endpoint that allows a user to compare two sequence collections. The `POST` version compares one database collection to a local user-provided collection.  
-- *Return value*: The output is an assessment of compatibility between those sequence collections. If implemented, both variants of the `/comparison` endpoint must `MUST` return an object in JSON format with these 3 keys: "digests", "arrays", and "elements", as described below:
-    - `digests`: an object with 2 elements, with keys *a* and *b*, and values either the level 0 seqcol digests for the compared collections, or *null* (undefined). The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return *null* (undefined) in this element for any corresponding sequence collection.
+- *Endpoint 1*: `GET /comparison/{digest1}/{digest2}` (`RECOMMENDED`) Two-digest comparison    
+- *Endpoint 2*: `POST /comparison/{digest1}` (`RECOMMENDED`) One-digest POST comparison 
+- *Description*: The comparison function specifies an API endpoint that allows a user to compare two sequence collections. The collections are provided either as two digests (the `GET` endpoint) or as one digest representing a database collection, and one local user-provided collection provided via `POST`.  
+- *Return value*: The output is an assessment of compatibility between those sequence collections. If implemented, both variants of the `/comparison` endpoint must `MUST` return an object in JSON format with these 3 keys: `digests`, `arrays`, and `elements`, as described below (see also an example after the descriptions):
+    - `digests`: an object with 2 elements, with keys *a* and *b*, and values either the [level 0 seqcol digests](#terminology) for the compared collections, or *null* (undefined). The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return *null* (undefined) in this element for any corresponding sequence collection.
     - `attributes`: an object with 3 elements, with keys *a_only*, *b_only*, and *a_and_b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
     - `array_elements`: An object with 4 elements: *a_count*, *b_count*, *a_and_b_count*, and *a_and_b_same_order*. The 3 attributes with *_count* are objects with names corresponding to each array present in the collection, or in both  collections (for *a_and_b_count*), with values as the number of elements present either in one collection, or in both collections for the given array. *a_and_b_same_order* is also an object with names corresponding to arrays, and the values a boolean following the same-order specification below.
 
