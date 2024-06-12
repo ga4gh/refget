@@ -7,7 +7,7 @@ The Refget Sequence Collections standard specification is written mostly to answ
 More specifically, this document attempts to answer these questions:
 
 - Why should the specification include a specific recommended schema, with a defined set of terms, including which are *required* (must exist) and which are *inherent* (affect the outcome of the digest)?
-- Why is there not a digest for <insert my use case here>, so I can just compare two strings to see if the sequence collections are the same? Why do you need these more complex digests that make my comparison harder?
+- Why is there not a digest for `<insert my use case here>`, so I can just compare two strings to see if the sequence collections are the same? Why do you need these more complex digests that make my comparison harder?
 - What is the purpose of the comparison function, which seems more complicated than a simple string match?
 - Why do you organize the sequence collection as a set of arrays, instead of an array of annotated sequence objects?
 - Why do you do repeated layers of digests, instead of just building one string for the collection and digesting it, which seems simpler?
