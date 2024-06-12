@@ -367,7 +367,7 @@ inherent:
 #### 3.2 Collection
 
 - *Endpoint*: `GET /collection/:digest?level=:level` (`REQUIRED`)
-- *Description*: The retrieval function specifies an API endpoint that retrieves original sequences from a database keyed by the unique digest. Here `:digest` is the seqcol digest computed above.  The level corresponds to the "expansion level" of the returned sequence collection returned. The default is `?level=2`, which returns the canonical structure.
+- *Description*: Retrieves original sequence collection from a database, keyed by the unique top-level digest. Here `:digest` is the seqcol digest computed above. The level corresponds to the "expansion level" of the returned sequence collection returned. The default is `?level=2`, which returns the canonical structure.
 - *Return value*: The sequence collection identified by the `:digest` variable. The structure of the data `MUST` be modulated by the `:level` query parameter.  Specifying `?level=2` returns the canonical structure, and `?level=1` returns the collection with digested attributes.
 
 Non-inherent attributes `MUST` be stored and returned by the collection endpoint alongside inherent attributes.
