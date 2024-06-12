@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - mkdocs-material 
+      - master 
 
 permissions:
   contents: write
