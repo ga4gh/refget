@@ -458,11 +458,10 @@ Here, we specify standardized, useful non-inherent attributes that we recommend.
 #### 4.1 The `sorted_name_length_pairs` attribute (`RECOMMENDED`)
 
 The `sorted_name_length_pairs` attribute is a *non-inherent* attribute of a sequence collection with a formal definition, provided here.
-It is `RECOMMENDED` that all seqcol implementations add this attribute to all sequence collections.
 When digested, this attribute provides a digest for an order-invariant coordinate system for a sequence collection.
 Because it is *non-inherent*, it does not affect the identity (digest) of the collection.
 It is created deterministically from the `names` and `lengths` attributes in the collection; it *does not* depend on the actual sequence content, so it is consistent across two collections with different sequence content if they have the same `names` and `lengths`, which are correctly collated, but with pairs not necessarily in the same order.
-For rationale and use cases of `sorted_name_length_pairs`, see [*Footnote F7*](#f7-use-cases-for-the-sorted_name_length_pairs-non-inherent-attribute).
+This attribute is `RECOMMENDED` to allow unified genome browser visualization of data defined on different reference sequence collections. For more rationale and use cases of `sorted_name_length_pairs`, see [*Footnote F7*](#f7-use-cases-for-the-sorted_name_length_pairs-non-inherent-attribute).
 
 Algorithm: 
 
