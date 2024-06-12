@@ -1,10 +1,11 @@
-site_name: Seqcol Protocol Specification
-site_logo: img/seqcol_logo.svg
+site_name: Refget Specifications
 site_url: http://seqcol.databio.org/
 repo_url: http://github.com/ga4gh/seqcol-spec
 nav:
-  - Getting Started: 
-    - Seqcol specification: specification.md
+
+  - Specifications: 
+    - Sequences: sequences.md
+    - Sequence Collections: seqcol.md
   - Detailed how-to guides:
     - Compute a digest given a SeqCol: digest_from_collection.md
     - Retrieve a SeqCol given a digest: sequences_from_digest.md
@@ -16,11 +17,8 @@ nav:
   - Reference:
     - Decision record: decision_record.md
     - Contributing: contributing.md
-theme:
-  name: databio
-  custom_dir: theme_dir
-plugins:
-- search
+
+
 copyright: GA4GH Genomic Knowledge Standards Workstream, Seqcol team
 home_link: null
 navbar:
@@ -34,3 +32,34 @@ navbar:
   - text: Contributing
     icon: fa-users
     href: contributing
+
+theme:
+  logo: img/seqcol_logo.svg
+  favicon: img/seqcol_logo.svg
+  name: material
+
+  features:
+    - header.autohide
+    - navigation.sections
+    - navigation.expand
+    - navigation.footer
+    # - navigation.indexes 
+    - toc.follow
+    - content.action.edit
+    - content.action.view
+    # - navigation.tabs
+    - navigation.top
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: "!!python/name:pymdownx.superfences.fence_code_format"
+  - toc:
+      toc_depth: 3
