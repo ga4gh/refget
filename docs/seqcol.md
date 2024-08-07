@@ -325,6 +325,8 @@ In addition, a RECOMMENDED endpoint at `/openapi.json` SHOULD provide OpenAPI do
 
 Under these umbrella endpoints are a few more specific sub-endpoints, described in detail below:
 
+
+
 #### 3.1 Service info 
 - *Endpoint*: `GET /service-info` (`REQUIRED`)
 - *Description*: The service info endpoint provides information about the service
@@ -363,6 +365,7 @@ inherent:
   - names
   - sequences
 ```
+
 
 #### 3.2 Collection
 
@@ -442,7 +445,58 @@ The output of the comparison function provides information-rich feedback about t
 These details can be used to make a variety of inferences comparing two collections, but it can take some thought to interpret.
 For more details about how to interpret the results of the comparison function to determine different types of compatibility, please see the [howto guide on comparing sequencing collections](compare_collections.md).
 
-### 3.4 OpenAPI documentation
+
+#### 3.4 List
+
+- *Endpoint*: `GET /list/:object_type?page=:page&page_size=:page_size` (`REQUIRED`)
+- *Description*: Lists identifiers for a given object type (*e.g.* collections). This endpoint provides a way to discover what sequence collections a servic provides.
+- *Return value*: The output is a paged list of identifiers following the GA4GH paging guide format, grouped into a `results` and a `pagination` section.
+
+Example return value:
+
+```
+{
+  "results": [
+    ...
+  ],
+  "pagination": [
+    "page": 1,
+    "page_size": 100,
+    "total": 165,
+  ]
+}
+```
+
+
+##### Variant: List with filter by attribute value
+
+The top-level `/list` endpoint will return all items (paged). A variant of this endpoint allows users to retrieve only certain items, filtered by attribute digest. Adding the `:attribute` and `:attribute_digest` to the endpoint accomplishes this:
+
+- *Endpoint*: `GET /list/:object_type/:attribute/:attribute_digest?page=:page&page_size=:page_size` (`REQUIRED`)
+- *Description*: Lists identifiers for a given object type (*e.g.* collections), filtered to only those that have a specific attribute value. This endpoint provides a way to discover sequence collections with a certain attribute.
+- *Return value*: The output format matches the the more general `/list` endpoint. It is simply filtered.
+
+
+#### 3.5 Attribute
+
+- *Endpoint*: `GET /attribute/:attribute_name/:digest` (`RECOMMENDED?`)
+- *Description*: Retrieves values of specific attributes in a sequence collection. Here `:attribute_name` is the name of the attribute, such as `sequences`, `names`, or `sorted_sequences`. `:digest` is the level 1 digest computed above.
+- *Return value*: The attribute value identified by the `:digest` variable. The structure of the should correspond to the value of the attribute in the canonical structure.
+
+
+Example `/attribute/lengths/:digest` return value:
+
+```
+["1216","970","1788"]
+```
+
+Example `/attribute/names/:digest` return value:
+
+```
+["A","B","C"]
+```
+
+#### 3.6 OpenAPI documentation
 
 In addition to the primary top-level endpoints, it is RECOMMENDED that the service provide `/openapi.json`, an OpenAPI-compatible description of the endpoints.
 
