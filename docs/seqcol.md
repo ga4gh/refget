@@ -459,11 +459,11 @@ Example return value:
   "results": [
     ...
   ],
-  "pagination": [
+  "pagination": {
     "page": 1,
     "page_size": 100,
     "total": 165,
-  ]
+  }
 }
 ```
 
