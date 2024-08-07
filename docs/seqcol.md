@@ -479,8 +479,8 @@ The top-level `/list` endpoint will return all items (paged). A variant of this 
 
 #### 3.5 Attribute
 
-- *Endpoint*: `GET /attribute/:attribute_name/:digest` (`RECOMMENDED?`)
-- *Description*: Retrieves values of specific attributes in a sequence collection. Here `:attribute_name` is the name of the attribute, such as `sequences`, `names`, or `sorted_sequences`. `:digest` is the level 1 digest computed above.
+- *Endpoint*: `GET /attribute/:object_type/:attribute_name/:digest` (`RECOMMENDED?`)
+- *Description*: Retrieves values of specific attributes in a sequence collection. Here `:object_type` can be `collection` for a sequence collection object; `:attribute_name` is the name of an attribute, such as `sequences`, `names`, or `sorted_sequences`. `:digest` is the digest of the attribute value, as computed above.
 - *Return value*: The attribute value identified by the `:digest` variable. The structure of the should correspond to the value of the attribute in the canonical structure.
 
 
