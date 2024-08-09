@@ -8,6 +8,39 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+## 2024-08-08 The specification should require the `/attribute` endpoint
+
+### Decision
+
+We decided to add to the specification the `/attribute` endpoint, which would retrieve values of given collection attributes given attribute digests. This is parallel to the `/collection` endpoint, which retrieves the whole collection given a top-level digest.
+
+### Rationale
+
+Several use cases have re-emphasized the value of the digests of the `sorted_sequences`, the `sorted_name_length_pairs`, and other collection attributes. For many use cases, these are really the most important piece of information. However, until now, we've pushed for dealing with top-level collections, and using these as information contained within a collection. This has driven people to want to create separate schemas, which will hurt long-term interoperability. Instead, we realized that if we elevated the status of the *attributes*, such that users could retrieve these values directly, then that would allow these use cases to live within the ecosystem without needing to specify separate schemas. This change will therefore allow us to preserve some interoperability.
+
+### Linked issues
+
+- <https://github.com/ga4gh/refget/issues/80>
+- <https://github.com/ga4gh/refget/issues/77>
+
+
+## 2024-08-08 The `/list` endpoint will provide global and filtered listing of collections
+
+### Decision
+
+We decided to include the `/list` endpoint in two variants, a global one that just lists all available collections, and a filtered one, that allows users to list any collections that have a certain attribute. It should be `/list/collections`, in anticipation of future endpoints that could list entities of other types (like pangenomes or attributes)
+
+### Rationale
+
+We had been brainstorming about listing and filtered listing endpoints for several years, and it was always on the roadmap. We could think of clear use cases. For example, it would be necessary for a meta-service that would aggregate across sequence collections as a way to discover what is contained in one. We had also for along time debated a discovery endpoint that would allow searching through sequence collections. We were originally going to postpone this to v1.1, but in recent months it's become clear that these features are really important to drive uptake of the standard.
+
+### Linked issues
+
+- <https://github.com/ga4gh/refget/issues/61>
+- <https://github.com/ga4gh/refget/issues/28>
+- <https://github.com/ga4gh/refget/issues/27>
+
+
 ## 2024-05-16 The `sorted_sequences` attribute will be in the spec as an optional ancillary attribute
 
 ### Decision
@@ -29,7 +62,8 @@ Thus, it makes sense to include as an example, but made optional since many use 
 In the future if the number of proposed ancillary attributes grows, it could move to a separate document together with other ideas for ancillary attributes.
 
 ### Linked issues
-- https://github.com/ga4gh/seqcol-spec/issues/71
+
+- <https://github.com/ga4gh/seqcol-spec/issues/71>
 
 
 ## 2024-02-21 We will specify core sequence collection attributes and a process for adding new ones
