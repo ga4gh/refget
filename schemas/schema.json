@@ -1,0 +1,20 @@
+{
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "accessions": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "description": "An array of accession identifiers, each prefixed with the authority (e.g., NCBI:XXXX, ENA:YYYY)"
+        }
+      }
+    },
+    "required": ["id", "accessions"]
+  }
+  
