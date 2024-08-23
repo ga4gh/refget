@@ -1,6 +1,6 @@
 site_name: Refget Specifications
-site_url: http://seqcol.databio.org/
-repo_url: http://github.com/ga4gh/seqcol-spec
+site_url: https://ga4gh.github.io/refget
+repo_url: https://github.com/ga4gh/refget
 nav:
 
   - Specifications: 
