@@ -87,9 +87,9 @@ Choosing to host this list as a list of issues allows the list to always be up t
 
 ### Linked issues
 
- - https://github.com/ga4gh/seqcol-spec/issues/50
- - https://github.com/ga4gh/seqcol-spec/issues/46
- - https://github.com/ga4gh/seqcol-spec/issues?q=is%3Aissue+is%3Aopen+label%3Aschema-term
+ - <https://github.com/ga4gh/seqcol-spec/issues/50>
+ - <https://github.com/ga4gh/seqcol-spec/issues/46>
+ - <https://github.com/ga4gh/seqcol-spec/issues?q=is%3Aissue+is%3Aopen+label%3Aschema-term>
 
 ## 2024-01-10 Clarifications on the purpose and form of the JSON schema in service-info
 
