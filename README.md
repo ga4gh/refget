@@ -1,6 +1,6 @@
-# Seqcol Docs
+# Refget Docs
 
-This is the repository for the Seqcol specification. These docs are written using `mkdocs` and hosted on `readthedocs`.
+This is the repository for documentation of the GA4GH Refget specifications, which includes both Refget Sequences and Refget Sequence Collections. These docs are written using `mkdocs` using Material for Mkdocs and hosted using GitHub Pages.
 
 ## Building locally
 

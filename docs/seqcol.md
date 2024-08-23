@@ -192,7 +192,7 @@ The object is a series of arrays with matching length (`3`), with the correspond
 For the rationale why this structure was chosen instead of an array of annotated sequences, see [*Footnote F1*](#f1-why-use-an-array-oriented-structure-instead-of-a-sequence-oriented-structure).
 The implementation `MUST` define its structure in a JSON Schema, such as the example schema defined in step 1.
 Implementations `MAY` choose to extend this schema by adding additional attributes.
-Implmentations `MAY` also use a schema, but we `RECOMMEND` the schema extend the base schema defined above.
+Implementations `MAY` also use a schema, but we `RECOMMEND` the schema extend the base schema defined above.
 This schema extends vanilla JSON Schema in two ways; first, it provides the `collated` qualifier.
 For further details about the rationale behind collated attributes, see [*Footnote F2*](#f2-collated-attributes).
 Second, it specifies the `inherent` qualifier.
@@ -325,6 +325,8 @@ In addition, a RECOMMENDED endpoint at `/openapi.json` SHOULD provide OpenAPI do
 
 Under these umbrella endpoints are a few more specific sub-endpoints, described in detail below:
 
+
+
 #### 3.1 Service info 
 - *Endpoint*: `GET /service-info` (`REQUIRED`)
 - *Description*: The service info endpoint provides information about the service
@@ -363,6 +365,7 @@ inherent:
   - names
   - sequences
 ```
+
 
 #### 3.2 Collection
 
@@ -442,7 +445,58 @@ The output of the comparison function provides information-rich feedback about t
 These details can be used to make a variety of inferences comparing two collections, but it can take some thought to interpret.
 For more details about how to interpret the results of the comparison function to determine different types of compatibility, please see the [howto guide on comparing sequencing collections](compare_collections.md).
 
-### 3.4 OpenAPI documentation
+
+#### 3.4 List
+
+- *Endpoint*: `GET /list/:object_type?page=:page&page_size=:page_size` (`REQUIRED`)
+- *Description*: Lists identifiers for a given object type (*e.g.* collections). This endpoint provides a way to discover what sequence collections a servic provides.
+- *Return value*: The output is a paged list of identifiers following the GA4GH paging guide format, grouped into a `results` and a `pagination` section.
+
+Example return value:
+
+```
+{
+  "results": [
+    ...
+  ],
+  "pagination": {
+    "page": 1,
+    "page_size": 100,
+    "total": 165,
+  }
+}
+```
+
+
+##### Variant: List with filter by attribute value
+
+The top-level `/list` endpoint will return all items (paged). A variant of this endpoint allows users to retrieve only certain items, filtered by attribute digest. Adding the `:attribute` and `:attribute_digest` to the endpoint accomplishes this:
+
+- *Endpoint*: `GET /list/:object_type/:attribute/:attribute_digest?page=:page&page_size=:page_size` (`REQUIRED`)
+- *Description*: Lists identifiers for a given object type (*e.g.* collections), filtered to only those that have a specific attribute value. This endpoint provides a way to discover sequence collections with a certain attribute.
+- *Return value*: The output format matches the the more general `/list` endpoint. It is simply filtered.
+
+
+#### 3.5 Attribute
+
+- *Endpoint*: `GET /attribute/:object_type/:attribute_name/:digest` (`REQUIRED`)
+- *Description*: Retrieves values of specific attributes in a sequence collection. Here `:object_type` can be `collection` for a sequence collection object; `:attribute_name` is the name of an attribute, such as `sequences`, `names`, or `sorted_sequences`. `:digest` is the digest of the attribute value, as computed above.
+- *Return value*: The attribute value identified by the `:digest` variable. The structure of the should correspond to the value of the attribute in the canonical structure.
+
+
+Example `/attribute/lengths/:digest` return value:
+
+```
+["1216","970","1788"]
+```
+
+Example `/attribute/names/:digest` return value:
+
+```
+["A","B","C"]
+```
+
+#### 3.6 OpenAPI documentation
 
 In addition to the primary top-level endpoints, it is RECOMMENDED that the service provide `/openapi.json`, an OpenAPI-compatible description of the endpoints.
 

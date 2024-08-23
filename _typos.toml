@@ -1,0 +1,4 @@
+[default.extend-words]
+# Don't correct the "fiw", which shows up in some of our digest examples
+fiw = "fiw"
+Ot = "Ot"
