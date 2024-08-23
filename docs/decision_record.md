@@ -214,7 +214,7 @@ We have no need for a `/metadata` endpoint
 
 ### Rationale
 
-At one point (issue #3), we debated whether there should be a `/metadata` endpoint or something like that as a way to retrieve information about a sequence that might not be part of the digested sequence. However, after we distinguised between `inherent` and `non-inherent` attributes, we have realized that this satisifes the earlier requirement for a `/metadata` endpoint; in fact, the metadata can be returned to the user through the normal endpoint, and just flagged as `non-inherent` in the schema to indicate that it's not digested, and therefore not part of the identity of the object
+At one point (issue #3), we debated whether there should be a `/metadata` endpoint or something like that as a way to retrieve information about a sequence that might not be part of the digested sequence. However, after we distinguished between `inherent` and `non-inherent` attributes, we have realized that this satisfies the earlier requirement for a `/metadata` endpoint; in fact, the metadata can be returned to the user through the normal endpoint, and just flagged as `non-inherent` in the schema to indicate that it's not digested, and therefore not part of the identity of the object
 
 We distinguished between two types of metadata:
 
@@ -327,7 +327,7 @@ Several reasons led us to this decisions:
 
 1. The likelihood of wanting to add custom attributes that will clash and have different definition seems low, so we questioned whether it is worth the cost of defining separate namespaces.
 2. In the event that there is a clash in the future, this is not really a major problem. A new version of the official schema that adds new reserved keywords will basically mean a new major release of seqcol, which could potentially introduce backwards incompatibility with an existing custom attribute. This just means the custom implementation would need to be updated to follow the new schema, which is possible.
-3. It seems more likely that we would "claim" an official attribute that someone else had already used that *does* match the intended semantics of the word. In that case, our effort to prevent clashes would have actually created clashes, because it would have forced the custom attribute to use a different attribute name. Instead, it seems more prudent to just allow the custom implementations to use the same namespace of attribute names, and deal with any possible backwards incompatibilites if they ever actually arise in the future.
+3. It seems more likely that we would "claim" an official attribute that someone else had already used that *does* match the intended semantics of the word. In that case, our effort to prevent clashes would have actually created clashes, because it would have forced the custom attribute to use a different attribute name. Instead, it seems more prudent to just allow the custom implementations to use the same namespace of attribute names, and deal with any possible backwards incompatibilities if they ever actually arise in the future.
 4. Since we expect the major implementations to be few and driven by people connected with the project, it seems more likely that we would just adopt the custom attribute with its definition as an official attribute. We would not be able to do this if we enforced separate namespaces, which would create backwards compatibility.
 
 In other words, in short: the idea to prevent future backwards-incompatibility by creating a reserved word namespace seems, paradoxically, more likely to actually *create* a future backwards compatibility than to prevent one.
@@ -408,7 +408,7 @@ Under this scheme the string `ACGT` will result in the `sha512t24u` digest `aKF4
 
 `sha512t24u` was envisaged as a fast digest mechanism with a space-efficient representation that can be used for any data with low collision probability. Collisions have been (documented in `md5`)[https://en.wikipedia.org/wiki/MD5#Collision_vulnerabilities] leading to the belief MD5 was insufficient for our needs.
 
-`sha512t24u` must be used for any digest of data **by** the sequence collections standard. This decision does not dissalow the use of `md5` sequence checksums.
+`sha512t24u` must be used for any digest of data **by** the sequence collections standard. This decision does not disallow the use of `md5` sequence checksums.
 
 ### Limitations
 
@@ -795,7 +795,7 @@ For the `POST comparison` endpoint, we made 2 limitations to simplify the implem
 - [https://github.com/ga4gh/seqcol-spec/issues/21](https://github.com/ga4gh/seqcol-spec/issues/21)
 - [https://github.com/ga4gh/seqcol-spec/issues/23](https://github.com/ga4gh/seqcol-spec/issues/23)
 
-## 2021-09-21 - Order will be recognized by digesting arrays in the given order, and unordered digests will be handled as extensions through additional attribuetes
+## 2021-09-21 - Order will be recognized by digesting arrays in the given order, and unordered digests will be handled as extensions through additional attributes
 
 ### Decision
 

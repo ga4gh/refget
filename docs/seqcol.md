@@ -192,7 +192,7 @@ The object is a series of arrays with matching length (`3`), with the correspond
 For the rationale why this structure was chosen instead of an array of annotated sequences, see [*Footnote F1*](#f1-why-use-an-array-oriented-structure-instead-of-a-sequence-oriented-structure).
 The implementation `MUST` define its structure in a JSON Schema, such as the example schema defined in step 1.
 Implementations `MAY` choose to extend this schema by adding additional attributes.
-Implmentations `MAY` also use a schema, but we `RECOMMEND` the schema extend the base schema defined above.
+Implementations `MAY` also use a schema, but we `RECOMMEND` the schema extend the base schema defined above.
 This schema extends vanilla JSON Schema in two ways; first, it provides the `collated` qualifier.
 For further details about the rationale behind collated attributes, see [*Footnote F2*](#f2-collated-attributes).
 Second, it specifies the `inherent` qualifier.
