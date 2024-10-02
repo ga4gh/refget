@@ -315,11 +315,13 @@ What you'd get with **2 database lookups** (1 recursive call). This is the most 
 
 ### 3. API: A server RESTful API specification for retrieving and comparing sequence collections.
 
-The API has 3 top-level endpoints, for 3 functions:
+The API has these top-level endpoints:
 
 1. `/service-info`, for describing information about the service;
 2. `/collection`, for retrieving sequence collections; and
 3. `/comparison`, for comparing two sequence collections.
+4. `/list`, for retriving a list of objects; and
+5. `/attribute`, for retriving the value of a specific attribute.
 
 In addition, a RECOMMENDED endpoint at `/openapi.json` SHOULD provide OpenAPI documentation.
 
@@ -448,9 +450,10 @@ For more details about how to interpret the results of the comparison function t
 
 #### 3.4 List
 
-- *Endpoint*: `GET /list/:object_type?page=:page&page_size=:page_size` (`REQUIRED`)
-- *Description*: Lists identifiers for a given object type (*e.g.* collections). This endpoint provides a way to discover what sequence collections a servic provides.
-- *Return value*: The output is a paged list of identifiers following the GA4GH paging guide format, grouped into a `results` and a `pagination` section.
+- *Endpoint*: `GET /list/:object_type?page=:page&page_size=:page_size&:attribute1=:attribute_digest1&attribute2=:attribute_digest2` (`REQUIRED`)
+- *Description*: Lists identifiers for a given object type (*e.g.* `/list/collection`). This endpoint provides a way to discover what sequence collections a servic provides.
+- *Return value*: The output is a paged list of identifiers following the GA4GH paging guide format, grouped into a `results` and a `pagination` section. If no `?:attribute=:attribute_value` query parameters are provided, the endpoint will return all items (paged). Adding one or more `:attribute` and `:attribute_digest` values as *query parameters*  will filter results to only the collections with the given attribute digest. If multiple attributes are provided, the filter should require ALL of these attributes to match (so multiple attributes are treated with an `AND` operator).
+
 
 Example return value:
 
@@ -466,15 +469,6 @@ Example return value:
   }
 }
 ```
-
-
-##### Variant: List with filter by attribute value
-
-The top-level `/list` endpoint will return all items (paged). A variant of this endpoint allows users to retrieve only certain items, filtered by attribute digest. Adding the `:attribute` and `:attribute_digest` to the endpoint accomplishes this:
-
-- *Endpoint*: `GET /list/:object_type/:attribute/:attribute_digest?page=:page&page_size=:page_size` (`REQUIRED`)
-- *Description*: Lists identifiers for a given object type (*e.g.* collections), filtered to only those that have a specific attribute value. This endpoint provides a way to discover sequence collections with a certain attribute.
-- *Return value*: The output format matches the the more general `/list` endpoint. It is simply filtered.
 
 
 #### 3.5 Attribute
