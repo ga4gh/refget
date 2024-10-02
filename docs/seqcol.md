@@ -474,7 +474,7 @@ Example return value:
 #### 3.5 Attribute
 
 - *Endpoint*: `GET /attribute/:object_type/:attribute_name/:digest` (`REQUIRED`)
-- *Description*: Retrieves values of specific attributes in a sequence collection. Here `:object_type` should be `collection` for a sequence collection object; `:attribute_name` is the name of an attribute, such as `sequences`, `names`, or `sorted_sequences`. `:digest` is the digest of the attribute value, as computed above.
+- *Description*: Retrieves values of specific attributes in a sequence collection. Here `:object_type` must be `collection` for a sequence collection object; `:attribute_name` is the name of an attribute, such as `sequences`, `names`, or `sorted_sequences`. `:digest` is the digest of the attribute value, as computed above.
 - *Return value*: The attribute value identified by the `:digest` variable. The structure of the should correspond to the value of the attribute in the canonical structure.
 
 
