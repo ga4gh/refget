@@ -8,6 +8,39 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+
+## 2024-10-02 The `/collection` and `/attribute` endpoints will both be `REQUIRED`
+
+### Decision
+
+The `/collection` and `/attribute` endpoints will both be `REQUIRED`
+
+### Rationale
+
+We debated whether one or both of these should drop to `RECOMMENDED`, because now we can imagine a lot of use cases that would use one but not the other. But in the end, the interoperability really needs the `/collection` endpoint, and a lot of use cases will rely on the `/attribute` endpoint, so we decided to just leave them both as `REQUIRED` to reflect their dual imporantance in an interoperable eco-system. This does not stop individual implementations from doing partial implementations, like "We only implement the `/attribute` endpoint", if that's all they need; it simply would prevent them from claiming that they are in full compliance of the spec; they'd just have a partial implementation, which is fine. Those services would have some level of interoperability, but would not rise to the level needed to do some of the meta-aggregation we can imagine, so we feel it's appropriate for them to only claim partial compliance.
+
+## 2024-10-02 The `object_type` should be singular all the time
+
+### Decision
+
+The endpoints that can be moduled by `object_type`, `/list/:object_type` and `/attribute/:object_type`, should always use the singular form of the object_type.
+
+### Rationale
+
+It's easier if we have this be uniform, instead of having `/list/collections` and then `/attribute/collection` and then defining these both as `object_type`; to be strictly accurate here we'd need to define a second variables, like `plural_object_type`, so that the spec would be internally consistent. Instead, we don't really see a disadvantage to just making `object_type` have a consistent definition, so that it can be reused throughout the spec. So the end point should change to `/list/collection`.
+
+
+## 2024-10-02 We should use query parameters for the filtered list endpoint
+
+### Decision
+
+The filtered list endpoint should filter by adding query parameters to the unfiltered endpoint, like `/list/:object_type?:attribute1=:attribute_digest1&attribute2=:attribute_digest2`.
+
+### Rationale
+
+Originally, we had defined two path-based variants of the list endpoint; unfiltered as `/list/collection` and filtered as `/list/collection/:attribute/:attribute_digest`. We realized this has some disadvantages; first, it requires us to define these sort of as two separate endpoints, and second, it makes it so you can't enable filtering by more than one attribute digest. We didn't really see a disadvantage to just switching to optional query parameters, and we see several advantages. Now everything fits nicely under a single endpoint definition, and it's natural that without a filter parameter, you simply give the unfiltered result, but with the filter parameter, you give the filtered result. Furthermore, it sets the stage for multiple values, if this could be useful.
+
+
 ## 2024-08-08 The specification should require the `/attribute` endpoint
 
 ### Decision
