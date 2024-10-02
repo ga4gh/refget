@@ -484,7 +484,7 @@ Example `/attribute/collection/lengths/:digest` return value:
 ["1216","970","1788"]
 ```
 
-Example `/attribute//collection/names/:digest` return value:
+Example `/attribute/collection/names/:digest` return value:
 
 ```
 ["A","B","C"]
