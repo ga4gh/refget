@@ -315,11 +315,13 @@ What you'd get with **2 database lookups** (1 recursive call). This is the most 
 
 ### 3. API: A server RESTful API specification for retrieving and comparing sequence collections.
 
-The API has 3 top-level endpoints, for 3 functions:
+The API has these top-level endpoints:
 
 1. `/service-info`, for describing information about the service;
 2. `/collection`, for retrieving sequence collections; and
 3. `/comparison`, for comparing two sequence collections.
+4. `/list`, for retriving a list of objects; and
+5. `/attribute`, for retriving the value of a specific attribute.
 
 In addition, a RECOMMENDED endpoint at `/openapi.json` SHOULD provide OpenAPI documentation.
 
@@ -448,9 +450,10 @@ For more details about how to interpret the results of the comparison function t
 
 #### 3.4 List
 
-- *Endpoint*: `GET /list/:object_type?page=:page&page_size=:page_size` (`REQUIRED`)
-- *Description*: Lists identifiers for a given object type (*e.g.* collections). This endpoint provides a way to discover what sequence collections a servic provides.
-- *Return value*: The output is a paged list of identifiers following the GA4GH paging guide format, grouped into a `results` and a `pagination` section.
+- *Endpoint*: `GET /list/:object_type?page=:page&page_size=:page_size&:attribute1=:attribute_digest1&attribute2=:attribute_digest2` (`REQUIRED`)
+- *Description*: Lists identifiers for a given object type in singular form (*e.g.* `/list/collection`). This endpoint provides a way to discover what sequence collections a service provides. Returned lists can be filtered to only objects with certain attribute values using query parameters. Page numbering begins at page 0 (the first page is page 0).
+- *Return value*: The output is a paged list of identifiers following the GA4GH paging guide format, grouped into a `results` and a `pagination` section. If no `?:attribute=:attribute_value` query parameters are provided, the endpoint will return all items (paged). Adding one or more `:attribute` and `:attribute_digest` values as *query parameters*  will filter results to only the collections with the given attribute digest. If multiple attributes are provided, the filter should require ALL of these attributes to match (so multiple attributes are treated with an `AND` operator).
+
 
 Example return value:
 
@@ -468,33 +471,29 @@ Example return value:
 ```
 
 
-##### Variant: List with filter by attribute value
-
-The top-level `/list` endpoint will return all items (paged). A variant of this endpoint allows users to retrieve only certain items, filtered by attribute digest. Adding the `:attribute` and `:attribute_digest` to the endpoint accomplishes this:
-
-- *Endpoint*: `GET /list/:object_type/:attribute/:attribute_digest?page=:page&page_size=:page_size` (`REQUIRED`)
-- *Description*: Lists identifiers for a given object type (*e.g.* collections), filtered to only those that have a specific attribute value. This endpoint provides a way to discover sequence collections with a certain attribute.
-- *Return value*: The output format matches the the more general `/list` endpoint. It is simply filtered.
-
-
 #### 3.5 Attribute
 
 - *Endpoint*: `GET /attribute/:object_type/:attribute_name/:digest` (`REQUIRED`)
-- *Description*: Retrieves values of specific attributes in a sequence collection. Here `:object_type` can be `collection` for a sequence collection object; `:attribute_name` is the name of an attribute, such as `sequences`, `names`, or `sorted_sequences`. `:digest` is the digest of the attribute value, as computed above.
+- *Description*: Retrieves values of specific attributes in a sequence collection. Here `:object_type` must be `collection` for a sequence collection object; `:attribute_name` is the name of an attribute, such as `sequences`, `names`, or `sorted_sequences`. `:digest` is the digest of the attribute value, as computed above.
 - *Return value*: The attribute value identified by the `:digest` variable. The structure of the should correspond to the value of the attribute in the canonical structure.
 
 
-Example `/attribute/lengths/:digest` return value:
+Example `/attribute/collection/lengths/:digest` return value:
 
 ```
 ["1216","970","1788"]
 ```
 
-Example `/attribute/names/:digest` return value:
+Example `/attribute/collection/names/:digest` return value:
 
 ```
 ["A","B","C"]
 ```
+
+##### Definition of `object_type`
+
+The `/list` and `/attribute` endpoints both use an `:object_type` path parameter. The `object_type` should always be the *singular* descriptor of objects provided by the server. In this version of the Sequence Collections specification, the `object_type` is always `collection`; so the only allowable endpoints would be `/list/collection` and `/attribute/collection/:attribute_name/:digest`. We call this `object_type` because future versions of the specification may allow retrieving lists or attributes of other types of objects.
+
 
 #### 3.6 OpenAPI documentation
 
