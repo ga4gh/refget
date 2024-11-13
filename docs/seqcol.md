@@ -451,7 +451,7 @@ For more details about how to interpret the results of the comparison function t
 #### 3.4 List
 
 - *Endpoint*: `GET /list/:object_type?page=:page&page_size=:page_size&:attribute1=:attribute_digest1&attribute2=:attribute_digest2` (`REQUIRED`)
-- *Description*: Lists identifiers for a given object type in singular form (*e.g.* `/list/collection`). This endpoint provides a way to discover what sequence collections a service provides. Returned lists can be filtered to only objects with certain attribute values using query parameters.
+- *Description*: Lists identifiers for a given object type in singular form (*e.g.* `/list/collection`). This endpoint provides a way to discover what sequence collections a service provides. Returned lists can be filtered to only objects with certain attribute values using query parameters. Page numbering begins at page 0 (the first page is page 0).
 - *Return value*: The output is a paged list of identifiers following the GA4GH paging guide format, grouped into a `results` and a `pagination` section. If no `?:attribute=:attribute_value` query parameters are provided, the endpoint will return all items (paged). Adding one or more `:attribute` and `:attribute_digest` values as *query parameters*  will filter results to only the collections with the given attribute digest. If multiple attributes are provided, the filter should require ALL of these attributes to match (so multiple attributes are treated with an `AND` operator).
 
 
