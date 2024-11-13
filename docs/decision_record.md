@@ -38,7 +38,7 @@ The filtered list endpoint should filter by adding query parameters to the unfil
 
 ### Rationale
 
-Originally, we had defined two path-based variants of the list endpoint; unfiltered as `/list/collection` and filtered as `/list/collection/:attribute/:attribute_digest`. We realized this has some disadvantages; first, it requires us to define these sort of as two separate endpoints, and second, it makes it so you can't enable filtering by more than one attribute digest. We didn't really see a disadvantage to just switching to optional query parameters, and we see several advantages. Now everything fits nicely under a single endpoint definition, and it's natural that without a filter parameter, you simply give the unfiltered result, but with the filter parameter, you give the filtered result. Furthermore, it sets the stage for multiple values, if this could be useful.
+Originally, we had defined two path-based variants of the list endpoint; unfiltered as `/list/collection` and filtered as `/list/collection/:attribute/:attribute_digest`. We realized this has some disadvantages; first, it requires us to define these as two separate endpoints, and second, it makes it so you can't enable filtering by more than one attribute digest. We didn't really see a disadvantage to just switching to optional query parameters, and we see several advantages. Now everything fits nicely under a single endpoint definition, and it's natural that without a filter parameter, you simply give the unfiltered result, but with the filter parameter, you give the filtered result. Furthermore, it sets the stage for multiple values, if this could be useful.
 
 
 ## 2024-08-08 The specification should require the `/attribute` endpoint
