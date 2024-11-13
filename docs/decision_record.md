@@ -10,7 +10,43 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ## 2024-11-13 Attributes can be designed as `passthru` or `transient`.
 
+### Decision
 
+We add two new attribute qualifiers: transient and passthru.
+
+- Passthru attributes are not digested in transition from level 2 to level 1. Most attributes of the canonical (level 2) seqcol representation are digested to create the level 1 representation. But sometimes, we have an attribute for which digesting makes little sense. These attributes are passed through the transformation, so they show up on the level 1 representation in the same form as the level 2 representation. Thus, we refer to them as passthru attributes.
+Transient attributes
+
+- Transient attributes are not retrievable from the attribute endpoint. Most attributes of the sequence collection can be retrieved through the /attribute endpoint. However, some attributes may not be retrievable. For example, this could happen for an attribute that we intend to be used primarily as an identifier. In this case, we don't necessarily want to store the original content that went into the digest into the database, because it might be redundant. We really just want the final attribute. These attributes are called transient because the content of the attribute is no longer stored and is therefore no longer retrievable.
+
+### Rationale
+
+As we worked on more advanced attributes, and with the addition of the `/attribute` endpoint, we realized these changes necessitate a bit more power for the schema to specify behavior of the attributes. For the basic seqcol attributes (names, lengths, sequences) and original endpoint, the general algorithm and basic qualifiers (required, inherent, collated) suffice to describe the representation. But some more nuanced attributes require additional qualifiers to describe their intention and how the server should be behave for the `/attribute` endpoint. For example, sorted_name_length_pairs and sorted_sequences are intended to provide alternative tailored identifiers and comparisons, and not necessarily useful for independent attribute lookup. Similarly, custom extra attributes, like author or alias, may be simple appendages that don't need the complex digesting procedure we use for the basic attributes. In order to flag such attributes in a way that can govern slightly different server expectations, we need a couple of additional advanced attribute qualifiers. For this purpose, we added the passthru and transient qualifiers.
+
+### Linked issues
+
+- <https://github.com/ga4gh/refget/issues/86>
+
+
+## 2024-10-02 Minimal schema should now require sequences, and lengths should not be inherent.
+
+### Decision
+
+We will update the minimal schema with these changes: 1. Move sequences into 'required', and 2. remove lengths from 'inherent'. So the final qualifiers would be:
+- required: names, lengths, and sequences
+- inherent: names, sequences
+
+
+### Rationale
+
+Originally, there was a good rationale for making sequences not required, to allow for coordinate systems to be represented as a seqcol.
+But with the new `/attribute` endpoint, there's a better way to handle it, using `name_length_pairs` and `sorted_name_length_pairs` attributes.
+Then, with sequences required, it does not make sense for lengths to be inherent because they are computable from sequences.
+So essentially, the attribute endpoint allows us to move away from handling coordinate systems as top-level entities, and instead moves toward using the attribute endpoint for coordinate systems.
+
+### Linked issues
+
+- <https://github.com/ga4gh/refget/issues/72>
 
 ## 2024-10-02 The `/collection` and `/attribute` endpoints will both be `REQUIRED`
 
