@@ -203,7 +203,7 @@ The object is a series of arrays with matching length (`3`), with the correspond
 For the rationale why this structure was chosen instead of an array of annotated sequences, see [*Footnote F1*](#f1-why-use-an-array-oriented-structure-instead-of-a-sequence-oriented-structure).
 The implementation `MUST` define its structure in a JSON Schema, such as the example schema defined in step 1.
 Implementations `MAY` choose to extend this schema by adding additional attributes.
-Implementations `MAY` also use a schema, but we `RECOMMEND` the schema extend the base schema defined above.
+Implementations `MAY` also use a different schema, but we `RECOMMEND` the schema extend the base schema defined above.
 This schema extends vanilla JSON Schema in two ways; first, it provides the `collated` qualifier.
 Second, it specifies the `inherent` qualifier.
 For further details about attribute qualifiers, see [*Section 4*](#4-extending-the-schema-schema-attribute-qualifiers).
@@ -485,6 +485,8 @@ Example return value:
 }
 ```
 
+The `list` endpoint MUST be implemented, and MUST allow filtering any attribute defined in the schema, *except attributes marked as passthru*.
+For attributes marked as *passthru*, the list endpoint MAY provide filtering capability, but the spec is silent on this behavior because passthru attributes may be of types other than string.
 
 #### 3.5 Attribute
 
