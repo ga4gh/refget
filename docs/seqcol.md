@@ -558,25 +558,54 @@ See: [ADR on 2023-03-22 regarding inherent attributes](decision_record.md#2023-0
 
 #### 4.4 Passthru attributes
 
-Passthru attributes are *not digested* in transition from level 2 to level 1.
-In other words, the value of a passthru attribute is the same in the level 1 and level 2 representations
+Passthru attributes have the same representation at level 1 and level 2.
+In other words, they are *not digested* in transition from level 2 to level 1.
 This is not the case for most attributes; most attributes of the canonical (level 2) seqcol representation are digested to create the level 1 representation.
 But sometimes, we have an attribute for which digesting makes little sense. 
-These attributes are passed through the transformation, so they show up on the level 1 representation in the same form as the level 2 representation.
+These attributes are passed through without transformation, so they show up on the level 1 representation in the same form as the level 2 representation.
 Thus, we refer to them as passthru attributes.
+
+Here's how passthru attributes behave in the endpoints:
+- `/list`: The server MAY allow filtering on passthru attributes, but this is not required.
+- `/collection`: At both level 1 and level 2, the collection object includes the same passthru attribute representation. 
+- `/comparison`: Passthru attributes are listed in the 'attributes' section, but are not listed under 'array_elements'.
+- `/attribute`: Passthru attributes cannot be used with the attribute endpoint, as the return would be the same as the query.
 
 
 #### 4.5 Transient attributes
 
-Transient attributes are those that *cannot be retrieved* through the `/attribute` endpoint.
-Most attributes of the sequence collection can be retrieved through the `/attribute` endpoint.
-However, some attributes may not be retrievable.
-For example, this could happen for an attribute that we intend to be used primarily as an identifier.
-In this case, we don't necessarily want to store the original content that went into the digest into the database, because it might be redundant or whatever.
+A transient attribute is an attribute that only has a level 1 representation stored in the server.
+Transient attributes therefore *cannot be retrieved* through the `/attribute` endpoint.
+All other attributes of the sequence collection can be retrieved through the `/attribute` endpoint.
+The transient qualifier would apply to attribute that we intend to be used primarily as an identifier.
+In this case, we don't necessarily want to store the original content that went into the digest into the database.
 We really just want the final attribute.
 These attributes are called transient because the content of the attribute is no longer stored and is therefore no longer retrievable.
 
-#### 4.6 Method of specifying attribute qualifiers
+Here's how transient attributes behave in the endpoints:
+- `/list`: No change; a transient attribute level1 representation can be used to list sequence collections that contain it.
+- `/collection`: For level 1 representation, no change; the collection object includes the transient attribute level 1 representation. For level 2 representation, there *is* a change; transient attributes have no level 2 representation on the server, so the sequence collection SHOULD leave this attribute out of the level 2 representation.
+- `/comparison`: Transient attributes are listed in the 'attributes' section, but are not listed under 'array_elements' because there is no level 2 representation.
+- `/attribute`: Transient attributes cannot be used with the attribute endpoint (there is no value to retrieve)
+
+
+#### 4.6 Qualifier summary table
+
+The global qualifiers are all concerned with how the representations are treated when converting between different detail levels.
+The *inherent* qualifier is related to the level 1 &rarr; 0 transition. 
+It is true if the level 1 representation is included during creation of level 0 representation.
+Then the *passthru* and *transient* qualifiers are related to the level 2 &rarr; 1 transition.
+
+
+Qualifer | Level1? | Level2? | Notes
+--- | ----- | ----- | -----
+*none* | as normal | full content | Default state; the level 1 representation is a digest of the level 2 representation.
+passthru | as normal | same as level1 | True if the level 2 representation is the same as the level 1 representation.
+transient | as normal | not present | True if the level 2 representation is not present.
+
+
+
+#### 4.7 Method of specifying attribute qualifiers
 
 In JSON Schema, there are 2 ways to qualify properties: 1) a local qualifier, using a key under a property; or 2) an object-level qualifier, which is specified with a keyed list of properties up one level.
 For example, you annotate a property's `type` with a local qualifier, underneath the property, like this:
@@ -613,16 +642,6 @@ Therefore, it makes sense to treat this concept the same way JSON schema treats 
 In contrast, the idea of `collated` describes a property independently: Whether an attribute is collated is part of the definition of the attribute; if the attribute were moved to a different object, it would still be collated.
 
 Finally, the 3 global qualiers are grouped under the 'ga4gh' key for consistency with other GA4GH specifications, and to group the seqcol-specific extended functionality into one place.
-
-
-
-The qualifiers are all about transitions from different representations.
-
-qualifer | level1 | level2
-*NONE* | digest | main representation
-passthru | yes | same as level1
-transient | yes | N/A (not present)
-inherent
 
 
 
