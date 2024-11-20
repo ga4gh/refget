@@ -666,7 +666,7 @@ This attribute is `RECOMMENDED` to allow retrieval of the coordinate system for 
 2. Build a collated list, corresponing to the names and lengths of the object (*e.g.* `[{"length":123,"name":"chr1"},{"length":456,"name":"chr2"}],...`)
 3. Add as a collated attribute to the sequence collection object.
 
-##### Qualifiers
+##### Qualifiers (RECOMMENDED)
 
 - inherent: false
 - collated: true
@@ -691,7 +691,7 @@ This attribute is `RECOMMENDED` to allow unified genome browser visualization of
 4. Sort the digests lexicographically.
 5. Add to the sequence collection object.
 
-##### Qualifiers
+##### Qualifiers (RECOMMENDED)
 
 - inherent: false
 - collated: false
@@ -715,7 +715,7 @@ This digest allows the comparison to be pre-computed, and more easily compared.
 2. Canonicalize the resulting array (using RFC-8785).
 3. Add to the sequence collection object as the `sorted_sequences` attribute, which is non-inherent and non-collated.
 
-##### Qualifiers
+##### Qualifiers (RECOMMENDED)
 
 - inherent: false
 - collated: false
