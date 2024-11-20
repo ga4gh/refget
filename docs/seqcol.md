@@ -669,7 +669,7 @@ This attribute is `RECOMMENDED` to allow retrieval of the coordinate system for 
 ##### Qualifiers
 
 - inherent: false
-- collated: false
+- collated: true
 - passthru: false
 - transient: false
 
