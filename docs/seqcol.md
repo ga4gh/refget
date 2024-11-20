@@ -660,13 +660,19 @@ This attribute provides a way to look up the ordered coordinate system (the "chr
 It is created deterministically from the `names` and `lengths` attributes in the collection; it *does not* depend on the actual sequence content, so it is consistent across two collections with different sequence content if they have the same `names` and `lengths`, which are correctly collated.
 This attribute is `RECOMMENDED` to allow retrieval of the coordinate system for a given reference sequence collections.
 
-Algorithm: 
+##### Algorithm
 
 1. Lump together each name-length pair from the primary collated `names` and `lengths` into an object, like `{"length":123,"name":"chr1"}`.
 2. Build a collated list, corresponing to the names and lengths of the object (*e.g.* `[{"length":123,"name":"chr1"},{"length":456,"name":"chr2"}],...`)
 3. Add as a collated attribute to the sequence collection object.
 
-The `name_length_pairs` attribute is *not inherent*, *not passthru*, and *not transient*.
+##### Qualifiers
+
+- inherent: false
+- collated: false
+- passthru: false
+- transient: false
+
 
 #### 5.1 The `sorted_name_length_pairs` attribute (`RECOMMENDED`)
 
@@ -677,7 +683,7 @@ but with pairs not necessarily in the same order.
 
 This attribute is `RECOMMENDED` to allow unified genome browser visualization of data defined on different reference sequence collections. For more rationale and use cases of `sorted_name_length_pairs`, see [*Footnote F7*](#f7-use-cases-for-the-sorted_name_length_pairs-non-inherent-attribute).
 
-Algorithm: 
+##### Algorithm
 
 1. Lump together each name-length pair from the primary collated `names` and `lengths` into an object, like `{"length":123,"name":"chr1"}`.
 2. Canonicalize JSON according to the seqcol spec (using RFC-8785).
@@ -685,7 +691,12 @@ Algorithm:
 4. Sort the digests lexicographically.
 5. Add to the sequence collection object.
 
-The `sorted_name_length_pairs` attribute is: non-inherent, non-collated, non-passthru, and transient.
+##### Qualifiers
+
+- inherent: false
+- collated: false
+- passthru: false
+- transient: **true**
 
 #### 5.3 The `sorted_sequences` attribute (`OPTIONAL`)
 
@@ -698,13 +709,18 @@ Simply that for some large-scale use cases, comparing the sequence content witho
 In these cases, using the comparison function could be computationally prohibitive.
 This digest allows the comparison to be pre-computed, and more easily compared.
 
-Algorithm:
+##### Algorithm
 
 1. Take the array of the `sequences` attribute (an array of sequence digests) and sort it lexicographically.
 2. Canonicalize the resulting array (using RFC-8785).
 3. Add to the sequence collection object as the `sorted_sequences` attribute, which is non-inherent and non-collated.
 
+##### Qualifiers
 
+- inherent: false
+- collated: false
+- passthru: false
+- transient: false
 
 ---
 
