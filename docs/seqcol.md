@@ -465,9 +465,11 @@ For more details about how to interpret the results of the comparison function t
 
 #### 3.4 List
 
-- *Endpoint*: `GET /list/:object_type?page=:page&page_size=:page_size&:attribute1=:attribute_digest1&attribute2=:attribute_digest2` (`REQUIRED`)
-- *Description*: Lists identifiers for a given object type in singular form (*e.g.* `/list/collection`). This endpoint provides a way to discover what sequence collections a service provides. Returned lists can be filtered to only objects with certain attribute values using query parameters. Page numbering begins at page 0 (the first page is page 0).
-- *Return value*: The output is a paged list of identifiers following the GA4GH paging guide format, grouped into a `results` and a `pagination` section. If no `?:attribute=:attribute_value` query parameters are provided, the endpoint will return all items (paged). Adding one or more `:attribute` and `:attribute_digest` values as *query parameters*  will filter results to only the collections with the given attribute digest. If multiple attributes are provided, the filter should require ALL of these attributes to match (so multiple attributes are treated with an `AND` operator).
+- *Endpoint*: `GET /list/:object_type?page=:page&page_size=:page_size&:attribute1=:attribute1_level1_repr&attribute2=:attribute2_level1_repr` (`REQUIRED`)
+- *Description*: Lists identifiers for a given object type in singular form (*e.g.* `/list/collection`). This endpoint provides a way to discover what sequence collections a service provides.
+  Returned lists can be filtered to only objects with certain attribute values using query parameters.
+  Page numbering begins at page 0 (the first page is page 0).
+- *Return value*: The output is a paged list of identifiers following the GA4GH paging guide format, grouped into a `results` and a `pagination` section. If no `?:attribute=:attribute_level1_repr` query parameters are provided, the endpoint will return all items (paged). Adding one or more `:attribute` and `:attribute_digest` values as *query parameters*  will filter results to only the collections with the given attribute digest. If multiple attributes are provided, the filter should require ALL of these attributes to match (so multiple attributes are treated with an `AND` operator).
 
 
 Example return value:
@@ -485,8 +487,8 @@ Example return value:
 }
 ```
 
-The `list` endpoint MUST be implemented, and MUST allow filtering any attribute defined in the schema, *except attributes marked as passthru*.
-For attributes marked as *passthru*, the list endpoint MAY provide filtering capability, but the spec is silent on this behavior because passthru attributes may be of types other than string.
+The `list` endpoint MUST be implemented, and MUST allow filtering using any attribute defined in the schema, *except attributes marked as passthru*.
+For attributes marked as *passthru*, the list endpoint MAY provide filtering capability.
 
 #### 3.5 Attribute
 
@@ -508,8 +510,7 @@ Example `/attribute/collection/names/:digest` return value:
 ```
 
 The attribute endpoint MUST be functional for any attribute defined in the schema, *except those marked as transient or passthru*.
-The endpoint MAY respond to requests for attributes marked as *passthru*.
-The endpoint SHOULD NOT respond to requests for attributes marked as *transient*.
+The endpoint SHOULD NOT respond to requests for attributes marked as *passthru* OR *transient*.
 For more information on transient and passthru attributes, see [Section 4](#4-extending-the-schema-schema-attribute-qualifiers).
 
 
@@ -612,6 +613,18 @@ Therefore, it makes sense to treat this concept the same way JSON schema treats 
 In contrast, the idea of `collated` describes a property independently: Whether an attribute is collated is part of the definition of the attribute; if the attribute were moved to a different object, it would still be collated.
 
 Finally, the 3 global qualiers are grouped under the 'ga4gh' key for consistency with other GA4GH specifications, and to group the seqcol-specific extended functionality into one place.
+
+
+
+The qualifiers are all about transitions from different representations.
+
+qualifer | level1 | level2
+*NONE* | digest | main representation
+passthru | yes | same as level1
+transient | yes | N/A (not present)
+inherent
+
+
 
 ### 5. Ancillary attribute management: recommended non-inherent attributes
 
