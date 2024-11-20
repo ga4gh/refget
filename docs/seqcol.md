@@ -31,7 +31,7 @@ In brief, the project specifies several procedures:
 
 1. **An algorithm for encoding sequence collection identifiers.**  The GA4GH standard [refget sequences](http://samtools.github.io/hts-specs/refget.html) specifies a way to compute deterministic sequence identifiers from individual sequences. Seqcol uses refget sequence identifiers and adds functionality to wrap them into collections of sequences. Seqcol also handles sequence attributes, such as their names, lengths, or topologies. Seqcol digests are defined by a hash algorithm, rather than an accession authority, and are thus decentralized and usable for private sequence collections, cases without connection to a central database, or validation of sequence collection content and provenance.
 2. **An API describing lookup and comparison of sequence collections.** Seqcol specifies an http API to retrieve the sequence collection given a digest. A main use case is to reproduce the exact sequence collection (*e.g.* reference genome) used for analysis, instead of guessing based on a human-readable identifier. Seqcol also provides a standardized method of comparing the contents of two sequence collections. This comparison function can *e.g.* be used to determine if analysis results based on different references genomes are compatible. 
-3. **Recommended ancillary, non-inherent attributes.** Finally, the protocol defines several recommended procedures that will improve the compatibility across Seqcol servers, and beyond.
+3. **Recommended ancillary attributes.** Finally, the protocol defines several recommended procedures that will improve the compatibility across Seqcol servers, and beyond.
 
 ## Use cases
 
@@ -153,7 +153,7 @@ We RECOMMEND that all implementations use this as a base schema, adding addition
 We RECOMMEND *not changing the inherent attributes list*, because this will keep the identifiers compatible across implementations.
 Implementations that use different inherent attributes are still compliant with the specification generally, but do so at the cost of top-level digest interoperability.
 
-For more information about community-driven updates to the standard schema, see [*Footnote F8*](#f8-adding-new-schema-attributes).
+For more information about community-driven updates to the standard schema, see [*Footnote F5*](#f5-adding-new-schema-attributes).
 
 ### 2. Encoding: Computing sequence digests from sequence collections
 
@@ -168,7 +168,10 @@ The steps of the encoding process are:
 - **Step 4**. Apply [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) again to canonicalize the JSON of the new seqcol object representation.
 - **Step 5**. Digest the final canonical representation again using the GA4GH digest algorithm.
 
-Example Python code for computing a seqcol digest can be found in the [tutorial for computing seqcol digests](digest_from_collection.md). These steps are described in more detail below:
+Example Python code for computing a seqcol digest can be found in the [tutorial for computing seqcol digests](digest_from_collection.md).
+For information about the possibilty of deviating from this procedure for custom attributes, see [*Footnote F6*](#f6-custom-encoding-algorithms).
+
+These steps are described in more detail below:
 
 #### Step 1: Organize the sequence collection data into *canonical seqcol object representation*.
 
@@ -239,12 +242,12 @@ b'["SQ.2648ae1bacce4ec4b6cf337dcae37816","SQ.907112d17fcb73bcab1ed1c72b97ce68","
 
 _* The above Python function suffices if (1) attribute keys are restricted to ASCII, (2) there are no floating point values, and (3) for all integer values `i`:  `-2**63 < i < 2**63`_
 
-Also, notice that in this process, RFC-8785 is applied only to objects; we assume the sequence digests are computed through an external process (the refget sequences protocol), and are not computed as part of the sequence collection. The refget sequences protocol digests sequence strings without JSON-canonicalization. For more details, see [*Footnote F5*](#f5-rfc-8785-does-not-apply-to-refget-sequences).
+Also, notice that in this process, RFC-8785 is applied only to objects; we assume the sequence digests are computed through an external process (the refget sequences protocol), and are not computed as part of the sequence collection. The refget sequences protocol digests sequence strings without JSON-canonicalization. For more details, see [*Footnote F2*](#f2-rfc-8785-does-not-apply-to-refget-sequences).
 
 #### Step 3: Digest each canonicalized attribute value using the GA4GH digest algorithm.
 
 Apply the GA4GH digest algorithm to each attribute value.
-The GA4GH digest algorithm is described in detail in [*Footnote F6*](#f6-the-ga4gh-digest-algorithm).
+The GA4GH digest algorithm is described in detail in [*Footnote F3*](#f3-the-ga4gh-digest-algorithm).
 This converts the value of each attribute in the seqcol into a digest string.
 Applying this to each value will produce the following structure:
 
@@ -645,7 +648,7 @@ Finally, the 3 global qualiers are grouped under the 'ga4gh' key for consistency
 
 
 
-### 5. Ancillary attribute management: recommended non-inherent attributes
+### 5. Recommended ancillary attributes
 
 In *Section 1: Encoding*, we distinguished between *inherent* and *non-inherent* attributes.
 Non-inherent attributes provide a standardized way for implementations to store and serve additional, third-party attributes that do not contribute to the digest.
@@ -658,7 +661,7 @@ Here, we specify standardized, useful non-inherent attributes that we recommend.
 The `name_length_pairs` attribute is a *non-inherent* attribute of a sequence collection with a formal definition, provided here.
 This attribute provides a way to look up the ordered coordinate system (the "chrom sizes") for a sequence collection.
 It is created deterministically from the `names` and `lengths` attributes in the collection; it *does not* depend on the actual sequence content, so it is consistent across two collections with different sequence content if they have the same `names` and `lengths`, which are correctly collated.
-This attribute is `RECOMMENDED` to allow retrieval of the coordinate system for a given reference sequence collections.
+This attribute is `RECOMMENDED` to allow retrieval of the coordinate system for a given reference sequence collection.
 
 ##### Algorithm
 
@@ -681,7 +684,7 @@ When digested, this attribute provides a digest for an order-invariant coordinat
 Because it is *non-inherent*, it does not affect the identity (digest) of the collection.
 but with pairs not necessarily in the same order.
 
-This attribute is `RECOMMENDED` to allow unified genome browser visualization of data defined on different reference sequence collections. For more rationale and use cases of `sorted_name_length_pairs`, see [*Footnote F7*](#f7-use-cases-for-the-sorted_name_length_pairs-non-inherent-attribute).
+This attribute is `RECOMMENDED` to allow unified genome browser visualization of data defined on different reference sequence collections. For more rationale and use cases of `sorted_name_length_pairs`, see [*Footnote F4*](#f4-use-cases-for-the-sorted_name_length_pairs-non-inherent-attribute).
 
 ##### Algorithm
 
@@ -740,45 +743,11 @@ While the latter is intuitive, as it captures each sequence object with some acc
 
 See [ADR on 2021-06-30 on array-oriented structure](decision_record.md#2021-06-30-use-array-based-data-structure-and-multi-tiered-digests)
 
-### F4. Sequence collections without sequences
-
-Typically, we think of a sequence collection as consisting of real sequences, but in fact, sequence collections can also be used to specify collections where the actual sequence content is irrelevant.
-Since this concept can be a bit abstract for those not familiar, we'll try here to explain the rationale and benefit of this.
-First, consider that in a sequence comparison, for some use cases, we may be primarily concerned only with the *length* of the sequence, and not the actual sequence of characters.
-For example, BED files provide start and end coordinates of genomic regions of interest, which are defined on a particular sequence.
-On the surface, it seems that two genomic regions are only comparable if they are defined on the same sequence.
-However, this not *strictly* true; in fact, really, as long as the underlying sequences are homologous, and the position in one sequence references an equivalent position in the other, then it makes sense to compare the coordinates.
-In other words, even if the underlying sequences aren't *exactly* the same, as long as they represent something equivalent, then the coordinates can be compared.
-A prerequisite for this is that the *lengths* of the sequence must match; it wouldn't make sense to compare position 5,673 on a sequence of length 8,000 against the same position on a sequence of length 9,000 because those positions don't clearly represent the same thing; but if the sequences have the same length and represent a homology statement, then it may be meaningful to compare the positions. 
-
-We realized that we could gain a lot of power from the seqcol comparison function by comparing just the name and length vectors, which typically correspond to a coordinate system.
-Thus, actual sequence content is optional for sequence collections.
-We still think it's correct to refer to a sequence-content-less sequence collection as a "sequence collection" -- because it is still an abstract concept that *is* representing a collection of sequences: we know their names, and their lengths, we just don't care about the actual characters in the sequence in this case.
-Thus, we can think of these as a sequence collection without sequence characters.
-
-An example of a canonical representation (level 2) of a sequence collection with unspecified sequences would be:
-
-```
-{
-  "lengths": [
-    "1216",
-    "970",
-    "1788"
-  ],
-  "names": [
-    "A",
-    "B",
-    "C"
-  ]
-}
-```
-
-### F5. RFC-8785 does not apply to refget sequences
+### F2. RFC-8785 does not apply to refget sequences
 
 A note to clarify potential confusion with RFC-8785. While the sequence collection specification determines that RFC-8785 will be used to canonicalize the JSON before digesting, this is specific to sequence collections, it *does not apply to the original refget sequences protocol*. According to the sequences protocol, sequences are digested as un-quoted strings. If RFC-8785 were applied at the level of individual sequences, they would be quoted to become valid JSON, which would change the digest. Since the sequences protocol predated the sequence collections protocol, it did not use RFC-8785; and anyway, the sequences are just primitive types so a canonicalization scheme doesn't add anything. This leads to the slight confusion that RFC-8785 canonicalization is only applied to the objects in the sequence collections, and not to the primitives when the underlying sequences are digested.
 
-
-### F6. The GA4GH digest algorithm
+### F3. The GA4GH digest algorithm
 
 The GA4GH digest algorithm, `sha512t24u`, was created as part of the [Variation Representation Specification standard](https://vrs.ga4gh.org/en/stable/impl-guide/computed_identifiers.html). 
 This procedure is described as ([Hart _et al_. 2020](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883)):
@@ -803,7 +772,7 @@ def sha512t24u_digest(seq: bytes) -> str:
 
 See: [ADR from 2023-01-25 on digest algorithm](decision_record.md#2023-01-25-digest-algorithm)
 
-### F7. Use cases for the `sorted_name_length_pairs` non-inherent attribute
+### F4. Use cases for the `sorted_name_length_pairs` non-inherent attribute
 
 One motivation for this attribute comes from genome browsers, which may display genomic loci of interest (*e.g.* BED files).
 The genome browser should only show BED files if they annotate the same coordinate system as the reference genome.
@@ -820,7 +789,7 @@ Thus, in a production setting, the full compatibility check can be reduced to a 
 
 See: [ADR from 2023-07-12 on sorted name-length pairs](decision_record.md#2023-07-12-implementations-should-provide-sorted_name_length_pairs-and-comparison-endpoint)
 
-### F8. Adding new schema attributes
+### F5. Adding new schema attributes
 
 A strength of the seqcol standard is that the schema definition can be modified for particular use cases, for example, by adding new attributes into a sequence collection.
 This will allow different communities to use the standard without necessarily needing to subscribe to identical schemas, allowing the standard to be more generally useful.
@@ -833,3 +802,13 @@ An implementation may propose a new attribute to be added to this extended schem
 The proposed attributes and definition can then be approved through discussion during the refget working group calls and ultimately added to the approved extended seqcol schema.
 These GitHub issues should be created with the label 'schema-term'.
 You can follow these issues (or raise your own) at <https://github.com/ga4gh/seqcol-spec/issues?q=is%3Aissue+label%3Aschema-term+>.
+
+### F6. Custom encoding algorithms
+
+A core part of Sequence Collections specification is the *encoding* algorithm, which describes how to create the digest for a sequence collection.
+The encoding process can be divided into two steps; first, the attributes are encoded into the level 1 representation, and then this is encoded to produce the final digest (also called the level 0 or top level representation).
+The first part of this process, encoding from level 2 to level 1, is the default; this is applied to any attributes that don't have something else defined specifically as part of the attribute definition.
+This is the way all the minimal attributes (names, lengths, and sequences) should behave.
+But custom attributes MAY diverge from this approach by defining their own encoding procedure that defines how the level 1 digest is computed from the level 2 representation.
+For example, in the list of recommended ancillary attributes, `name_length_pairs` does not define a custom procedure for encoding, so this would follow the default procedure.
+An alternative custom attribute, though, MAY specify how this encoding procedure happens.

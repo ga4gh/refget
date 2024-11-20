@@ -8,6 +8,23 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+## 2024-11-20 Custom modifiers should live in the schema under the `ga4gh` key
+
+### Decision
+
+Any global custom modifiers should live under a `ga4gh` key in  the schemea. Right now, this includes `inherent`, `transient`, and `passthru`.
+Local modifiers (currently just `collated`) will continue to live, raw, under the attribute they describe.
+
+
+### Rationale
+
+We want to follow the standard used in the other specs (VRS), and it also seems fine to have a place to lump together our custom modifiers.
+We thought we could also do this for `collated`, as a local modifier, but opt not to right now because: there's only 1, it's a boolean, and it's not actually even used for anything in the spec at the moment, it is only there because it could be nice to use for a visualization of elements in a collection. The additional complexity of another layer just for this seems pointless at this point.
+
+### Linked issues
+
+- <https://github.com/ga4gh/refget/issues/84>
+
 ## 2024-11-13 Attributes can be designed as `passthru` or `transient`.
 
 ### Decision
@@ -18,6 +35,11 @@ We add two new attribute qualifiers: transient and passthru.
 Transient attributes
 
 - Transient attributes are not retrievable from the attribute endpoint. Most attributes of the sequence collection can be retrieved through the /attribute endpoint. However, some attributes may not be retrievable. For example, this could happen for an attribute that we intend to be used primarily as an identifier. In this case, we don't necessarily want to store the original content that went into the digest into the database, because it might be redundant. We really just want the final attribute. These attributes are called transient because the content of the attribute is no longer stored and is therefore no longer retrievable.
+
+Also, a few other related decisions we finalized:
+- `collection` endpoint, level 2 collection representation should exclude transient attributes.
+- `attribute` endpoint wouldn't provide anything for either transient or passthru attributes.
+- Can passthru or transient attributes be inherent? They could, but it probably doesn't really make sense. Nevertheless, there's no reason to state that they cannot be.
 
 ### Rationale
 
