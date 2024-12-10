@@ -8,6 +8,21 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+## 2024-11-20 Level 2 return values should not return transient attributes
+
+### Decision
+
+Level 2 return values should not return transient attributes
+
+### Rationale
+
+We debated whether the `/collection?level=2` endpoint should do with transient attributes, because the level 2 representations are not stored. One train of thought was that it could return the level 1 representation; other is that it just includes nothing. We decided that the more pure approach would be include neither
+
+Another option was something like `?level=highest`, which would return level 2 representations for everything that has one, but level 1 representations for transient attributes.
+
+We decided that even if you don't have that information, you could just get it from the `?level=1` endpoint. Or, implementations could specify their own way
+
+
 ## 2024-11-20 Custom modifiers should live in the schema under the `ga4gh` key
 
 ### Decision
