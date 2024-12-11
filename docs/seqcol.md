@@ -347,8 +347,8 @@ The API has these top-level endpoints:
 1. `/service-info`, for describing information about the service.
 2. `/collection`, for retrieving sequence collections.
 3. `/comparison`, for comparing two sequence collections.
-4. `/list`, for retriving a list of objects.
-5. `/attribute`, for retriving the value of a specific attribute.
+4. `/list`, for retrieving a list of objects.
+5. `/attribute`, for retrieving the value of a specific attribute.
 
 In addition, a RECOMMENDED endpoint at `/openapi.json` SHOULD provide OpenAPI documentation.
 
