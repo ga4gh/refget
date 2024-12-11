@@ -8,6 +8,148 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+## 2024-11-20 Level 2 return values should not return transient attributes
+
+### Decision
+
+Level 2 return values should not return transient attributes
+
+### Rationale
+
+We debated whether the `/collection?level=2` endpoint should do with transient attributes, because the level 2 representations are not stored. One train of thought was that it could return the level 1 representation; other is that it just includes nothing. We decided that the more pure approach would be include neither
+
+Another option was something like `?level=highest`, which would return level 2 representations for everything that has one, but level 1 representations for transient attributes.
+
+We decided that even if you don't have that information, you could just get it from the `?level=1` endpoint. Or, implementations could specify their own way
+
+
+## 2024-11-20 Custom modifiers should live in the schema under the `ga4gh` key
+
+### Decision
+
+Any global custom modifiers should live under a `ga4gh` key in  the schemea. Right now, this includes `inherent`, `transient`, and `passthru`.
+Local modifiers (currently just `collated`) will continue to live, raw, under the attribute they describe.
+
+
+### Rationale
+
+We want to follow the standard used in the other specs (VRS), and it also seems fine to have a place to lump together our custom modifiers.
+We thought we could also do this for `collated`, as a local modifier, but opt not to right now because: there's only 1, it's a boolean, and it's not actually even used for anything in the spec at the moment, it is only there because it could be nice to use for a visualization of elements in a collection. The additional complexity of another layer just for this seems pointless at this point.
+
+### Linked issues
+
+- <https://github.com/ga4gh/refget/issues/84>
+
+## 2024-11-13 Attributes can be designed as `passthru` or `transient`.
+
+### Decision
+
+We add two new attribute qualifiers: transient and passthru.
+
+- Passthru attributes are not digested in transition from level 2 to level 1. Most attributes of the canonical (level 2) seqcol representation are digested to create the level 1 representation. But sometimes, we have an attribute for which digesting makes little sense. These attributes are passed through the transformation, so they show up on the level 1 representation in the same form as the level 2 representation. Thus, we refer to them as passthru attributes.
+Transient attributes
+
+- Transient attributes are not retrievable from the attribute endpoint. Most attributes of the sequence collection can be retrieved through the /attribute endpoint. However, some attributes may not be retrievable. For example, this could happen for an attribute that we intend to be used primarily as an identifier. In this case, we don't necessarily want to store the original content that went into the digest into the database, because it might be redundant. We really just want the final attribute. These attributes are called transient because the content of the attribute is no longer stored and is therefore no longer retrievable.
+
+Also, a few other related decisions we finalized:
+- `collection` endpoint, level 2 collection representation should exclude transient attributes.
+- `attribute` endpoint wouldn't provide anything for either transient or passthru attributes.
+- Can passthru or transient attributes be inherent? They could, but it probably doesn't really make sense. Nevertheless, there's no reason to state that they cannot be.
+
+### Rationale
+
+As we worked on more advanced attributes, and with the addition of the `/attribute` endpoint, we realized these changes necessitate a bit more power for the schema to specify behavior of the attributes. For the basic seqcol attributes (names, lengths, sequences) and original endpoint, the general algorithm and basic qualifiers (required, inherent, collated) suffice to describe the representation. But some more nuanced attributes require additional qualifiers to describe their intention and how the server should be behave for the `/attribute` endpoint. For example, sorted_name_length_pairs and sorted_sequences are intended to provide alternative tailored identifiers and comparisons, and not necessarily useful for independent attribute lookup. Similarly, custom extra attributes, like author or alias, may be simple appendages that don't need the complex digesting procedure we use for the basic attributes. In order to flag such attributes in a way that can govern slightly different server expectations, we need a couple of additional advanced attribute qualifiers. For this purpose, we added the passthru and transient qualifiers.
+
+### Linked issues
+
+- <https://github.com/ga4gh/refget/issues/86>
+
+
+## 2024-10-02 Minimal schema should now require sequences, and lengths should not be inherent.
+
+### Decision
+
+We will update the minimal schema with these changes: 1. Move sequences into 'required', and 2. remove lengths from 'inherent'. So the final qualifiers would be:
+- required: names, lengths, and sequences
+- inherent: names, sequences
+
+
+### Rationale
+
+Originally, there was a good rationale for making sequences not required, to allow for coordinate systems to be represented as a seqcol.
+But with the new `/attribute` endpoint, there's a better way to handle it, using `name_length_pairs` and `sorted_name_length_pairs` attributes.
+Then, with sequences required, it does not make sense for lengths to be inherent because they are computable from sequences.
+So essentially, the attribute endpoint allows us to move away from handling coordinate systems as top-level entities, and instead moves toward using the attribute endpoint for coordinate systems.
+
+### Linked issues
+
+- <https://github.com/ga4gh/refget/issues/72>
+
+## 2024-10-02 The `/collection` and `/attribute` endpoints will both be `REQUIRED`
+
+### Decision
+
+The `/collection` and `/attribute` endpoints will both be `REQUIRED`
+
+### Rationale
+
+We debated whether one or both of these should drop to `RECOMMENDED`, because now we can imagine a lot of use cases that would use one but not the other. But in the end, the interoperability really needs the `/collection` endpoint, and a lot of use cases will rely on the `/attribute` endpoint, so we decided to just leave them both as `REQUIRED` to reflect their dual imporantance in an interoperable eco-system. This does not stop individual implementations from doing partial implementations, like "We only implement the `/attribute` endpoint", if that's all they need; it simply would prevent them from claiming that they are in full compliance of the spec; they'd just have a partial implementation, which is fine. Those services would have some level of interoperability, but would not rise to the level needed to do some of the meta-aggregation we can imagine, so we feel it's appropriate for them to only claim partial compliance.
+
+## 2024-10-02 The `object_type` should be singular all the time
+
+### Decision
+
+The endpoints that can be moduled by `object_type`, `/list/:object_type` and `/attribute/:object_type`, should always use the singular form of the object_type.
+
+### Rationale
+
+It's easier if we have this be uniform, instead of having `/list/collections` and then `/attribute/collection` and then defining these both as `object_type`; to be strictly accurate here we'd need to define a second variables, like `plural_object_type`, so that the spec would be internally consistent. Instead, we don't really see a disadvantage to just making `object_type` have a consistent definition, so that it can be reused throughout the spec. So the end point should change to `/list/collection`.
+
+
+## 2024-10-02 We should use query parameters for the filtered list endpoint
+
+### Decision
+
+The filtered list endpoint should filter by adding query parameters to the unfiltered endpoint, like `/list/:object_type?:attribute1=:attribute_digest1&attribute2=:attribute_digest2`.
+
+### Rationale
+
+Originally, we had defined two path-based variants of the list endpoint; unfiltered as `/list/collection` and filtered as `/list/collection/:attribute/:attribute_digest`. We realized this has some disadvantages; first, it requires us to define these as two separate endpoints, and second, it makes it so you can't enable filtering by more than one attribute digest. We didn't really see a disadvantage to just switching to optional query parameters, and we see several advantages. Now everything fits nicely under a single endpoint definition, and it's natural that without a filter parameter, you simply give the unfiltered result, but with the filter parameter, you give the filtered result. Furthermore, it sets the stage for multiple values, if this could be useful.
+
+
+## 2024-08-08 The specification should require the `/attribute` endpoint
+
+### Decision
+
+We decided to add to the specification the `/attribute` endpoint, which would retrieve values of given collection attributes given attribute digests. This is parallel to the `/collection` endpoint, which retrieves the whole collection given a top-level digest.
+
+### Rationale
+
+Several use cases have re-emphasized the value of the digests of the `sorted_sequences`, the `sorted_name_length_pairs`, and other collection attributes. For many use cases, these are really the most important piece of information. However, until now, we've pushed for dealing with top-level collections, and using these as information contained within a collection. This has driven people to want to create separate schemas, which will hurt long-term interoperability. Instead, we realized that if we elevated the status of the *attributes*, such that users could retrieve these values directly, then that would allow these use cases to live within the ecosystem without needing to specify separate schemas. This change will therefore allow us to preserve some interoperability.
+
+### Linked issues
+
+- <https://github.com/ga4gh/refget/issues/80>
+- <https://github.com/ga4gh/refget/issues/77>
+
+
+## 2024-08-08 The `/list` endpoint will provide global and filtered listing of collections
+
+### Decision
+
+We decided to include the `/list` endpoint in two variants, a global one that just lists all available collections, and a filtered one, that allows users to list any collections that have a certain attribute. It should be `/list/collections`, in anticipation of future endpoints that could list entities of other types (like pangenomes or attributes)
+
+### Rationale
+
+We had been brainstorming about listing and filtered listing endpoints for several years, and it was always on the roadmap. We could think of clear use cases. For example, it would be necessary for a meta-service that would aggregate across sequence collections as a way to discover what is contained in one. We had also for along time debated a discovery endpoint that would allow searching through sequence collections. We were originally going to postpone this to v1.1, but in recent months it's become clear that these features are really important to drive uptake of the standard.
+
+### Linked issues
+
+- <https://github.com/ga4gh/refget/issues/61>
+- <https://github.com/ga4gh/refget/issues/28>
+- <https://github.com/ga4gh/refget/issues/27>
+
+
 ## 2024-05-16 The `sorted_sequences` attribute will be in the spec as an optional ancillary attribute
 
 ### Decision
@@ -29,7 +171,8 @@ Thus, it makes sense to include as an example, but made optional since many use 
 In the future if the number of proposed ancillary attributes grows, it could move to a separate document together with other ideas for ancillary attributes.
 
 ### Linked issues
-- https://github.com/ga4gh/seqcol-spec/issues/71
+
+- <https://github.com/ga4gh/refget/issues/71>
 
 
 ## 2024-02-21 We will specify core sequence collection attributes and a process for adding new ones
@@ -53,9 +196,9 @@ Choosing to host this list as a list of issues allows the list to always be up t
 
 ### Linked issues
 
- - https://github.com/ga4gh/seqcol-spec/issues/50
- - https://github.com/ga4gh/seqcol-spec/issues/46
- - https://github.com/ga4gh/seqcol-spec/issues?q=is%3Aissue+is%3Aopen+label%3Aschema-term
+ - <https://github.com/ga4gh/refget/issues/50>
+ - <https://github.com/ga4gh/refget/issues/46>
+ - <https://github.com/ga4gh/refget/issues?q=is%3Aissue+is%3Aopen+label%3Aschema-term>
 
 ## 2024-01-10 Clarifications on the purpose and form of the JSON schema in service-info
 
@@ -81,8 +224,8 @@ Another issue is that we wanted the schema to be a place where a user could see 
 
 ### Linked issues
 
-- <https://github.com/ga4gh/seqcol-spec/issues/50>
-- <https://github.com/ga4gh/seqcol-spec/issues/39>
+- <https://github.com/ga4gh/refget/issues/50>
+- <https://github.com/ga4gh/refget/issues/39>
 
 ## 2024-01-06 The comparison function use more descriptive attribute names
 
@@ -104,7 +247,7 @@ The comparison function is designed to compare two sequence collections by inter
 
 ### Linked issues
 
-- <https://github.com/ga4gh/seqcol-spec/issues/57>
+- <https://github.com/ga4gh/refget/issues/57>
 
 
 ## 2023-08-25 The user-facing API will neither expect nor provide prefixes
@@ -169,7 +312,7 @@ properties:
 
 
 ### Linked issues
-- https://github.com/ga4gh/seqcol-spec/issues/40
+- https://github.com/ga4gh/refget/issues/40
 
 
 ## 2023-07-26 There will be no metadata endpoint
@@ -180,7 +323,7 @@ We have no need for a `/metadata` endpoint
 
 ### Rationale
 
-At one point (issue #3), we debated whether there should be a `/metadata` endpoint or something like that as a way to retrieve information about a sequence that might not be part of the digested sequence. However, after we distinguised between `inherent` and `non-inherent` attributes, we have realized that this satisifes the earlier requirement for a `/metadata` endpoint; in fact, the metadata can be returned to the user through the normal endpoint, and just flagged as `non-inherent` in the schema to indicate that it's not digested, and therefore not part of the identity of the object
+At one point (issue #3), we debated whether there should be a `/metadata` endpoint or something like that as a way to retrieve information about a sequence that might not be part of the digested sequence. However, after we distinguished between `inherent` and `non-inherent` attributes, we have realized that this satisfies the earlier requirement for a `/metadata` endpoint; in fact, the metadata can be returned to the user through the normal endpoint, and just flagged as `non-inherent` in the schema to indicate that it's not digested, and therefore not part of the identity of the object
 
 We distinguished between two types of metadata:
 
@@ -189,9 +332,9 @@ We distinguished between two types of metadata:
 
 ### Linked issues
 
-- <https://github.com/ga4gh/seqcol-spec/issues/3>
-- <https://github.com/ga4gh/seqcol-spec/issues/39>
-- <https://github.com/ga4gh/seqcol-spec/issues/40>
+- <https://github.com/ga4gh/refget/issues/3>
+- <https://github.com/ga4gh/refget/issues/39>
+- <https://github.com/ga4gh/refget/issues/40>
 
 ## 2023-07-12 - Required attributes are: lengths and names
 
@@ -235,7 +378,7 @@ This leads us to the conclusion that *sequences* should be optional, and *names*
 
 ### Linked issues
 
-- <https://github.com/ga4gh/seqcol-spec/issues/40>
+- <https://github.com/ga4gh/refget/issues/40>
 
 
 ## 2023-06-14 - Internal digests SHOULD NOT be prefixed
@@ -268,7 +411,7 @@ Adding prefixes will complicate things and does not add benefits. Prefixes may b
 
 ### Linked issues
 
-- <https://github.com/ga4gh/seqcol-spec/issues/37>
+- <https://github.com/ga4gh/refget/issues/37>
 
 
 ## 2023-06-28 - SeqCol JSON schema defines reserved attributes without additional namespacing
@@ -293,7 +436,7 @@ Several reasons led us to this decisions:
 
 1. The likelihood of wanting to add custom attributes that will clash and have different definition seems low, so we questioned whether it is worth the cost of defining separate namespaces.
 2. In the event that there is a clash in the future, this is not really a major problem. A new version of the official schema that adds new reserved keywords will basically mean a new major release of seqcol, which could potentially introduce backwards incompatibility with an existing custom attribute. This just means the custom implementation would need to be updated to follow the new schema, which is possible.
-3. It seems more likely that we would "claim" an official attribute that someone else had already used that *does* match the intended semantics of the word. In that case, our effort to prevent clashes would have actually created clashes, because it would have forced the custom attribute to use a different attribute name. Instead, it seems more prudent to just allow the custom implementations to use the same namespace of attribute names, and deal with any possible backwards incompatibilites if they ever actually arise in the future.
+3. It seems more likely that we would "claim" an official attribute that someone else had already used that *does* match the intended semantics of the word. In that case, our effort to prevent clashes would have actually created clashes, because it would have forced the custom attribute to use a different attribute name. Instead, it seems more prudent to just allow the custom implementations to use the same namespace of attribute names, and deal with any possible backwards incompatibilities if they ever actually arise in the future.
 4. Since we expect the major implementations to be few and driven by people connected with the project, it seems more likely that we would just adopt the custom attribute with its definition as an official attribute. We would not be able to do this if we enforced separate namespaces, which would create backwards compatibility.
 
 In other words, in short: the idea to prevent future backwards-incompatibility by creating a reserved word namespace seems, paradoxically, more likely to actually *create* a future backwards compatibility than to prevent one.
@@ -333,7 +476,7 @@ Thus, we introduce the idea of *inherent* vs *non-inherent attributes*. Inherent
 
 ### Linked issues
 
-- <https://github.com/ga4gh/seqcol-spec/issues/40>
+- <https://github.com/ga4gh/refget/issues/40>
 
 ### Alternatives considered
 
@@ -353,7 +496,7 @@ While non-ASCII array names would be compatible with our current specification, 
 
 ### Linked issues
 
-- <https://github.com/ga4gh/seqcol-spec/issues/33>
+- <https://github.com/ga4gh/refget/issues/33>
 
 
 ## 2023-01-25 - The digest algorithm will be the GA4GH digest
@@ -374,7 +517,7 @@ Under this scheme the string `ACGT` will result in the `sha512t24u` digest `aKF4
 
 `sha512t24u` was envisaged as a fast digest mechanism with a space-efficient representation that can be used for any data with low collision probability. Collisions have been (documented in `md5`)[https://en.wikipedia.org/wiki/MD5#Collision_vulnerabilities] leading to the belief MD5 was insufficient for our needs.
 
-`sha512t24u` must be used for any digest of data **by** the sequence collections standard. This decision does not dissalow the use of `md5` sequence checksums.
+`sha512t24u` must be used for any digest of data **by** the sequence collections standard. This decision does not disallow the use of `md5` sequence checksums.
 
 ### Limitations
 
@@ -382,7 +525,7 @@ Under this scheme the string `ACGT` will result in the `sha512t24u` digest `aKF4
 
 ### Linked issues
 
-- [https://github.com/ga4gh/seqcol-spec/issues/30](https://github.com/ga4gh/seqcol-spec/issues/30)
+- [https://github.com/ga4gh/refget/issues/30](https://github.com/ga4gh/refget/issues/30)
 
 
 ## 2023-01-12 - How sequence collection are serialized prior to digestion
@@ -469,9 +612,9 @@ It also future-proofs the serialisation method if we ever allow complex object t
  
 ### Linked issues
 
- - [https://github.com/ga4gh/seqcol-spec/issues/1](https://github.com/ga4gh/seqcol-spec/issues/1)
- - [https://github.com/ga4gh/seqcol-spec/issues/25](https://github.com/ga4gh/seqcol-spec/issues/25)
- - [https://github.com/ga4gh/seqcol-spec/issues/33](https://github.com/ga4gh/seqcol-spec/issues/33)
+ - [https://github.com/ga4gh/refget/issues/1](https://github.com/ga4gh/refget/issues/1)
+ - [https://github.com/ga4gh/refget/issues/25](https://github.com/ga4gh/refget/issues/25)
+ - [https://github.com/ga4gh/refget/issues/33](https://github.com/ga4gh/refget/issues/33)
 
 
 ### Known limitations
@@ -569,7 +712,7 @@ We should be consistent by using these terms to refer to the above representatio
 
 
 ### Linked issues
-- <https://github.com/ga4gh/seqcol-spec/issues/25>
+- <https://github.com/ga4gh/refget/issues/25>
 
 
 ## 2022-06-15 - Structure for the return value of the comparison API endpoint
@@ -637,8 +780,8 @@ The primary purpose of the compare function is to provide a high-level view of h
 
 ### Linked issues
 
-- <https://github.com/ga4gh/seqcol-spec/issues/21>
-- <https://github.com/ga4gh/seqcol-spec/issues/7>
+- <https://github.com/ga4gh/refget/issues/21>
+- <https://github.com/ga4gh/refget/issues/7>
 
 ### Alternatives considered
 
@@ -711,8 +854,8 @@ We need a formal definition of a sequence collection. The schema provides a mach
 
 ### Linked issues
 
-- <https://github.com/ga4gh/seqcol-spec/issues/8>
-- <https://github.com/ga4gh/seqcol-spec/issues/6>
+- <https://github.com/ga4gh/refget/issues/8>
+- <https://github.com/ga4gh/refget/issues/6>
 
 
 ## 2021-12-01 - Endpoint names and structure
@@ -758,10 +901,10 @@ For the `POST comparison` endpoint, we made 2 limitations to simplify the implem
 
 ### Linked issues
 
-- [https://github.com/ga4gh/seqcol-spec/issues/21](https://github.com/ga4gh/seqcol-spec/issues/21)
-- [https://github.com/ga4gh/seqcol-spec/issues/23](https://github.com/ga4gh/seqcol-spec/issues/23)
+- [https://github.com/ga4gh/refget/issues/21](https://github.com/ga4gh/refget/issues/21)
+- [https://github.com/ga4gh/refget/issues/23](https://github.com/ga4gh/refget/issues/23)
 
-## 2021-09-21 - Order will be recognized by digesting arrays in the given order, and unordered digests will be handled as extensions through additional attribuetes
+## 2021-09-21 - Order will be recognized by digesting arrays in the given order, and unordered digests will be handled as extensions through additional attributes
 
 ### Decision
 
@@ -787,7 +930,7 @@ To conclude, option A seems simple and straightforward, satisfies for a basic im
 
 ### Linked issues
 
-- https://github.com/ga4gh/seqcol-spec/issues/5
+- https://github.com/ga4gh/refget/issues/5
 
 ### Known limitations
 
@@ -810,7 +953,7 @@ However, there are also scenarios for which the order of sequences in a collecti
 
 ### Linked issues
 
-- [https://github.com/ga4gh/seqcol-spec/issues/5](https://github.com/ga4gh/seqcol-spec/issues/5)
+- [https://github.com/ga4gh/refget/issues/5](https://github.com/ga4gh/refget/issues/5)
 
 ### Known limitations
 
@@ -850,8 +993,8 @@ This will allow retrieving individual attributes, and testing for identity of in
 
 ### Linked issues
 
-- [https://github.com/ga4gh/seqcol-spec/issues/8#issuecomment-773489450](https://github.com/ga4gh/seqcol-spec/issues/8#issuecomment-773489450)
-- [https://github.com/ga4gh/seqcol-spec/issues/10](https://github.com/ga4gh/seqcol-spec/issues/10)
+- [https://github.com/ga4gh/refget/issues/8#issuecomment-773489450](https://github.com/ga4gh/refget/issues/8#issuecomment-773489450)
+- [https://github.com/ga4gh/refget/issues/10](https://github.com/ga4gh/refget/issues/10)
 
 ### Known limitations
 
@@ -870,7 +1013,7 @@ Should a wider GA4GH standard appear from [TASC issue 5](https://github.com/ga4g
 
 ### Linked issues
 
-- [https://github.com/ga4gh/seqcol-spec/issues/2](https://github.com/ga4gh/seqcol-spec/issues/2)
+- [https://github.com/ga4gh/refget/issues/2](https://github.com/ga4gh/refget/issues/2)
 
 ### Known limitations
 
