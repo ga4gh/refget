@@ -1,10 +1,10 @@
 # Contributing
 
-We welcome more participants! If you are interested in contributing, one of the best ways is to [raise an issue using the GitHub issue tracker](https://github.com/ga4gh/seqcol-spec/issues). Please feel free to reach out via e-mail, or join the biweekly GA4GH calls.
+We welcome more participants! If you are interested in contributing, one of the best ways is to [raise an issue using the GitHub issue tracker](https://github.com/ga4gh/refget/issues). Please feel free to reach out via e-mail, or join the biweekly GA4GH calls.
 
 ## Maintainers
 
-- <a href="http://databio.org">Nathan Sheffield</a>, Department of Genome Sciences, University of Virginia
+- <a href="https://databio.org">Nathan Sheffield</a>, Department of Genome Sciences, University of Virginia
 - Andy Yates, EMBL-EBI
 - Timothee Cezard, EMBL-EBI
 
