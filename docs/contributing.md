@@ -16,7 +16,7 @@ We welcome more participants! If you are interested in contributing, one of the 
 
 ## Call info
 
-The community calls are held via zoom every other week. For information on schedule and zoom links, please contact the GA4GH Secretariat. The contact for the Large Scale Genomics work stream is Angela Page (angela.page@ga4gh.org).
+The community calls are held via zoom every other week. For information on schedule and zoom links, please contact the GA4GH Secretariat. The contact for the Large Scale Genomics work stream is Reggan Thomas (reggan.thomas@ga4gh.org).
 
 ## GA4GH info
 
