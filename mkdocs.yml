@@ -34,7 +34,7 @@ navbar:
     href: contributing
 
 theme:
-  logo: img/ga4gh-logo-dark-bg.png
+  logo: img/seqcol_logo.svg
   favicon: img/seqcol_logo.svg
   name: material
 
