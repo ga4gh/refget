@@ -1,29 +1,14 @@
 ---
-title: Seqcol specification version 0.1.0
+title: Refget Sequence Collections v1.0.0
 ---
 
-<!-- Table of contents: 
-* The generated Toc will be an unordered list
-{:toc} -->
-
-# Seqcol specification version 0.1.0
-
-<!-- Table of contents:
-
-[TOC] -->
-
-## Specification version
-
-This specification is in **DRAFT** form. This is **NOT YET AN APPROVED GA4GH specification**. This document is **formal technical explanation for implementers**. See also:
-
-- [Architectural decision record](decision_record.md), a chronological record of spec decisions.
-- [Sequence collection rationale](seqcol_rationale.md), motivation for our major design decisions.
+# Refget Sequence Collections v1.0.0
 
 ## Introduction
 
 Reference sequences are fundamental to genomic analysis.
 To make their analysis reproducible and efficient, we require tools that can identify, store, retrieve, and compare reference sequences.
-The primary goal of the *Sequence Collections* (seqcol) project is **to standardize identifiers for collections of sequences**.
+The primary goal of the *Refget Sequence Collections* (seqcol) project is **to standardize identifiers for collections of sequences**.
 Seqcol can be used to identify genomes, transcriptomes, or proteomes -- anything that can be represented as a collection of sequences.
 A common example and primary use case of sequence collections is for a reference genome, so this documentation sometimes refers to reference genomes for convenience; really, it can be applied to any collection of sequences.
 
@@ -65,6 +50,10 @@ Building on refget, the sequence collections specification introduces foundation
 - **Checking compatibility**:  *As a data analyst using published data, I have a chromosome sizes file (a set of lengths and names) and want to determine whether a given sequence collection is length- or name-compatible with this file.*  
 - **Genome browser integration**:  *As a genome browser, I use one sequence collection for the displayed coordinate system and want to check if a digest representing a given BED file's coordinate system is compatible with it.*  
 - **Annotating unknown references**:  *As a data processor, I encounter input data without reference genome information and want to generate a sequence collection digest to attach, enabling further processing with seqcol features.*  
+
+## Architectural decision record
+
+For a chronological record of decisions related to this specification, see the [Architectural decision record](decision_record.md).
 
 ## Definitions of key terms
 

@@ -34,7 +34,7 @@ navbar:
     href: contributing
 
 theme:
-  logo: img/seqcol_logo.svg
+  logo: img/ga4gh-logo-dark-bg.png
   favicon: img/seqcol_logo.svg
   name: material
 
@@ -54,9 +54,14 @@ extra_css:
   - stylesheets/extra.css
 
 markdown_extensions:
+  - attr_list
+  - md_in_html
   - admonition
   - pymdownx.highlight:
       use_pygments: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid

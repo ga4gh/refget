@@ -1,27 +1,32 @@
+
+![GA4GH logo](img/ga4gh-logo.png){ width="300" align=right }
+
+
 # Refget specifications
 
 ## What is refget?
 
-Refget is a protocol for identifying and distributing reference biological sequences.
-It currently consists of 2 standards:
+Refget is a set of GA4GH standards for identifying and distributing reference biological sequences.
+It consists of these standards:
 
-1. [Refget sequences](sequences.md): a GA4GH-approved standard for individual sequences
-2. [Refget sequence collections](seqcol.md): a standard for collections of sequences, under review 
 
+| Standard      | Description                          | Status |
+| ----------- | ------------------------------------ | |
+| [Refget sequences](sequences.md)      | For individual sequences  | :white_check_mark: v1.0 Approved in 2021 <br>:white_check_mark:&nbsp;v2.0&nbsp;Approved in 2024 |
+| [Refget sequence collections](seqcol.md)      | For collections of sequences | :white_check_mark: v1.0 Approved in 2025 |
+| Refget pangenomes  | For collections of sequence collections | :fontawesome-solid-gears: Currently in process |
+
+## What is the main purpose of the refget project?
+
+Refget standards help to **identify**, **retrieve**, and **compare** reference sequences, like a reference genome. Key principles include:
+
+- Reference data, including sequences and collections of sequences, are identified using cryptographic digest-based identifiers that are **derived from the data itself**. This allows reference data to be identified without requiring a centralized accessioning authority.
+- Refget standards can be used for any type of sequences: DNA, RNA, protein, etc -- anything that can be represented as a string of characters.
+- Refget standards also specify **retrieval APIs**, providing a mechanism for retrieving a sequence or collection if you have its identifier.
+- Refget sequence collections also provides a programmatic approach to assessing compatibility among sequence collections.
+
+This image shows how the Refget Sequences standard is used by the Sequence Collections standard. First, sequences are digested to yield a deterministic identifier. These sequence identifiers are then used, together with their names, to create an identifier for a collection.
+
+<figure>
 <img src="img/seqcol_abstract_simple.svg" alt="Refget abstract" class="img-responsive">
-
-
-## What is the refget sequences standard?
-
-The original refget standard, now called *Refget sequences*, handles sequences only.
-Refget sequences enables access to reference sequences using an identifier derived from the sequence itself.
-
-
-## What is the refget sequence collections standard?
-
-*Refget sequence collections*, or `seqcol` for short, standardizes unique identifiers for collections of sequences. Seqcol identifiers can be used to identify genomes, transcriptomes, or proteomes -- anything that can be represented as a collection of sequences. The seqcol protocol provides:
-
-- implementations of an algorithm for computing sequence identifiers;
-- a lookup service to retrieve sequences given a seqcol identifier
-- programmatic approach to assessing compatibility among sequence collections.
-
+</figure>

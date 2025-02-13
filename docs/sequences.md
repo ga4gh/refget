@@ -4,7 +4,7 @@ title: refget protocol
 suppress_footer: true
 ---
 
-# Refget API Specification v2.0.0
+# Refget Sequences v2.0.0
 
 ## Introduction
 
