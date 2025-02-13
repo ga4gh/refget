@@ -25,6 +25,10 @@ Refget standards help to **identify**, **retrieve**, and **compare** reference s
 - Refget standards also specify **retrieval APIs**, providing a mechanism for retrieving a sequence or collection if you have its identifier.
 - Refget sequence collections also provides a programmatic approach to assessing compatibility among sequence collections.
 
+For more information about use cases, see the [use cases section of the sequence collections specification](seqcol.md#use-cases).
+
+## How do the standards work together?
+
 This image shows how the Refget Sequences standard is used by the Sequence Collections standard. First, sequences are digested to yield a deterministic identifier. These sequence identifiers are then used, together with their names, to create an identifier for a collection.
 
 <figure>
