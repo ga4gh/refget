@@ -70,7 +70,7 @@ For a chronological record of decisions related to this specification, see the [
 - **Seqcol API**: The set of endpoints defined in the *retrieval* and *comparison* components of the seqcol protocol.
 - **Seqcol digest**: A digest for a sequence collection, computed according to the seqcol algorithm.
 - **Seqcol protocol**: Collectively, the operations outlined in this document, which include: 1. encoding of sequence collections; 2. API describing retrieval and comparison ; and 3. specifications for ancillary recommended attributes.
-- **Sequence**: Seqcol uses refget sequences to identify actual sequences, so we generally use the term "sequence" in the same way. Refget sequences was designed for nucleotide sequences; however, other sequences could be provided via the same mechanism, *e.g.*, cDNA, CDS, mRNA or proteins. Essentially any ordered list of refget-sequences-valid characters qualifies. Sequence collections also goes further, since sequence collections may contain sequences of non-specified characters, which therefore have a length but no actual sequence content.
+- **Sequence**: Seqcol uses refget sequences to identify actual sequences, so we generally use the term "sequence" in the same way. Refget sequences was designed for nucleotide sequences; however, other sequences could be provided via the same mechanism, *e.g.*, cDNA, CDS, mRNA or proteins. Essentially any ordered list of refget-sequences-valid characters qualifies.
 - **Sequence digest** or **refget sequence digest**: A digest for a sequence, computed according to the refget sequence protocol.
 - **Sequence collection**: A representation of 1 or more sequences that is structured according to the sequence collection schema.
 - **Sequence collection attribute**: A property or feature of a sequence collection (*e.g.* names, lengths, sequences, or topologies).
@@ -305,9 +305,9 @@ What you'd get with **2 database lookups**. This is the most common representati
 ```json
 {
   "lengths": [
-    "1216",
-    "970",
-    "1788"
+    1216,
+    970,
+    1788
   ],
   "names": [
     "A",
@@ -393,7 +393,7 @@ Non-inherent attributes `MUST` be stored and returned by the collection endpoint
 - *Endpoint 1*: `GET /comparison/:digest1/:digest2` (`RECOMMENDED`) Two-digest comparison    
 - *Endpoint 2*: `POST /comparison/:digest1` (`RECOMMENDED`) One-digest POST comparison 
 - *Description*: The comparison function specifies an API endpoint that allows a user to compare two sequence collections. The collections are provided either as two digests (the `GET` endpoint) or as one digest representing a database collection, and one local user-provided collection provided via `POST`. For the `POST` endpoint variant, the user-provided local collection should be provided as a [level 2 representation](#terminology) (AKA the canonical seqcol representation) in the `BODY` of the `POST` request.
-- *Return value*: The output is an assessment of compatibility between those sequence collections. If implemented, both variants of the `/comparison` endpoint must `MUST` return an object in JSON format with these 3 keys: `digests`, `arrays`, and `elements`, as described below (see also an example after the descriptions):
+- *Return value*: The output is an assessment of compatibility between those sequence collections. If implemented, both variants of the `/comparison` endpoint must `MUST` return an object in JSON format with these 3 keys: `digests`, `attributes`, and `elements`, as described below (see also an example after the descriptions):
     - `digests`: an object with 2 elements, with keys *a* and *b*, and values either the [level 0 seqcol digests](#terminology) for the compared collections, or *null* (undefined). The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return *null* (undefined) in this element for any corresponding sequence collection.
     - `attributes`: an object with 3 elements, with keys *a_only*, *b_only*, and *a_and_b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
     - `array_elements`: An object with 4 elements: *a_count*, *b_count*, *a_and_b_count*, and *a_and_b_same_order*. The 3 attributes with *_count* are objects with names corresponding to each array present in the collection, or in both  collections (for *a_and_b_count*), with values as the number of elements present either in one collection, or in both collections for the given array. *a_and_b_same_order* is also an object with names corresponding to arrays, and the values a boolean following the same-order specification below.
@@ -465,7 +465,7 @@ For more details about how to interpret the results of the comparison function t
 - *Description*: Lists identifiers for a given object type in singular form (*e.g.* `/list/collection`). This endpoint provides a way to discover what sequence collections a service provides.
   Returned lists can be filtered to only objects with certain attribute values using query parameters.
   Page numbering begins at page 0 (the first page is page 0).
-- *Return value*: The output is a paged list of identifiers following the GA4GH paging guide format, grouped into a `results` and a `pagination` section. If no `?:attribute=:attribute_level1_repr` query parameters are provided, the endpoint will return all items (paged). Adding one or more `:attribute` and `:attribute_digest` values as *query parameters*  will filter results to only the collections with the given attribute digest. If multiple attributes are provided, the filter should require ALL of these attributes to match (so multiple attributes are treated with an `AND` operator).
+- *Return value*: The output is a paged list of identifiers following the GA4GH paging guide format, grouped into a `results` and a `pagination` section. If no `?:attribute=:attribute_level1_repr` query parameters are provided, the endpoint will return all items (paged). Adding one `:attribute` and `:attribute_level1_repr` pair as *query parameters*  will filter results to only the collections with the given level 1 attribute digest. If multiple attributes are provided, the filter should require ALL of these attributes to match (so multiple attributes are treated with an `AND` operator).
 
 
 Example return value:
@@ -496,13 +496,13 @@ For attributes marked as *passthru*, the list endpoint MAY provide filtering cap
 Example `/attribute/collection/lengths/:digest` return value:
 
 ```
-["1216","970","1788"]
+[1216, 970, 1788]
 ```
 
 Example `/attribute/collection/names/:digest` return value:
 
 ```
-["A","B","C"]
+["A", "B", "C"]
 ```
 
 The attribute endpoint MUST be functional for any attribute defined in the schema, *except those marked as transient or passthru*.
@@ -651,7 +651,7 @@ Furthermore, we RECOMMEND the extended schema add only non-inherent attributes, 
 Here, we specify several standard non-inherent attributes that we RECOMMEND be also included in the schema.
 
 Furthermore, some attributes do not need to follow the typical encoding process, for whatever reason.
-Basically, custom attributes can be defined, and they are also allowed to specify their own encoding process (right?)
+Basically, custom attributes can be defined, and they are also allowed to specify their own encoding process.
 
 
 #### 5.1 The `name_length_pairs` attribute (`RECOMMENDED`)
@@ -675,7 +675,7 @@ This attribute is `RECOMMENDED` to allow retrieval of the coordinate system for 
 - transient: false
 
 
-#### 5.1 The `sorted_name_length_pairs` attribute (`RECOMMENDED`)
+#### 5.2 The `sorted_name_length_pairs` attribute (`RECOMMENDED`)
 
 The `sorted_name_length_pairs` attribute is similar to the `name_length_pairs` attribute, but it is sorted.
 When digested, this attribute provides a digest for an order-invariant coordinate system for a sequence collection.
@@ -713,8 +713,7 @@ This digest allows the comparison to be pre-computed, and more easily compared.
 ##### Algorithm
 
 1. Take the array of the `sequences` attribute (an array of sequence digests) and sort it lexicographically.
-2. Canonicalize the resulting array (using RFC-8785).
-3. Add to the sequence collection object as the `sorted_sequences` attribute, which is non-inherent and non-collated.
+2. Add to the sequence collection object as the `sorted_sequences` attribute, which is non-inherent and non-collated.
 
 ##### Qualifiers (RECOMMENDED)
 
@@ -778,7 +777,7 @@ This is looser than strict identity, since we don't really care what the underly
 We also don't care about the order of the sequences.
 Instead, we need them to match level 1 digest of the `sorted_name_length_pairs` attribute.
 Thus, to assert that a BED file can be viewed for a particular genome, we compare the `sorted_name_length_pairs` digest of our reference genome with the sequence collection used to generate the file.
-There are only two possibilities for compatibility: 1) If the digests are equal, then the data file is directly compatible; 2) If not, we must check the `comparison` endpoint to see whether the `sorted_name_length_pairs` attribute of the sequence collection is a direct subset of the same array in the sequence collection attached to the genome browser instance.
+There are only two possibilities for compatibility: 1) If the digests are equal, then the data file is directly compatible; 2) If not, we must check the `comparison` endpoint to see whether the `name_length_pairs` attribute of the sequence collection is a direct subset of the same array in the sequence collection attached to the genome browser instance.
 If so, the data file is still compatible. 
 
 For efficiency, if the second case is true, we may cache the `sorted_name_length_pairs` digest in a list of known compatible reference genomes.
