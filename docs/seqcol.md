@@ -199,15 +199,6 @@ This object would validate against the JSON Schema above.
 The object is a series of arrays with matching length (`3`), with the corresponding entries collated such that the first element of each array corresponds to the first element of each other array.
 For the rationale why this structure was chosen instead of an array of annotated sequences, see [*Footnote F1*](#f1-why-use-an-array-oriented-structure-instead-of-a-sequence-oriented-structure).
 
-
-!!! warning "Filter non-inherent attributes"
-
-    The `inherent` section in the seqcol schema is an extension of the basic JSON Schema format that adds specific functionality.
-    Inherent attributes are those that contribute to the digest; *non-inherent* attributes are not considered when computing the top-level digest.
-    Attributes of a seqcol that are *not* listed as `inherent` `MUST NOT` contribute to the digest; they are therefore excluded from the digest calculation.
-    Therefore, if the canonical seqcol representation includes any non-inherent attributes, these must be removed before proceeding to step 2.
-    In the simple example, there are no non-inherent attributes.
-
 #### Step 2: Apply RFC-8785 to canonicalize the value associated with each attribute individually.
 
 The [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) (JCS) standardizes whitespace, character encodings, and other details that would cause inconsequential variations to yield different digests.
@@ -235,6 +226,13 @@ In this process, RFC-8785 is applied only to objects; we assume the sequence dig
 The refget sequences protocol digests sequence strings without JSON-canonicalization.
 For more details, see [*Footnote F2*](#f2-rfc-8785-does-not-apply-to-refget-sequences).
 
+
+!!! warning "Exception for passthru attributes"
+
+    This per-attribute digesting procedure (Steps 2 and 3) is applied by default to all attributes of a sequence collection, *except for attributes qualified in the schema as passthru*; these attributes are NOT digested in this way, but "passed through" unchanged to the JSON structure described in Step 3.
+    For more information about passthru attributes, see [Section 4](#4-extending-the-schema-schema-attribute-qualifiers).
+
+    
 #### Step 3: Digest each canonicalized attribute value using the GA4GH digest algorithm.
 
 Apply the GA4GH digest algorithm to each attribute value.
@@ -250,11 +248,13 @@ Applying this to each value will produce the following structure:
 }
 ```
 
-!!! warning "Exception for passthru attributes"
+!!! warning "Filter non-inherent attributes"
 
-    This digesting procedure (Step 3) is applied by default to all attributes of a sequence collection, *except for attributes qualified in the schema as passthru*; these attributes are NOT digested in this way.
-    Typically, we passthru attributes would also not be inherent, and are therefore filtered before this step anyway, but for a rare case of an inherent passthru attribute, this digest would not happen.
-    For more information about passthru attributes, see [Section 4](#4-extending-the-schema-schema-attribute-qualifiers).
+    The `inherent` section in the seqcol schema is an extension of the basic JSON Schema format that adds specific functionality.
+    Inherent attributes are those that contribute to the top-level digest; *non-inherent* attributes are not considered when computing the top-level digest.
+    Attributes of a seqcol that are *not* listed as `inherent` `MUST NOT` contribute to the digest; they are therefore excluded from the top-level digest calculation (Steps 4 and 5).
+    Therefore, if the intermediate seqcol representation includes any non-inherent attributes, these must be removed before proceeding to step 4.
+    In the simple example, the `lengths` attribute is not `inherent` and must be filtered.
 
 
 #### Step 4: Apply RFC-8785 again to canonicalize the JSON of the new seqcol object representation.
@@ -263,7 +263,7 @@ Here, we repeat step 2, except instead of applying RFC-8785 to each value separa
 This will result in a canonical bytestring representation of the object, shown here using Python notation:
 
 ```
-b'{"lengths":"IOlarejnLTmdv3-CqehLpcxAR9yNeR1i","names":"g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp","sequences":"ixJdEJlNBgz5U49vfIUqmq3kD4oOtLpd"}'
+b'{"names":"g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp","sequences":"ixJdEJlNBgz5U49vfIUqmq3kD4oOtLpd"}'
 ```
 
 #### Step 5: Digest the final canonical representation again using the GA4GH digest algorithm.
