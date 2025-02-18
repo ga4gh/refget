@@ -663,8 +663,8 @@ This attribute is `RECOMMENDED` to allow retrieval of the coordinate system for 
 
 ##### Algorithm
 
-1. Lump together each name-length pair from the primary collated `names` and `lengths` into an object, like `{"length":123,"name":"chr1"}`.
-2. Build a collated list, corresponing to the names and lengths of the object (*e.g.* `[{"length":123,"name":"chr1"},{"length":456,"name":"chr2"}],...`)
+1. Lump together each name-length pair from the primary collated `names` and `lengths` into an object, like `{"name": "chr1", "length": 123}`.
+2. Build a collated list, corresponding to the names and lengths of the object (*e.g.* `[{"name": "chr1", "length": 123},{"name":"chr2", "length": 456}],...`)
 3. Add as a collated attribute to the sequence collection object.
 
 ##### Qualifiers (RECOMMENDED)
@@ -680,17 +680,16 @@ This attribute is `RECOMMENDED` to allow retrieval of the coordinate system for 
 The `sorted_name_length_pairs` attribute is similar to the `name_length_pairs` attribute, but it is sorted.
 When digested, this attribute provides a digest for an order-invariant coordinate system for a sequence collection.
 Because it is *non-inherent*, it does not affect the identity (digest) of the collection.
-but with pairs not necessarily in the same order.
 
 This attribute is `RECOMMENDED` to allow unified genome browser visualization of data defined on different reference sequence collections. For more rationale and use cases of `sorted_name_length_pairs`, see [*Footnote F4*](#f4-use-cases-for-the-sorted_name_length_pairs-non-inherent-attribute).
 
 ##### Algorithm
 
-1. Lump together each name-length pair from the primary collated `names` and `lengths` into an object, like `{"length":123,"name":"chr1"}`.
-2. Canonicalize JSON according to the seqcol spec (using RFC-8785).
+1. Lump together each name-length pair from the primary collated `names` and `lengths` into an object, like `{"name": "chr1", "length": 123}`.
+2. Canonicalize the JSON objects individually according to the seqcol spec (using RFC-8785), _e.g._ `b'{"length":123,"name":"chr1"}'` (in Python notation).
 3. Digest each name-length pair string individually.
 4. Sort the digests lexicographically.
-5. Add to the sequence collection object.
+5. Add as an array to the sequence collection object (in level 2). Then, the regular digesting process will digest this array to create the level 1 representation.
 
 ##### Qualifiers (RECOMMENDED)
 
@@ -698,6 +697,11 @@ This attribute is `RECOMMENDED` to allow unified genome browser visualization of
 - collated: false
 - passthru: false
 - transient: **true**
+
+!!! note "Transient qualifier for `sorted_name_length_pairs`"
+
+    The `sorted_name_length_pairs` attribute is recommended as a transient attribute. This is because the level 2 array is mostly an intermediate representation, of little value in itself. If the users are interested in the coordinate system, they can retrieve it from the `name_length_pairs` attribute. Also, the specific canonical order provided by the algorithm is of little use in other contexts.
+
 
 #### 5.3 The `sorted_sequences` attribute (`OPTIONAL`)
 
@@ -808,4 +812,4 @@ The first part of this process, encoding from level 2 to level 1, is the default
 This is the way all the minimal attributes (names, lengths, and sequences) should behave.
 But custom attributes MAY diverge from this approach by defining their own encoding procedure that defines how the level 1 digest is computed from the level 2 representation.
 For example, in the list of recommended ancillary attributes, `name_length_pairs` does not define a custom procedure for encoding, so this would follow the default procedure.
-An alternative custom attribute, though, MAY specify how this encoding procedure happens.
+An alternative custom attribute, though, MAY specify how this encoding procedure happens, as for example, the recommended `sorted_name_length_pairs` attribute does.
