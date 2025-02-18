@@ -179,8 +179,8 @@ Here's an example of a sequence collection organized into the canonical seqcol o
 {
   "lengths": [
     248956422,
-    133797422,
-    135086622
+    242193529,
+    198295559
   ],
   "names": [
     "chr1",
@@ -188,9 +188,9 @@ Here's an example of a sequence collection organized into the canonical seqcol o
     "chr3"
   ],
   "sequences": [
-    "SQ.2648ae1bacce4ec4b6cf337dcae37816",
-    "SQ.907112d17fcb73bcab1ed1c72b97ce68",
-    "SQ.1511375dc2dd1b633af8cf439ae90cec"
+    "SQ.2YnepKM7OkBoOrKmvHbGqguVfF9amCST",
+    "SQ.lwDyBi432Py-7xnAISyQlnlhWDEaBPv2",
+    "SQ.Eqk6_SvMMDCc6C-uEfickOUWTatLMDQZ"
   ]
 }
 ```
@@ -214,10 +214,10 @@ def canonical_str(item: [list, dict]) -> bytes:
     ).encode("utf8")
 ```
 
-This will turn the values into canonicalized UTF8-encoded bytestring representations of the list objects. Using Python notation, the value of the lengths attribute becomes `b'[248956422,133797422,135086622]'`, the value of the names attribute becomes `b'["chr1","chr2","chr3"]'`, and the value of the sequences attribute becomes 
+This will turn the values into canonicalized UTF8-encoded bytestring representations of the list objects. Using Python notation, the value of the lengths attribute becomes `b'[248956422,242193529,198295559]'`, the value of the names attribute becomes `b'["chr1","chr2","chr3"]'`, and the value of the sequences attribute becomes 
 
 ```
-b'["SQ.2648ae1bacce4ec4b6cf337dcae37816","SQ.907112d17fcb73bcab1ed1c72b97ce68","SQ.1511375dc2dd1b633af8cf439ae90cec"]'
+b'["SQ.2YnepKM7OkBoOrKmvHbGqguVfF9amCST","SQ.lwDyBi432Py-7xnAISyQlnlhWDEaBPv2","SQ.Eqk6_SvMMDCc6C-uEfickOUWTatLMDQZ"]'
 ```
 
 _* The above Python function suffices if (1) attribute keys are restricted to ASCII, (2) there are no floating point values, and (3) for all integer values `i`:  `-2**63 < i < 2**63`_
@@ -242,9 +242,9 @@ Applying this to each value will produce the following structure:
 
 ```json
 {
-  "lengths": "IOlarejnLTmdv3-CqehLpcxAR9yNeR1i",
+  "lengths": "5K4odB173rjao1Cnbk5BnvLt9V7aPAa2",
   "names": "g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp",
-  "sequences": "ixJdEJlNBgz5U49vfIUqmq3kD4oOtLpd"
+  "sequences": "rD29ZKmEqwwHRXjiQ36p6UMZQ5hemmsb"
 }
 ```
 
@@ -263,7 +263,7 @@ Here, we repeat step 2, except instead of applying RFC-8785 to each value separa
 This will result in a canonical bytestring representation of the object, shown here using Python notation:
 
 ```
-b'{"names":"g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp","sequences":"ixJdEJlNBgz5U49vfIUqmq3kD4oOtLpd"}'
+b'{"names":"g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp","sequences":"rD29ZKmEqwwHRXjiQ36p6UMZQ5hemmsb"}'
 ```
 
 #### Step 5: Digest the final canonical representation again using the GA4GH digest algorithm.
@@ -272,7 +272,7 @@ Again using the same approach as in step 3, we now apply the GA4GH digest algori
 The result is the final unique digest for this sequence collection:
 
 ```
-wqet7IWbw2j2lmGuoKCaFlYS_R7szczz
+sjNNwm4zov3Dl0FRWbRTcZwzqrTQKIqL
 ```
 
 #### Terminology
@@ -283,7 +283,7 @@ The recursive encoding algorithm leads to several ways to represent a sequence c
 
 Just a plain digest, also known as the "top-level digest". This corresponds to **0 database lookups**. Example:
 ```
-a6748aa0f6a1e165f871dbed5e54ba62
+Zjx9_tD2o-1yKB6RR2v2g3W9c5ufydUc
 ```
 
 ##### Level 1
@@ -292,9 +292,9 @@ What you'd get when you look up the digest with **1 database lookup**. We someti
 
 ```json
 {
-  "lengths": "4925cdbd780a71e332d13145141863c1",
-  "names": "ce04be1226e56f48da55b6c130d45b94",
-  "sequences": "3b379221b4d6ea26da26cec571e5911c"
+  "lengths": "QWhPI-Cll_0Y5NJ_2krRryuV97vzhbgJ",
+  "names": "1zOnTYE5slcISev72o62ySxbssEXeoUL",
+  "sequences": "uPCc00rq-daL3zPnzYH-sBg9_z7HpB8B"
 }
 ```
 
@@ -315,9 +315,9 @@ What you'd get with **2 database lookups**. This is the most common representati
     "C"
   ],
   "sequences": [
-    "76f9f3315fa4b831e93c36cd88196480",
-    "d5171e863a3d8f832f0559235987b1e5",
-    "b9b1baaa7abf206f6b70cf31654172db"
+    "SQ.OL3sVAcd_5IZaDxUkH-yQkLmBz2iwY0s",
+    "SQ.kny8cdhEEPHXoNlXmps8NQapGtUKZlM9",
+    "SQ.DA-GLdXVihnYKs-fBS5MMgqMi7tVMJbt"
   ]
 }
 ```
@@ -493,13 +493,13 @@ For attributes marked as *passthru*, the list endpoint MAY provide filtering cap
 - *Return value*: The attribute value identified by the `:digest` variable. The structure of the should correspond to the value of the attribute in the canonical structure.
 
 
-Example `/attribute/collection/lengths/:digest` return value:
+Example `/attribute/collection/lengths/QWhPI-Cll_0Y5NJ_2krRryuV97vzhbgJ` return value:
 
 ```
 [1216, 970, 1788]
 ```
 
-Example `/attribute/collection/names/:digest` return value:
+Example `/attribute/collection/names/1zOnTYE5slcISev72o62ySxbssEXeoUL` return value:
 
 ```
 ["A", "B", "C"]
