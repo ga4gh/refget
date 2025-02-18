@@ -131,12 +131,6 @@ properties:
     items:
       type: string
       description: "Refget sequences v2 identifiers for sequences."
-  accessions:
-    type: array
-    collated: true
-    items:
-      type: string
-      description: "Unique external accessions for the sequences"
 required:
   - names
   - lengths
