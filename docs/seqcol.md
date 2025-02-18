@@ -37,7 +37,7 @@ Unique identifiers, such as those provided by the NCBI Assembly database, partia
 - Centralized identifiers alone cannot *confirm* identity, as identity also depends on the genome's content.  
 - It does not address the related challenge of determining compatibility among reference genomes. Analytical results or annotations based on different references may still be integrable if certain conditions are met, but current tools and standards lack the means to formalize and simplify compatibility comparisons.  
 
-The refget sequences protocol provides a partial solution applicable to individual sequences, such as a single chromosome.
+The [refget sequences protocol](sequences.md) provides a partial solution applicable to individual sequences, such as a single chromosome.
 However, refget does not directly address collections of sequences, such as a linear reference genome.
 Building on refget, the sequence collections specification introduces foundational concepts that support diverse use cases, including:  
 
@@ -465,7 +465,7 @@ For more details about how to interpret the results of the comparison function t
 - *Description*: Lists identifiers for a given object type in singular form (*e.g.* `/list/collection`). This endpoint provides a way to discover what sequence collections a service provides.
   Returned lists can be filtered to only objects with certain attribute values using query parameters.
   Page numbering begins at page 0 (the first page is page 0).
-- *Return value*: The output is a paged list of identifiers following the GA4GH paging guide format, grouped into a `results` and a `pagination` section. If no `?:attribute=:attribute_level1_repr` query parameters are provided, the endpoint will return all items (paged). Adding one `:attribute` and `:attribute_level1_repr` pair as *query parameters*  will filter results to only the collections with the given level 1 attribute digest. If multiple attributes are provided, the filter should require ALL of these attributes to match (so multiple attributes are treated with an `AND` operator).
+- *Return value*: The output is a paged list of identifiers following the [GA4GH paging guide format](https://www.ga4gh.org/what-we-do/technical-alignment-subcommittee-tasc/#section_1), grouped into a `results` and a `pagination` section. If no `?:attribute=:attribute_level1_repr` query parameters are provided, the endpoint will return all items (paged). Adding one `:attribute` and `:attribute_level1_repr` pair as *query parameters*  will filter results to only the collections with the given level 1 attribute digest. If multiple attributes are provided, the filter should require ALL of these attributes to match (so multiple attributes are treated with an `AND` operator).
 
 
 Example return value:
