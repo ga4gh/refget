@@ -371,6 +371,7 @@ properties:
   sequences:
     "$ref": "/sequences"
 required:
+  - lengths
   - names
   - sequences
 ga4gh:
