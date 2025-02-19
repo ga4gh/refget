@@ -725,7 +725,7 @@ This digest allows the comparison to be pre-computed, and more easily compared.
 - inherent: false
 - collated: false
 - passthru: false
-- transient: false
+- transient: true or false (depending on the use case/implementation)
 
 ---
 
