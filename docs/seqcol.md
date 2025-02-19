@@ -19,7 +19,7 @@ Refget Sequence Collections extends [Refget Sequences](sequences.md) to collecti
 Seqcol also handles sequence attributes, such as their names, lengths, or topologies.
 Like Refget sequences, seqcol digests are defined by a hash algorithm, rather than an accession authority.
 2. **An API describing lookup and comparison of sequence collections.**
-Seqcol specifies an http API to retrieve a sequence collection given its digest.
+Seqcol specifies an HTTP API to retrieve a sequence collection given its digest.
 This can be used to reproduce the exact sequence collection instead of guessing based on a human-readable identifier.
 Seqcol also provides a standardized method of comparing the contents of two sequence collections.
 3. **Recommended ancillary attributes.**
@@ -397,7 +397,7 @@ Non-inherent attributes `MUST` be stored and returned by the collection endpoint
 - *Return value*: The output is an assessment of compatibility between those sequence collections. If implemented, both variants of the `/comparison` endpoint must `MUST` return an object in JSON format with these 3 keys: `digests`, `attributes`, and `elements`, as described below (see also an example after the descriptions):
     - `digests`: an object with 2 elements, with keys *a* and *b*, and values either the [level 0 seqcol digests](#terminology) for the compared collections, or *null* (undefined). The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return *null* (undefined) in this element for any corresponding sequence collection.
     - `attributes`: an object with 3 elements, with keys *a_only*, *b_only*, and *a_and_b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
-    - `array_elements`: An object with 4 elements: *a_count*, *b_count*, *a_and_b_count*, and *a_and_b_same_order*. The 3 attributes with *_count* are objects with names corresponding to each array present in the collection, or in both  collections (for *a_and_b_count*), with values as the number of elements present either in one collection, or in both collections for the given array. *a_and_b_same_order* is also an object with names corresponding to arrays, and the values a boolean following the same-order specification below.
+    - `array_elements`: An object with 4 elements: *a_count*, *b_count*, *a_and_b_count*, and *a_and_b_same_order*. The 3 attributes with *_count* are objects with keys corresponding to the names of each array present in the collection, or in both collections (for *a_and_b_count*), with values as the number of elements present either in one collection, or in both collections for the given array. *a_and_b_same_order* is also an object with keys corresponding to array names, and the values a boolean following the same-order specification below.
 
 
 Example `/comparison` return value: 
@@ -451,7 +451,7 @@ The comparison return includes an *a_and_b_same_order* boolean value for each ar
 - *false* otherwise.
 
 An *unbalanced duplicate* is used in contrast with a *balanced duplicate*. Balanced means the duplicates are the same in both arrays.
-When the duplicates are balanced, order is still defined; but if duplicates are unbalanced, this means an array has duplicates not present in the other, and in that case, order is not defined.
+When the duplicates are balanced, order is still defined; but if duplicates are unbalanced, this means one array has duplicates not present in the other, and in that case, order is not defined.
 
 ##### Interpreting the result of the compare function
 
@@ -465,7 +465,7 @@ For more details about how to interpret the results of the comparison function t
 - *Endpoint*: `GET /list/:object_type?page=:page&page_size=:page_size&:attribute1=:attribute1_level1_repr&attribute2=:attribute2_level1_repr` (`REQUIRED`)
 - *Description*: Lists identifiers for a given object type in singular form (*e.g.* `/list/collection`). This endpoint provides a way to discover what sequence collections a service provides.
   Returned lists can be filtered to only objects with certain attribute values using query parameters.
-  Page numbering begins at page 0 (the first page is page 0).
+  Page numbering begins at page 0.
 - *Return value*: The output is a paged list of identifiers following the [GA4GH paging guide format](https://www.ga4gh.org/what-we-do/technical-alignment-subcommittee-tasc/#section_1), grouped into a `results` and a `pagination` section. If no `?:attribute=:attribute_level1_repr` query parameters are provided, the endpoint will return all items (paged). Adding one `:attribute` and `:attribute_level1_repr` pair as *query parameters*  will filter results to only the collections with the given level 1 attribute digest. If multiple attributes are provided, the filter should require ALL of these attributes to match (so multiple attributes are treated with an `AND` operator).
 
 
@@ -490,8 +490,8 @@ For attributes marked as *passthru*, the list endpoint MAY provide filtering cap
 #### 3.5 Attribute
 
 - *Endpoint*: `GET /attribute/:object_type/:attribute_name/:digest` (`REQUIRED`)
-- *Description*: Retrieves values of specific attributes in a sequence collection. Here `:object_type` must be `collection` for a sequence collection object; `:attribute_name` is the name of an attribute, such as `sequences`, `names`, or `sorted_sequences`. `:digest` is the digest of the attribute value, as computed above.
-- *Return value*: The attribute value identified by the `:digest` variable. The structure of the should correspond to the value of the attribute in the canonical structure.
+- *Description*: Retrieves values of specific attributes in a sequence collection. Here `:object_type` must be `collection` for a sequence collection object; `:attribute_name` is the name of an attribute, such as `sequences`, `names`, or `sorted_sequences`. `:digest` is the level 1 digest of the attribute value, as computed above.
+- *Return value*: The attribute value identified by the `:digest` variable. The structure of the result should correspond to the value of the attribute in the canonical structure.
 
 
 Example `/attribute/collection/lengths/QWhPI-Cll_0Y5NJ_2krRryuV97vzhbgJ` return value:
@@ -548,7 +548,7 @@ The specification in section 1, *Encoding*, described how to structure a sequenc
 What if you have ancillary information that goes with a collection, but shouldn't contribute to the digest?
 We have found a lot of useful use cases for information that should go along with a seqcol, but should not contribute to the *identity* of that seqcol.
 This is a useful construct as it allows us to include information in a collection that does not affect the digest that is computed for that collection.
-One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have a different digest! Seqcol refers to these as *non-inherent attributes*, meaning they are not part of the core identity of the sequence collection.
+One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have a different digests! Seqcol refers to these as *non-inherent attributes*, meaning they are not part of the core identity of the sequence collection.
 Non-inherent attributes are defined in the seqcol schema, but excluded from the `inherent` list. 
 
 See: [ADR on 2023-03-22 regarding inherent attributes](decision_record.md#2023-03-22-seqcol-schemas-must-specify-inherent-attributes)
@@ -577,7 +577,7 @@ Transient attributes therefore *cannot be retrieved* through the `/attribute` en
 All other attributes of the sequence collection can be retrieved through the `/attribute` endpoint.
 The transient qualifier would apply to attribute that we intend to be used primarily as an identifier.
 In this case, we don't necessarily want to store the original content that went into the digest into the database.
-We really just want the final attribute.
+We really just want the final digest.
 These attributes are called transient because the content of the attribute is no longer stored and is therefore no longer retrievable.
 
 Here's how transient attributes behave in the endpoints:
@@ -733,8 +733,8 @@ This digest allows the comparison to be pre-computed, and more easily compared.
 
 ### F1. Why use an array-oriented structure instead of a sequence-oriented structure?
 
-In the canonical seqcol object structure, we first organize the sequence collection into what we called an "array-oriented" data structure, which is a list of collated arrays (names, lengths, sequences, *etc.*).
-An alternative we considered was a "sequence-oriented" structure, which would group each sequence with some attributes, like `{name, length, sequence}`, and structure the collection as an array of such objects.
+In the canonical seqcol object structure, we first organize the sequence collection into what we called an "array-oriented" data structure, which is mainly a list of collated arrays (names, lengths, sequences, *etc.*).
+An alternative we considered was a "sequence-oriented" structure, which would group each sequence with the other attributes, like `{name, length, sequence}`, and structure the collection as an array of such objects.
 While the latter is intuitive, as it captures each sequence object with some accompanying attributes as independent entities, there are several reasons we settled on the array-oriented structure instead: 
 
   1. Flexibility and backwards compatibility of sequence attributes. What happens for an implementation that adds a new attribute? For example, if an implementation adds a `topology` attribute to the sequences, in the sequence-oriented structure, this would alter the sequence objects and thereby change their digests. In the array-based structure, since we digest the arrays individually, the digests of the other arrays are not changed. Thus, the array-oriented structure emphasizes flexibility of attributes, where the sequence-oriented structure would emphasize flexibility of sequences. In other words, the array-based structure makes it straightforward to mix-and-match *attributes* of the collection. Because each attribute is independent and not integrated into individual sequence objects, it is simpler to select and build subsets and permutations of attributes. We reasoned that flexibility of attributes was desirable.
@@ -800,6 +800,7 @@ For example, two implementations may start using the same attribute name to refe
 While the attributes would still be formally defined in the respective schemas provided by each implementation, calling different concepts by the same name would come at the cost of interoperability.
 Therefore, the standard will also include in the schema a list of formally defined attributes, to encourage interoperability of these attributes.
 The goal is not to include all possible attributes in the schema, but just those likely to be used repeatedly, to encourage interoperable use of those attribute names.
+
 An implementation may propose a new attribute to be added to this extended schema by raising an issue on the GitHub repository.
 The proposed attributes and definition can then be approved through discussion during the refget working group calls and ultimately added to the approved extended seqcol schema.
 These GitHub issues should be created with the label 'schema-term'.
