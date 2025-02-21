@@ -16,6 +16,7 @@ It consists of these standards:
 | [Refget sequence collections](seqcol.md)      | For collections of sequences | :white_check_mark: v1.0 Approved in 2025 |
 | Refget pangenomes  | For collections of sequence collections | :fontawesome-solid-gears: Currently in process |
 
+
 ## What is the main purpose of the refget project?
 
 Refget standards help to **identify**, **retrieve**, and **compare** reference sequences, like a reference genome. Key principles include:
@@ -29,7 +30,13 @@ For more information about use cases, see the [use cases section of the sequence
 
 ## How do the standards work together?
 
-This image shows how the Refget Sequences standard is used by the Sequence Collections standard. First, sequences are digested to yield a deterministic identifier. These sequence identifiers are then used, together with their names, to create an identifier for a collection.
+<figure>
+<img src="img/refget-umbrella.svg" width="500">
+</figure>
+
+The Refget Sequences standard is used by the Sequence Collections standard, and the Sequence Collections standard forms the basis of the Pangenomes standard.
+First, sequences are digested to yield a deterministic identifier.
+These sequence identifiers are then used, together with their names, to create an identifier for a collection.
 
 <figure>
 <img src="img/seqcol_abstract_simple.svg" alt="Refget abstract" class="img-responsive">

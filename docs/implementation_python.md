@@ -1,5 +1,13 @@
 
-# Seqcol in Python
+# Refget implementation in Python
 
-You can find a draft package at [https://github.com/refgenie/refget](https://github.com/refgenie/refget).
+<figure>
+<img src="../img/pyrefget_logo.svg">
+</figure>
+
+The reference implementation of refget standards in Python is available here:
+
+- Documentation: <https://refgenie.org/refget/>
+- Source at GitHub: <https://github.com/refgenie/refget>.
+- PyPI: <https://pypi.org/project/refget/>
 
