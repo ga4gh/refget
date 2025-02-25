@@ -29,7 +29,7 @@ Two collections meet the criteria for order-relaxed identity if:
 
 1. the value of the `elements.total.a` and `elements.total.b` match, (the collections have the same number of elements).
 2. this value is the same as `elements.a_and_b.<attribute>` for all attributes (the content is the same)
-3. entries in `elements.a_and_b-same-order.<attribute>` may be either all true (indicating the order matches) or all false (indicating the order differs)
+3. any entries in `elements.a_and_b-same-order.<attribute>` may be true (indicating the order matches) or false (indicating the order differs)
 
 Then, we know the sequence collection content is identical, without controlling for order. 
 
