@@ -37,7 +37,7 @@ Unique identifiers, such as those provided by the NCBI Assembly database, partia
 - Centralized identifiers alone cannot *confirm* identity, as identity also depends on the genome's content.  
 - It does not address the related challenge of determining compatibility among reference genomes. Analytical results or annotations based on different references may still be integrable if certain conditions are met, but current tools and standards lack the means to formalize and simplify compatibility comparisons.  
 
-The [refget sequences protocol](sequences.md) provides a partial solution applicable to individual sequences, such as a single chromosome.
+The [refget sequences standard](sequences.md) provides a partial solution applicable to individual sequences, such as a single chromosome.
 However, refget does not directly address collections of sequences, such as a linear reference genome.
 Building on refget, the sequence collections specification introduces foundational concepts that support diverse use cases, including:  
 
@@ -394,7 +394,7 @@ Non-inherent attributes `MUST` be stored and returned by the collection endpoint
 - *Endpoint 1*: `GET /comparison/:digest1/:digest2` (`RECOMMENDED`) Two-digest comparison    
 - *Endpoint 2*: `POST /comparison/:digest1` (`RECOMMENDED`) One-digest POST comparison 
 - *Description*: The comparison function specifies an API endpoint that allows a user to compare two sequence collections. The collections are provided either as two digests (the `GET` endpoint) or as one digest representing a database collection, and one local user-provided collection provided via `POST`. For the `POST` endpoint variant, the user-provided local collection should be provided as a [level 2 representation](#terminology) (AKA the canonical seqcol representation) in the `BODY` of the `POST` request.
-- *Return value*: The output is an assessment of compatibility between those sequence collections. If implemented, both variants of the `/comparison` endpoint must `MUST` return an object in JSON format with these 3 keys: `digests`, `attributes`, and `elements`, as described below (see also an example after the descriptions):
+- *Return value*: The output is an assessment of compatibility between those sequence collections. If implemented, both variants of the `/comparison` endpoint must `MUST` return an object in JSON format with these 3 keys: `digests`, `attributes`, and `array_elements`, as described below (see also an example after the descriptions):
     - `digests`: an object with 2 elements, with keys *a* and *b*, and values either the [level 0 seqcol digests](#terminology) for the compared collections, or *null* (undefined). The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return *null* (undefined) in this element for any corresponding sequence collection.
     - `attributes`: an object with 3 elements, with keys *a_only*, *b_only*, and *a_and_b*. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.
     - `array_elements`: An object with 4 elements: *a_count*, *b_count*, *a_and_b_count*, and *a_and_b_same_order*. The 3 attributes with *_count* are objects with keys corresponding to the names of each array present in the collection, or in both collections (for *a_and_b_count*), with values as the number of elements present either in one collection, or in both collections for the given array. *a_and_b_same_order* is also an object with keys corresponding to array names, and the values a boolean following the same-order specification below.
@@ -548,7 +548,7 @@ The specification in section 1, *Encoding*, described how to structure a sequenc
 What if you have ancillary information that goes with a collection, but shouldn't contribute to the digest?
 We have found a lot of useful use cases for information that should go along with a seqcol, but should not contribute to the *identity* of that seqcol.
 This is a useful construct as it allows us to include information in a collection that does not affect the digest that is computed for that collection.
-One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have a different digests! Seqcol refers to these as *non-inherent attributes*, meaning they are not part of the core identity of the sequence collection.
+One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have diifferent digests! Seqcol refers to these as *non-inherent attributes*, meaning they are not part of the core identity of the sequence collection.
 Non-inherent attributes are defined in the seqcol schema, but excluded from the `inherent` list. 
 
 See: [ADR on 2023-03-22 regarding inherent attributes](decision_record.md#2023-03-22-seqcol-schemas-must-specify-inherent-attributes)
