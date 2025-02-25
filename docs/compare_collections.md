@@ -56,15 +56,15 @@ Now that you know the basics, and once you have an understanding of what the com
 
 ## Limitation of the comparison function: distinguishing out-of-order from mismatched arrays
 
-One limitation of the comparison function is that it does comparisons at the level of arrays, not at the level of individual elements. What would the comparison function return for two sequence collections that are exact duplicates except for two component sequences that have swapped names?
+One limitation of the comparison function is that it does comparisons at the level of arrays, not at the level of individual elements. What would the comparison function return for two sequence collections that have the same content, but in different orders, AND where in addition two of the sequences have swapped names?
 
 Because the sequence array would contain the same sequences, the comparison function will count them all as matching.
 Similarly, the names arrays contain the same names and so all will be counted as a match.
-However, the same_order will *not* be true, so it will yield false.
+However, the same_order will *not* be true; it will yield false for all attributes.
 
 This is the same output as a comparison of two sequence collections in different orders, without the name swap. This is a fundamental limitation of the array-based method of comparing.
 
 In this particular example, these results can be distinguished by the `sorted_name_length_pairs` attribute, because this would yield a perfect match for the second example, where all the pairs are intact but in a different order -- but it would NOT yield a match for the example with swapped names, because the name-length pairs would be different.
 
-This solves the issue for swapped names, but there is still potential for problems with other arrays or custom attributes. Therefore, we warn users that when the `_same_order` is flagged as false, this *does not imply that the pairs are intact*, and if this is a requirement, further investigation would be necessary. If distinguishing these scenarios is important, one possible solution would be to add another non-inherent array, similar to `sorted_name_length_pairs`, but including *all* inherent arrays for each element rather than just the names and lengths. As this would be automatically picked up by the comparison function, it would immediately provide an answer as to whether the annotated sequence elements match *as units* between two collections.
+This solves the issue for swapped names, but there is still potential for problems with other arrays or custom attributes. Therefore, we warn users that when the `_same_order` is flagged as false, this *does not imply that the pairs are intact*, and if this is a requirement, further investigation would be necessary. If distinguishing these scenarios is important, one possible solution would be to add another non-inherent collated attribute, similar to `sorted_name_length_pairs`, but including *all* collated attributes for each element rather than just the names and lengths. The comparison function would then immediately provide an answer as to whether the annotated sequence elements match *as units* between two collections.
 
