@@ -394,7 +394,7 @@ ga4gh:
   "name": "Sequence Collection server",
   "type": {
     "group": "org.ga4gh",
-    "artifact": "refget.seqcol",
+    "artifact": "refget-seqcol",
     "version": "1.0.0"
   },
   "description": "Collection of sequences from digests.",
