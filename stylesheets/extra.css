@@ -1,0 +1,4 @@
+/* TOC by default theme has too much space between list items*/
+.toc ul {
+    line-height: 1.0;
+  }
