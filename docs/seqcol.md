@@ -345,6 +345,7 @@ Under these umbrella endpoints are a few more specific sub-endpoints, described 
 - *Return value*: Must include the Seqcol JSON Schema that is used by this server
 
 The `/service-info` endpoint should follow the [GA4GH-wide specification for service info](https://github.com/ga4gh-discovery/ga4gh-service-info/) for general description of the service.
+The `artifact` describing sequence collection entities should be `refget.seqcol`. See example below. 
 Then, it should also add a few specific pieces of information under a `seqcol` property:
 
  - `schema`: MUST return the JSON Schema implemented by the server.
@@ -380,6 +381,58 @@ ga4gh:
     - sequences
 ```
 
+##### Example of a service-info response
+
+```json
+{
+  "id": "org.ga4gh.refget.seqcol",
+  "name": "Sequence Collection server",
+  "type": {
+    "group": "org.ga4gh",
+    "artifact": "refget-seqcol",
+    "version": "1.0.0"
+  },
+  "description": "Collection of sequences from digests.",
+  "organization": {
+    "name": "My organization",
+    "url": "https://example.com"
+  },
+  "contactUrl": "mailto:support@example.com",
+  "documentationUrl": "https://docs.myservice.example.com",
+  "createdAt": "2024-01-01T11:00:00Z",
+  "updatedAt": "2024-01-01T11:00:00Z",
+  "environment": "prod",
+  "version": "1.4.1",
+  "seqcol": {
+    "schema": {
+      "description": "A collection of biological sequences.",
+      "type": "object",
+      "$id": "https://example.com/sequence_collection",
+      "properties": {
+        "lengths": {
+          "$ref": "/lengths"
+        },
+        "names": {
+          "$ref": "/names"
+        },
+        "sequences": {
+          "$ref": "/sequences"
+        }
+      },
+      "required": [ 
+        "names", 
+        "sequences" 
+      ],
+      "ga4gh": {
+        "inherent": [
+          "names",
+          "sequences"
+        ]
+      }
+    }
+  }
+}
+```
 
 #### 3.2 Collection
 

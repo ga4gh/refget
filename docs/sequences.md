@@ -381,7 +381,7 @@ GET /service-info
   "name": "Refget server",
   "type": {
     "group": "org.ga4gh",
-    "artifact": "refget",
+    "artifact": "refget-sequence",
     "version": "2.0.0"
   },
   "description": "Reference sequences from checksums",
