@@ -1,8 +1,30 @@
 
-![GA4GH logo](img/ga4gh-logo.png){ width="300" align=right }
+<style>
+img.title {
+  float: right;
+  max-width: 50%; /* Adjust as needed */
+  height: auto;
+  margin-left: 20px; /* Space between text and image */
+}
 
+.container {
+  overflow: hidden; /* Ensures the float does not affect the container height */
+}
 
-# Refget specifications
+@media (max-width: 768px) {
+  img.title {
+    float: none; /* Removes float on small screens */
+    display: block;
+    margin: 10px auto; /* Centers the image */
+    max-width: 80%; /* Prevents it from being too large */
+  }
+}
+</style>
+
+<div class="container">
+<img src="img/ga4gh-logo.png" class="title" width="300">
+<h1>Refget specifications</h1>
+</div>
 
 ## What is refget?
 
