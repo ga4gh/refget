@@ -4,17 +4,18 @@ repo_url: https://github.com/ga4gh/refget
 nav:
 
   - Specifications: 
-    - Sequences: sequences.md
-    - Sequence Collections: seqcol.md
+    - Sequences: sequences/README.md
+    - Sequence Collections: seqcols/README.md
   - Detailed how-to guides:
-    - Compute a digest given a SeqCol: digest_from_collection.md
+    - Compute a digest given a SeqCol: seqcols/digest_from_collection.md
     - Retrieve a SeqCol given a digest: sequences_from_digest.md
-    - Compare two sequence collections: compare_collections.md
-    - Other recipes: recipes.md
+    - Compare two sequence collections: seqcols/compare_collections.md
+    - Other recipes: seqcols/recipes.md
   - Implementations:
     - Python: implementation_python.md
     - API: implementation_api.md
   - Reference:
+    - How to cite: citation.md
     - Decision record: decision_record.md
     - Contributing: contributing.md
 

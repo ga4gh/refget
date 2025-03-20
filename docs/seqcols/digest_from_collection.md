@@ -8,24 +8,7 @@ One of the most common uses of the seqcol specification is to compute a standard
 
 ## 1. Using existing implementations
 
-### Reference implementation in Python
-
-If working from within Python, you can use the reference implementation like this:
-
-1. Install the seqcol package with some variant of `pip install refget`.
-2. Build up your canonical seqcol object
-3. Compute its digest:
-
-```
-import refget
-refget.seqcol_digest(seqcol_obj)
-```
-
-If you have a FASTA file, you could get a canonical seqcol object like this:
-
-```
-seqcol_obj = refget.fasta_file_to_seqcol(fa_file)
-```
+- The `refget` Python package provides implementation for local computation of digests: <https://refgenie.org/refget/>.
 
 ## 2. Implement the seqcol digest algorithm yourself
 
@@ -82,16 +65,21 @@ seqcol_obj = {
   ]
 }
 
-# Step 1a: We would here need to remove any non-inherent attributes,
+# Step 1a: Remove any non-inherent attributes,
 # so that only the inherent attributes contribute to the digest.
-# In this example, all attributes are inherent.
+# Only names and sequences are inherent.
+
+seqcol_obj_inherent = {
+  "names": seqcol_obj["names"],
+  "sequences": seqcol_obj["sequences"]
+}
 
 # Step 2: Apply RFC-8785 to canonicalize the value 
 # associated with each attribute individually.
 
 seqcol_obj2 = {}
-for attribute in seqcol_obj:
-    seqcol_obj2[attribute] = canonical_str(seqcol_obj[attribute])
+for attribute in seqcol_obj_inherent:
+    seqcol_obj2[attribute] = canonical_str(seqcol_obj_inherent[attribute])
 seqcol_obj2  # visualize the result
 
 # Step 3: Digest each canonicalized attribute value
@@ -111,4 +99,10 @@ seqcol_obj4  # visualize the result
 # Step 5: Digest the final canonical representation again.
 
 seqcol_digest = sha512t24u_digest(seqcol_obj4)
+# Answer: 'KxZO6qIbVNCIKtQj0WR3fwzg2rsJLlC3'
+
+# Equivalent to:
+# import refget
+# sc = refget.SequenceCollection.from_dict(seqcol_obj)
+# sc.digest
 ```
