@@ -16,6 +16,7 @@ nav:
     - API: implementation_api.md
   - Reference:
     - How to cite: citation.md
+    - Schemas: schemas/README.md
     - Decision record: decision_record.md
     - Contributing: contributing.md
 
