@@ -8,7 +8,7 @@ One of the most common uses of the seqcol specification is to compute a standard
 
 ## 1. Using existing implementations
 
-- The `refget` Python package provides implementation for local computation of digests: <https://refgenie.org/refget/>.
+- The `refget` Python package provides an implementation for local computation of digests: <https://refgenie.org/refget/>.
 
 ## 2. Implement the seqcol digest algorithm yourself
 
