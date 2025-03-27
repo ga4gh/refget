@@ -64,3 +64,4 @@ If however, their coordinate system matches but is not in the same order, then w
 
 For more complex cases, the comparison function and the level1 digests can sometimes be used to figure out what is going on, but they are limited by design -- for situations that are more complex than these methods can handle, it is always possible to look deeper at the contents of the sequence collection and compare them directly. 
 
+The `/comparison` endpoint only tests the order of each array attribute independently. There is no general test of order consistency across several array attributes, *e.g.* whether a single set of collated values for names, lengths, and sequences retains the same index across all three arrays if reordered. A concrete example for interpreting such a case will be added later.
