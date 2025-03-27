@@ -11,8 +11,8 @@ It consists of these standards:
 
 | Standard      | Description                          | Status |
 | ----------- | ------------------------------------ | |
-| [Refget sequences](sequences/README.md)      | For individual sequences  | :white_check_mark: v1.0 Approved in 2021 <br>:white_check_mark:&nbsp;v2.0&nbsp;Approved in 2024 |
-| [Refget sequence collections](seqcols/README.md)      | For collections of sequences | :white_check_mark: v1.0 Approved in 2025 |
+| [Refget Sequences](sequences/README.md)      | For individual sequences  | :white_check_mark: v1.0 Approved in 2021 <br>:white_check_mark:&nbsp;v2.0&nbsp;Approved in 2024 |
+| [Refget Sequence Collections](seqcols/README.md)      | For collections of sequences | :white_check_mark: v1.0 Approved in 2025 |
 | Refget pangenomes  | For collections of sequence collections | :fontawesome-solid-gears: Currently in process |
 
 
