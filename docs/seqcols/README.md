@@ -8,14 +8,14 @@ title: Refget Sequence Collections v1.0.0
 
 Reference sequences are fundamental to genomic analysis.
 To make their analysis reproducible and efficient, we require tools that can identify, store, retrieve, and compare reference sequences.
-The primary goal of the *Refget Sequence Collections* (seqcol) project is **to standardize identifiers for collections of sequences**.
+The primary goal of the *refget Sequence Collections* (seqcol) project is **to standardize identifiers for collections of sequences**.
 Seqcol can be used to identify genomes, transcriptomes, or proteomes -- anything that can be represented as a collection of sequences.
 A common example and primary use case of sequence collections is for a reference genome, so this documentation sometimes refers to reference genomes for convenience; really, it can be applied to any collection of sequences.
 
 In brief, the project specifies several procedures:
 
 1. **An algorithm for encoding sequence collection identifiers.**
-Refget Sequence Collections extends [Refget Sequences](sequences.md) to collections of sequences.
+Refget Sequence Collections extends [refget Sequences](../sequences/README.md) to collections of sequences.
 Seqcol also handles sequence attributes, such as their names, lengths, or topologies.
 Like Refget sequences, seqcol digests are defined by a hash algorithm, rather than an accession authority.
 2. **An API describing lookup and comparison of sequence collections.**
@@ -37,7 +37,7 @@ Unique identifiers, such as those provided by the NCBI Assembly database, partia
 - Centralized identifiers alone cannot *confirm* identity, as identity also depends on the genome's content.  
 - It does not address the related challenge of determining compatibility among reference genomes. Analytical results or annotations based on different references may still be integrable if certain conditions are met, but current tools and standards lack the means to formalize and simplify compatibility comparisons.  
 
-The [refget sequences standard](sequences.md) provides a partial solution applicable to individual sequences, such as a single chromosome.
+The [refget Sequences standard](../sequences/README.md) provides a partial solution applicable to individual sequences, such as a single chromosome.
 However, refget does not directly address collections of sequences, such as a linear reference genome.
 Building on refget, the sequence collections specification introduces foundational concepts that support diverse use cases, including:  
 
@@ -53,7 +53,7 @@ Building on refget, the sequence collections specification introduces foundation
 
 ## Architectural decision record
 
-For a chronological record of decisions related to this specification, see the [Architectural decision record](decision_record.md).
+For a chronological record of decisions related to this specification, see the [Architectural decision record](../decision_record.md).
 
 ## Definitions of key terms
 
@@ -604,7 +604,7 @@ This is a useful construct as it allows us to include information in a collectio
 One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have diifferent digests! Seqcol refers to these as *non-inherent attributes*, meaning they are not part of the core identity of the sequence collection.
 Non-inherent attributes are defined in the seqcol schema, but excluded from the `inherent` list. 
 
-See: [ADR on 2023-03-22 regarding inherent attributes](decision_record.md#2023-03-22-seqcol-schemas-must-specify-inherent-attributes)
+See: [ADR on 2023-03-22 regarding inherent attributes](../decision_record.md#2023-03-22-seqcol-schemas-must-specify-inherent-attributes)
 
 #### 4.4 Passthru attributes
 
@@ -796,7 +796,7 @@ While the latter is intuitive, as it captures each sequence object with some acc
 
   3. Utility of intermediate digests. The array-oriented approach provides useful intermediate digests for each attribute. This digest can be used to test for matching sets of sequences, or matching coordinate systems, using the individual component digests. With a sequence-oriented framework, this would require traversing down a layer deeper, to the individual elements, to establish identity of individual components. The alternative advantage we would have from a sequence-oriented structure would be identifiers for *annotated sequences*. We can gain the advantages of these digests through adding a custom non-inherent, but collated attribute that calculates a unique digest for each element based on the selected attributes of interest, *e.g.* `named_sequences` (digest of *e.g.* `b'{"name":"chr1","sequence":"SQ.2648ae1bacce4ec4b6cf337dcae37816"}'`).
 
-See [ADR on 2021-06-30 on array-oriented structure](decision_record.md#2021-06-30-use-array-based-data-structure-and-multi-tiered-digests)
+See [ADR on 2021-06-30 on array-oriented structure](../decision_record.md#2021-06-30-use-array-based-data-structure-and-multi-tiered-digests)
 
 ### F2. RFC-8785 does not apply to refget sequences
 
@@ -825,7 +825,7 @@ def sha512t24u_digest(seq: bytes) -> str:
     return tdigest_b64us.decode("ascii")
 ```
 
-See: [ADR from 2023-01-25 on digest algorithm](decision_record.md#2023-01-25-digest-algorithm)
+See: [ADR from 2023-01-25 on digest algorithm](../decision_record.md#2023-01-25-the-digest-algorithm-will-be-the-ga4gh-digest)
 
 ### F4. Use cases for the `sorted_name_length_pairs` non-inherent attribute
 
@@ -842,7 +842,7 @@ For efficiency, if the second case is true, we may cache the `sorted_name_length
 In practice, this list will be short.
 Thus, in a production setting, the full compatibility check can be reduced to a lookup into a short, pre-generated list of `sorted_name_length_pairs` digests.
 
-See: [ADR from 2023-07-12 on sorted name-length pairs](decision_record.md#2023-07-12-implementations-should-provide-sorted_name_length_pairs-and-comparison-endpoint)
+See: [ADR from 2023-07-12 on sorted name-length pairs](../decision_record.md#2023-07-12-implementations-should-provide-sorted_name_length_pairs-and-comparison-endpoint)
 
 ### F5. Adding new schema attributes
 

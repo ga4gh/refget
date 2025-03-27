@@ -11,8 +11,8 @@ It consists of these standards:
 
 | Standard      | Description                          | Status |
 | ----------- | ------------------------------------ | |
-| [Refget sequences](sequences.md)      | For individual sequences  | :white_check_mark: v1.0 Approved in 2021 <br>:white_check_mark:&nbsp;v2.0&nbsp;Approved in 2024 |
-| [Refget sequence collections](seqcol.md)      | For collections of sequences | :white_check_mark: v1.0 Approved in 2025 |
+| [Refget sequences](sequences/README.md)      | For individual sequences  | :white_check_mark: v1.0 Approved in 2021 <br>:white_check_mark:&nbsp;v2.0&nbsp;Approved in 2024 |
+| [Refget sequence collections](seqcols/README.md)      | For collections of sequences | :white_check_mark: v1.0 Approved in 2025 |
 | Refget pangenomes  | For collections of sequence collections | :fontawesome-solid-gears: Currently in process |
 
 
@@ -25,7 +25,7 @@ Refget standards help to **identify**, **retrieve**, and **compare** reference s
 - Refget standards also specify **retrieval APIs**, providing a mechanism for retrieving a sequence or collection if you have its identifier.
 - Refget sequence collections also provides a programmatic approach to assessing compatibility among sequence collections.
 
-For more information about use cases, see the [use cases section of the sequence collections specification](seqcol.md#use-cases).
+For more information about use cases, see the [use cases section of the sequence collections specification](seqcols/README.md#use-cases).
 
 ## How do the standards work together?
 

@@ -1,14 +1,14 @@
 site_name: Refget Specifications
 site_url: https://ga4gh.github.io/refget
 repo_url: https://github.com/ga4gh/refget
-nav:
+copyright: GA4GH Large Scale Genomics Workstream, refget team
 
+nav:
   - Specifications: 
     - Sequences: sequences/README.md
     - Sequence Collections: seqcols/README.md
   - Detailed how-to guides:
     - Compute a digest given a SeqCol: seqcols/digest_from_collection.md
-    - Retrieve a SeqCol given a digest: sequences_from_digest.md
     - Compare two sequence collections: seqcols/compare_collections.md
     - Other recipes: seqcols/recipes.md
   - Implementations:
@@ -19,21 +19,6 @@ nav:
     - Schemas: schemas/README.md
     - Decision record: decision_record.md
     - Contributing: contributing.md
-
-
-copyright: GA4GH Large Scale Genomics Workstream, Seqcol team
-home_link: null
-navbar:
-  left:
-  - text: Specification
-    icon: fa-file-alt
-    href: specification
-  - text: Decision Record
-    icon: fa-history
-    href: decision_record
-  - text: Contributing
-    icon: fa-users
-    href: contributing
 
 theme:
   logo: img/seqcol_logo.svg

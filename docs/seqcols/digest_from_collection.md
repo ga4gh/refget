@@ -12,7 +12,7 @@ One of the most common uses of the seqcol specification is to compute a standard
 
 ## 2. Implement the seqcol digest algorithm yourself
 
-Follow the procedure under the section for [Encoding](specification.md#1-encoding-computing-sequence-digests-from-sequence-collections). Briefly, the steps are:
+Follow the procedure under the section for [Encoding](README.md#2-encoding-computing-sequence-digests-from-sequence-collections). Briefly, the steps are:
 
 - **Step 1**. Organize the sequence collection data into *canonical seqcol object representation*.
 - **Step 2**. Apply [RFC-8785 JSON Canonicalization Scheme](https://www.rfc-editor.org/rfc/rfc8785) (JCS) to canonicalize the value associated with each attribute individually.
