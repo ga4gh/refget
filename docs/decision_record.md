@@ -414,7 +414,7 @@ Adding prefixes will complicate things and does not add benefits. Prefixes may b
 - <https://github.com/ga4gh/refget/issues/37>
 
 
-## 2023-06-28 - SeqCol JSON schema defines reserved attributes without additional namespacing
+## 2023-06-28 - Seqcol JSON schema defines reserved attributes without additional namespacing
 
 ### Decision
 
@@ -422,7 +422,7 @@ One potential issue may arise if a custom implementation uses an attribute that 
 
 Despite the potential issue for custom attribute clashes, we decided:
 
-1. We will not use any additional namespacing. Instead, the SeqCol schema declares and defines the specific attributes of a sequence collection. We will "claim" any reserved keywords in the secqol schema we publish, not by defining a style or namespace of reserved keywords.
+1. We will not use any additional namespacing. Instead, the seqcol schema declares and defines the specific attributes of a sequence collection. We will "claim" any reserved keywords in the secqol schema we publish, not by defining a style or namespace of reserved keywords.
 
 2. We will try to add to this many things that we forsee as possible attributes that could be defined in a seqcol. Thus, we will provide an official set of definitions that should prevent many possible future clashes.
 

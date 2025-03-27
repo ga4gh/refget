@@ -12,7 +12,7 @@ You can also `POST` a local collection to `/comparison/:digest1` to compare it t
 The comparison function gives information-rich feedback about the two collections, but it can take some thought to interpret.
 Here are some examples.
 
-The best way is to use the Refget [SeqCol Comparison Interpretation Module (SCIM)](https://refget.databio.org/scim/).
+The best way is to use the Refget [Seqcol Comparison Interpretation Module (SCIM)](https://refget.databio.org/scim/).
 You paste in the JSON output of a comparison, and it provides an interpretation for you.
 
 ## Interpretation details
