@@ -6,7 +6,7 @@ The Refget specifications use schemas to describe data for several purposes. Eve
 | Schema name and link         | Description                  | 
 | ---------------------------- | ---------------------------- |
 | [seqcol_minimal_v1.0.0.json](seqcol_minimal_v1.0.0.json) | Minimal schema, describes only the 3 primary attributes (names, lengths, and sequences) |
-| [seqcol_extended_v1.0.0.json](seqcol_extended_v1.0.0.json) | Extended schema, adds descriptions to  |
-| [seqcol_refs_v1.0.0.json](seqcol_refs_v1.0.0.json) | Minimal schema, using references  | 
+| [seqcol_extended_v1.0.0.json](seqcol_extended_v1.0.0.json) | Extended schema, describes all approved attributes |
+| [seqcol_refs_v1.0.0.json](seqcol_refs_v1.0.0.json) | Minimal schema, using references | 
 
 
