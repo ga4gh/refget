@@ -363,7 +363,7 @@ For example, here's a JSON schema that uses a `ref` to reference the approved se
 ```yaml
 description: "A collection of biological sequences."
 type: object
-"$id": "https://example.com/sequence_collection",  # URI to main seqcol definition
+"$id": "https://ga4gh.github.io/refget/schemas/seqcol_extended_v1.0.0.json",  # URI to seqcol schema with ancillary attributes
 properties:
   lengths:
     "$ref": "/lengths"
@@ -407,7 +407,7 @@ ga4gh:
     "schema": {
       "description": "A collection of biological sequences.",
       "type": "object",
-      "$id": "https://example.com/sequence_collection",
+      "$id": "https://ga4gh.github.io/refget/schemas/seqcol_extended_v1.0.0.json",
       "properties": {
         "lengths": {
           "$ref": "/lengths"
