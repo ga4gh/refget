@@ -10,7 +10,6 @@ nav:
   - Detailed how-to guides:
     - Compute a digest given a SeqCol: seqcols/digest_from_collection.md
     - Compare two sequence collections: seqcols/compare_collections.md
-    - Other recipes: seqcols/recipes.md
   - Implementations:
     - Python: implementation_python.md
     - API: implementation_api.md
