@@ -38,8 +38,8 @@ Unique identifiers, such as those provided by the NCBI Assembly database, partia
 - It does not address the related challenge of determining compatibility among reference genomes. Analytical results or annotations based on different references may still be integrable if certain conditions are met, but current tools and standards lack the means to formalize and simplify compatibility comparisons.  
 
 The [refget Sequences standard](../sequences/README.md) provides a partial solution applicable to individual sequences, such as a single chromosome.
-However, refget does not directly address collections of sequences, such as a linear reference genome.
-Building on refget, the sequence collections specification introduces foundational concepts that support diverse use cases, including:  
+However, refget Sequences does not directly address collections of sequences, such as a linear reference genome.
+Building on refget Sequences, the *Sequence Collections* specification introduces foundational concepts that support diverse use cases, including:  
 
 - **Accessing sequences**:  *As a data analyst, I want to know which sequences are in a specific collection so I can analyze them further.*  
 - **Comparing collections**:  *As a data analyst, I want to compare the sequence collections used in two separate analyses to assess the compatibility of their resulting data.*  
@@ -53,7 +53,7 @@ Building on refget, the sequence collections specification introduces foundation
 
 ## Architectural decision record
 
-For a chronological record of decisions related to this specification, see the [Architectural decision record](../decision_record.md).
+For a chronological record of decisions related to this specification, see the [Architectural Decision Record (ADR)](../decision_record.md).
 
 ## Definitions of key terms
 
@@ -288,7 +288,7 @@ Zjx9_tD2o-1yKB6RR2v2g3W9c5ufydUc
 
 ##### Level 1
 
-What you'd get when you look up the digest with **1 database lookup**. We sometimes refer to this as the "array digests" or "attribute digests", because it is made up a digest for each attribute in the sequence collection. Example:
+What you'd get when you look up the digest with **1 database lookup**. We sometimes refer to this as the "attribute digests", because it is made up a digest for each attribute in the sequence collection. Example:
 
 ```json
 {
@@ -300,7 +300,7 @@ What you'd get when you look up the digest with **1 database lookup**. We someti
 
 ##### Level 2
 
-What you'd get with **2 database lookups**. This is the most common representation, and hence, it the level of the *canonical seqcol representation*. Example:
+What you'd get with **2 database lookups**. This is the most common representation, and hence, it is the level of the *canonical seqcol representation*. Example:
 
 ```json
 {
