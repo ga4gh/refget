@@ -494,7 +494,7 @@ Key to generating reproducible checksums is the normalisation algorithm applied 
 - CRAM Reference Registry
     - Input comes into the registry via ENA
     - ENA allows input conforming to the following regular expression:  
-      `(?i)^([ACGTUMRWSYKVHDBN]+)\\*?$"`
+      `(?i)^([ACGTUMRWSYKVHDBN]+)\*?$`
 - VRS
     - VRS requires sequence to be a string of IUPAC codes for either nucleotide or protein sequence
 
