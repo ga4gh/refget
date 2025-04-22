@@ -35,7 +35,7 @@ Implementers can check if their refget implementations conform to the specificat
 
 ## Protocol essentials
 
-All API invocations are made to a configurable HTTP(S) endpoint, receive URL-encoded query string parameters and HTTP headers, and return text or other allowed formatting as requested by the user. Successful requests result with HTTP status code 200 and have the appropriate text encoding in the response body as defined for each endpoint. The server may provide responses with chunked transfer encoding. The client and server may mutually negotiate HTTP/2 upgrade using the standard mechanism.
+All API invocations are made to a configurable HTTP(S) endpoint, receive URL-encoded query string parameters and HTTP headers, and return text or other allowed formatting as requested by the user. Successful requests result in HTTP status code 200 and have the appropriate text encoding in the response body as defined for each endpoint. The server may provide responses with chunked transfer encoding. The client and server may mutually negotiate HTTP/2 upgrade using the standard mechanism.
 
 The response for sequence retrieval has a character set of US-ASCII and consists solely of the requested sequence or sub-sequence with no line breaks. Other formatting of the response sequence may be allowed by the server, subject to standard negotiation with the client via the Accept header.
 
@@ -99,25 +99,25 @@ The policies and processes used to perform user authentication and authorization
 ## Checksum calculation
 The recommended checksum algorithms are `MD5` (a 32 character HEX string) and a SHA-512-based system called `ga4gh` (a base64 URL-safe string, see later for details). Servers MUST support sequence retrieval by one or more of these algorithms, and are encouraged to support all to maximize interoperability. An older algorithm called `TRUNC512` existed in version 1.0.0 of refget but is now deprecated in favour of the GA4GH sequence checksum string. It is possible to translate between the `ga4gh` and `TRUNC512` systems however `TRUNC512` usage SHOULD be discouraged.
 
-When calculating the checksum for a sequence, all non-base symbols (\n, spaces, etc) must be removed and then uppercase the rest. The allowed alphabet for checksum calculation is uppercase ASCII (`0x41`-`0x5A` or `A-Z`).
+When calculating the checksum for a sequence, all non-base symbols (\n, spaces, etc) must be removed and then the rest uppercased. The allowed alphabet for checksum calculation is uppercase ASCII letters (`0x41`-`0x5A` or `A-Z`).
 
 Resulting hexadecimal checksum strings shall be considered case insensitive. 0xa is equivalent to 0xA.
 
 ## refget Checksum Algorithm
-The refget checksum algorithm is called `ga4gh`. It is based and derived from work carried out by the GA4GH VRS group. It is defined as follows:
+The refget checksum algorithm is called `ga4gh`. It is based on and derived from work carried out by the GA4GH VRS group. It is defined as follows:
 
 - SHA-512 digest of a sanitised sequence
 - A base64 url encoding of the first 24 bytes of that digest
 - The addition of `SQ.` to the string
 
-Services may also implement the older `TRUNC512` representation of a truncated SHA-512 digest and is compatible with the above `ga4gh` string. See later in this specification for implementation details of the TRUNC512 algorithm and conversion between `ga4gh` and `TRUNC512`.
+Services may also implement the older `TRUNC512` representation of a truncated SHA-512 digest, which uses similar ideas to the above `ga4gh` string. See later in this specification for implementation details of the TRUNC512 algorithm and conversion between `ga4gh` and `TRUNC512`.
 
-A `ga4gh` digest of `ACGT` MUST result in the string `SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2`.
+For example, the `ga4gh` digest of `ACGT` is the string `SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2`.
 
 ## Namespace of the checksums
 
 The requested checksum can optionally be prefixed with a namespace describing the type of algorithm being used.
-For example using md5 `md5:6aef897c3d6ff0c78aff06ac189178dd` and `6aef897c3d6ff0c78aff06ac189178dd` should return the same sequence and using ga4gh `ga4gh:SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2` and `SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2` should also return the same sequence.
+For example using md5 `md5:6aef897c3d6ff0c78aff06ac189178dd` and `6aef897c3d6ff0c78aff06ac189178dd` should return the same sequence and similarly using ga4gh `ga4gh:SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2` and `SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2` should return the same sequence.
 
 ## Unique Identifiers
 Refget optionally allows the use of namespaced identifiers in place of the digest. The identifier prefixed by a namespace to form a CURIE for example:
@@ -366,7 +366,7 @@ An array of strings listing the type identifiers supported. Values used should b
 <code>subsequence_limit</code><br/>
 int or null
 </td><td>
-An integer giving the maximum length of sequence which may be requested using <code>start</code> and/or <code>end</code> query parameters or <code>Range</code> header. <code>null</code> values or values lower than 1 or mean the server has no imposed limit.
+An integer giving the maximum length of sequence which may be requested using <code>start</code> and/or <code>end</code> query parameters or <code>Range</code> header. <code>null</code> values or values lower than 1 mean the server has no imposed limit.
 </td></tr>
 </table>
 </td></tr>
@@ -468,7 +468,7 @@ Any bytes added for formatting to the returned output should not be taken in to 
 
 Refget implementations MUST support the `MD5` identifier space and SHOULD support the `ga4gh` identifier. Non-standard identifiers are allowed but they MUST conform to the following requirements:
 
-1. Non-standard identifiers must be based on an algorithm, which uses normalised sequence content as input
+1. Non-standard identifiers must be based on an algorithm that uses normalised sequence content as input
 2. The algorithm used SHOULD be a hash function
 3. Non-standard identifiers must not clash with the `MD5` and `ga4gh` identifier space
   - Note `ga4gh` is allowed to grow in length should collisions in the current implementation be detected
@@ -482,14 +482,14 @@ Examples on how to implement both algorithm schemes in [Python](pub/ga4gh_and_TR
 
 ## Design Rationale
 
-This section details behind key API decisions.
+This non-normative section provides the details behind key API decisions.
 
 ### Checksum Input Normalisation
 
-Key to generating reproducible checksums is the normalisation algorithm applied to sequence input. This API is based on the requirements of SAM/BAM, CRAM Reference Registry and VMC specifications. Both of these specs' own normalisation algorithms are detailed below:
+Key to generating reproducible checksums is the normalisation algorithm applied to sequence input. This API is based on the requirements of SAM/BAM, CRAM Reference Registry and VMC specifications. These specifications' own normalisation algorithms are detailed below:
 
 - SAM/BAM
-    - All characters outside of the inclusive range `33` (`0x21`/`!`) and `126` (`0x7E`/`~`) are stripped out
+    - All characters outside of the inclusive range `33` (`0x21`/`!`) through `126` (`0x7E`/`~`) are stripped out
     - All lower-case characters are converted to upper-case
 - CRAM Reference Registry
     - Input comes into the registry via ENA
