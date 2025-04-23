@@ -104,11 +104,19 @@ When calculating the checksum for a sequence, all non-base symbols (\n, spaces, 
 Resulting hexadecimal checksum strings shall be considered case insensitive. 0xa is equivalent to 0xA.
 
 ## refget Checksum Algorithm
-The refget checksum algorithm is called `ga4gh`. It is based on and derived from work carried out by the GA4GH VRS group. It is defined as follows:
+The refget checksum algorithm is called `ga4gh`. It is based on and derived from work carried out by the GA4GH VRS group. The checksum of a reference sequence string is computed as follows:
 
-- SHA-512 digest of a sanitised sequence
-- A base64 url encoding of the first 24 bytes of that digest
-- The addition of `SQ.` to the string
+1. Canonicalize the sequence string by removing all non-alphabetic characters, including line terminators and other whitespace, and converting any lowercase letters to uppercase.
+
+    (The canonicalised string then contains only uppercase ASCII letters `A-Z`.)
+
+1. Compute the SHA-512 digest of that canonical sequence string.
+
+1. Take the first 24 bytes of that digest and `base64url`-encode them.
+
+    (This uses the URL-safe Base 64 variant described in [RFC 4648 §5](https://datatracker.ietf.org/doc/html/rfc4648#section-5), which uses the characters `A-Za-z0-9-_`. Because the length of the digest prefix taken is a multiple of three, the `=` pad character is never necessary.)
+
+1. Prepend `SQ.` to the start of the resulting 32-character text string.
 
 Services may also implement the older `TRUNC512` representation of a truncated SHA-512 digest, which uses similar ideas to the above `ga4gh` string. See later in this specification for implementation details of the TRUNC512 algorithm and conversion between `ga4gh` and `TRUNC512`.
 
