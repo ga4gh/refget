@@ -28,8 +28,8 @@ sub trunc512_digest {
 sub _ga4gh_bytes {
   my ($bytes, $digest_size) = @_;
   my $base64 = encode_base64url($bytes);
-  my $substr_offset = int($digest_size/3)*4;
-  my $ga4gh = substr($base64, 0, $substr_offset);
+  my $base64_size = int($digest_size/3)*4;
+  my $ga4gh = substr($base64, 0, $base64_size);
   return "ga4gh:SQ.${ga4gh}";
 }
 
