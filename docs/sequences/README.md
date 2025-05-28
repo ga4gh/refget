@@ -31,11 +31,11 @@ An OpenAPI description of this specification is available and [describes the 2.0
 
 ## Compliance
 
-Implementors can check if their refget implementations conform to the specification by using our [compliance suite](https://github.com/ga4gh/refget-compliance-suite). A summary of all known public implementations is available from our [compliance report website](https://andrewyatz.github.io/refget-compliance/).
+Implementers can check if their refget implementations conform to the specification by using our [compliance suite](https://github.com/ga4gh/refget-compliance-suite). A summary of all known public implementations is available from our [compliance report website](https://andrewyatz.github.io/refget-compliance/).
 
 ## Protocol essentials
 
-All API invocations are made to a configurable HTTP(S) endpoint, receive URL-encoded query string parameters and HTTP headers, and return text or other allowed formatting as requested by the user. Successful requests result with HTTP status code 200 and have the appropriate text encoding in the response body as defined for each endpoint. The server may provide responses with chunked transfer encoding. The client and server may mutually negotiate HTTP/2 upgrade using the standard mechanism.
+All API invocations are made to a configurable HTTP(S) endpoint, receive URL-encoded query string parameters and HTTP headers, and return text or other allowed formatting as requested by the user. Successful requests result in HTTP status code 200 and have the appropriate text encoding in the response body as defined for each endpoint. The server may provide responses with chunked transfer encoding. The client and server may mutually negotiate HTTP/2 upgrade using the standard mechanism.
 
 The response for sequence retrieval has a character set of US-ASCII and consists solely of the requested sequence or sub-sequence with no line breaks. Other formatting of the response sequence may be allowed by the server, subject to standard negotiation with the client via the Accept header.
 
@@ -64,11 +64,11 @@ Content-Type: application/vnd.ga4gh.refget.v2.0.0+json; charset=us-ascii
 When responding to a request a server MUST use the fully specified media type for that endpoint. When determining if a request is well-formed, a server MUST allow a internet type to degrade like so
 
 - `text/vnd.ga4gh.refget.v2.0.0+plain; charset=us-ascii`
-  - `text/vnd.ga4gh.refget.v2.0.0+plain`
-  - `text/plain`
+    - `text/vnd.ga4gh.refget.v2.0.0+plain`
+    - `text/plain`
 - `application/vnd.ga4gh.refget.v2.0.0+json; charset=us-ascii`
-  - `application/vnd.ga4gh.refget.v2.0.0+json`
-  - `application/json`
+    - `application/vnd.ga4gh.refget.v2.0.0+json`
+    - `application/json`
 
 ## Errors
 The server MUST respond with an appropriate HTTP status code (4xx or 5xx) when an error condition is detected. In the case of transient server errors (e.g., 503 and other 5xx status codes), the client SHOULD implement appropriate retry logic. For example, if a client sends an alphanumeric string for a parameter that is specified as unsigned integer the server MUST reply with `Bad Request`.
@@ -97,27 +97,27 @@ Authorization: Bearer [access_token]
 The policies and processes used to perform user authentication and authorization, and the means through which access tokens are issued, are beyond the scope of this API specification. GA4GH recommends the use of the OAuth 2.0 framework ([RFC 6749](https://tools.ietf.org/html/rfc6749)) for authentication and authorization.
 
 ## Checksum calculation
-The recommended checksum algorithms are `MD5` (a 32 character HEX string) and a SHA-512 based system called `ga4gh` (a base64 URL-safe string, see later for details). Servers MUST support sequence retrieval by one or more of these algorithms, and are encouraged to support all to maximize interoperability. An older algorithm called `TRUNC512` existed in version 1.0.0 of refget but is now deprecated in favour of the GA4GH sequence checksum string. It is possible to translate between the `ga4gh` and `TRUNC512` systems however `TRUNC512` usage SHOULD be discouraged.
+The recommended checksum algorithms are `MD5` (a 32 character HEX string) and a SHA-512-based system called `ga4gh` (a base64 URL-safe string, see later for details). Servers MUST support sequence retrieval by one or more of these algorithms, and are encouraged to support all to maximize interoperability. An older algorithm called `TRUNC512` existed in version 1.0.0 of refget but is now deprecated in favour of the GA4GH sequence checksum string. It is possible to translate between the `ga4gh` and `TRUNC512` systems however `TRUNC512` usage SHOULD be discouraged.
 
-When calculating the checksum for a sequence, all non-base symbols (\n, spaces, etc) must be removed and then uppercase the rest. The allowed alphabet for checksum calculation is uppercase ASCII (`0x41`-`0x5A` or `A-Z`).
+When calculating the checksum for a sequence, all non-base symbols (\n, spaces, etc) must be removed and then the rest uppercased. The allowed alphabet for checksum calculation is uppercase ASCII letters (`0x41`-`0x5A` or `A-Z`).
 
 Resulting hexadecimal checksum strings shall be considered case insensitive. 0xa is equivalent to 0xA.
 
 ## refget Checksum Algorithm
-The refget checksum algorithm is called `ga4gh`. It is based and derived from work carried out by the GA4GH VRS group. It is defined as follows:
+The refget checksum algorithm is called `ga4gh`. It is based on and derived from work carried out by the GA4GH VRS group. It is defined as follows:
 
 - SHA-512 digest of a sanitised sequence
 - A base64 url encoding of the first 24 bytes of that digest
 - The addition of `SQ.` to the string
 
-Services may also implement the older `TRUNC512` representation of a truncated SHA-512 digest and is compatible with the above `ga4gh` string. See later in this specification for implementation details of the TRUNC512 algorithm and conversion between `ga4gh` and `TRUNC512`.
+Services may also implement the older `TRUNC512` representation of a truncated SHA-512 digest, which uses similar ideas to the above `ga4gh` string. See later in this specification for implementation details of the TRUNC512 algorithm and conversion between `ga4gh` and `TRUNC512`.
 
-A `ga4gh` digest of `ACGT` MUST result in the string `SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2`.
+For example, the `ga4gh` digest of `ACGT` is the string `SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2`.
 
 ## Namespace of the checksums
 
 The requested checksum can optionally be prefixed with a namespace describing the type of algorithm being used.
-For example using md5 `md5:6aef897c3d6ff0c78aff06ac189178dd` and `6aef897c3d6ff0c78aff06ac189178dd` should return the same sequence and using ga4gh `ga4gh:SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2` and `SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2` should also return the same sequence.
+For example using md5 `md5:6aef897c3d6ff0c78aff06ac189178dd` and `6aef897c3d6ff0c78aff06ac189178dd` should return the same sequence and similarly using ga4gh `ga4gh:SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2` and `SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2` should return the same sequence.
 
 ## Unique Identifiers
 Refget optionally allows the use of namespaced identifiers in place of the digest. The identifier prefixed by a namespace to form a CURIE for example:
@@ -125,8 +125,9 @@ Refget optionally allows the use of namespaced identifiers in place of the diges
 `insdc:CM000663.2`
 
 It is recommended that each namespaced identifier be unique within the refget implementation but if it does not resolve to a single sequence the server must respond with either:
- - code 300: `multiple choices` providing a list of identifiers or sequence digests that correspond to the request
- - code 409: `conflict` indicating a conflict that cannot be resolved.
+
+- code 300: `multiple choices` providing a list of identifiers or sequence digests that correspond to the request;
+- code 409: `conflict` indicating a conflict that cannot be resolved.
 
 ## CORS
 Cross-origin resource sharing (CORS) is an essential technique used to overcome the same origin content policy seen in browsers. This policy restricts a webpage from making a request to another website and leaking potentially sensitive information. However the same origin policy is a barrier to using open APIs. GA4GH open API implementers should enable CORS to an acceptable level as defined by their internal policy. For any public API implementations should allow requests from any server.
@@ -173,8 +174,8 @@ Content-type: text/vnd.ga4gh.refget.v2.0.0+plain
 
 | Parameter | Data Type               | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 |-----------|-------------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Range`   | string                  | Optional | Range header as specified in [RFC 7233](https://tools.ietf.org/html/rfc7233#section-3.1), however only a single byte range per GET request is supported by the specification. The byte range of the sequence to return, 0-based inclusive of start and end bytes specified. The server MUST respond with a `Bad Request` error if both a Range header and start or end query parameters are specified. The server MUST respond with a `Bad Request` error if one or more ranges are out of bounds of the sequence.                                                                                                                     |
-| `Accept`    | string                  | Optional | The formatting of the returned sequence, defaults to `text/vnd.ga4gh.refget.v2.0.0+plain` if not specified. A server MAY support other formatting of the sequence.The server SHOULD respond with an `Not Acceptable` error if the client requests a format not supported by the server.                                                                                                                                                                                                                                                                                                                 |
+| `Range`   | string                  | Optional | Range header as specified in [RFC 7233](https://tools.ietf.org/html/rfc7233#section-3.1), however only a single byte range per GET request is supported by the specification. The byte range of the sequence to return, 0-based inclusive of start and end bytes specified. The server MUST respond with a `Bad Request` error if both a Range header and start or end query parameters are specified. The server MUST respond with a `Bad Request` error if one or more ranges are out of bounds of the sequence.                                                                                           |
+| `Accept`  | string                  | Optional | The formatting of the returned sequence, defaults to `text/vnd.ga4gh.refget.v2.0.0+plain` if not specified. A server MAY support other formatting of the sequence. The server SHOULD respond with a `Not Acceptable` error if the client requests a format not supported by the server.                                                                                                                                                                                                                                                                                                                      |
 
 #### Response
 
@@ -229,7 +230,7 @@ Content-type: application/vnd.ga4gh.refget.v2.0.0+json
 
 | Parameter | Data Type               | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 |-----------|-------------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Accept`  | string                  | Optional | The formatting of the returned metadata, defaults to `application/vnd.ga4gh.refget.v2.0.0+json` if not specified. A server MAY support other formatting of the sequence.The server SHOULD respond with an `Not Acceptable` error if the client requests a format not supported by the server.                                                                                                                                                                                                                                                                                                                 |
+| `Accept`  | string                  | Optional | The formatting of the returned metadata, defaults to `application/vnd.ga4gh.refget.v2.0.0+json` if not specified. A server MAY support other formatting of the sequence. The server SHOULD respond with a `Not Acceptable` error if the client requests a format not supported by the server.                                                                                                                                                                                                                                                                                                                |
 
 #### Response
 
@@ -331,7 +332,7 @@ Content-type: application/vnd.ga4gh.refget.v2.0.0+json
 
 | Parameter | Data Type               | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 |-----------|-------------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Accept`  | string                  | Optional | The formatting of the returned metadata, defaults to `application/vnd.ga4gh.refget.v2.0.0+json` if not specified. A server MAY support other formatting of the sequence.The server SHOULD respond with an `Not Acceptable` error if the client requests a format not supported by the server.                                                                                                                                                                                                                                                                                                                 |
+| `Accept`  | string                  | Optional | The formatting of the returned metadata, defaults to `application/vnd.ga4gh.refget.v2.0.0+json` if not specified. A server MAY support other formatting of the sequence. The server SHOULD respond with a `Not Acceptable` error if the client requests a format not supported by the server.                                                                                                                                                                                                                                                                                                                |
 
 #### Response
 The server shall return a document detailing specifications of the service implementation. A JSON encoded response shall have the following fields in addition to those specified by service-info:
@@ -359,13 +360,13 @@ An array of strings listing the digest algorithms that are supported. Standard v
 <code>identifier_types</code><br/>
 array of strings
 </td><td>
-An array of strings listing the type identifiers supported. Values used should be the same as the one supported by [identifiers.org](https://registry.identifiers.org/registry) such as <code>insdc</code>, <code>ensembl</code>, <code>refseq</code>.
+An array of strings listing the type identifiers supported. Values used should be the same as the one supported by <a href="https://registry.identifiers.org/registry">identifiers.org</a> such as <code>insdc</code>, <code>ensembl</code>, <code>refseq</code>.
 </td></tr>
 <tr markdown="block"><td>
 <code>subsequence_limit</code><br/>
 int or null
 </td><td>
-An integer giving the maximum length of sequence which may be requested using <code>start</code> and/or <code>end</code> query parameters or <code>Range</code> header. <code>null</code> values or values lower than 1 or mean the server has no imposed limit.
+An integer giving the maximum length of sequence which may be requested using <code>start</code> and/or <code>end</code> query parameters or <code>Range</code> header. <code>null</code> values or values lower than 1 mean the server has no imposed limit.
 </td></tr>
 </table>
 </td></tr>
@@ -454,7 +455,7 @@ The returned subsequence would be the first `C` of the sequence. A URL parameter
 ?start=0&end=1
 ```
 
-Any formatting of the sequence a server might allow is applied after the sub-sequence is selected, for example a server that supported returning fasta the result for the prior example could be:
+Any formatting of the sequence a server might allow is applied after the sub-sequence is selected, for example a server that supported returning FASTA the result for the prior example could be:
 
 ```
 >9f5b68f3ebc5f7b06a9b2e2b55297403 5-14
@@ -467,7 +468,7 @@ Any bytes added for formatting to the returned output should not be taken in to 
 
 Refget implementations MUST support the `MD5` identifier space and SHOULD support the `ga4gh` identifier. Non-standard identifiers are allowed but they MUST conform to the following requirements:
 
-1. Non-standard identifiers must be based on an algorithm, which uses normalised sequence content as input
+1. Non-standard identifiers must be based on an algorithm that uses normalised sequence content as input
 2. The algorithm used SHOULD be a hash function
 3. Non-standard identifiers must not clash with the `MD5` and `ga4gh` identifier space
   - Note `ga4gh` is allowed to grow in length should collisions in the current implementation be detected
@@ -481,20 +482,21 @@ Examples on how to implement both algorithm schemes in [Python](pub/ga4gh_and_TR
 
 ## Design Rationale
 
-This section details behind key API decisions.
+This non-normative section provides the details behind key API decisions.
 
 ### Checksum Input Normalisation
 
-Key to generating reproducible checksums is the normalisation algorithm applied to sequence input. This API is based on the requirements of SAM/BAM, CRAM Reference Registry and VMC specifications. Both of these specs' own normalisation algorithms are detailed below:
+Key to generating reproducible checksums is the normalisation algorithm applied to sequence input. This API is based on the requirements of SAM/BAM, CRAM Reference Registry and VMC specifications. These specifications' own normalisation algorithms are detailed below:
 
 - SAM/BAM
-  - All characters outside of the inclusive range `33` (`0x21`/`!`) and `126` (`0x7E`/`~`) are stripped out
-  - All lower-case characters are converted to upper-case
+    - All characters outside of the inclusive range `33` (`0x21`/`!`) through `126` (`0x7E`/`~`) are stripped out
+    - All lower-case characters are converted to upper-case
 - CRAM Reference Registry
-  - Input comes into the registry via ENA
-  - ENA allows input conforming to the following regular expression `(?i)^([ACGTUMRWSYKVHDBN]+)\\*?$"`
+    - Input comes into the registry via ENA
+    - ENA allows input conforming to the following regular expression:  
+      `(?i)^([ACGTUMRWSYKVHDBN]+)\*?$`
 - VRS
-  - VRS requires sequence to be a string of IUPAC codes for either nucleotide or protein sequence
+    - VRS requires sequence to be a string of IUPAC codes for either nucleotide or protein sequence
 
 Considering the requirements of the three systems the specification designers felt it was sufficient to restrict input to the inclusive range `65` (`0x41`/`A`) to `90` (`0x5A`/`Z`). Changes to this normalisation algorithm would require a new checksum identifier to be used.
 
@@ -513,7 +515,7 @@ When a checksum identifier is given to an implementation, it is the server's res
 ## Possible Future API Enhancements
 
 - Allow POST requests for batch downloads
-- Formally define more sequence formatting options (e.g. fasta, protobuf)
+- Formally define more sequence formatting options (e.g. FASTA, protobuf)
 - Allow reference sequence checksums to be bundled together e.g. to represent a reference genome
 - Support groups/collections of sequences based on checksums
 
@@ -541,7 +543,7 @@ The following people have contributed to the design of this specification.
 
 ## Appendix 1 - Naming Authorities
 
-The specification makes no attempt to enforce a strict naming authority across implementations due to their potential heterogenous nature. However we do encourage implementors to reuse naming authority strings where possible following nomenclature from [identifiers.org](https://registry.identifiers.org/registry). See below for examples of recommended names.
+The specification makes no attempt to enforce a strict naming authority across implementations due to their potential heterogeneous nature. However we do encourage implementers to reuse naming authority strings where possible following nomenclature from [identifiers.org](https://registry.identifiers.org/registry). See below for examples of recommended names.
 
 | String     | Authority | Description | Status |
 |------------|-----------|-------------|--------|
@@ -561,7 +563,7 @@ The specification makes no attempt to enforce a strict naming authority across i
 
 - Replace refget's v1 service-info implementation with GA4GH discovery's definition of service-info
 - Move code examples out into a Python notebook and a Perl script
-- Replace TRUNC512 with ga4gh identifier as the default SHA-512 based hash identifier (support still available for TRUNC512)
+- Replace TRUNC512 with ga4gh identifier as the default SHA-512-based hash identifier (support still available for TRUNC512)
 - All checksums can be requested namespaced with their algorithm
 - Optional support for namespaced identifiers to resolve sequence and metadata
 - Lower cased recommended naming authority strings
