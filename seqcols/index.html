@@ -1,0 +1,1963 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ga4gh.github.io/refget/seqcols/">
+      
+      
+        <link rel="prev" href="../sequences/">
+      
+      
+        <link rel="next" href="digest_from_collection/">
+      
+      
+      <link rel="icon" href="../img/seqcol_logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>Refget Sequence Collections v1.0.0 - Refget Specifications</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#refget-sequence-collections-v100" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Refget Specifications" class="md-header__button md-logo" aria-label="Refget Specifications" data-md-component="logo">
+      
+  <img src="../img/seqcol_logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Refget Specifications
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Refget Sequence Collections v1.0.0
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ga4gh/refget" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Refget Specifications" class="md-nav__button md-logo" aria-label="Refget Specifications" data-md-component="logo">
+      
+  <img src="../img/seqcol_logo.svg" alt="logo">
+
+    </a>
+    Refget Specifications
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ga4gh/refget" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Specifications
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Specifications
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sequences/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequences
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Sequence Collections
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequence Collections
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use cases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architectural-decision-record" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architectural decision record
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#definitions-of-key-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definitions of key terms
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Definitions of key terms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#general-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      General terms
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attribute-qualifiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attribute qualifiers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seqcol-protocol-functionality" class="md-nav__link">
+    <span class="md-ellipsis">
+      Seqcol protocol functionality
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Seqcol protocol functionality">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-schema-defining-the-attributes-in-the-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Schema: Defining the attributes in the collection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-encoding-computing-sequence-digests-from-sequence-collections" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Encoding: Computing sequence digests from sequence collections
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-api-a-server-api-specification-for-retrieving-and-comparing-sequence-collections" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. API: A server API specification for retrieving and comparing sequence collections.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-extending-the-schema-schema-attribute-qualifiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Extending the schema: Schema attribute qualifiers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-custom-and-recommended-ancillary-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Custom and recommended ancillary attributes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#footnotes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Footnotes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Footnotes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#f1-why-use-an-array-oriented-structure-instead-of-a-sequence-oriented-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      F1. Why use an array-oriented structure instead of a sequence-oriented structure?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f2-rfc-8785-does-not-apply-to-refget-sequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      F2. RFC-8785 does not apply to refget sequences
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f3-the-ga4gh-digest-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      F3. The GA4GH digest algorithm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f4-use-cases-for-the-sorted_name_length_pairs-non-inherent-attribute" class="md-nav__link">
+    <span class="md-ellipsis">
+      F4. Use cases for the sorted_name_length_pairs non-inherent attribute
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f5-adding-new-schema-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      F5. Adding new schema attributes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f6-custom-encoding-algorithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      F6. Custom encoding algorithms
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Detailed how-to guides
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Detailed how-to guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="digest_from_collection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compute a digest given a seqcol
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="compare_collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compare two sequence collections
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Implementations
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Implementations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../implementation_python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Python
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../implementation_api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../citation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How to cite
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schemas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Schemas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../decision_record/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Decision record
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use cases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architectural-decision-record" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architectural decision record
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#definitions-of-key-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definitions of key terms
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Definitions of key terms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#general-terms" class="md-nav__link">
+    <span class="md-ellipsis">
+      General terms
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attribute-qualifiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attribute qualifiers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seqcol-protocol-functionality" class="md-nav__link">
+    <span class="md-ellipsis">
+      Seqcol protocol functionality
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Seqcol protocol functionality">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-schema-defining-the-attributes-in-the-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Schema: Defining the attributes in the collection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-encoding-computing-sequence-digests-from-sequence-collections" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Encoding: Computing sequence digests from sequence collections
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-api-a-server-api-specification-for-retrieving-and-comparing-sequence-collections" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. API: A server API specification for retrieving and comparing sequence collections.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-extending-the-schema-schema-attribute-qualifiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Extending the schema: Schema attribute qualifiers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-custom-and-recommended-ancillary-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Custom and recommended ancillary attributes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#footnotes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Footnotes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Footnotes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#f1-why-use-an-array-oriented-structure-instead-of-a-sequence-oriented-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      F1. Why use an array-oriented structure instead of a sequence-oriented structure?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f2-rfc-8785-does-not-apply-to-refget-sequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      F2. RFC-8785 does not apply to refget sequences
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f3-the-ga4gh-digest-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      F3. The GA4GH digest algorithm
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f4-use-cases-for-the-sorted_name_length_pairs-non-inherent-attribute" class="md-nav__link">
+    <span class="md-ellipsis">
+      F4. Use cases for the sorted_name_length_pairs non-inherent attribute
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f5-adding-new-schema-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      F5. Adding new schema attributes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f6-custom-encoding-algorithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      F6. Custom encoding algorithms
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/ga4gh/refget/edit/master/docs/seqcols/README.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/ga4gh/refget/raw/master/docs/seqcols/README.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="refget-sequence-collections-v100">Refget Sequence Collections v1.0.0</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Reference sequences are fundamental to genomic analysis.
+To make their analysis reproducible and efficient, we require tools that can identify, store, retrieve, and compare reference sequences.
+The primary goal of the <em>refget Sequence Collections</em> (seqcol) project is <strong>to standardize identifiers for collections of sequences</strong>.
+Seqcol can be used to identify genomes, transcriptomes, or proteomes -- anything that can be represented as a collection of sequences.
+A common example and primary use case of sequence collections is for a reference genome, so this documentation sometimes refers to reference genomes for convenience; really, it can be applied to any collection of sequences.</p>
+<p>In brief, the project specifies several procedures:</p>
+<ol>
+<li><strong>An algorithm for encoding sequence collection identifiers.</strong>
+Refget Sequence Collections extends <a href="../sequences/">refget Sequences</a> to collections of sequences.
+Seqcol also handles sequence attributes, such as their names, lengths, or topologies.
+Like Refget sequences, seqcol digests are defined by a hash algorithm, rather than an accession authority.</li>
+<li><strong>An API describing lookup and comparison of sequence collections.</strong>
+Seqcol specifies an HTTP API to retrieve a sequence collection given its digest.
+This can be used to reproduce the exact sequence collection instead of guessing based on a human-readable identifier.
+Seqcol also provides a standardized method of comparing the contents of two sequence collections.</li>
+<li><strong>Recommended ancillary attributes.</strong>
+Finally, the protocol defines several recommended procedures that will improve compatibility across Seqcol servers, and beyond.</li>
+</ol>
+<h2 id="use-cases">Use cases</h2>
+<p>Sequence collections represent fundamental concepts, making the specification adaptable to a wide range of use cases.
+A primary goal is to enable sequence collection (seqcol) digests to replace or complement the human-readable identifiers currently used for reference genomes (e.g., "hg38" or "GRCh38").
+Unfortunately, these simple identifiers often refer to references with subtle (or not so subtle) differences. Such variation leads to fundamental issues in analyses relying on reference genomes, undermining the utility of these identifiers.  </p>
+<p>Unique identifiers, such as those provided by the NCBI Assembly database, partially address this problem by unambiguously identifying specific assemblies. However, this approach has limitations:</p>
+<ul>
+<li>It depends on a central authority, which excludes custom genomes and doesn't cover all reference providers.</li>
+<li>Centralized identifiers alone cannot <em>confirm</em> identity, as identity also depends on the genome's content.  </li>
+<li>It does not address the related challenge of determining compatibility among reference genomes. Analytical results or annotations based on different references may still be integrable if certain conditions are met, but current tools and standards lack the means to formalize and simplify compatibility comparisons.  </li>
+</ul>
+<p>The <a href="../sequences/">refget Sequences standard</a> provides a partial solution applicable to individual sequences, such as a single chromosome.
+However, refget Sequences does not directly address collections of sequences, such as a linear reference genome.
+Building on refget Sequences, the <em>Sequence Collections</em> specification introduces foundational concepts that support diverse use cases, including:  </p>
+<ul>
+<li><strong>Accessing sequences</strong>:  <em>As a data analyst, I want to know which sequences are in a specific collection so I can analyze them further.</em>  </li>
+<li><strong>Comparing collections</strong>:  <em>As a data analyst, I want to compare the sequence collections used in two separate analyses to assess the compatibility of their resulting data.</em>  </li>
+<li><strong>Annotation curation</strong>: <em>As a data curator for SNP data, I want an unambiguous reference genome identifier upon which my SNP annotations can be interpreted, so I can compare them with confidence</em>.</li>
+<li><strong>Extracting subsets</strong>:  <em>As a data analyst, I want to extract specific sequences, such as those composing the chromosomes or karyotype of a genome.</em>  </li>
+<li><strong>Validating submissions</strong>: <em>As a submission system, I need to determine the exact content of a sequence collection to validate data file submissions.</em>  </li>
+<li><strong>Embedding identifiers</strong>:  <em>As a software developer, I want to embed a sequence collection identifier in my tool's output, allowing downstream tools to identify the exact sequence collection used.</em>  </li>
+<li><strong>Checking compatibility</strong>:  <em>As a data analyst using published data, I have a chromosome sizes file (a set of lengths and names) and want to determine whether a given sequence collection is length- or name-compatible with this file.</em>  </li>
+<li><strong>Genome browser integration</strong>:  <em>As a genome browser, I use one sequence collection for the displayed coordinate system and want to check if a digest representing a given BED file's coordinate system is compatible with it.</em>  </li>
+<li><strong>Annotating unknown references</strong>:  <em>As a data processor, I encounter input data without reference genome information and want to generate a sequence collection digest to attach, enabling further processing with seqcol features.</em>  </li>
+</ul>
+<h2 id="architectural-decision-record">Architectural decision record</h2>
+<p>For a chronological record of decisions related to this specification, see the <a href="../decision_record/">Architectural Decision Record (ADR)</a>.</p>
+<h2 id="definitions-of-key-terms">Definitions of key terms</h2>
+<h3 id="general-terms">General terms</h3>
+<ul>
+<li><strong>Alias</strong>: A human-readable identifier used to refer to a sequence collection.</li>
+<li><strong>Array</strong>: An ordered list of elements.</li>
+<li><strong>Coordinate system</strong>: An ordered list of named sequence lengths, but without actual sequences.</li>
+<li><strong>Digest</strong>: A string resulting from a cryptographic hash function, such as <code>MD5</code> or <code>SHA512</code>, on input data.</li>
+<li><strong>Length</strong>: The number of characters in a sequence.</li>
+<li><strong>Level</strong>: A way of specifying the completeness of a sequence collection representation. Level 0 is the simplest representation, level 1 more complete, level 2 even more complete, and so forth. Representation levels are described in detail under <a href="#terminology">terminology</a>.</li>
+<li><strong>Qualifier</strong>: A reserved term used in the schema to indicate a quality of an attribute, such as whether it is required, collated, or inherent. Qualifiers are listed below.</li>
+<li><strong>Seqcol algorithm</strong>: The set of instructions used to compute a digest from a sequence collection.</li>
+<li><strong>Seqcol API</strong>: The set of endpoints defined in the <em>retrieval</em> and <em>comparison</em> components of the seqcol protocol.</li>
+<li><strong>Seqcol digest</strong>: A digest for a sequence collection, computed according to the seqcol algorithm.</li>
+<li><strong>Seqcol protocol</strong>: Collectively, the operations outlined in this document, which include: 1. encoding of sequence collections; 2. API describing retrieval and comparison ; and 3. specifications for ancillary recommended attributes.</li>
+<li><strong>Sequence</strong>: Seqcol uses refget sequences to identify actual sequences, so we generally use the term "sequence" in the same way. Refget sequences was designed for nucleotide sequences; however, other sequences could be provided via the same mechanism, <em>e.g.</em>, cDNA, CDS, mRNA or proteins. Essentially any ordered list of refget-sequences-valid characters qualifies.</li>
+<li><strong>Sequence digest</strong> or <strong>refget sequence digest</strong>: A digest for a sequence, computed according to the refget sequence protocol.</li>
+<li><strong>Sequence collection</strong>: A representation of 1 or more sequences that is structured according to the sequence collection schema.</li>
+<li><strong>Sequence collection attribute</strong>: A property or feature of a sequence collection (<em>e.g.</em> names, lengths, sequences, or topologies).</li>
+</ul>
+<h3 id="attribute-qualifiers">Attribute qualifiers</h3>
+<p>These qualifiers apply to a seqcol attribute. These definitions specify something about the attribute if the qualifier is true:</p>
+<ul>
+<li><strong>Collated</strong>: the values of the attribute match 1-to-1 with the sequences in the collection and are represented in the same order.</li>
+<li><strong>Inherent</strong>: the attribute is part of the definition of the sequence collection and therefore contributes to its digest.</li>
+<li><strong>Passthru</strong>: the attribute is <em>not digested</em> in transition from level 2 to level 1. So its value at level 1 is the same as at level 2.</li>
+<li><strong>Transient</strong>: the attribute <em>cannot be retrieved through the <code>/attribute</code> endpoint</em>.</li>
+</ul>
+<h2 id="seqcol-protocol-functionality">Seqcol protocol functionality</h2>
+<p>The seqcol algorithm is based on the refget sequence algorithm for individual sequences and should use refget sequence servers to store the actual sequence data.
+Seqcol servers therefore provide a lightweight organizational layer on top of refget sequence servers.
+To be fully compliant with the seqcol protocol an implementation must provide all <code>REQUIRED</code> capabilities as detailed below.</p>
+<p>The seqcol protocol defines the following:</p>
+<ol>
+<li><em>Schema</em> - The way an implementation should define the attributes of sequence collections it holds.</li>
+<li><em>Encoding</em> - An algorithm for computing a digest given a sequence collection.</li>
+<li><em>API</em> - A server API specification for retrieving and comparing sequence collections.</li>
+<li><em>Ancillary attribute management</em> - A specification for organizing non-inherent metadata as part of a sequence collection.</li>
+</ol>
+<h3 id="1-schema-defining-the-attributes-in-the-collection">1. Schema: Defining the attributes in the collection</h3>
+<p>The first step for a Sequence Collections implementation is to define the <em>list of contents</em>, that is, what attributes are allowed in a collection, and which of these affect the digest.
+The sequence collections standard is flexible with respect to the schema used, so implementations of the standard can use the standard with different schemas, as required by a particular use case.
+This divides the choice of content from the choice of algorithm, allowing the algorithm to be consistent even in situations where the content is not.
+Nevertheless, we RECOMMEND that all implementations start from the same base schema, and add additional attributes as needed, which will not break interoperability.
+We RECOMMEND <em>not changing the inherent attributes list</em>, because this will keep the identifiers compatible across implementations.
+Implementations that use different inherent attributes are still compliant with the specification generally, but do so at the cost of top-level digest interoperability.
+For more information about community-driven updates to the base schema, see <a href="#f5-adding-new-schema-attributes"><em>Footnote F5</em></a>.</p>
+<p>This is the RECOMMENDED minimal base schema:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;A</span><span class="nv"> </span><span class="s">collection</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">biological</span><span class="nv"> </span><span class="s">sequences.&quot;</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span>
+<span class="nt">properties</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">lengths</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span>
+<span class="w">    </span><span class="nt">collated</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Number</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">elements,</span><span class="nv"> </span><span class="s">such</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">nucleotides</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">amino</span><span class="nv"> </span><span class="s">acids,</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">each</span><span class="nv"> </span><span class="s">sequence.&quot;</span>
+<span class="w">    </span><span class="nt">items</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
+<span class="w">  </span><span class="nt">names</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span>
+<span class="w">    </span><span class="nt">collated</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Human-readable</span><span class="nv"> </span><span class="s">labels</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">each</span><span class="nv"> </span><span class="s">sequence</span><span class="nv"> </span><span class="s">(chromosome</span><span class="nv"> </span><span class="s">names).&quot;</span>
+<span class="w">    </span><span class="nt">items</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">sequences</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span>
+<span class="w">    </span><span class="nt">collated</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">items</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Refget</span><span class="nv"> </span><span class="s">sequences</span><span class="nv"> </span><span class="s">v2</span><span class="nv"> </span><span class="s">identifiers</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">sequences.&quot;</span>
+<span class="nt">required</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">names</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lengths</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sequences</span>
+<span class="nt">ga4gh</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">inherent</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">names</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sequences</span>
+</code></pre></div>
+<p>Sequence collection objects that follow the base minimal structure are said to be the <em>canonical seqcol object representation</em>.
+The implementation <code>MUST</code> define its structure in a JSON Schema, such as this example.
+Implementations <code>MAY</code> choose to extend this schema by adding additional attributes.
+Implementations <code>MAY</code> also use a different schema, but we <code>RECOMMEND</code> the schema extend the base schema defined above.</p>
+<p>This schema extends vanilla JSON Schema with a few Seqcol-specific <em>attribute qualifiers</em>: the <code>collated</code> and <code>inherent</code> qualifiers. 
+The specification also defines other attribute qualifiers that are not used in the base schema. 
+For further details about attribute qualifiers, see <a href="#4-extending-the-schema-schema-attribute-qualifiers"><em>Section 4</em></a>.</p>
+<h3 id="2-encoding-computing-sequence-digests-from-sequence-collections">2. Encoding: Computing sequence digests from sequence collections</h3>
+<p>The encoding function is the algorithm that produces a unique digest for a sequence collection.
+The input to the function is a set of annotated sequences.
+This function is generally expected to be provided by local software that operates on a local set of sequences.
+Example Python code for computing a seqcol digest can be found in the <a href="digest_from_collection/">tutorial for computing seqcol digests</a>.
+For information about the possibilty of deviating from this procedure for custom attributes, see <a href="#f6-custom-encoding-algorithms"><em>Footnote F6</em></a>.
+The steps of the encoding process are described in detail below; briefly, the steps are:</p>
+<ul>
+<li><strong>Step 1</strong>. Organize the sequence collection data into <em>canonical seqcol object representation</em> and filter the non-inherent attributes.</li>
+<li><strong>Step 2</strong>. Apply <a href="https://www.rfc-editor.org/rfc/rfc8785">RFC-8785 JSON Canonicalization Scheme</a> (JCS) to canonicalize the value associated with each attribute individually.</li>
+<li><strong>Step 3</strong>. Digest each canonicalized attribute value using the GA4GH digest algorithm.</li>
+<li><strong>Step 4</strong>. Apply <a href="https://www.rfc-editor.org/rfc/rfc8785">RFC-8785 JSON Canonicalization Scheme</a> again to canonicalize the JSON of the new seqcol object representation.</li>
+<li><strong>Step 5</strong>. Digest the final canonical representation again using the GA4GH digest algorithm.</li>
+</ul>
+<h4 id="step-1-organize-the-sequence-collection-data-into-canonical-seqcol-object-representation">Step 1: Organize the sequence collection data into <em>canonical seqcol object representation</em>.</h4>
+<p>We first create an object representation of the attributes of the sequence collection.
+The structure of this object is critical, and is strictly controlled by the seqcol protocol.
+The sequence collection object MUST first be structured according to the schema definition for the implementation.</p>
+<p>Here's an example of a sequence collection organized into the canonical seqcol object representation following the minimal schema example above:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;lengths&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="mi">248956422</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">242193529</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">198295559</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;names&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;chr1&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;chr2&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;chr3&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;sequences&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;SQ.2YnepKM7OkBoOrKmvHbGqguVfF9amCST&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;SQ.lwDyBi432Py-7xnAISyQlnlhWDEaBPv2&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;SQ.Eqk6_SvMMDCc6C-uEfickOUWTatLMDQZ&quot;</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>This object would validate against the JSON Schema above.
+The object is a series of arrays with matching length (<code>3</code>), with the corresponding entries collated such that the first element of each array corresponds to the first element of each other array.
+For the rationale why this structure was chosen instead of an array of annotated sequences, see <a href="#f1-why-use-an-array-oriented-structure-instead-of-a-sequence-oriented-structure"><em>Footnote F1</em></a>.</p>
+<h4 id="step-2-apply-rfc-8785-to-canonicalize-the-value-associated-with-each-attribute-individually">Step 2: Apply RFC-8785 to canonicalize the value associated with each attribute individually.</h4>
+<p>The <a href="https://www.rfc-editor.org/rfc/rfc8785">RFC-8785 JSON Canonicalization Scheme</a> (JCS) standardizes whitespace, character encodings, and other details that would cause inconsequential variations to yield different digests.
+For most use cases*, the following Python function suffices:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">canonical_str</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a list or dict into a canonicalized UTF8-encoded bytestring representation&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+        <span class="n">item</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">),</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_nan</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>This will turn the values into canonicalized UTF8-encoded bytestring representations of the list objects. Using Python notation, the value of the lengths attribute becomes <code>b'[248956422,242193529,198295559]'</code>, the value of the names attribute becomes <code>b'["chr1","chr2","chr3"]'</code>, and the value of the sequences attribute becomes </p>
+<div class="highlight"><pre><span></span><code>b&#39;[&quot;SQ.2YnepKM7OkBoOrKmvHbGqguVfF9amCST&quot;,&quot;SQ.lwDyBi432Py-7xnAISyQlnlhWDEaBPv2&quot;,&quot;SQ.Eqk6_SvMMDCc6C-uEfickOUWTatLMDQZ&quot;]&#39;
+</code></pre></div>
+<p><em>* The above Python function suffices if (1) attribute keys are restricted to ASCII, (2) there are no floating point values, and (3) for all integer values <code>i</code>:  <code>-2**63 &lt; i &lt; 2**63</code></em></p>
+<p>In this process, RFC-8785 is applied only to objects; we assume the sequence digests are computed through an external process (the refget sequences protocol), and are not computed as part of the sequence collection.
+The refget sequences protocol digests sequence strings without JSON-canonicalization.
+For more details, see <a href="#f2-rfc-8785-does-not-apply-to-refget-sequences"><em>Footnote F2</em></a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Exception for passthru attributes</p>
+<p>This per-attribute digesting procedure (Steps 2 and 3) is applied by default to all attributes of a sequence collection, <em>except for attributes qualified in the schema as passthru</em>; these attributes are NOT digested in this way, but "passed through" unchanged to the JSON structure described in Step 3.
+For more information about passthru attributes, see <a href="#4-extending-the-schema-schema-attribute-qualifiers">Section 4</a>.</p>
+</div>
+<h4 id="step-3-digest-each-canonicalized-attribute-value-using-the-ga4gh-digest-algorithm">Step 3: Digest each canonicalized attribute value using the GA4GH digest algorithm.</h4>
+<p>Apply the GA4GH digest algorithm to each attribute value.
+The GA4GH digest algorithm is described in detail in <a href="#f3-the-ga4gh-digest-algorithm"><em>Footnote F3</em></a>.
+This converts the value of each attribute in the seqcol into a digest string.
+Applying this to each value will produce the following structure:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;lengths&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5K4odB173rjao1Cnbk5BnvLt9V7aPAa2&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;names&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;sequences&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;rD29ZKmEqwwHRXjiQ36p6UMZQ5hemmsb&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Filter non-inherent attributes</p>
+<p>The <code>inherent</code> section in the seqcol schema is an extension of the basic JSON Schema format that adds specific functionality.
+Inherent attributes are those that contribute to the top-level digest; <em>non-inherent</em> attributes are not considered when computing the top-level digest.
+Attributes of a seqcol that are <em>not</em> listed as <code>inherent</code> <code>MUST NOT</code> contribute to the digest; they are therefore excluded from the top-level digest calculation (Steps 4 and 5).
+Therefore, if the intermediate seqcol representation includes any non-inherent attributes, these must be removed before proceeding to step 4.
+In the simple example, the <code>lengths</code> attribute is not <code>inherent</code> and must be filtered.</p>
+</div>
+<h4 id="step-4-apply-rfc-8785-again-to-canonicalize-the-json-of-the-new-seqcol-object-representation">Step 4: Apply RFC-8785 again to canonicalize the JSON of the new seqcol object representation.</h4>
+<p>Here, we repeat step 2, except instead of applying RFC-8785 to each value separately, we apply it to the entire object.
+This will result in a canonical bytestring representation of the object, shown here using Python notation:</p>
+<div class="highlight"><pre><span></span><code>b&#39;{&quot;names&quot;:&quot;g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp&quot;,&quot;sequences&quot;:&quot;rD29ZKmEqwwHRXjiQ36p6UMZQ5hemmsb&quot;}&#39;
+</code></pre></div>
+<h4 id="step-5-digest-the-final-canonical-representation-again-using-the-ga4gh-digest-algorithm">Step 5: Digest the final canonical representation again using the GA4GH digest algorithm.</h4>
+<p>Again using the same approach as in step 3, we now apply the GA4GH digest algorithm to the canonicalized bytestring.
+The result is the final unique digest for this sequence collection:</p>
+<div class="highlight"><pre><span></span><code>sjNNwm4zov3Dl0FRWbRTcZwzqrTQKIqL
+</code></pre></div>
+<h4 id="terminology">Terminology</h4>
+<p>The recursive encoding algorithm leads to several ways to represent a sequence collection. We refer to these representations as "levels". The level number represents the number of "lookups" you'd have to do from the "top level" digest. So, we have:</p>
+<h5 id="level-0-top-level-digest">Level 0 (top-level digest)</h5>
+<p>Just a plain digest, also known as the "top-level digest". This corresponds to <strong>0 database lookups</strong>. Example:
+<div class="highlight"><pre><span></span><code>Zjx9_tD2o-1yKB6RR2v2g3W9c5ufydUc
+</code></pre></div></p>
+<h5 id="level-1">Level 1</h5>
+<p>What you'd get when you look up the digest with <strong>1 database lookup</strong>. We sometimes refer to this as the "attribute digests", because it is made up a digest for each attribute in the sequence collection. Example:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;lengths&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;QWhPI-Cll_0Y5NJ_2krRryuV97vzhbgJ&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;names&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1zOnTYE5slcISev72o62ySxbssEXeoUL&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;sequences&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uPCc00rq-daL3zPnzYH-sBg9_z7HpB8B&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h5 id="level-2">Level 2</h5>
+<p>What you'd get with <strong>2 database lookups</strong>. This is the most common representation, and hence, it is the level of the <em>canonical seqcol representation</em>. Example:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;lengths&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="mi">1216</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">970</span><span class="p">,</span>
+<span class="w">    </span><span class="mi">1788</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;names&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;B&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;C&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;sequences&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;SQ.OL3sVAcd_5IZaDxUkH-yQkLmBz2iwY0s&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;SQ.kny8cdhEEPHXoNlXmps8NQapGtUKZlM9&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;SQ.DA-GLdXVihnYKs-fBS5MMgqMi7tVMJbt&quot;</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="3-api-a-server-api-specification-for-retrieving-and-comparing-sequence-collections">3. API: A server API specification for retrieving and comparing sequence collections.</h3>
+<p>The API has these top-level endpoints:</p>
+<ol>
+<li><code>/service-info</code>, for describing information about the service.</li>
+<li><code>/collection</code>, for retrieving sequence collections.</li>
+<li><code>/comparison</code>, for comparing two sequence collections.</li>
+<li><code>/list</code>, for retrieving a list of objects.</li>
+<li><code>/attribute</code>, for retrieving the value of a specific attribute.</li>
+</ol>
+<p>In addition, a RECOMMENDED endpoint at <code>/openapi.json</code> SHOULD provide OpenAPI documentation.</p>
+<p>Under these umbrella endpoints are a few more specific sub-endpoints, described in detail below:</p>
+<h4 id="31-service-info">3.1 Service info</h4>
+<ul>
+<li><em>Endpoint</em>: <code>GET /service-info</code> (<code>REQUIRED</code>)</li>
+<li><em>Description</em>: The service info endpoint provides information about the service</li>
+<li><em>Return value</em>: Must include the Seqcol JSON Schema that is used by this server</li>
+</ul>
+<p>The <code>/service-info</code> endpoint should follow the <a href="https://github.com/ga4gh-discovery/ga4gh-service-info/">GA4GH-wide specification for service info</a> for general description of the service.
+The <code>artifact</code> describing sequence collection entities should be <code>refget.seqcol</code>. See example below. 
+Then, it should also add a few specific pieces of information under a <code>seqcol</code> property:</p>
+<ul>
+<li><code>schema</code>: MUST return the JSON Schema implemented by the server.</li>
+</ul>
+<h5 id="the-service-info-json-schema-document">The service-info JSON-schema document</h5>
+<p>The <code>schema</code> attribute of <code>service-info</code> return value MUST provide a single schema, this MUST include all possible attributes your service may provide. In other words, you cannot have a collection with an attribute that is not defined in your schema.</p>
+<p>We RECOMMEND the schema only define terms actually used in at least one collection served; however, it is allowed for the schema to contain extra terms that are not used in any collections in the server.</p>
+<p>We RECOMMEND your schema use property-level refs to point to terms defined by the minimal base seqcol schema. However, it is also allowed for the schema to embed all definitions locally. The base seqcol schema will be made available as the spec is finalized.</p>
+<p>For example, here's a JSON schema that uses a <code>ref</code> to reference the approved seqcol schema:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;A</span><span class="nv"> </span><span class="s">collection</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">biological</span><span class="nv"> </span><span class="s">sequences.&quot;</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span>
+<span class="s">&quot;$id&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;https://ga4gh.github.io/refget/schemas/seqcol_extended_v1.0.0.json&quot;</span><span class="err">,</span><span class="w">  </span><span class="c1"># URI to seqcol schema with ancillary attributes</span>
+<span class="nt">properties</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">lengths</span><span class="p">:</span>
+<span class="w">    </span><span class="s">&quot;$ref&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;/lengths&quot;</span>
+<span class="w">  </span><span class="nt">names</span><span class="p">:</span>
+<span class="w">    </span><span class="s">&quot;$ref&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;/names&quot;</span>
+<span class="w">  </span><span class="nt">sequences</span><span class="p">:</span>
+<span class="w">    </span><span class="s">&quot;$ref&quot;</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&quot;/sequences&quot;</span>
+<span class="nt">required</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lengths</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">names</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sequences</span>
+<span class="nt">ga4gh</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">inherent</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">names</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sequences</span>
+</code></pre></div>
+<h5 id="example-of-a-service-info-response">Example of a service-info response</h5>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;org.ga4gh.refget.seqcol&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sequence Collection server&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;group&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;org.ga4gh&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;artifact&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;refget-seqcol&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0.0&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Collection of sequences from digests.&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;organization&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My organization&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;contactUrl&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mailto:support@example.com&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;documentationUrl&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://docs.myservice.example.com&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2024-01-01T11:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;updatedAt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2024-01-01T11:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;environment&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;prod&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.4.1&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;seqcol&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A collection of biological sequences.&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;$id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://ga4gh.github.io/refget/schemas/seqcol_extended_v1.0.0.json&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;lengths&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/lengths&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;names&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/names&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;sequences&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;$ref&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/sequences&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span>
+<span class="w">        </span><span class="s2">&quot;names&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">        </span><span class="s2">&quot;sequences&quot;</span><span class="w"> </span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;ga4gh&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;inherent&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="s2">&quot;names&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;sequences&quot;</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="32-collection">3.2 Collection</h4>
+<ul>
+<li><em>Endpoint</em>: <code>GET /collection/:digest?level=:level</code> (<code>REQUIRED</code>)</li>
+<li><em>Description</em>: Retrieves original sequence collection from a database, keyed by the unique top-level digest. Here <code>:digest</code> is the seqcol digest computed above. The level corresponds to the "expansion level" of the returned sequence collection returned. The default is <code>?level=2</code>, which returns the canonical structure.</li>
+<li><em>Return value</em>: The sequence collection identified by the <code>:digest</code> variable. The structure of the data <code>MUST</code> be modulated by the <code>:level</code> query parameter.  Specifying <code>?level=2</code> returns the canonical structure, and <code>?level=1</code> returns the collection with digested attributes.</li>
+</ul>
+<p>Non-inherent attributes <code>MUST</code> be stored and returned by the collection endpoint alongside inherent attributes.</p>
+<h4 id="33-comparison">3.3 Comparison</h4>
+<ul>
+<li><em>Endpoint 1</em>: <code>GET /comparison/:digest1/:digest2</code> (<code>RECOMMENDED</code>) Two-digest comparison    </li>
+<li><em>Endpoint 2</em>: <code>POST /comparison/:digest1</code> (<code>RECOMMENDED</code>) One-digest POST comparison </li>
+<li><em>Description</em>: The comparison function specifies an API endpoint that allows a user to compare two sequence collections. The collections are provided either as two digests (the <code>GET</code> endpoint) or as one digest representing a database collection, and one local user-provided collection provided via <code>POST</code>. For the <code>POST</code> endpoint variant, the user-provided local collection should be provided as a <a href="#terminology">level 2 representation</a> (AKA the canonical seqcol representation) in the <code>BODY</code> of the <code>POST</code> request.</li>
+<li><em>Return value</em>: The output is an assessment of compatibility between those sequence collections. If implemented, both variants of the <code>/comparison</code> endpoint must <code>MUST</code> return an object in JSON format with these 3 keys: <code>digests</code>, <code>attributes</code>, and <code>array_elements</code>, as described below (see also an example after the descriptions):<ul>
+<li><code>digests</code>: an object with 2 elements, with keys <em>a</em> and <em>b</em>, and values either the <a href="#terminology">level 0 seqcol digests</a> for the compared collections, or <em>null</em> (undefined). The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return <em>null</em> (undefined) in this element for any corresponding sequence collection.</li>
+<li><code>attributes</code>: an object with 3 elements, with keys <em>a_only</em>, <em>b_only</em>, and <em>a_and_b</em>. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.</li>
+<li><code>array_elements</code>: An object with 4 elements: <em>a_count</em>, <em>b_count</em>, <em>a_and_b_count</em>, and <em>a_and_b_same_order</em>. The 3 attributes with <em>_count</em> are objects with keys corresponding to the names of each array present in the collection, or in both collections (for <em>a_and_b_count</em>), with values as the number of elements present either in one collection, or in both collections for the given array. <em>a_and_b_same_order</em> is also an object with keys corresponding to array names, and the values a boolean following the same-order specification below.</li>
+</ul>
+</li>
+</ul>
+<p>Example <code>/comparison</code> return value: 
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;digests&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;a&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;514c871928a74885ce981faa61ccbb1a&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;b&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;c345e091cce0b1df78bfc124b03fba1c&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;attributes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;a_only&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">&quot;b_only&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">&quot;a_and_b&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;lengths&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;names&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;sequences&quot;</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;array_elements&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;a_count&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;lengths&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">195</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;names&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">195</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;sequences&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">195</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;b_count&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;lengths&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;names&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;sequences&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;a_and_b_count&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;lengths&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;names&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;sequences&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;a_and_b_same_order&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;lengths&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;names&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;sequences&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h5 id="same-order-specification">Same-order specification</h5>
+<p>The comparison return includes an <em>a_and_b_same_order</em> boolean value for each array that is present in both collections. The defined value of this attribute is:</p>
+<ul>
+<li>undefined (<em>null</em>) if there are fewer than 2 overlapping elements</li>
+<li>undefined (<em>null</em>) if there are unbalanced duplicates present (see definition below)</li>
+<li><em>true</em> if all matching elements are in the same order in the two arrays</li>
+<li><em>false</em> otherwise.</li>
+</ul>
+<p>An <em>unbalanced duplicate</em> is used in contrast with a <em>balanced duplicate</em>. Balanced means the duplicates are the same in both arrays.
+When the duplicates are balanced, order is still defined; but if duplicates are unbalanced, this means one array has duplicates not present in the other, and in that case, order is not defined.</p>
+<h5 id="interpreting-the-result-of-the-compare-function">Interpreting the result of the compare function</h5>
+<p>The output of the comparison function provides information-rich feedback about the two collections.
+These details can be used to make a variety of inferences comparing two collections, but it can take some thought to interpret.
+For more details about how to interpret the results of the comparison function to determine different types of compatibility, please see the <a href="compare_collections/">howto guide on comparing sequencing collections</a>.</p>
+<h4 id="34-list">3.4 List</h4>
+<ul>
+<li><em>Endpoint</em>: <code>GET /list/:object_type?page=:page&amp;page_size=:page_size&amp;:attribute1=:attribute1_level1_repr&amp;attribute2=:attribute2_level1_repr</code> (<code>REQUIRED</code>)</li>
+<li><em>Description</em>: Lists identifiers for a given object type in singular form (<em>e.g.</em> <code>/list/collection</code>). This endpoint provides a way to discover what sequence collections a service provides.
+  Returned lists can be filtered to only objects with certain attribute values using query parameters.
+  Page numbering begins at page 0.</li>
+<li><em>Return value</em>: The output is a paged list of identifiers following the <a href="https://www.ga4gh.org/what-we-do/technical-alignment-subcommittee-tasc/#section_1">GA4GH paging guide format</a>, grouped into a <code>results</code> and a <code>pagination</code> section. If no <code>?:attribute=:attribute_level1_repr</code> query parameters are provided, the endpoint will return all items (paged). Adding one <code>:attribute</code> and <code>:attribute_level1_repr</code> pair as <em>query parameters</em>  will filter results to only the collections with the given level 1 attribute digest. If multiple attributes are provided, the filter should require ALL of these attributes to match (so multiple attributes are treated with an <code>AND</code> operator).</li>
+</ul>
+<p>Example return value:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;results&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="err">...</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;pagination&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;page&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;page_size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">165</span><span class="p">,</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The <code>list</code> endpoint MUST be implemented, and MUST allow filtering using any attribute defined in the schema, <em>except attributes marked as passthru</em>.
+For attributes marked as <em>passthru</em>, the list endpoint MAY provide filtering capability.</p>
+<h4 id="35-attribute">3.5 Attribute</h4>
+<ul>
+<li><em>Endpoint</em>: <code>GET /attribute/:object_type/:attribute_name/:digest</code> (<code>REQUIRED</code>)</li>
+<li><em>Description</em>: Retrieves values of specific attributes in a sequence collection. Here <code>:object_type</code> must be <code>collection</code> for a sequence collection object; <code>:attribute_name</code> is the name of an attribute, such as <code>sequences</code>, <code>names</code>, or <code>sorted_sequences</code>. <code>:digest</code> is the level 1 digest of the attribute value, as computed above.</li>
+<li><em>Return value</em>: The attribute value identified by the <code>:digest</code> variable. The structure of the result should correspond to the value of the attribute in the canonical structure.</li>
+</ul>
+<p>Example <code>/attribute/collection/lengths/QWhPI-Cll_0Y5NJ_2krRryuV97vzhbgJ</code> return value:</p>
+<div class="highlight"><pre><span></span><code>[1216, 970, 1788]
+</code></pre></div>
+<p>Example <code>/attribute/collection/names/1zOnTYE5slcISev72o62ySxbssEXeoUL</code> return value:</p>
+<div class="highlight"><pre><span></span><code>[&quot;A&quot;, &quot;B&quot;, &quot;C&quot;]
+</code></pre></div>
+<p>The attribute endpoint MUST be functional for any attribute defined in the schema, <em>except those marked as transient or passthru</em>.
+The endpoint SHOULD NOT respond to requests for attributes marked as <em>passthru</em> OR <em>transient</em>.
+For more information on transient and passthru attributes, see <a href="#4-extending-the-schema-schema-attribute-qualifiers">Section 4</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Definition of <code>object_type</code></p>
+<p>The <code>/list</code> and <code>/attribute</code> endpoints both use an <code>:object_type</code> path parameter. The <code>object_type</code> should always be the <em>singular</em> descriptor of objects provided by the server. In this version of the Sequence Collections specification, the <code>object_type</code> is always <code>collection</code>; so the only allowable endpoints would be <code>/list/collection</code> and <code>/attribute/collection/:attribute_name/:digest</code>. We call this <code>object_type</code> because future versions of the specification may allow retrieving lists or attributes of other types of objects.</p>
+</div>
+<h4 id="36-openapi-documentation">3.6 OpenAPI documentation</h4>
+<p>In addition to the primary top-level endpoints, it is RECOMMENDED that the service provide <code>/openapi.json</code>, an OpenAPI-compatible description of the endpoints.</p>
+<h3 id="4-extending-the-schema-schema-attribute-qualifiers">4. Extending the schema: Schema attribute qualifiers</h3>
+<h4 id="41-introduction-to-attribute-qualifiers">4.1 Introduction to attribute qualifiers</h4>
+<p>The Sequence Collections specification is designed to be extensible.
+This will let you build additional capability on top of the minimal Sequence Collections standard.
+You can do this by extending the schema to include ancillary custom attributes.
+To allow other services to understand something about what these attributes are for, you can annotate them in the schema using  <em>attribute qualifiers</em>.
+This allows you to indicate what <em>type</em> of attribute your custom attributes are, which govern how the service should respond to requests.
+This section will describe the 4 attribute qualifiers you may add to the schema to qualify custom attributes.</p>
+<h4 id="42-collated-attributes">4.2 Collated attributes</h4>
+<p>Collated attributes are attributes whose values match 1-to-1 with the sequences in the collection and are represented in the same order.
+A collated attribute by definition has the same number of elements as the number of sequences in the collection.
+It is also in the same order as the sequences in the collection.</p>
+<h4 id="43-inherent-attributes">4.3 Inherent attributes</h4>
+<p>Inherent attributes are those that contribute to the digest.
+The specification in section 1, <em>Encoding</em>, described how to structure a sequence collection and then apply an algorithm to compute a digest for it.
+What if you have ancillary information that goes with a collection, but shouldn't contribute to the digest?
+We have found a lot of useful use cases for information that should go along with a seqcol, but should not contribute to the <em>identity</em> of that seqcol.
+This is a useful construct as it allows us to include information in a collection that does not affect the digest that is computed for that collection.
+One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have diifferent digests! Seqcol refers to these as <em>non-inherent attributes</em>, meaning they are not part of the core identity of the sequence collection.
+Non-inherent attributes are defined in the seqcol schema, but excluded from the <code>inherent</code> list. </p>
+<p>See: <a href="../decision_record/#2023-03-22-seqcol-schemas-must-specify-inherent-attributes">ADR on 2023-03-22 regarding inherent attributes</a></p>
+<h4 id="44-passthru-attributes">4.4 Passthru attributes</h4>
+<p>Passthru attributes have the same representation at level 1 and level 2.
+In other words, they are <em>not digested</em> in transition from level 2 to level 1.
+This is not the case for most attributes; most attributes of the canonical (level 2) seqcol representation are digested to create the level 1 representation.
+But sometimes, we have an attribute for which digesting makes little sense. 
+These attributes are passed through without transformation, so they show up on the level 1 representation in the same form as the level 2 representation.
+Thus, we refer to them as passthru attributes.</p>
+<p>Here's how passthru attributes behave in the endpoints:</p>
+<ul>
+<li><code>/list</code>: The server MAY allow filtering on passthru attributes, but this is not required.</li>
+<li><code>/collection</code>: At both level 1 and level 2, the collection object includes the same passthru attribute representation. </li>
+<li><code>/comparison</code>: Passthru attributes are listed in the 'attributes' section, but are not listed under 'array_elements'.</li>
+<li><code>/attribute</code>: Passthru attributes cannot be used with the attribute endpoint, as the return would be the same as the query.</li>
+</ul>
+<h4 id="45-transient-attributes">4.5 Transient attributes</h4>
+<p>A transient attribute is an attribute that only has a level 1 representation stored in the server.
+Transient attributes therefore <em>cannot be retrieved</em> through the <code>/attribute</code> endpoint.
+All other attributes of the sequence collection can be retrieved through the <code>/attribute</code> endpoint.
+The transient qualifier would apply to attribute that we intend to be used primarily as an identifier.
+In this case, we don't necessarily want to store the original content that went into the digest into the database.
+We really just want the final digest.
+These attributes are called transient because the content of the attribute is no longer stored and is therefore no longer retrievable.</p>
+<p>Here's how transient attributes behave in the endpoints:</p>
+<ul>
+<li><code>/list</code>: No change; a transient attribute level1 representation can be used to list sequence collections that contain it.</li>
+<li><code>/collection</code>: For level 1 representation, no change; the collection object includes the transient attribute level 1 representation. For level 2 representation, there <em>is</em> a change; transient attributes have no level 2 representation on the server, so the sequence collection SHOULD leave this attribute out of the level 2 representation.</li>
+<li><code>/comparison</code>: Transient attributes are listed in the 'attributes' section, but are not listed under 'array_elements' because there is no level 2 representation.</li>
+<li><code>/attribute</code>: Transient attributes cannot be used with the attribute endpoint (there is no value to retrieve)</li>
+</ul>
+<h4 id="46-qualifier-summary-table">4.6 Qualifier summary table</h4>
+<p>The global qualifiers are all concerned with how the representations are treated when converting between different detail levels.
+The <em>inherent</em> qualifier is related to the level 1 &rarr; 0 transition. 
+It is true if the level 1 representation is included during creation of level 0 representation.
+Then the <em>passthru</em> and <em>transient</em> qualifiers are related to the level 2 &rarr; 1 transition.</p>
+<table>
+<thead>
+<tr>
+<th>Qualifer</th>
+<th>Level1?</th>
+<th>Level2?</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>none</em></td>
+<td>as normal</td>
+<td>full content</td>
+<td>Default state; the level 1 representation is a digest of the level 2 representation.</td>
+</tr>
+<tr>
+<td>passthru</td>
+<td>as normal</td>
+<td>same as level1</td>
+<td>True if the level 2 representation is the same as the level 1 representation.</td>
+</tr>
+<tr>
+<td>transient</td>
+<td>as normal</td>
+<td>not present</td>
+<td>True if the level 2 representation is not present.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="47-method-of-specifying-attribute-qualifiers">4.7 Method of specifying attribute qualifiers</h4>
+<p>In JSON Schema, there are 2 ways to qualify properties: 1) a local qualifier, using a key under a property; or 2) an object-level qualifier, which is specified with a keyed list of properties up one level.
+For example, you annotate a property's <code>type</code> with a local qualifier, underneath the property, like this:</p>
+<div class="highlight"><pre><span></span><code><span class="go">properties:</span>
+<span class="go">  names:</span>
+<span class="go">    type: array</span>
+</code></pre></div>
+<p>However, you specify that a property is <code>required</code> by adding it to an object-level <code>required</code> list that's parallel to the <code>properties</code> keyword:</p>
+<div class="highlight"><pre><span></span><code><span class="go">properties:</span>
+<span class="go">  names:</span>
+<span class="go">    type: array</span>
+<span class="go">required:</span>
+<span class="go">  - names</span>
+</code></pre></div>
+<p>In sequence collections, we define <code>collated</code> as a local qualifier.
+Local qualifiers fit better for qualifiers independent of the object as a whole.
+They are qualities of a property that persist if the property were moved onto a different object.
+For example, the <code>type</code> of an attribute is consistent, regardless of what object that attribute were defined on.
+In contrast, object-level qualifier lists fit better for qualifiers that depend on the object as a whole.
+They are qualities of a property that depend on the object context in which the property is defined.
+For example, the <code>required</code> modifier is not really meaningful except in the context of the object as a whole.
+A particular property could be required for one object type, but not for another, and it's really the object that induces the requirement, not the property itself.</p>
+<p>We reasoned that <code>inherent</code>, <code>transient</code>, and <code>passthru</code> are global qualifiers, like <code>required</code>, which describe the role of an attribute in the context of the whole object.
+For example, an attribute that is inherent to one type of object need not be inherent to another.
+Therefore, it makes sense to treat this concept the same way JSON schema treats <code>required</code>.
+In contrast, the idea of <code>collated</code> describes a property independently: Whether an attribute is collated is part of the definition of the attribute; if the attribute were moved to a different object, it would still be collated.</p>
+<p>Finally, the 3 global qualiers are grouped under the 'ga4gh' key for consistency with other GA4GH specifications, and to group the seqcol-specific extended functionality into one place.</p>
+<h3 id="5-custom-and-recommended-ancillary-attributes">5. Custom and recommended ancillary attributes</h3>
+<p>The base schema described in Section 1 is a minimal starting point, which can be extended with additional custom attributes as needed.
+As stated in Section one, we RECOMMEND the schemas <em>extend</em> the base schema with any custom attributes.
+Furthermore, we RECOMMEND the extended schema add only non-inherent attributes, so that the top-level digests remain compatible.
+Here, we specify several standard non-inherent attributes that we RECOMMEND be also included in the schema.</p>
+<p>Furthermore, some attributes do not need to follow the typical encoding process, for whatever reason.
+Basically, custom attributes can be defined, and they are also allowed to specify their own encoding process.</p>
+<h4 id="51-the-name_length_pairs-attribute-recommended">5.1 The <code>name_length_pairs</code> attribute (<code>RECOMMENDED</code>)</h4>
+<p>The <code>name_length_pairs</code> attribute is a <em>non-inherent</em> attribute of a sequence collection with a formal definition, provided here.
+This attribute provides a way to look up the ordered coordinate system (the "chrom sizes") for a sequence collection.
+It is created deterministically from the <code>names</code> and <code>lengths</code> attributes in the collection; it <em>does not</em> depend on the actual sequence content, so it is consistent across two collections with different sequence content if they have the same <code>names</code> and <code>lengths</code>, which are correctly collated.
+This attribute is <code>RECOMMENDED</code> to allow retrieval of the coordinate system for a given reference sequence collection.</p>
+<h5 id="algorithm">Algorithm</h5>
+<ol>
+<li>Lump together each name-length pair from the primary collated <code>names</code> and <code>lengths</code> into an object, like <code>{"name": "chr1", "length": 123}</code>.</li>
+<li>Build a collated list, corresponding to the names and lengths of the object (<em>e.g.</em> <code>[{"name": "chr1", "length": 123},{"name":"chr2", "length": 456}],...</code>)</li>
+<li>Add as a collated attribute to the sequence collection object.</li>
+</ol>
+<h5 id="qualifiers-recommended">Qualifiers (RECOMMENDED)</h5>
+<ul>
+<li>inherent: false</li>
+<li>collated: true</li>
+<li>passthru: false</li>
+<li>transient: false</li>
+</ul>
+<h4 id="52-the-sorted_name_length_pairs-attribute-recommended">5.2 The <code>sorted_name_length_pairs</code> attribute (<code>RECOMMENDED</code>)</h4>
+<p>The <code>sorted_name_length_pairs</code> attribute is similar to the <code>name_length_pairs</code> attribute, but it is sorted.
+When digested, this attribute provides a digest for an order-invariant coordinate system for a sequence collection.
+Because it is <em>non-inherent</em>, it does not affect the identity (digest) of the collection.</p>
+<p>This attribute is <code>RECOMMENDED</code> to allow unified genome browser visualization of data defined on different reference sequence collections. For more rationale and use cases of <code>sorted_name_length_pairs</code>, see <a href="#f4-use-cases-for-the-sorted_name_length_pairs-non-inherent-attribute"><em>Footnote F4</em></a>.</p>
+<h5 id="algorithm_1">Algorithm</h5>
+<ol>
+<li>Lump together each name-length pair from the primary collated <code>names</code> and <code>lengths</code> into an object, like <code>{"name": "chr1", "length": 123}</code>.</li>
+<li>Canonicalize the JSON objects individually according to the seqcol spec (using RFC-8785), <em>e.g.</em> <code>b'{"length":123,"name":"chr1"}'</code> (in Python notation).</li>
+<li>Digest each name-length pair string individually.</li>
+<li>Sort the digests lexicographically.</li>
+<li>Add as an array to the sequence collection object (in level 2). Then, the regular digesting process will digest this array to create the level 1 representation.</li>
+</ol>
+<h5 id="qualifiers-recommended_1">Qualifiers (RECOMMENDED)</h5>
+<ul>
+<li>inherent: false</li>
+<li>collated: false</li>
+<li>passthru: false</li>
+<li>transient: <strong>true</strong></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Transient qualifier for <code>sorted_name_length_pairs</code></p>
+<p>The <code>sorted_name_length_pairs</code> attribute is recommended as a transient attribute. This is because the level 2 array is mostly an intermediate representation, of little value in itself. If the users are interested in the coordinate system, they can retrieve it from the <code>name_length_pairs</code> attribute. Also, the specific canonical order provided by the algorithm is of little use in other contexts.</p>
+</div>
+<h4 id="53-the-sorted_sequences-attribute-optional">5.3 The <code>sorted_sequences</code> attribute (<code>OPTIONAL</code>)</h4>
+<p>The <code>sorted_sequences</code> attribute is a <em>non-inherent</em> attribute of a sequence collection, with a formal definition.
+Providing this attribute is <code>OPTIONAL</code>.
+When digested, this attribute provides a digest representing an order-invariant set of unnamed sequences.
+It provides a way to compare two sequence collections to see if their sequence content is identical, but just in a different order.
+Such a comparison can, of course, be made by the comparison function, so why might you want to include this attribute as well?
+Simply that for some large-scale use cases, comparing the sequence content without considering order is something that needs to be done repeatedly and for a huge number of collections.
+In these cases, using the comparison function could be computationally prohibitive.
+This digest allows the comparison to be pre-computed, and more easily compared.</p>
+<h5 id="algorithm_2">Algorithm</h5>
+<ol>
+<li>Take the array of the <code>sequences</code> attribute (an array of sequence digests) and sort it lexicographically.</li>
+<li>Add to the sequence collection object as the <code>sorted_sequences</code> attribute, which is non-inherent and non-collated.</li>
+</ol>
+<h5 id="qualifiers-recommended_2">Qualifiers (RECOMMENDED)</h5>
+<ul>
+<li>inherent: false</li>
+<li>collated: false</li>
+<li>passthru: false</li>
+<li>transient: true or false (depending on the use case/implementation)</li>
+</ul>
+<hr />
+<h2 id="footnotes">Footnotes</h2>
+<h3 id="f1-why-use-an-array-oriented-structure-instead-of-a-sequence-oriented-structure">F1. Why use an array-oriented structure instead of a sequence-oriented structure?</h3>
+<p>In the canonical seqcol object structure, we first organize the sequence collection into what we called an "array-oriented" data structure, which is mainly a list of collated arrays (names, lengths, sequences, <em>etc.</em>).
+An alternative we considered was a "sequence-oriented" structure, which would group each sequence with the other attributes, like <code>{name, length, sequence}</code>, and structure the collection as an array of such objects.
+While the latter is intuitive, as it captures each sequence object with some accompanying attributes as independent entities, there are several reasons we settled on the array-oriented structure instead: </p>
+<ol>
+<li>
+<p>Flexibility and backwards compatibility of sequence attributes. What happens for an implementation that adds a new attribute? For example, if an implementation adds a <code>topology</code> attribute to the sequences, in the sequence-oriented structure, this would alter the sequence objects and thereby change their digests. In the array-based structure, since we digest the arrays individually, the digests of the other arrays are not changed. Thus, the array-oriented structure emphasizes flexibility of attributes, where the sequence-oriented structure would emphasize flexibility of sequences. In other words, the array-based structure makes it straightforward to mix-and-match <em>attributes</em> of the collection. Because each attribute is independent and not integrated into individual sequence objects, it is simpler to select and build subsets and permutations of attributes. We reasoned that flexibility of attributes was desirable.</p>
+</li>
+<li>
+<p>Conciseness. Sequence collections may be used for tens of thousands or even millions of sequences. For example, a transcriptome may contain a million transcripts. The array-oriented data structure is a more concise representation for digesting collections with many elements because the attribute names are specified once <em>per collection</em> instead of once <em>per element</em>. Furthermore, the level 1 representation of the sequence collection is more concise for large collections, since we only need one digest <em>per attribute</em>, rather than one digest <em>per sequence</em>. </p>
+</li>
+<li>
+<p>Utility of intermediate digests. The array-oriented approach provides useful intermediate digests for each attribute. This digest can be used to test for matching sets of sequences, or matching coordinate systems, using the individual component digests. With a sequence-oriented framework, this would require traversing down a layer deeper, to the individual elements, to establish identity of individual components. The alternative advantage we would have from a sequence-oriented structure would be identifiers for <em>annotated sequences</em>. We can gain the advantages of these digests through adding a custom non-inherent, but collated attribute that calculates a unique digest for each element based on the selected attributes of interest, <em>e.g.</em> <code>named_sequences</code> (digest of <em>e.g.</em> <code>b'{"name":"chr1","sequence":"SQ.2648ae1bacce4ec4b6cf337dcae37816"}'</code>).</p>
+</li>
+</ol>
+<p>See <a href="../decision_record/#2021-06-30-use-array-based-data-structure-and-multi-tiered-digests">ADR on 2021-06-30 on array-oriented structure</a></p>
+<h3 id="f2-rfc-8785-does-not-apply-to-refget-sequences">F2. RFC-8785 does not apply to refget sequences</h3>
+<p>A note to clarify potential confusion with RFC-8785. While the sequence collection specification determines that RFC-8785 will be used to canonicalize the JSON before digesting, this is specific to sequence collections, it <em>does not apply to the original refget sequences protocol</em>. According to the sequences protocol, sequences are digested as un-quoted strings. If RFC-8785 were applied at the level of individual sequences, they would be quoted to become valid JSON, which would change the digest. Since the sequences protocol predated the sequence collections protocol, it did not use RFC-8785; and anyway, the sequences are just primitive types so a canonicalization scheme doesn't add anything. This leads to the slight confusion that RFC-8785 canonicalization is only applied to the objects in the sequence collections, and not to the primitives when the underlying sequences are digested. In other words, from the perspective of Sequence Collections, we just take the sequence digests at face value, as handled by a third party; their content is not digested as part of the collections algorithm at a deeper level.</p>
+<h3 id="f3-the-ga4gh-digest-algorithm">F3. The GA4GH digest algorithm</h3>
+<p>The GA4GH digest algorithm, <code>sha512t24u</code>, was created as part of the <a href="https://vrs.ga4gh.org/en/stable/impl-guide/computed_identifiers.html">Variation Representation Specification standard</a>. 
+This procedure is described as (<a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883">Hart <em>et al</em>. 2020</a>):</p>
+<ul>
+<li>performing a SHA-512 digest on a binary blob of data</li>
+<li>truncate the resulting digest to 24 bytes</li>
+<li>encodes the 24 bytes using <code>base64url</code> (<a href="https://datatracker.ietf.org/doc/html/rfc4648#section-5">RFC 4648</a>) resulting in a 32 character string</li>
+</ul>
+<p>In Python, the digest can be computed with this function:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">sha512t24u_digest</span><span class="p">(</span><span class="n">seq</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; GA4GH digest function &quot;&quot;&quot;</span>
+    <span class="n">offset</span> <span class="o">=</span> <span class="mi">24</span>
+    <span class="n">digest</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha512</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+    <span class="n">tdigest_b64us</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">urlsafe_b64encode</span><span class="p">(</span><span class="n">digest</span><span class="p">[:</span><span class="n">offset</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">tdigest_b64us</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>See: <a href="../decision_record/#2023-01-25-the-digest-algorithm-will-be-the-ga4gh-digest">ADR from 2023-01-25 on digest algorithm</a></p>
+<h3 id="f4-use-cases-for-the-sorted_name_length_pairs-non-inherent-attribute">F4. Use cases for the <code>sorted_name_length_pairs</code> non-inherent attribute</h3>
+<p>One motivation for this attribute comes from genome browsers, which may display genomic loci of interest (<em>e.g.</em> BED files).
+The genome browser should only show BED files if they annotate the same coordinate system as the reference genome.
+This is looser than strict identity, since we don't really care what the underlying sequence characters are, as long as the positions are comparable.
+We also don't care about the order of the sequences.
+Instead, we need them to match level 1 digest of the <code>sorted_name_length_pairs</code> attribute.
+Thus, to assert that a BED file can be viewed for a particular genome, we compare the <code>sorted_name_length_pairs</code> digest of our reference genome with the sequence collection used to generate the file.
+There are only two possibilities for compatibility: 1) If the digests are equal, then the data file is directly compatible; 2) If not, we must check the <code>comparison</code> endpoint to see whether the <code>name_length_pairs</code> attribute of the sequence collection is a direct subset of the same array in the sequence collection attached to the genome browser instance.
+If so, the data file is still compatible. </p>
+<p>For efficiency, if the second case is true, we may cache the <code>sorted_name_length_pairs</code> digest in a list of known compatible reference genomes.
+In practice, this list will be short.
+Thus, in a production setting, the full compatibility check can be reduced to a lookup into a short, pre-generated list of <code>sorted_name_length_pairs</code> digests.</p>
+<p>See: <a href="../decision_record/#2023-07-12-implementations-should-provide-sorted_name_length_pairs-and-comparison-endpoint">ADR from 2023-07-12 on sorted name-length pairs</a></p>
+<h3 id="f5-adding-new-schema-attributes">F5. Adding new schema attributes</h3>
+<p>A strength of the seqcol standard is that the schema definition can be modified for particular use cases, for example, by adding new attributes into a sequence collection.
+This will allow different communities to use the standard without necessarily needing to subscribe to identical schemas, allowing the standard to be more generally useful.
+However, if communities define too many custom attributes, this leads to the possibility of fragmentation.
+For example, two implementations may start using the same attribute name to refer to different concepts.
+While the attributes would still be formally defined in the respective schemas provided by each implementation, calling different concepts by the same name would come at the cost of interoperability.
+Therefore, the standard will also include in the schema a list of formally defined attributes, to encourage interoperability of these attributes.
+The goal is not to include all possible attributes in the schema, but just those likely to be used repeatedly, to encourage interoperable use of those attribute names.</p>
+<p>An implementation may propose a new attribute to be added to this extended schema by raising an issue on the GitHub repository.
+The proposed attributes and definition can then be approved through discussion during the refget working group calls and ultimately added to the approved extended seqcol schema.
+These GitHub issues should be created with the label 'schema-term'.
+You can follow these issues (or raise your own) at <a href="https://github.com/ga4gh/seqcol-spec/issues?q=is%3Aissue+label%3Aschema-term+">https://github.com/ga4gh/seqcol-spec/issues?q=is%3Aissue+label%3Aschema-term+</a>.</p>
+<h3 id="f6-custom-encoding-algorithms">F6. Custom encoding algorithms</h3>
+<p>A core part of Sequence Collections specification is the <em>encoding</em> algorithm, which describes how to create the digest for a sequence collection.
+The encoding process can be divided into two steps; first, the attributes are encoded into the level 1 representation, and then this is encoded to produce the final digest (also called the level 0 or top level representation).
+The first part of this process, encoding from level 2 to level 1, is the default; this is applied to any attributes that don't have something else defined specifically as part of the attribute definition.
+This is the way all the minimal attributes (names, lengths, and sequences) should behave.
+But custom attributes MAY diverge from this approach by defining their own encoding procedure that defines how the level 1 digest is computed from the level 2 representation.
+For example, in the list of recommended ancillary attributes, <code>name_length_pairs</code> does not define a custom procedure for encoding, so this would follow the default procedure.
+An alternative custom attribute, though, MAY specify how this encoding procedure happens, as for example, the recommended <code>sorted_name_length_pairs</code> attribute does.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../sequences/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Sequences">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Sequences
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="digest_from_collection/" class="md-footer__link md-footer__link--next" aria-label="Next: Compute a digest given a seqcol">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Compute a digest given a seqcol
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      GA4GH Large Scale Genomics Workstream, refget team
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.sections", "navigation.expand", "navigation.footer", "toc.follow", "content.action.edit", "content.action.view", "navigation.top"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

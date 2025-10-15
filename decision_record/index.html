@@ -1,0 +1,4638 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ga4gh.github.io/refget/decision_record/">
+      
+      
+        <link rel="prev" href="../schemas/">
+      
+      
+        <link rel="next" href="../contributing/">
+      
+      
+      <link rel="icon" href="../img/seqcol_logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>Decision record - Refget Specifications</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#architectural-decision-record" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Refget Specifications" class="md-header__button md-logo" aria-label="Refget Specifications" data-md-component="logo">
+      
+  <img src="../img/seqcol_logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Refget Specifications
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Decision record
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ga4gh/refget" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Refget Specifications" class="md-nav__button md-logo" aria-label="Refget Specifications" data-md-component="logo">
+      
+  <img src="../img/seqcol_logo.svg" alt="logo">
+
+    </a>
+    Refget Specifications
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ga4gh/refget" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Specifications
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Specifications
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sequences/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequences
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seqcols/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequence Collections
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Detailed how-to guides
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Detailed how-to guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seqcols/digest_from_collection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compute a digest given a seqcol
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seqcols/compare_collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compare two sequence collections
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Implementations
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Implementations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../implementation_python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Python
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../implementation_api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../citation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How to cite
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schemas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Schemas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Decision record
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Decision record
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-11-20-level-2-return-values-should-not-return-transient-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-11-20 Level 2 return values should not return transient attributes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-11-20 Level 2 return values should not return transient attributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-11-20-custom-modifiers-should-live-in-the-schema-under-the-ga4gh-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-11-20 Custom modifiers should live in the schema under the ga4gh key
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-11-20 Custom modifiers should live in the schema under the ga4gh key">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-11-13-attributes-can-be-designed-as-passthru-or-transient" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-11-13 Attributes can be designed as passthru or transient.
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-11-13 Attributes can be designed as passthru or transient.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-10-02-minimal-schema-should-now-require-sequences-and-lengths-should-not-be-inherent" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-10-02 Minimal schema should now require sequences, and lengths should not be inherent.
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-10-02 Minimal schema should now require sequences, and lengths should not be inherent.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-10-02-the-collection-and-attribute-endpoints-will-both-be-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-10-02 The /collection and /attribute endpoints will both be REQUIRED
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-10-02 The /collection and /attribute endpoints will both be REQUIRED">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-10-02-the-object_type-should-be-singular-all-the-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-10-02 The object_type should be singular all the time
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-10-02 The object_type should be singular all the time">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-10-02-we-should-use-query-parameters-for-the-filtered-list-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-10-02 We should use query parameters for the filtered list endpoint
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-10-02 We should use query parameters for the filtered list endpoint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-08-08-the-specification-should-require-the-attribute-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-08-08 The specification should require the /attribute endpoint
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-08-08 The specification should require the /attribute endpoint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-08-08-the-list-endpoint-will-provide-global-and-filtered-listing-of-collections" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-08-08 The /list endpoint will provide global and filtered listing of collections
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-08-08 The /list endpoint will provide global and filtered listing of collections">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-05-16-the-sorted_sequences-attribute-will-be-in-the-spec-as-an-optional-ancillary-attribute" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-05-16 The sorted_sequences attribute will be in the spec as an optional ancillary attribute
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-05-16 The sorted_sequences attribute will be in the spec as an optional ancillary attribute">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-02-21-we-will-specify-core-sequence-collection-attributes-and-a-process-for-adding-new-ones" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-02-21 We will specify core sequence collection attributes and a process for adding new ones
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-02-21 We will specify core sequence collection attributes and a process for adding new ones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-01-10-clarifications-on-the-purpose-and-form-of-the-json-schema-in-service-info" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-01-10 Clarifications on the purpose and form of the JSON schema in service-info
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-01-10 Clarifications on the purpose and form of the JSON schema in service-info">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-01-06-the-comparison-function-use-more-descriptive-attribute-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-01-06 The comparison function use more descriptive attribute names
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-01-06 The comparison function use more descriptive attribute names">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-08-25-the-user-facing-api-will-neither-expect-nor-provide-prefixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-08-25 The user-facing API will neither expect nor provide prefixes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-08-25 The user-facing API will neither expect nor provide prefixes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rationale_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-08-22-seqcol-schemas-must-specify-collated-attributes-with-a-local-qualifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-08-22 - Seqcol schemas MUST specify collated attributes with a local qualifier
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-08-22 - Seqcol schemas MUST specify collated attributes with a local qualifier">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-07-26-there-will-be-no-metadata-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-07-26 There will be no metadata endpoint
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-07-26 There will be no metadata endpoint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-07-12-required-attributes-are-lengths-and-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-07-12 - Required attributes are: lengths and names
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-07-12 - Required attributes are: lengths and names">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-07-12-implementations-should-provide-sorted_name_length_pairs-and-comparison-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-07-12 Implementations SHOULD provide sorted_name_length_pairs and comparison endpoint
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-07-12 Implementations SHOULD provide sorted_name_length_pairs and comparison endpoint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decisions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#algorithm-for-computing-sorted_name_length_pairs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Algorithm for computing sorted_name_length_pairs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale-and-alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale and alternatives considered
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-06-14-internal-digests-should-not-be-prefixed" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-06-14 - Internal digests SHOULD NOT be prefixed
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-06-14 - Internal digests SHOULD NOT be prefixed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      Background
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-06-28-seqcol-json-schema-defines-reserved-attributes-without-additional-namespacing" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-06-28 - Seqcol JSON schema defines reserved attributes without additional namespacing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-06-28 - Seqcol JSON schema defines reserved attributes without additional namespacing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-06-28-details-of-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-06-28 Details of endpoints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-06-28 Details of endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decisions_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decisions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-03-22-seqcol-schemas-must-specify-inherent-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-03-22 - Seqcol schemas MUST specify inherent attributes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-03-22 - Seqcol schemas MUST specify inherent attributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives considered
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-02-08-array-names-should-be-ascii" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-02-08 - Array names SHOULD be ASCII
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-02-08 - Array names SHOULD be ASCII">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-01-25-the-digest-algorithm-will-be-the-ga4gh-digest" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-01-25 - The digest algorithm will be the GA4GH digest
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-01-25 - The digest algorithm will be the GA4GH digest">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-01-12-how-sequence-collection-are-serialized-prior-to-digestion" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-01-12 - How sequence collection are serialized prior to digestion
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-01-12 - How sequence collection are serialized prior to digestion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Known limitations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternatives-considered_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives considered
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2022-10-05-terminology-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      2022-10-05 - Terminology decisions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2022-10-05 - Terminology decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2022-06-15-structure-for-the-return-value-of-the-comparison-api-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      2022-06-15 - Structure for the return value of the comparison API endpoint
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2022-06-15 - Structure for the return value of the comparison API endpoint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternatives-considered_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives considered
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitations_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Known limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2022-06-15-we-will-define-the-elements-of-a-sequence-collections-using-a-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      2022-06-15 - We will define the elements of a sequence collections using a schema
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2022-06-15 - We will define the elements of a sequence collections using a schema">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2021-12-01-endpoint-names-and-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      2021-12-01 - Endpoint names and structure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2021-12-01 - Endpoint names and structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2021-09-21-order-will-be-recognized-by-digesting-arrays-in-the-given-order-and-unordered-digests-will-be-handled-as-extensions-through-additional-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      2021-09-21 - Order will be recognized by digesting arrays in the given order, and unordered digests will be handled as extensions through additional attributes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2021-09-21 - Order will be recognized by digesting arrays in the given order, and unordered digests will be handled as extensions through additional attributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitations_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Known limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2021-08-25-sequence-collection-digests-will-reflect-sequence-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      2021-08-25 - Sequence collection digests will reflect sequence order
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2021-08-25 - Sequence collection digests will reflect sequence order">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitations_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Known limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2021-06-30-use-array-based-data-structure-and-multi-tiered-digests" class="md-nav__link">
+    <span class="md-ellipsis">
+      2021-06-30 - Use array-based data structure and multi-tiered digests
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2021-06-30 - Use array-based data structure and multi-tiered digests">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitations_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Known limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2021-01-20-use-the-sam-specification-v1-description-of-sequence-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      2021-01-20 - Use the SAM specification v1 description of sequence names
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2021-01-20 - Use the SAM specification v1 description of sequence names">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitations_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Known limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-11-20-level-2-return-values-should-not-return-transient-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-11-20 Level 2 return values should not return transient attributes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-11-20 Level 2 return values should not return transient attributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-11-20-custom-modifiers-should-live-in-the-schema-under-the-ga4gh-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-11-20 Custom modifiers should live in the schema under the ga4gh key
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-11-20 Custom modifiers should live in the schema under the ga4gh key">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-11-13-attributes-can-be-designed-as-passthru-or-transient" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-11-13 Attributes can be designed as passthru or transient.
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-11-13 Attributes can be designed as passthru or transient.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-10-02-minimal-schema-should-now-require-sequences-and-lengths-should-not-be-inherent" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-10-02 Minimal schema should now require sequences, and lengths should not be inherent.
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-10-02 Minimal schema should now require sequences, and lengths should not be inherent.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-10-02-the-collection-and-attribute-endpoints-will-both-be-required" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-10-02 The /collection and /attribute endpoints will both be REQUIRED
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-10-02 The /collection and /attribute endpoints will both be REQUIRED">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-10-02-the-object_type-should-be-singular-all-the-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-10-02 The object_type should be singular all the time
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-10-02 The object_type should be singular all the time">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-10-02-we-should-use-query-parameters-for-the-filtered-list-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-10-02 We should use query parameters for the filtered list endpoint
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-10-02 We should use query parameters for the filtered list endpoint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-08-08-the-specification-should-require-the-attribute-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-08-08 The specification should require the /attribute endpoint
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-08-08 The specification should require the /attribute endpoint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-08-08-the-list-endpoint-will-provide-global-and-filtered-listing-of-collections" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-08-08 The /list endpoint will provide global and filtered listing of collections
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-08-08 The /list endpoint will provide global and filtered listing of collections">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-05-16-the-sorted_sequences-attribute-will-be-in-the-spec-as-an-optional-ancillary-attribute" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-05-16 The sorted_sequences attribute will be in the spec as an optional ancillary attribute
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-05-16 The sorted_sequences attribute will be in the spec as an optional ancillary attribute">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-02-21-we-will-specify-core-sequence-collection-attributes-and-a-process-for-adding-new-ones" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-02-21 We will specify core sequence collection attributes and a process for adding new ones
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-02-21 We will specify core sequence collection attributes and a process for adding new ones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-01-10-clarifications-on-the-purpose-and-form-of-the-json-schema-in-service-info" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-01-10 Clarifications on the purpose and form of the JSON schema in service-info
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-01-10 Clarifications on the purpose and form of the JSON schema in service-info">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2024-01-06-the-comparison-function-use-more-descriptive-attribute-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      2024-01-06 The comparison function use more descriptive attribute names
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2024-01-06 The comparison function use more descriptive attribute names">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-08-25-the-user-facing-api-will-neither-expect-nor-provide-prefixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-08-25 The user-facing API will neither expect nor provide prefixes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-08-25 The user-facing API will neither expect nor provide prefixes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rationale_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-08-22-seqcol-schemas-must-specify-collated-attributes-with-a-local-qualifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-08-22 - Seqcol schemas MUST specify collated attributes with a local qualifier
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-08-22 - Seqcol schemas MUST specify collated attributes with a local qualifier">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-07-26-there-will-be-no-metadata-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-07-26 There will be no metadata endpoint
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-07-26 There will be no metadata endpoint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-07-12-required-attributes-are-lengths-and-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-07-12 - Required attributes are: lengths and names
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-07-12 - Required attributes are: lengths and names">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-07-12-implementations-should-provide-sorted_name_length_pairs-and-comparison-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-07-12 Implementations SHOULD provide sorted_name_length_pairs and comparison endpoint
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-07-12 Implementations SHOULD provide sorted_name_length_pairs and comparison endpoint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decisions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#algorithm-for-computing-sorted_name_length_pairs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Algorithm for computing sorted_name_length_pairs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale-and-alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale and alternatives considered
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-06-14-internal-digests-should-not-be-prefixed" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-06-14 - Internal digests SHOULD NOT be prefixed
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-06-14 - Internal digests SHOULD NOT be prefixed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    <span class="md-ellipsis">
+      Background
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-06-28-seqcol-json-schema-defines-reserved-attributes-without-additional-namespacing" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-06-28 - Seqcol JSON schema defines reserved attributes without additional namespacing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-06-28 - Seqcol JSON schema defines reserved attributes without additional namespacing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-06-28-details-of-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-06-28 Details of endpoints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-06-28 Details of endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decisions_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decisions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-03-22-seqcol-schemas-must-specify-inherent-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-03-22 - Seqcol schemas MUST specify inherent attributes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-03-22 - Seqcol schemas MUST specify inherent attributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternatives-considered" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives considered
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-02-08-array-names-should-be-ascii" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-02-08 - Array names SHOULD be ASCII
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-02-08 - Array names SHOULD be ASCII">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-01-25-the-digest-algorithm-will-be-the-ga4gh-digest" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-01-25 - The digest algorithm will be the GA4GH digest
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-01-25 - The digest algorithm will be the GA4GH digest">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2023-01-12-how-sequence-collection-are-serialized-prior-to-digestion" class="md-nav__link">
+    <span class="md-ellipsis">
+      2023-01-12 - How sequence collection are serialized prior to digestion
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2023-01-12 - How sequence collection are serialized prior to digestion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Known limitations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternatives-considered_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives considered
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2022-10-05-terminology-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      2022-10-05 - Terminology decisions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2022-10-05 - Terminology decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2022-06-15-structure-for-the-return-value-of-the-comparison-api-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      2022-06-15 - Structure for the return value of the comparison API endpoint
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2022-06-15 - Structure for the return value of the comparison API endpoint">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alternatives-considered_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternatives considered
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitations_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Known limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2022-06-15-we-will-define-the-elements-of-a-sequence-collections-using-a-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      2022-06-15 - We will define the elements of a sequence collections using a schema
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2022-06-15 - We will define the elements of a sequence collections using a schema">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2021-12-01-endpoint-names-and-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      2021-12-01 - Endpoint names and structure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2021-12-01 - Endpoint names and structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2021-09-21-order-will-be-recognized-by-digesting-arrays-in-the-given-order-and-unordered-digests-will-be-handled-as-extensions-through-additional-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      2021-09-21 - Order will be recognized by digesting arrays in the given order, and unordered digests will be handled as extensions through additional attributes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2021-09-21 - Order will be recognized by digesting arrays in the given order, and unordered digests will be handled as extensions through additional attributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitations_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Known limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2021-08-25-sequence-collection-digests-will-reflect-sequence-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      2021-08-25 - Sequence collection digests will reflect sequence order
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2021-08-25 - Sequence collection digests will reflect sequence order">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitations_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Known limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2021-06-30-use-array-based-data-structure-and-multi-tiered-digests" class="md-nav__link">
+    <span class="md-ellipsis">
+      2021-06-30 - Use array-based data structure and multi-tiered digests
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2021-06-30 - Use array-based data structure and multi-tiered digests">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitations_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Known limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2021-01-20-use-the-sam-specification-v1-description-of-sequence-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      2021-01-20 - Use the SAM specification v1 description of sequence names
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2021-01-20 - Use the SAM specification v1 description of sequence names">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#decision_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      Decision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#linked-issues_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linked issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#known-limitations_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      Known limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/ga4gh/refget/edit/master/docs/decision_record.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/ga4gh/refget/raw/master/docs/decision_record.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="architectural-decision-record">Architectural Decision Record</h1>
+<p><em>This is a record of decisions made during specification development. Each entry describes a decision that has been approved by the team members. Collectively, this ADR describes an institutional memory for decisions and their rationales, including known limitations. The goal is to avoid repeated discussion of previous decisions, formally acknowledge limitations, preserve and articulate reasons behind the decisions, and share this information with the broader community.</em> </p>
+<p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119.</p>
+<h2 id="contents">Contents</h2>
+<div class="toc">
+<ul>
+<li><a href="#architectural-decision-record">Architectural Decision Record</a><ul>
+<li><a href="#contents">Contents</a></li>
+<li><a href="#2024-11-20-level-2-return-values-should-not-return-transient-attributes">2024-11-20 Level 2 return values should not return transient attributes</a><ul>
+<li><a href="#decision">Decision</a></li>
+<li><a href="#rationale">Rationale</a></li>
+</ul>
+</li>
+<li><a href="#2024-11-20-custom-modifiers-should-live-in-the-schema-under-the-ga4gh-key">2024-11-20 Custom modifiers should live in the schema under the ga4gh key</a><ul>
+<li><a href="#decision_1">Decision</a></li>
+<li><a href="#rationale_1">Rationale</a></li>
+<li><a href="#linked-issues">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2024-11-13-attributes-can-be-designed-as-passthru-or-transient">2024-11-13 Attributes can be designed as passthru or transient.</a><ul>
+<li><a href="#decision_2">Decision</a></li>
+<li><a href="#rationale_2">Rationale</a></li>
+<li><a href="#linked-issues_1">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2024-10-02-minimal-schema-should-now-require-sequences-and-lengths-should-not-be-inherent">2024-10-02 Minimal schema should now require sequences, and lengths should not be inherent.</a><ul>
+<li><a href="#decision_3">Decision</a></li>
+<li><a href="#rationale_3">Rationale</a></li>
+<li><a href="#linked-issues_2">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2024-10-02-the-collection-and-attribute-endpoints-will-both-be-required">2024-10-02 The /collection and /attribute endpoints will both be REQUIRED</a><ul>
+<li><a href="#decision_4">Decision</a></li>
+<li><a href="#rationale_4">Rationale</a></li>
+</ul>
+</li>
+<li><a href="#2024-10-02-the-object_type-should-be-singular-all-the-time">2024-10-02 The object_type should be singular all the time</a><ul>
+<li><a href="#decision_5">Decision</a></li>
+<li><a href="#rationale_5">Rationale</a></li>
+</ul>
+</li>
+<li><a href="#2024-10-02-we-should-use-query-parameters-for-the-filtered-list-endpoint">2024-10-02 We should use query parameters for the filtered list endpoint</a><ul>
+<li><a href="#decision_6">Decision</a></li>
+<li><a href="#rationale_6">Rationale</a></li>
+</ul>
+</li>
+<li><a href="#2024-08-08-the-specification-should-require-the-attribute-endpoint">2024-08-08 The specification should require the /attribute endpoint</a><ul>
+<li><a href="#decision_7">Decision</a></li>
+<li><a href="#rationale_7">Rationale</a></li>
+<li><a href="#linked-issues_3">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2024-08-08-the-list-endpoint-will-provide-global-and-filtered-listing-of-collections">2024-08-08 The /list endpoint will provide global and filtered listing of collections</a><ul>
+<li><a href="#decision_8">Decision</a></li>
+<li><a href="#rationale_8">Rationale</a></li>
+<li><a href="#linked-issues_4">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2024-05-16-the-sorted_sequences-attribute-will-be-in-the-spec-as-an-optional-ancillary-attribute">2024-05-16 The sorted_sequences attribute will be in the spec as an optional ancillary attribute</a><ul>
+<li><a href="#decision_9">Decision</a></li>
+<li><a href="#rationale_9">Rationale</a></li>
+<li><a href="#linked-issues_5">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2024-02-21-we-will-specify-core-sequence-collection-attributes-and-a-process-for-adding-new-ones">2024-02-21 We will specify core sequence collection attributes and a process for adding new ones</a><ul>
+<li><a href="#decision_10">Decision</a></li>
+<li><a href="#rationale_10">Rationale</a></li>
+<li><a href="#linked-issues_6">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2024-01-10-clarifications-on-the-purpose-and-form-of-the-json-schema-in-service-info">2024-01-10 Clarifications on the purpose and form of the JSON schema in service-info</a><ul>
+<li><a href="#decision_11">Decision</a></li>
+<li><a href="#rationale_11">Rationale</a></li>
+<li><a href="#linked-issues_7">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2024-01-06-the-comparison-function-use-more-descriptive-attribute-names">2024-01-06 The comparison function use more descriptive attribute names</a><ul>
+<li><a href="#decision_12">Decision</a></li>
+<li><a href="#rationale_12">Rationale</a></li>
+<li><a href="#linked-issues_8">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2023-08-25-the-user-facing-api-will-neither-expect-nor-provide-prefixes">2023-08-25 The user-facing API will neither expect nor provide prefixes</a><ul>
+<li><a href="#rationale_13">Rationale</a></li>
+</ul>
+</li>
+<li><a href="#2023-08-22-seqcol-schemas-must-specify-collated-attributes-with-a-local-qualifier">2023-08-22 - Seqcol schemas MUST specify collated attributes with a local qualifier</a><ul>
+<li><a href="#decision_13">Decision</a></li>
+<li><a href="#rationale_14">Rationale</a></li>
+<li><a href="#linked-issues_9">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2023-07-26-there-will-be-no-metadata-endpoint">2023-07-26 There will be no metadata endpoint</a><ul>
+<li><a href="#decision_14">Decision</a></li>
+<li><a href="#rationale_15">Rationale</a></li>
+<li><a href="#linked-issues_10">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2023-07-12-required-attributes-are-lengths-and-names">2023-07-12 - Required attributes are: lengths and names</a><ul>
+<li><a href="#decision_15">Decision</a></li>
+<li><a href="#rationale_16">Rationale</a></li>
+</ul>
+</li>
+<li><a href="#2023-07-12-implementations-should-provide-sorted_name_length_pairs-and-comparison-endpoint">2023-07-12 Implementations SHOULD provide sorted_name_length_pairs and comparison endpoint</a><ul>
+<li><a href="#decisions">Decisions</a></li>
+<li><a href="#algorithm-for-computing-sorted_name_length_pairs">Algorithm for computing sorted_name_length_pairs</a></li>
+<li><a href="#rationale-and-alternatives-considered">Rationale and alternatives considered</a></li>
+<li><a href="#linked-issues_11">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2023-06-14-internal-digests-should-not-be-prefixed">2023-06-14 - Internal digests SHOULD NOT be prefixed</a><ul>
+<li><a href="#background">Background</a></li>
+<li><a href="#decision_16">Decision</a></li>
+<li><a href="#rationale_17">Rationale</a></li>
+<li><a href="#linked-issues_12">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2023-06-28-seqcol-json-schema-defines-reserved-attributes-without-additional-namespacing">2023-06-28 - Seqcol JSON schema defines reserved attributes without additional namespacing</a><ul>
+<li><a href="#decision_17">Decision</a></li>
+<li><a href="#rationale_18">Rationale</a></li>
+</ul>
+</li>
+<li><a href="#2023-06-28-details-of-endpoints">2023-06-28 Details of endpoints</a><ul>
+<li><a href="#decisions_1">Decisions</a></li>
+<li><a href="#rationale_19">Rationale</a></li>
+</ul>
+</li>
+<li><a href="#2023-03-22-seqcol-schemas-must-specify-inherent-attributes">2023-03-22 - Seqcol schemas MUST specify inherent attributes</a><ul>
+<li><a href="#decision_18">Decision</a></li>
+<li><a href="#rationale_20">Rationale</a></li>
+<li><a href="#linked-issues_13">Linked issues</a></li>
+<li><a href="#alternatives-considered">Alternatives considered</a></li>
+</ul>
+</li>
+<li><a href="#2023-02-08-array-names-should-be-ascii">2023-02-08 - Array names SHOULD be ASCII</a><ul>
+<li><a href="#decision_19">Decision</a></li>
+<li><a href="#rationale_21">Rationale</a></li>
+<li><a href="#linked-issues_14">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2023-01-25-the-digest-algorithm-will-be-the-ga4gh-digest">2023-01-25 - The digest algorithm will be the GA4GH digest</a><ul>
+<li><a href="#decision_20">Decision</a></li>
+<li><a href="#rationale_22">Rationale</a></li>
+<li><a href="#limitations">Limitations</a></li>
+<li><a href="#linked-issues_15">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2023-01-12-how-sequence-collection-are-serialized-prior-to-digestion">2023-01-12 - How sequence collection are serialized prior to digestion</a><ul>
+<li><a href="#decision_21">Decision</a></li>
+<li><a href="#rationale_23">Rationale</a></li>
+<li><a href="#linked-issues_16">Linked issues</a></li>
+<li><a href="#known-limitations">Known limitations</a></li>
+<li><a href="#alternatives-considered_1">Alternatives considered</a></li>
+</ul>
+</li>
+<li><a href="#2022-10-05-terminology-decisions">2022-10-05 - Terminology decisions</a><ul>
+<li><a href="#decision_22">Decision</a></li>
+<li><a href="#linked-issues_17">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2022-06-15-structure-for-the-return-value-of-the-comparison-api-endpoint">2022-06-15 - Structure for the return value of the comparison API endpoint</a><ul>
+<li><a href="#decision_23">Decision</a></li>
+<li><a href="#rationale_24">Rationale</a></li>
+<li><a href="#linked-issues_18">Linked issues</a></li>
+<li><a href="#alternatives-considered_2">Alternatives considered</a></li>
+<li><a href="#known-limitations_1">Known limitations</a></li>
+</ul>
+</li>
+<li><a href="#2022-06-15-we-will-define-the-elements-of-a-sequence-collections-using-a-schema">2022-06-15 - We will define the elements of a sequence collections using a schema</a><ul>
+<li><a href="#decision_24">Decision</a></li>
+<li><a href="#rationale_25">Rationale</a></li>
+<li><a href="#linked-issues_19">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2021-12-01-endpoint-names-and-structure">2021-12-01 - Endpoint names and structure</a><ul>
+<li><a href="#decision_25">Decision</a></li>
+<li><a href="#rationale_26">Rationale</a></li>
+<li><a href="#limitations_1">Limitations</a></li>
+<li><a href="#linked-issues_20">Linked issues</a></li>
+</ul>
+</li>
+<li><a href="#2021-09-21-order-will-be-recognized-by-digesting-arrays-in-the-given-order-and-unordered-digests-will-be-handled-as-extensions-through-additional-attributes">2021-09-21 - Order will be recognized by digesting arrays in the given order, and unordered digests will be handled as extensions through additional attributes</a><ul>
+<li><a href="#decision_26">Decision</a></li>
+<li><a href="#rationale_27">Rationale</a></li>
+<li><a href="#linked-issues_21">Linked issues</a></li>
+<li><a href="#known-limitations_2">Known limitations</a></li>
+</ul>
+</li>
+<li><a href="#2021-08-25-sequence-collection-digests-will-reflect-sequence-order">2021-08-25 - Sequence collection digests will reflect sequence order</a><ul>
+<li><a href="#decision_27">Decision</a></li>
+<li><a href="#rationale_28">Rationale</a></li>
+<li><a href="#linked-issues_22">Linked issues</a></li>
+<li><a href="#known-limitations_3">Known limitations</a></li>
+</ul>
+</li>
+<li><a href="#2021-06-30-use-array-based-data-structure-and-multi-tiered-digests">2021-06-30 - Use array-based data structure and multi-tiered digests</a><ul>
+<li><a href="#decision_28">Decision</a></li>
+<li><a href="#rationale_29">Rationale</a></li>
+<li><a href="#linked-issues_23">Linked issues</a></li>
+<li><a href="#known-limitations_4">Known limitations</a></li>
+</ul>
+</li>
+<li><a href="#2021-01-20-use-the-sam-specification-v1-description-of-sequence-names">2021-01-20 - Use the SAM specification v1 description of sequence names</a><ul>
+<li><a href="#decision_29">Decision</a></li>
+<li><a href="#linked-issues_24">Linked issues</a></li>
+<li><a href="#known-limitations_5">Known limitations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="2024-11-20-level-2-return-values-should-not-return-transient-attributes">2024-11-20 Level 2 return values should not return transient attributes</h2>
+<h3 id="decision">Decision</h3>
+<p>Level 2 return values should not return transient attributes</p>
+<h3 id="rationale">Rationale</h3>
+<p>We debated whether the <code>/collection?level=2</code> endpoint should do with transient attributes, because the level 2 representations are not stored. One train of thought was that it could return the level 1 representation; other is that it just includes nothing. We decided that the more pure approach would be include neither</p>
+<p>Another option was something like <code>?level=highest</code>, which would return level 2 representations for everything that has one, but level 1 representations for transient attributes.</p>
+<p>We decided that even if you don't have that information, you could just get it from the <code>?level=1</code> endpoint. Or, implementations could specify their own way</p>
+<h2 id="2024-11-20-custom-modifiers-should-live-in-the-schema-under-the-ga4gh-key">2024-11-20 Custom modifiers should live in the schema under the <code>ga4gh</code> key</h2>
+<h3 id="decision_1">Decision</h3>
+<p>Any global custom modifiers should live under a <code>ga4gh</code> key in  the schemea. Right now, this includes <code>inherent</code>, <code>transient</code>, and <code>passthru</code>.
+Local modifiers (currently just <code>collated</code>) will continue to live, raw, under the attribute they describe.</p>
+<h3 id="rationale_1">Rationale</h3>
+<p>We want to follow the standard used in the other specs (VRS), and it also seems fine to have a place to lump together our custom modifiers.
+We thought we could also do this for <code>collated</code>, as a local modifier, but opt not to right now because: there's only 1, it's a boolean, and it's not actually even used for anything in the spec at the moment, it is only there because it could be nice to use for a visualization of elements in a collection. The additional complexity of another layer just for this seems pointless at this point.</p>
+<h3 id="linked-issues">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/84">https://github.com/ga4gh/refget/issues/84</a></li>
+</ul>
+<h2 id="2024-11-13-attributes-can-be-designed-as-passthru-or-transient">2024-11-13 Attributes can be designed as <code>passthru</code> or <code>transient</code>.</h2>
+<h3 id="decision_2">Decision</h3>
+<p>We add two new attribute qualifiers: transient and passthru.</p>
+<ul>
+<li>
+<p>Passthru attributes are not digested in transition from level 2 to level 1. Most attributes of the canonical (level 2) seqcol representation are digested to create the level 1 representation. But sometimes, we have an attribute for which digesting makes little sense. These attributes are passed through the transformation, so they show up on the level 1 representation in the same form as the level 2 representation. Thus, we refer to them as passthru attributes.
+Transient attributes</p>
+</li>
+<li>
+<p>Transient attributes are not retrievable from the attribute endpoint. Most attributes of the sequence collection can be retrieved through the /attribute endpoint. However, some attributes may not be retrievable. For example, this could happen for an attribute that we intend to be used primarily as an identifier. In this case, we don't necessarily want to store the original content that went into the digest into the database, because it might be redundant. We really just want the final attribute. These attributes are called transient because the content of the attribute is no longer stored and is therefore no longer retrievable.</p>
+</li>
+</ul>
+<p>Also, a few other related decisions we finalized:
+- <code>collection</code> endpoint, level 2 collection representation should exclude transient attributes.
+- <code>attribute</code> endpoint wouldn't provide anything for either transient or passthru attributes.
+- Can passthru or transient attributes be inherent? They could, but it probably doesn't really make sense. Nevertheless, there's no reason to state that they cannot be.</p>
+<h3 id="rationale_2">Rationale</h3>
+<p>As we worked on more advanced attributes, and with the addition of the <code>/attribute</code> endpoint, we realized these changes necessitate a bit more power for the schema to specify behavior of the attributes. For the basic seqcol attributes (names, lengths, sequences) and original endpoint, the general algorithm and basic qualifiers (required, inherent, collated) suffice to describe the representation. But some more nuanced attributes require additional qualifiers to describe their intention and how the server should be behave for the <code>/attribute</code> endpoint. For example, sorted_name_length_pairs and sorted_sequences are intended to provide alternative tailored identifiers and comparisons, and not necessarily useful for independent attribute lookup. Similarly, custom extra attributes, like author or alias, may be simple appendages that don't need the complex digesting procedure we use for the basic attributes. In order to flag such attributes in a way that can govern slightly different server expectations, we need a couple of additional advanced attribute qualifiers. For this purpose, we added the passthru and transient qualifiers.</p>
+<h3 id="linked-issues_1">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/86">https://github.com/ga4gh/refget/issues/86</a></li>
+</ul>
+<h2 id="2024-10-02-minimal-schema-should-now-require-sequences-and-lengths-should-not-be-inherent">2024-10-02 Minimal schema should now require sequences, and lengths should not be inherent.</h2>
+<h3 id="decision_3">Decision</h3>
+<p>We will update the minimal schema with these changes: 1. Move sequences into 'required', and 2. remove lengths from 'inherent'. So the final qualifiers would be:
+- required: names, lengths, and sequences
+- inherent: names, sequences</p>
+<h3 id="rationale_3">Rationale</h3>
+<p>Originally, there was a good rationale for making sequences not required, to allow for coordinate systems to be represented as a seqcol.
+But with the new <code>/attribute</code> endpoint, there's a better way to handle it, using <code>name_length_pairs</code> and <code>sorted_name_length_pairs</code> attributes.
+Then, with sequences required, it does not make sense for lengths to be inherent because they are computable from sequences.
+So essentially, the attribute endpoint allows us to move away from handling coordinate systems as top-level entities, and instead moves toward using the attribute endpoint for coordinate systems.</p>
+<h3 id="linked-issues_2">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/72">https://github.com/ga4gh/refget/issues/72</a></li>
+</ul>
+<h2 id="2024-10-02-the-collection-and-attribute-endpoints-will-both-be-required">2024-10-02 The <code>/collection</code> and <code>/attribute</code> endpoints will both be <code>REQUIRED</code></h2>
+<h3 id="decision_4">Decision</h3>
+<p>The <code>/collection</code> and <code>/attribute</code> endpoints will both be <code>REQUIRED</code></p>
+<h3 id="rationale_4">Rationale</h3>
+<p>We debated whether one or both of these should drop to <code>RECOMMENDED</code>, because now we can imagine a lot of use cases that would use one but not the other. But in the end, the interoperability really needs the <code>/collection</code> endpoint, and a lot of use cases will rely on the <code>/attribute</code> endpoint, so we decided to just leave them both as <code>REQUIRED</code> to reflect their dual imporantance in an interoperable eco-system. This does not stop individual implementations from doing partial implementations, like "We only implement the <code>/attribute</code> endpoint", if that's all they need; it simply would prevent them from claiming that they are in full compliance of the spec; they'd just have a partial implementation, which is fine. Those services would have some level of interoperability, but would not rise to the level needed to do some of the meta-aggregation we can imagine, so we feel it's appropriate for them to only claim partial compliance.</p>
+<h2 id="2024-10-02-the-object_type-should-be-singular-all-the-time">2024-10-02 The <code>object_type</code> should be singular all the time</h2>
+<h3 id="decision_5">Decision</h3>
+<p>The endpoints that can be moduled by <code>object_type</code>, <code>/list/:object_type</code> and <code>/attribute/:object_type</code>, should always use the singular form of the object_type.</p>
+<h3 id="rationale_5">Rationale</h3>
+<p>It's easier if we have this be uniform, instead of having <code>/list/collections</code> and then <code>/attribute/collection</code> and then defining these both as <code>object_type</code>; to be strictly accurate here we'd need to define a second variables, like <code>plural_object_type</code>, so that the spec would be internally consistent. Instead, we don't really see a disadvantage to just making <code>object_type</code> have a consistent definition, so that it can be reused throughout the spec. So the end point should change to <code>/list/collection</code>.</p>
+<h2 id="2024-10-02-we-should-use-query-parameters-for-the-filtered-list-endpoint">2024-10-02 We should use query parameters for the filtered list endpoint</h2>
+<h3 id="decision_6">Decision</h3>
+<p>The filtered list endpoint should filter by adding query parameters to the unfiltered endpoint, like <code>/list/:object_type?:attribute1=:attribute_digest1&amp;attribute2=:attribute_digest2</code>.</p>
+<h3 id="rationale_6">Rationale</h3>
+<p>Originally, we had defined two path-based variants of the list endpoint; unfiltered as <code>/list/collection</code> and filtered as <code>/list/collection/:attribute/:attribute_digest</code>. We realized this has some disadvantages; first, it requires us to define these as two separate endpoints, and second, it makes it so you can't enable filtering by more than one attribute digest. We didn't really see a disadvantage to just switching to optional query parameters, and we see several advantages. Now everything fits nicely under a single endpoint definition, and it's natural that without a filter parameter, you simply give the unfiltered result, but with the filter parameter, you give the filtered result. Furthermore, it sets the stage for multiple values, if this could be useful.</p>
+<h2 id="2024-08-08-the-specification-should-require-the-attribute-endpoint">2024-08-08 The specification should require the <code>/attribute</code> endpoint</h2>
+<h3 id="decision_7">Decision</h3>
+<p>We decided to add to the specification the <code>/attribute</code> endpoint, which would retrieve values of given collection attributes given attribute digests. This is parallel to the <code>/collection</code> endpoint, which retrieves the whole collection given a top-level digest.</p>
+<h3 id="rationale_7">Rationale</h3>
+<p>Several use cases have re-emphasized the value of the digests of the <code>sorted_sequences</code>, the <code>sorted_name_length_pairs</code>, and other collection attributes. For many use cases, these are really the most important piece of information. However, until now, we've pushed for dealing with top-level collections, and using these as information contained within a collection. This has driven people to want to create separate schemas, which will hurt long-term interoperability. Instead, we realized that if we elevated the status of the <em>attributes</em>, such that users could retrieve these values directly, then that would allow these use cases to live within the ecosystem without needing to specify separate schemas. This change will therefore allow us to preserve some interoperability.</p>
+<h3 id="linked-issues_3">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/80">https://github.com/ga4gh/refget/issues/80</a></li>
+<li><a href="https://github.com/ga4gh/refget/issues/77">https://github.com/ga4gh/refget/issues/77</a></li>
+</ul>
+<h2 id="2024-08-08-the-list-endpoint-will-provide-global-and-filtered-listing-of-collections">2024-08-08 The <code>/list</code> endpoint will provide global and filtered listing of collections</h2>
+<h3 id="decision_8">Decision</h3>
+<p>We decided to include the <code>/list</code> endpoint in two variants, a global one that just lists all available collections, and a filtered one, that allows users to list any collections that have a certain attribute. It should be <code>/list/collections</code>, in anticipation of future endpoints that could list entities of other types (like pangenomes or attributes)</p>
+<h3 id="rationale_8">Rationale</h3>
+<p>We had been brainstorming about listing and filtered listing endpoints for several years, and it was always on the roadmap. We could think of clear use cases. For example, it would be necessary for a meta-service that would aggregate across sequence collections as a way to discover what is contained in one. We had also for along time debated a discovery endpoint that would allow searching through sequence collections. We were originally going to postpone this to v1.1, but in recent months it's become clear that these features are really important to drive uptake of the standard.</p>
+<h3 id="linked-issues_4">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/61">https://github.com/ga4gh/refget/issues/61</a></li>
+<li><a href="https://github.com/ga4gh/refget/issues/28">https://github.com/ga4gh/refget/issues/28</a></li>
+<li><a href="https://github.com/ga4gh/refget/issues/27">https://github.com/ga4gh/refget/issues/27</a></li>
+</ul>
+<h2 id="2024-05-16-the-sorted_sequences-attribute-will-be-in-the-spec-as-an-optional-ancillary-attribute">2024-05-16 The <code>sorted_sequences</code> attribute will be in the spec as an optional ancillary attribute</h2>
+<h3 id="decision_9">Decision</h3>
+<p>We decided to add <code>sorted_sequences</code> to the spec as OPTIONAL.</p>
+<h3 id="rationale_9">Rationale</h3>
+<p>When digested, this attribute provides a digest representing an order-invariant set of unnamed sequences.
+It provides a way to compare two sequence collections to see if their sequence content is identical, but just in a different order.
+Such a comparison can be made by the comparison function, so why might you want to include this attribute as well?
+In some large-scale use cases, comparing the sequence content without considering order is something that needs to be done repeatedly and for a huge number of collections.
+In these cases, using the comparison function could be computationally prohibitive.
+This digest allows the comparison to be pre-computed, and more easily compared.</p>
+<p>This attribute has been suggested by users for different use cases, and it provides a good example of an ancillary attribute that could be useful for a specific use case where you want to pre-compute this comparison instead of relying on the comparison function.
+Thus, it makes sense to include as an example, but made optional since many use cases will not need it.</p>
+<p>In the future if the number of proposed ancillary attributes grows, it could move to a separate document together with other ideas for ancillary attributes.</p>
+<h3 id="linked-issues_5">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/71">https://github.com/ga4gh/refget/issues/71</a></li>
+</ul>
+<h2 id="2024-02-21-we-will-specify-core-sequence-collection-attributes-and-a-process-for-adding-new-ones">2024-02-21 We will specify core sequence collection attributes and a process for adding new ones</h2>
+<h3 id="decision_10">Decision</h3>
+<p>The sequence collection specification will sanction a number of attributes for which a clear and commonly accepted definition will be provided.
+These attributes will be defined in the sequence collection schema and will be part of the specification.</p>
+<p>Additional attributes can be requested to be added to the schema via opening an issue on the sequence collection specification GitHub repo. These will be labeled "schema-term".</p>
+<p>The set of open issues with this tag can be viewed as an extended seqcol schema that includes all attributes proposed by the community. We RECOMMEND implementers monitor this set to increase forward interoperability.</p>
+<h3 id="rationale_10">Rationale</h3>
+<p>It is important for the interoperability of services that attributes used in different implementations have the same definition.
+To ensure this, the centrally defined schema will provide clear definitions of the most important attributes. 
+However it is clear that the maintainers cannot define all possible attributes that implementations might need, so it became apparent that an extended list of attributes that have not been fully defined yet would be useful.</p>
+<p>Choosing to host this list as a list of issues allows the list to always be up to date and also contain comment threads where the community can discuss the definition and approval of each attribute.</p>
+<h3 id="linked-issues_6">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/50">https://github.com/ga4gh/refget/issues/50</a></li>
+<li><a href="https://github.com/ga4gh/refget/issues/46">https://github.com/ga4gh/refget/issues/46</a></li>
+<li><a href="https://github.com/ga4gh/refget/issues?q=is%3Aissue+is%3Aopen+label%3Aschema-term">https://github.com/ga4gh/refget/issues?q=is%3Aissue+is%3Aopen+label%3Aschema-term</a></li>
+</ul>
+<h2 id="2024-01-10-clarifications-on-the-purpose-and-form-of-the-json-schema-in-service-info">2024-01-10 Clarifications on the purpose and form of the JSON schema in service-info</h2>
+<h3 id="decision_11">Decision</h3>
+<p>We made a series of decisions regarding how the JSON-schema should be used to specify the data that a seqcol server will serve.</p>
+<ul>
+<li>you MUST provide a single schema.</li>
+<li>the provided schema MUST include all possible attributes your service may provide (you cannot have a collection with an attribute that is not defined in your schema).</li>
+<li>the seqcol spec will include a central, approved seqcol schema</li>
+<li>for any terms defined by the central, approved seqcol schema, any implementations MUST use definitions provided, either by using refs or by duplicating the terms</li>
+<li>we RECOMMEND your schema use property-level refs to point to terms defined by a central, approved seqcol schema, rather than duplicating terms</li>
+<li>we RECOMMEND your schema only define terms actually used in at least one collection you serve.</li>
+</ul>
+<h3 id="rationale_11">Rationale</h3>
+<p>This set of decisions is oriented around solving a series of related problems.</p>
+<p>A JSON schema really serves multiple purposes: 1. validation; 2. configuration of a server; 3. providing information to users about what a server does. Here, the JSON-schema in the service info is really primarily for the third point.</p>
+<p>Allowing the JSON schema to use refs introduces some challenges, because now a third-party using that schema will need to resolve those refs. While an existing JSON-schema validator would have a built-in dereferencer, currently, these are only useful if you're using the JSON-schema for validation, which may not be the goal. So, we acknowledge that allowing refs in the JSON schema has potential to make it a bit harder use; but the benefit of being able to share definitions is too great to ignore. The goal here is to increase sharability, and this will be done most effectively if users can easily point to other JSON schemas -- in particular, a central, approved one that is released with recommended terms as part of the seqcol spec.</p>
+<p>Another issue is that we wanted the schema to be a place where a user could see what the shape of the data in the server would look like, but we realized this is basically impossible, because different collections in a given server could possibly have different attributes, and therefore, different schemas. Therefore, the only thing that makes sense is for the schema served by the service-info endpoint to have all possible attributes that could be included in any collection hosted by a particular server. This way, you're at least guaranteed that you won't encounter an attribute that is not defined by the schema, though we cannot guarantee that all sequence collections will contain all attributes defined in the schema.</p>
+<h3 id="linked-issues_7">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/50">https://github.com/ga4gh/refget/issues/50</a></li>
+<li><a href="https://github.com/ga4gh/refget/issues/39">https://github.com/ga4gh/refget/issues/39</a></li>
+</ul>
+<h2 id="2024-01-06-the-comparison-function-use-more-descriptive-attribute-names">2024-01-06 The comparison function use more descriptive attribute names</h2>
+<h3 id="decision_12">Decision</h3>
+<p>This decision complements and updates the one taken on 2022-06-15.
+It changes the attribute names to describe specifically what is being returned.
+In the top level object:
+ - rename <code>arrays</code> to <code>attributes</code>, and it should describe all attributes regardless of their types.
+ - rename <code>elements</code> to <code>array_elements</code>, and it should describe only attribute of type arrays regardless of the <code>collated</code> attribute</p>
+<p>In the <code>array_elements</code> (previously <code>elements</code>):
+- remove the <code>total</code> and replace it with <code>a_count</code> and <code>b_count</code> where <code>a_count</code> list all the arrays from <code>a</code> and the number of element they contain and <code>b_count</code> does the same for <code>b</code>.
+- replace <code>a_and_b</code> with <code>a_and_b_count</code> -- the content stay the same</p>
+<h3 id="rationale_12">Rationale</h3>
+<p>The comparison function is designed to compare two sequence collections by interrogating the content of the collated arrays. The initial attribute names were not specifically stating that they only applied to arrays, since originally, we had only been envisioning array attributes. Now that it's more clear how non-array attributes could be included, these updates to the comparison return value clarify which attributes are being referenced.</p>
+<h3 id="linked-issues_8">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/57">https://github.com/ga4gh/refget/issues/57</a></li>
+</ul>
+<h2 id="2023-08-25-the-user-facing-api-will-neither-expect-nor-provide-prefixes">2023-08-25 The user-facing API will neither expect nor provide prefixes</h2>
+<h3 id="rationale_13">Rationale</h3>
+<p>We have debated whether the digests returned by the API should be prefixed in any way (either a namespace-type prefix, or a type prefix). We have also debated whether the API should <em>accept</em> prefixed versions of digests. We decided (for now) that neither should be true; our protocol is simply to use and provide the seqcol digests straight up. We view the prefixes as being something useful for an external context to determine where a digest came from or belongs; but this seems external to how our service should behave internally. Therefore, any sort of prefix should be happening by whatever is <em>using</em> this service, not by the service itself. For example, a ga4gh-wide broker that could disambiguate between different types of digests may require an incoming digest to have a type prefix, but this would be governed by such a context-oriented service, not by the seqcol service itself.</p>
+<p>In the future, when it becomes more clear how this service will fit in with other services in the ga4gh ecosystem, we could revisit this decision.</p>
+<h2 id="2023-08-22-seqcol-schemas-must-specify-collated-attributes-with-a-local-qualifier">2023-08-22 - Seqcol schemas MUST specify collated attributes with a local qualifier</h2>
+<h3 id="decision_13">Decision</h3>
+<p>Collated attributes are seqcol attributes where the values of the attribute are 1-to-1 with sequences in the collection, and represented in the same order as the sequences in the collection. Names, lengths, and sequences are examples of collated attributes. While not strictly required for the core functionality of sequence collections, we anticipate downstream applications will benefit if the seqcol JSONschema specifies which attributes are collated. We therefore REQUIRE the seqcol JSONschema to specify which attributes are collated, and these will be specified using a local boolean qualifier (defined below). </p>
+<h3 id="rationale_14">Rationale</h3>
+<p>For applications that will visualize or present to the user a representation of a sequence collection, it will be useful to know if any attributes have one-value-per-sequence, or something else. The collated attributes are those that belong to each sequence. It is possible that other attributes will exist on the seqcol object, but a generic visualization engine or other processor will benefit from knowing which ones are collated.</p>
+<p>But how to specify them in the JSONschema? In jsonschema, there are 2 ways to qualify properties: 1) a local qualifier, using a key under a property; or 2) an object-level qualifier, which is specified with a keyed list of properties up one level. For example, you annotate a property's <code>type</code> with a local qualifier, underneath the property, like this:</p>
+<div class="highlight"><pre><span></span><code>properties:
+  names:
+    type: array
+</code></pre></div>
+<p>However, you specify that a property is <code>required</code> by adding it to an object-level <code>required</code> list that's parallel to the <code>properties</code> keyword:</p>
+<div class="highlight"><pre><span></span><code>properties:
+  names:
+    type: array
+required:
+  - names
+</code></pre></div>
+<p>In sequence collections, we chose to use define <code>collated</code> as a local qualifier. Local qualifiers fit better for qualifiers independent of the object as a whole. They are qualities of a property that persist if the property were moved onto a different object. For example, the <code>type</code> of an attribute is consistent, regardless of what object that attribute were defined on. In contrast, object-level qualfier lists fit better for qualifiers that depend on the object as a whole. They are qualities of a property that depend on the object context in which the property is defined. For example, the <code>required</code> modifier is not really meaningful except in the context of the object as a whole. A particular property could be required for one object type, but not for another, and it's really the object that induces the requirement, not the property itself.</p>
+<p>We reasoned that <code>inherent</code>, like <code>required</code>, describes the role of an attribute in the context of the whole object; An attribute that is inherent to one type of object need not be inherent to another. Therefore, it makes sense to treat this concept the same way jsonschema treats <code>required</code>.  In contrast, the idea of <code>collated</code> describes a property independently: Whether an attribute is collated is part of the definition of the attribute; if the attribute were moved to a different object, it would still be collated.</p>
+<p>For example, here the <code>lengths</code> attribute is maraked as collated using a local qualifier. The <code>author</code> attribute is marked as <em>not</em> collated in the same way:</p>
+<div class="highlight"><pre><span></span><code>description: &quot;A collection of biological sequences.&quot;
+type: object
+properties:
+  lengths:
+    type: array
+    collated: true
+    description: &quot;Number of elements, such as nucleotides or amino acids, in each sequence.&quot;
+    items:
+      type: integer
+  author:
+    type: string
+    collated: false
+    description: &quot;The author of this sequence collection&quot;
+...
+</code></pre></div>
+<h3 id="linked-issues_9">Linked issues</h3>
+<ul>
+<li>https://github.com/ga4gh/refget/issues/40</li>
+</ul>
+<h2 id="2023-07-26-there-will-be-no-metadata-endpoint">2023-07-26 There will be no metadata endpoint</h2>
+<h3 id="decision_14">Decision</h3>
+<p>We have no need for a <code>/metadata</code> endpoint</p>
+<h3 id="rationale_15">Rationale</h3>
+<p>At one point (issue #3), we debated whether there should be a <code>/metadata</code> endpoint or something like that as a way to retrieve information about a sequence that might not be part of the digested sequence. However, after we distinguished between <code>inherent</code> and <code>non-inherent</code> attributes, we have realized that this satisfies the earlier requirement for a <code>/metadata</code> endpoint; in fact, the metadata can be returned to the user through the normal endpoint, and just flagged as <code>non-inherent</code> in the schema to indicate that it's not digested, and therefore not part of the identity of the object</p>
+<p>We distinguished between two types of metadata:</p>
+<ul>
+<li>server-scoped metadata, like the schema we described above, should be served by <code>/service-info</code></li>
+<li>collection-scoped or sequence-scoped metadata don't fit under <code>/service-info</code>. For these, they will be served by the primary <code>/collection</code> endpoint, rather than by a separate <code>/metadata</code> endpoint.</li>
+</ul>
+<h3 id="linked-issues_10">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/3">https://github.com/ga4gh/refget/issues/3</a></li>
+<li><a href="https://github.com/ga4gh/refget/issues/39">https://github.com/ga4gh/refget/issues/39</a></li>
+<li><a href="https://github.com/ga4gh/refget/issues/40">https://github.com/ga4gh/refget/issues/40</a></li>
+</ul>
+<h2 id="2023-07-12-required-attributes-are-lengths-and-names">2023-07-12 - Required attributes are: lengths and names</h2>
+<h3 id="decision_15">Decision</h3>
+<p>A sequence collection consists of a set of arrays. The only arrays that MUST be included for a valid sequence collection are <em>lengths</em> and <em>names</em>. All other possible arrays, including <em>sequences</em> and other controlled vocabulary arrays, are not required.</p>
+<h3 id="rationale_16">Rationale</h3>
+<p>Debate around what should be mandatory as centered on 3 specific attributes: sequences, names, and lengths:</p>
+<p>At first, it feels like sequences are fundamental components of sequence collections, and therefore, the <em>sequences</em> array should be mandatory, and names and lengths may be superfluous. For reference genomes, for example, it's clear that collections of sequences are the main function of sequence collections. However, analysis of reference genome data also includes many analyses for which the sequences themselves do not matter, and the critical component is simply the name and length of the sequence. An array of names and lengths can be thought of as a <em>coordinate system</em>, and we have realized that the sequence collection specification is <em>also</em> extremely useful for representing and uniquely identifying coordinate systems. From this perspective, we envision a coordinate system as a sequence collection in which the actual sequence content is irrelevant, but in which the lengths and names of the sequences are critical. Analysis of coordinate systems like this is very frequent. For example, any sort of annotation analysis looking at genomic regions will rely on the lengths of the sequences to enforce that coordinates refer to the same thing, but do not rely on the underlying sequences. This is why "chrom-sizes" files are used so frequently (<em>e.g.</em> across many UCSC tools).</p>
+<p>This leads us to the conclusion that <em>sequences</em> should be optional, and <em>names</em> and <em>lengths</em> should be the only mandatory components. <em>Lengths</em> makes sense because if you have a sequence, you can always compute it's length, but if you don't have a sequence (all you have is a coordinate system), you may only have a length. We debated extensively whether <em>names</em> should be mandatory, and in the end, decided that it's unlikely to pose much of a difficulty to make it mandatory, and provides a lot of convenience. If sequences lack names altogether, it is trivial to name them by index of the order of the sequences. We reason that downstream use cases are very likely to require at least <em>some</em> type of identifier to refer to each of the sequences, even if it's just the index of the sequence in the list. While it may be possible to imagine a use case where an identifier for each sequence is not required, it's not difficult at all to just assign indexes. By making it required, we ensure that implementations will always have the same possible way to reference the sequences in the collection. Also, one potential use case for dropping the <em>names</em> array, namely to provide name-invariant sequence records for mapping purposes, will instead be possible to solve through defining an extra <em>non-inherent</em> and name-invariant attribute.</p>
+<h2 id="2023-07-12-implementations-should-provide-sorted_name_length_pairs-and-comparison-endpoint">2023-07-12 Implementations SHOULD provide sorted_name_length_pairs and comparison endpoint</h2>
+<h3 id="decisions">Decisions</h3>
+<ol>
+<li>Name of the "names-lengths" attribute should be <code>sorted_name_length_pairs</code>.</li>
+<li>The <code>sorted_name_length_pairs</code> is RECOMMENDED.</li>
+<li>The <code>/comparison</code> endpoint is RECOMMENDED.</li>
+<li>The algorithm for computing the <code>sorted_name_length_pairs</code> attribute should be as follows:</li>
+</ol>
+<h3 id="algorithm-for-computing-sorted_name_length_pairs">Algorithm for computing <code>sorted_name_length_pairs</code></h3>
+<ol>
+<li>Lump together each name-length pair from the primary collated <code>names</code> and <code>lengths</code> into an object, like <code>{"length":123,"name":"chr1"}</code>.</li>
+<li>Canonicalize JSON according to the seqcol spec (using RFC-8785).</li>
+<li>Digest each name-length pair string individually.</li>
+<li>Sort the digests lexographically.</li>
+<li>Add as an undigested, uncollated array to the sequence collection.</li>
+</ol>
+<h3 id="rationale-and-alternatives-considered">Rationale and alternatives considered</h3>
+<ol>
+<li>
+<p>We considered <code>names_lengths</code>, <code>sorted_names_lengths</code>, <code>name_length_pairs</code>. In the end we are trying to strike a balance between descriptiveness and conciseness. We decided the idea of "pairs" is really critical, and so is "sorted", so this seemed to us to be a minimal set of words to capture the intention of the attribute, though it is a bit long. But in the end the name itself just has to be <em>something</em> standardized, and nothing seems perfect.</p>
+</li>
+<li>
+<p>We debated whether it should be required or optional to provide the <code>sorted_name_length_pairs</code> attribute. We think it provides a lot of really nice benefits, particularly if everyone implements it; however, we also acknowledge that there are some use cases for seqcols (like just being a provider of sequence collections) where every collection will have sequences, and comparing among coordinate systems is not really in scope. For this use case, we acknowledge that the sorted_name_length_pairs may not have utility, so we make it RECOMMENDED.</p>
+</li>
+<li>
+<p>Similarly, we envisioned the possibility of a minimal implementation built using object storage that could fulfill all the other specifications. So while we think that the comparison function will be very helpful, particularly if it's implemented everywhere, for a minimal implementation that's sole purpose is to provide sequences, it might make sense to opt out of this. Therefore, we call it recommended.</p>
+</li>
+</ol>
+<h3 id="linked-issues_11">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/40">https://github.com/ga4gh/refget/issues/40</a></li>
+</ul>
+<h2 id="2023-06-14-internal-digests-should-not-be-prefixed">2023-06-14 - Internal digests SHOULD NOT be prefixed</h2>
+<h3 id="background">Background</h3>
+<p>In some situations, digests are prefixed. For example, these may be CURIEs, which specify namespaces or provide other information about what the digest represents. This raises questions about when and where we should expect or use prefixes. This has to be determined because including prefixes in the content that gets digested changes it, so we have to be consistent.</p>
+<h3 id="decision_16">Decision</h3>
+<p>We determined that <em>internally</em>, we will not append prefixes to the strings we are going to digest. However, if a particular identifier defines some kind of a prefix <em>as part of the identifier</em> (<em>e.g.</em> a refget sequence identifier), then it's of course no problem, we take that identifier at face value. To summarize:</p>
+<ul>
+<li>for internal identifiers (those generated within seqcol), we digest only digests, not prefixes of any kind</li>
+<li>for external identifiers (like refget identifiers), we accept them at face value, so we wouldn't remove a prefix if you declare it is was part of your sequence identifier</li>
+<li>the seqcol specification should RECOMMEND using refget identifiers</li>
+</ul>
+<p>More specifically, for refget, there are two types of prefix: the namespace prefix (<code>ga4gh:</code>) and type type prefix (<code>SQ.</code>).
+Right now, the refget server requires you to have the type prefix to request a lookup; the refget protocol declares that this type prefix is <em>part of the identifier</em>.
+However, the <code>ga4gh:</code> prefix is more of a namespace prefix and is <em>not</em> required, and therefore not considered part of the identifier.
+Therefore, the seqcol <code>sequence</code> values would <em>include</em> the <code>SQ.</code> but not the <code>ga4gh:</code>.</p>
+<h3 id="rationale_17">Rationale</h3>
+<p>According to the definition of CURIEs:</p>
+<blockquote>
+<p>A host language MAY declare a default prefix value, or MAY provide a mechanism for defining a defining a default prefix value. In such a host language, when the prefix is omitted from a CURIE, the default prefix value MUST be used.</p>
+</blockquote>
+<p>We see no need to add prefixes to the identifiers we use internally, which we just assume belong to our namespace.
+Adding prefixes will complicate things and does not add benefits. Prefixes may be added to our identifiers by outside entities as needed to define for them the scope of our local digests.</p>
+<h3 id="linked-issues_12">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/37">https://github.com/ga4gh/refget/issues/37</a></li>
+</ul>
+<h2 id="2023-06-28-seqcol-json-schema-defines-reserved-attributes-without-additional-namespacing">2023-06-28 - Seqcol JSON schema defines reserved attributes without additional namespacing</h2>
+<h3 id="decision_17">Decision</h3>
+<p>One potential issue may arise if a custom implementation uses an attribute that a future version of seqcol adds to the schema, and if these attributes are defined differently. This will create a name clash and the custom implementation wouldn't be compatible with the future seqcol schema. It would be nice to prevent such future clashes, which would require ensuring that future seqcol attributes mean the same thing across collections so they are compatible. One way to solve this would be to define an namespace reserved by the specification, so that custom attributes look different and will therefore guarantee that custom attribute never clashes with seqcol attributes, thereby ensuring that custom implementations will be compatible with any future schema updates.</p>
+<p>Despite the potential issue for custom attribute clashes, we decided:</p>
+<ol>
+<li>
+<p>We will not use any additional namespacing. Instead, the seqcol schema declares and defines the specific attributes of a sequence collection. We will "claim" any reserved keywords in the secqol schema we publish, not by defining a style or namespace of reserved keywords.</p>
+</li>
+<li>
+<p>We will try to add to this many things that we forsee as possible attributes that could be defined in a seqcol. Thus, we will provide an official set of definitions that should prevent many possible future clashes.</p>
+</li>
+<li>
+<p>We will specify that for custom attributes, you can do what you want outside the reserved keywords; but you should be aware that if a word becomes part of the official schema in the future, this could require a change of your custom attribute to maintain backwards compatibility. We will advise that if possibility of future clashes is important for an external schema, they could prevent that by prefixing custom attributes. However, this also means that if a future attribute <em>is</em> added to the schema to represent that concept, it would not follow the custom name.</p>
+</li>
+<li>
+<p>Third-party implementers may propose attributes that should be moved into the primary seqcol schema for subsequent release. These proposals could happen via raising an issue in the specification repository.</p>
+</li>
+</ol>
+<h3 id="rationale_18">Rationale</h3>
+<p>Several reasons led us to this decisions:</p>
+<ol>
+<li>The likelihood of wanting to add custom attributes that will clash and have different definition seems low, so we questioned whether it is worth the cost of defining separate namespaces.</li>
+<li>In the event that there is a clash in the future, this is not really a major problem. A new version of the official schema that adds new reserved keywords will basically mean a new major release of seqcol, which could potentially introduce backwards incompatibility with an existing custom attribute. This just means the custom implementation would need to be updated to follow the new schema, which is possible.</li>
+<li>It seems more likely that we would "claim" an official attribute that someone else had already used that <em>does</em> match the intended semantics of the word. In that case, our effort to prevent clashes would have actually created clashes, because it would have forced the custom attribute to use a different attribute name. Instead, it seems more prudent to just allow the custom implementations to use the same namespace of attribute names, and deal with any possible backwards incompatibilities if they ever actually arise in the future.</li>
+<li>Since we expect the major implementations to be few and driven by people connected with the project, it seems more likely that we would just adopt the custom attribute with its definition as an official attribute. We would not be able to do this if we enforced separate namespaces, which would create backwards compatibility.</li>
+</ol>
+<p>In other words, in short: the idea to prevent future backwards-incompatibility by creating a reserved word namespace seems, paradoxically, more likely to actually <em>create</em> a future backwards compatibility than to prevent one.</p>
+<h2 id="2023-06-28-details-of-endpoints">2023-06-28 Details of endpoints</h2>
+<h3 id="decisions_1">Decisions</h3>
+<ol>
+<li>
+<p>The specification for how to retrieve different representations of a sequence collection should be specified to the <code>/collection</code> endpoint with <code>?level=&lt;level&gt;</code>, where <code>&lt;level&gt;</code> interpretations are:</p>
+<ul>
+<li><code>level</code> &lt;= 0 is undefined</li>
+<li>the return value is JSON for all </li>
+<li><code>?level=1</code> MUST be allowed, and must return the level 1 seqcol representation</li>
+<li><code>?level=2</code> MUST be allowed, and must return the level 2 seqcol representation</li>
+<li><code>?level</code> is OPTIONAL, and when not provided, <code>level=2</code> is assumed</li>
+</ul>
+</li>
+<li>
+<p>The <code>/comparison</code> endpoint is RECOMMENDED.</p>
+</li>
+</ol>
+<h3 id="rationale_19">Rationale</h3>
+<ol>
+<li>
+<p>The different levels of representation are useful for different things and it makes sense to make it possible to retrieve them. We debated about the best way to do this, and also considered using names instead of numbers.</p>
+</li>
+<li>
+<p>The comparison endpoint is very useful, but we can imagine use cases where it can cause problems or may not be needed. First, it will preclude the ability of creating an S3-only implementation. Since it's possible and useful to create an implementation that only implements the <code>/collection</code> endpoint, it makes sense that <code>/comparison</code> should not be required. Second, some services may view themselves as solely providing content, and nothing more. We recommend these services still implement <code>/comparison</code>, but acknowledge that the <code>/collection</code> endpoint will still be useful even without it, so this again fits with a <code>RECOMMEND</code> status.</p>
+</li>
+</ol>
+<h2 id="2023-03-22-seqcol-schemas-must-specify-inherent-attributes">2023-03-22 - Seqcol schemas MUST specify inherent attributes</h2>
+<h3 id="decision_18">Decision</h3>
+<p>A seqcol schema provided by a seqcol API <code>MUST</code> define an <code>inherent</code> section. This section specifies a list of attributes, indicating the attributes that <strong>do</strong> contribute to the identity of the collection. As a corollary, attributes of a seqcol that are <em>not</em> listed in <code>inherent</code> <code>MUST NOT</code> contribute to the identifier; they are therefore excluded from the digest calculation.</p>
+<h3 id="rationale_20">Rationale</h3>
+<p>We have found a lot of useful use cases for information that should go along with a seqcol, but should not contribute to the <em>identity</em> of that seqcol. This is a useful construct as it allows us to include information in a collection that does not affect the identifier that is computed for that collection. One simple example is the "author" or "uploader" of a reference sequence; this is useful information to store alongside this collection, but we wouldn't want the same collection with two different authors to have a different identifier! Similarly, the 'sorted_name_length_pairs' idea provides lots of utility, but it doesn't change anything about the identity of the collection, so it would be nice to exclude it because then an implementation that didn't implement 'sorted_name_length_pairs' would end up with the same identifier, improving interoperability across servers.</p>
+<p>Thus, we introduce the idea of <em>inherent</em> vs <em>non-inherent attributes</em>. Inherent attributes contribute to the identifier; <em>non-inherent</em> attributes are not considered in computing the top-level digest. We previously called these <em>digested</em> and <em>non-digested</em> attributes, but this is not really a good name because, while these non-inherent attributes may not be part of the top-level digest calculation, they are still going to be digested at level 2.</p>
+<h3 id="linked-issues_13">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/40">https://github.com/ga4gh/refget/issues/40</a></li>
+</ul>
+<h3 id="alternatives-considered">Alternatives considered</h3>
+<p>We considered using <code>extrinsic</code> to define the opposite of <code>inherent</code>, which would change it so that attributes were inherent by default; but we decided we liked the explicitness of forcing the schema to specify which attributes are to be included in the digest, because this brings clarity over the alternative, which is to assume everything is included unless it's excluded. We also liked that this makes the <code>inherent</code> keyword behave similarly to the <code>required</code> keyword in JSON-schema; if left off, we assume nothing is required. This means that in order for a seqcol schema to be valid, it must have at least one inherent attribute specified.</p>
+<h2 id="2023-02-08-array-names-should-be-ascii">2023-02-08 - Array names SHOULD be ASCII</h2>
+<h3 id="decision_19">Decision</h3>
+<p>Custom array names SHOULD be ASCII characters. We expect most implementations will require this; nevertheless, implementers may choose to allow UTF-8 characters as an extension to the spec. Implementing UTF-8 is not required for an implementation. In this extension, array names MUST at least follow UTF-8.</p>
+<h3 id="rationale_21">Rationale</h3>
+<p>The sequence collection is a group of named arrays. These array names include built-in, defined arrays, like names, lengths, and sequences, but users may also use custom array names. Our spec-defined array names are all lowercase ASCII characters, but this doesn't mean we must restrict custom array names in the same way.</p>
+<p>While non-ASCII array names would be compatible with our current specification, we identified 3 issues that could arise if someone uses non-ASCII: 1) Normalization. We would probably need to define in the specification some normalization scheme to make sure things a user expects to be identical will hash to the same digest. 2) Sort order. However, this problem will be solved by following a JSON canonicalization standard. 3) Use of array names in other places will be restricted. For example, it seems natural to want to create API endpoints or table names or in columns in a database that correspond to array names. If array names are non-ASCII, it may preclude this, increasing implementation complexity and may make some things impossible.</p>
+<h3 id="linked-issues_14">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/33">https://github.com/ga4gh/refget/issues/33</a></li>
+</ul>
+<h2 id="2023-01-25-the-digest-algorithm-will-be-the-ga4gh-digest">2023-01-25 - The digest algorithm will be the GA4GH digest</h2>
+<h3 id="decision_20">Decision</h3>
+<p><code>sha512t24u</code> digests must be used instead of <code>md5</code> for sequence collection digests.</p>
+<h3 id="rationale_22">Rationale</h3>
+<p><code>sha512t24u</code> was created as part of the <a href="https://vrs.ga4gh.org/en/stable/impl-guide/computed_identifiers.html">Variation Representation Specification standard</a> and used within VRS to calculate GA4GH identifiers for high-level domain objects in combination with a type prefix map. The <code>sha512t24u</code> function (<a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883">Hart <em>et al</em>. 2020</a>) is described as:</p>
+<ul>
+<li>performing a SHA-512 digest on a binary blob of data</li>
+<li>truncate the resulting digest to 24 bytes</li>
+<li>encodes the 24 bytes using <code>base64url</code> (<a href="https://datatracker.ietf.org/doc/html/rfc4648#section-5">RFC 4648</a>) resulting in a 32 character string</li>
+</ul>
+<p>Under this scheme the string <code>ACGT</code> will result in the <code>sha512t24u</code> digest <code>aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2</code>. This digest can be converted into a valid refget identifier by prefixing <code>SQ.</code>. </p>
+<p><code>sha512t24u</code> was envisaged as a fast digest mechanism with a space-efficient representation that can be used for any data with low collision probability. Collisions have been (documented in <code>md5</code>)[https://en.wikipedia.org/wiki/MD5#Collision_vulnerabilities] leading to the belief MD5 was insufficient for our needs.</p>
+<p><code>sha512t24u</code> must be used for any digest of data <strong>by</strong> the sequence collections standard. This decision does not disallow the use of <code>md5</code> sequence checksums.</p>
+<h3 id="limitations">Limitations</h3>
+<p><code>MD5</code> is easier to calculate and familiar as many systems ship with a command line <code>md5</code> binary. <code>sha512t24u</code> needs to be typed when used outside of an implementation to avoid issues of collision.</p>
+<h3 id="linked-issues_15">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/30">https://github.com/ga4gh/refget/issues/30</a></li>
+</ul>
+<h2 id="2023-01-12-how-sequence-collection-are-serialized-prior-to-digestion">2023-01-12 - How sequence collection are serialized prior to digestion</h2>
+<p>The serialisation in this context is the conversion of the sequence collection object into a string that can be digested.</p>
+<h3 id="decision_21">Decision</h3>
+<p>The serialisation of a sequence collection will use the following steps</p>
+<ol>
+<li>Apply RFC-8785 on each array of level 2</li>
+<li>Digest the canonical representation of each array</li>
+<li>Create object representation of the seq-col using array names and digested arrays</li>
+<li>Apply RFC-8785 on the object representation</li>
+<li>Digest the final canonical representation</li>
+</ol>
+<h4 id="1-apply-rfc-8785-for-converting-from-level-2-to-level-1">1. Apply RFC-8785 for converting from level 2 to level 1</h4>
+<p>For example the length array at level 2:
+<div class="highlight"><pre><span></span><code><span class="p">[</span><span class="mi">248956422</span><span class="p">,</span><span class="w"> </span><span class="mi">242193529</span><span class="p">,</span><span class="w"> </span><span class="mi">198295559</span><span class="p">]</span>
+</code></pre></div></p>
+<p>Will be serialised using RFC-8785 and digested as a binary string. Here the output of the python implementation: </p>
+<div class="highlight"><pre><span></span><code><span class="sa">b</span><span class="s1">&#39;[248956422,242193529,198295559]&#39;</span>
+</code></pre></div>
+<p>It would also support any UTF-8 character. For example this array of names
+<div class="highlight"><pre><span></span><code><span class="p">[</span><span class="s2">&quot;染色体-1&quot;</span><span class="p">,</span><span class="s2">&quot;染色体-2&quot;</span><span class="p">,</span><span class="s2">&quot;染色体-3&quot;</span><span class="p">]</span>
+</code></pre></div></p>
+<p>Would create the following serialisation:</p>
+<div class="highlight"><pre><span></span><code><span class="sa">b</span><span class="s1">&#39;[&quot;</span><span class="se">\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x93</span><span class="s1">-1&quot;,&quot;</span><span class="se">\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x93</span><span class="s1">-2&quot;,&quot;</span><span class="se">\xe6\x9f\x93\xe8\x89\xb2\xe4\xbd\x93</span><span class="s1">-3&quot;]&#39;</span>
+</code></pre></div>
+<h4 id="2-digest-of-the-canonical-representation">2. Digest of the canonical representation</h4>
+<p>The canonical string representation is then digested. Assuming the use of GA4GH (sha512 trim to 24) digest, the following array of length</p>
+<div class="highlight"><pre><span></span><code><span class="sa">b</span><span class="s1">&#39;[248956422,242193529,198295559]&#39;</span>
+</code></pre></div>
+<p>would be converted to </p>
+<div class="highlight"><pre><span></span><code><span class="s2">&quot;5K4odB173rjao1Cnbk5BnvLt9V7aPAa2&quot;</span>
+</code></pre></div>
+<h4 id="3-creation-of-an-object-composed-of-the-array-names-and-the-digested-arrays">3. Creation of an object composed of the array names and the digested arrays</h4>
+<p>An object is created with the array name as properties and the digest as value.
+Example the following collection: 
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;sequences&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;EiYgJtUfGyad7wf5atL5OG4Fkzohp2qe&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;lengths&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5K4odB173rjao1Cnbk5BnvLt9V7aPAa2&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;names&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp&quot;</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<h4 id="4-use-rfc-8785-on-the-object">4. Use RFC-8785 on the object</h4>
+<p>This will create a canonical representation of the object </p>
+<div class="highlight"><pre><span></span><code><span class="sa">b</span><span class="s1">&#39;{&quot;lengths&quot;:&quot;5K4odB173rjao1Cnbk5BnvLt9V7aPAa2&quot;,&quot;names&quot;:&quot;g04lKdxiYtG3dOGeUC5AdKEifw65G0Wp&quot;,&quot;sequences&quot;:&quot;EiYgJtUfGyad7wf5atL5OG4Fkzohp2qe&quot;}&#39;</span>
+</code></pre></div>
+<h4 id="5-digest-the-final-canonical-representation">5. Digest the final canonical representation</h4>
+<p>Finally the canonical, representation is digested again to produce the identifier</p>
+<div class="highlight"><pre><span></span><code><span class="s2">&quot;S3LCyI788LE6vq89Tc_LojEcsMZRixzP&quot;</span>
+</code></pre></div>
+<h3 id="rationale_23">Rationale</h3>
+<p>The decision to use the serialisation of array and object provided in RFC-8785 allows sequence collection to support any type of characters and rely on a documented standard that offer implementation in multiple languages.
+It also future-proofs the serialisation method if we ever allow complex object to be element of the array.</p>
+<h3 id="linked-issues_16">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/1">https://github.com/ga4gh/refget/issues/1</a></li>
+<li><a href="https://github.com/ga4gh/refget/issues/25">https://github.com/ga4gh/refget/issues/25</a></li>
+<li><a href="https://github.com/ga4gh/refget/issues/33">https://github.com/ga4gh/refget/issues/33</a></li>
+</ul>
+<h3 id="known-limitations">Known limitations</h3>
+<p>The JSON canonical serialisation defined in RFC-8785 has a limited set of reference implementation. It is possible that its implementation makes sequence collection implementation more difficult in languages where the RFC is not implemented. In this cases it is valuable to note that the current specification of Sequence Collection do not require that all the features of RFC-8785 be implemented. </p>
+<h3 id="alternatives-considered_1">Alternatives considered</h3>
+<p>We spent a significant amount of time discussing approaches for what essentially amounts to a custom standard for creating the string-to-digest. A lot of this revolved around what delimiters to use. We made a lot of progress there and came up with some really interesting encoding schemas, which had many desirable characteristics. However, ultimately we decided that the value derived from using a comprehensive and well-developed third-party solution would trump the elegance, efficiency, and other benefits we received from our custom encoding schema. In particular, adopting the RFC-8785 would make developers more likely to be able to rely on third-party implementations, reducing the burden to implement our standard. Also, this solution accommodates other sources that we had struggled with a bit, such as UTF-encoding.</p>
+<h2 id="2022-10-05-terminology-decisions">2022-10-05 - Terminology decisions</h2>
+<h3 id="decision_22">Decision</h3>
+<p>We refer to representations in "levels". The level number represents the number of "lookups" you'd have to do from the "top level" digest. So, we have:</p>
+<h4 id="level-0-aka-top-level">Level 0 (AKA "top level")</h4>
+<p>Just a plain digest. This corresponds to <strong>0 database lookups</strong>. Example:
+<div class="highlight"><pre><span></span><code>a6748aa0f6a1e165f871dbed5e54ba62
+</code></pre></div></p>
+<h4 id="level-1">Level 1</h4>
+<p>What you'd get when you look up the digest with <strong>1 database lookup</strong> and no recursion. Previously called "layer 0" or "reclimit 0" because there's no recursion. Also sometimes called the "array digests" because each entity represents an array.</p>
+<p>Example:
+<div class="highlight"><pre><span></span><code>{
+  &quot;lengths&quot;: &quot;4925cdbd780a71e332d13145141863c1&quot;,
+  &quot;names&quot;: &quot;ce04be1226e56f48da55b6c130d45b94&quot;,
+  &quot;sequences&quot;: &quot;3b379221b4d6ea26da26cec571e5911c&quot;
+}
+</code></pre></div></p>
+<h4 id="level-2">Level 2</h4>
+<p>What you'd get with <strong>2 database lookups</strong> (equivalently, 1 recursive call). This is the most common representation, more commonly used than either the "level 1" or the "level 3" representations.</p>
+<div class="highlight"><pre><span></span><code>{
+  &quot;lengths&quot;: [
+    &quot;1216&quot;,
+    &quot;970&quot;,
+    &quot;1788&quot;
+  ],
+  &quot;names&quot;: [
+    &quot;A&quot;,
+    &quot;B&quot;,
+    &quot;C&quot;
+  ],
+  &quot;sequences&quot;: [
+    &quot;76f9f3315fa4b831e93c36cd88196480&quot;,
+    &quot;d5171e863a3d8f832f0559235987b1e5&quot;,
+    &quot;b9b1baaa7abf206f6b70cf31654172db&quot;
+  ]
+}
+</code></pre></div>
+<h4 id="level-3">Level 3</h4>
+<p>What you'd get with <strong>3 database lookups</strong> (equivalently, 2 recursive call). The only field that can be further populated is <code>sequences</code>, so the level 3 representation provides the complete data. This layer:
+- can potentially be very large
+- is the only level that requires outsourcing a query to a refget server
+- may reasonable be disabled on my seqcol server, since the point is not to retrieve actual sequences; </p>
+<p>Example (sequences truncated for brevity):
+<div class="highlight"><pre><span></span><code>{
+  &quot;lengths&quot;: [
+    &quot;1216&quot;,
+    &quot;970&quot;,
+    &quot;1788&quot;
+  ],
+  &quot;names&quot;: [
+    &quot;A&quot;,
+    &quot;B&quot;,
+    &quot;C&quot;
+  ],
+  &quot;sequences&quot;: [
+    &quot;CATAGAGCAGGTTTGAAACACTCTTTCTGTAGTATCTGCAAGCGGACGTTTCAAGCGCTTTCAGGCGT...&quot;,
+    &quot;AAGTGGATATTTGGATAGCTTTGAGGATTTCGTTGGAAACGGGATTACATATAAAATCTAGAGAGAAGC...&quot;,
+    &quot;GCTTGCAGATACTACAGAAAGAGTGTTTCAAACCTGCTCTATGAAAGGGAATGTTCAGTTCTGTGACTT...&quot;
+  ]
+}
+</code></pre></div></p>
+<h4 id="summary">Summary</h4>
+<p>We should be consistent by using these terms to refer to the above representation:
+-  "level 0 representation", "level 0 digest", top-level digest", or "primary digest";
+-  "level 1 representation" or "level 1 digests";
+-  "level 2 representation"; 
+-  "level 3 representation" of a sequence collection. </p>
+<h3 id="linked-issues_17">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/25">https://github.com/ga4gh/refget/issues/25</a></li>
+</ul>
+<h2 id="2022-06-15-structure-for-the-return-value-of-the-comparison-api-endpoint">2022-06-15 - Structure for the return value of the comparison API endpoint</h2>
+<h3 id="decision_23">Decision</h3>
+<p>The compare function return value MUST be an object following the REQUIRED format specified below.</p>
+<p><strong>REQUIRED</strong>: The endpoint MUST return, in JSON format, an object with these 3 keys: "digests", "arrays", "elements". </p>
+<ul>
+<li><em>digests</em>: an object with 2 elements, with keys <em>a</em> and <em>b</em>, and values either the level 0 seqcol digests for the compared collections, or <em>undefined (null)</em>. The value MUST be the level 0 seqcol digest for any digests provided by the user for the comparison. However, it is OPTIONAL for the server to provide digests if the user provided the sequence collection contents, rather than a digest. In this case, the server MAY compute and return the level 0 seqcol digest, or it MAY return <em>undefined (null)</em> in this element for any corresponding sequence collection.</li>
+<li><em>arrays</em>: an object with 3 elements, with keys <em>a_only</em>, <em>b_only</em>, and <em>a_and_b</em>. The value of each element is a list of array names corresponding to arrays only present in a, only present in b, or present in both a and b.</li>
+<li><em>elements</em>: An object with 3 elements: <em>total</em>, <em>a_and_b</em>, and <em>a_and_b-same-order</em>. <em>total</em> is an object with <em>a</em> and <em>b</em> keys, values corresponding to the total number of elements in the arrays for the corresponding collection. <em>a_and_b</em> is an object with names corresponding to each array present in both collections (in <em>arrays.a_and_b</em>), with values as the number of elements present in both collections for the given array. <em>a_and_b-same-order</em> is also an object with names corresponding to arrays, and the values a boolean following the same-order specification below.</li>
+</ul>
+<p>Example: </p>
+<div class="highlight"><pre><span></span><code>{
+  &quot;digests&quot;: {
+    &quot;a&quot;: &quot;514c871928a74885ce981faa61ccbb1a&quot;,
+    &quot;b&quot;: &quot;c345e091cce0b1df78bfc124b03fba1c&quot;
+  },
+  &quot;arrays&quot;: {
+    &quot;a_only&quot;: [],
+    &quot;b_only&quot;: [],
+    &quot;a_and_b&quot;: [
+      &quot;lengths&quot;,
+      &quot;names&quot;,
+      &quot;sequences&quot;
+    ]
+  },
+  &quot;elements&quot;: {
+    &quot;total&quot;: {
+      &quot;a&quot;: 195,
+      &quot;b&quot;: 25
+    },
+    &quot;a_and_b&quot;: {
+      &quot;lengths&quot;: 25,
+      &quot;names&quot;: 25,
+      &quot;sequences&quot;: 0
+    },
+    &quot;a_and_b-same-order&quot;: {
+      &quot;lengths&quot;: false,
+      &quot;names&quot;: false,
+      &quot;sequences&quot;: null
+    }
+  }
+}
+</code></pre></div>
+<h4 id="same-order-specification">Same-order specification</h4>
+<p>The comparison return includes an <em>a_and_b-same-order</em> boolean value for each array that is present in both collections. The defined value of this attribute is:</p>
+<ul>
+<li><em>undefined (null)</em> if there are fewer than 2 overlapping elements</li>
+<li><em>undefined (null)</em> if there are unbalanced duplicates present (see definition below)</li>
+<li><em>true</em> if all matching elements are in the same order in the two arrays</li>
+<li><em>false</em> otherwise.</li>
+</ul>
+<p>An <em>unbalanced duplicate</em> is used in contrast with a <em>balanced duplicate</em>. Balanced means the duplicates are the same in both arrays. When the duplicates are balanced, order is still defined; but if duplicates are unbalanced, this means an array has duplicates not present in the other, and in that case, order is not defined.</p>
+<h3 id="rationale_24">Rationale</h3>
+<p>The primary purpose of the compare function is to provide a high-level view of how two sequence collections match and differ. The primary use cases are to see if collections are identical or subsets, and to assess the degree of overlap in each attribute (such as sharing all sequence digests, sequence names, or lengths). If more details are needed, the user will need to look in more depth at the raw elements of the sequence collection. It's important to have a fast, easy-to-implement, and minimal payload function to provide answers to the common question about "how compatible are these two collections".</p>
+<h3 id="linked-issues_18">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/21">https://github.com/ga4gh/refget/issues/21</a></li>
+<li><a href="https://github.com/ga4gh/refget/issues/7">https://github.com/ga4gh/refget/issues/7</a></li>
+</ul>
+<h3 id="alternatives-considered_2">Alternatives considered</h3>
+<p>We considered a simpler arrangement that would only return true/false values as to whether the arrays matched but in the different order, or contained any matching elements vs no matching elements. While this would have been faster to compute than the counting approach we settled on, there was concern that it would not be enough information to interpret the comparison. We also considered more information-rich values that would enumerate overlapping or non-overlapping elements. We finally concluded that the most useful would be the middle ground proposed here, where you get counts but no enumerated elements. This provides sufficient information to make a pretty detailed comparison, and can still be computed relatively quickly and keeps the payload size small and predictable.</p>
+<h3 id="known-limitations_1">Known limitations</h3>
+<p>Someone may want to return more information than this, such as enumerating the specific elements in each category. However, this use case would be problematic for large collections, like a transcriptome. We may in the future provide an update to the specification that defines how this information should be returned, but for now, we leave the specification at this minimum requirement.</p>
+<h2 id="2022-06-15-we-will-define-the-elements-of-a-sequence-collections-using-a-schema">2022-06-15 - We will define the elements of a sequence collections using a schema</h2>
+<h3 id="decision_24">Decision</h3>
+<p>The elements of a sequence collection will be defined and described using JSON Schema. The exact contents of the JSON Schema will be determined later. Here is an example JSON Schema as an illustration of the concept (encoded in YAML for readability):</p>
+<div class="highlight"><pre><span></span><code><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;A</span><span class="nv"> </span><span class="s">collection</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">sequences,</span><span class="nv"> </span><span class="s">representing</span><span class="nv"> </span><span class="s">biological</span><span class="nv"> </span><span class="s">sequences</span><span class="nv"> </span><span class="s">including</span><span class="nv"> </span><span class="s">nucleotide</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">amino</span><span class="nv"> </span><span class="s">acid</span><span class="nv"> </span><span class="s">sequences.</span><span class="nv"> </span><span class="s">For</span><span class="nv"> </span><span class="s">example,</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">sequence</span><span class="nv"> </span><span class="s">collection</span><span class="nv"> </span><span class="s">may</span><span class="nv"> </span><span class="s">represent</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">set</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">chromosomes</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">reference</span><span class="nv"> </span><span class="s">genome,</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">set</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">transcripts</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">transcriptome,</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">collection</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">reference</span><span class="nv"> </span><span class="s">microbial</span><span class="nv"> </span><span class="s">sequences</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">specific</span><span class="nv"> </span><span class="s">gene,</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">any</span><span class="nv"> </span><span class="s">other</span><span class="nv"> </span><span class="s">set</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">sequences.&quot;</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span>
+<span class="nt">properties</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">lengths</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Number</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">elements,</span><span class="nv"> </span><span class="s">such</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">nucleotides</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">amino</span><span class="nv"> </span><span class="s">acids,</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">each</span><span class="nv"> </span><span class="s">sequence.&quot;</span>
+<span class="w">    </span><span class="nt">items</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
+<span class="w">  </span><span class="nt">masks</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Digests</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">subsequence</span><span class="nv"> </span><span class="s">masks</span><span class="nv"> </span><span class="s">indicating</span><span class="nv"> </span><span class="s">subsequences</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">be</span><span class="nv"> </span><span class="s">excluded</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">an</span><span class="nv"> </span><span class="s">analysis,</span><span class="nv"> </span><span class="s">such</span><span class="nv"> </span><span class="s">as</span><span class="nv"> </span><span class="s">repeats&quot;</span>
+<span class="w">    </span><span class="nt">items</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">names</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Human-readable</span><span class="nv"> </span><span class="s">identifiers</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">each</span><span class="nv"> </span><span class="s">sequence,</span><span class="nv"> </span><span class="s">commonly</span><span class="nv"> </span><span class="s">called</span><span class="nv"> </span><span class="s">chromosome</span><span class="nv"> </span><span class="s">names.&quot;</span>
+<span class="w">    </span><span class="nt">items</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">priorities</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Annotation</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">whether</span><span class="nv"> </span><span class="s">each</span><span class="nv"> </span><span class="s">sequence</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">primary</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">secondary</span><span class="nv"> </span><span class="s">component</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">collection.&quot;</span>
+<span class="w">    </span><span class="nt">items</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">boolean</span>
+<span class="w">  </span><span class="nt">sequences</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Digests</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">sequences</span><span class="nv"> </span><span class="s">computed</span><span class="nv"> </span><span class="s">using</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">GA4GH</span><span class="nv"> </span><span class="s">digest</span><span class="nv"> </span><span class="s">algorithm</span><span class="nv"> </span><span class="s">(sha512t24u).&quot;</span>
+<span class="w">    </span><span class="nt">items</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Actual</span><span class="nv"> </span><span class="s">sequence</span><span class="nv"> </span><span class="s">content&quot;</span>
+<span class="w">  </span><span class="nt">topologies</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">array</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Annotation</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">whether</span><span class="nv"> </span><span class="s">each</span><span class="nv"> </span><span class="s">sequence</span><span class="nv"> </span><span class="s">represents</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">linear</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">other</span><span class="nv"> </span><span class="s">topology.&quot;</span>
+<span class="w">    </span><span class="nt">items</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">      </span><span class="nt">enum</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;circular&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;linear&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;linear&quot;</span>
+<span class="nt">required</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lengths</span>
+<span class="nt">digested</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lengths</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">names</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">masks</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">priorities</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sequences</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">topologies</span>
+</code></pre></div>
+<h3 id="rationale_25">Rationale</h3>
+<p>We need a formal definition of a sequence collection. The schema provides a machine-usable definition that specifies the names and types of what we envision as a sequence collection. It also provides a convenient way to describe those elements in human-understandable ways through the <code>description</code> field. Thus, this schema solves a number of issues. Most importantly, it answers the question of <em>what are the elements of the sequence collection, and how are they defined?</em> For example, this schema answers the more specific question: <em>what are the allowable or expected algorithms for items included in the sequence array (or possibly other, custom digested arrays?)</em>. The schema establishes a standard expectation for elements that will go into general sequence collections. Implementations are free to add to this schema for their instances as needed.</p>
+<h3 id="linked-issues_19">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/8">https://github.com/ga4gh/refget/issues/8</a></li>
+<li><a href="https://github.com/ga4gh/refget/issues/6">https://github.com/ga4gh/refget/issues/6</a></li>
+</ul>
+<h2 id="2021-12-01-endpoint-names-and-structure">2021-12-01 - Endpoint names and structure</h2>
+<h3 id="decision_25">Decision</h3>
+<p>The endpoint names will be:</p>
+<ul>
+<li><code>GET /service-info</code> for GA4GH service info</li>
+<li><code>GET /collection/{digest}</code> for retrieving a sequence collection</li>
+<li><code>GET /comparison/{digest1}/{digest2}</code> for comparing two collections in the database</li>
+<li><code>POST /comparison/{digest1}</code> for comparing one database collection to a local user-provided collection.</li>
+</ul>
+<p>The POST body for the local comparison is a "level 2" sequence collection, like this:</p>
+<div class="highlight"><pre><span></span><code>{
+  &quot;lengths&quot;: [
+    &quot;248956422&quot;,
+    &quot;242193529&quot;,
+    &quot;198295559&quot;
+  ],
+  &quot;names&quot;: [
+    &quot;chr1&quot;,
+    &quot;chr2&quot;,
+    &quot;chr3&quot;
+  ],
+  &quot;sequences&quot;: [
+    &quot;a004bc1b0bf05fc668cab6bbfd93d3eb&quot;,
+    &quot;0ccf3a67666ac53f99fcad19768f2dde&quot;,
+    &quot;bda7b228789169ae811dd8d676d517ca&quot;
+  ]
+}
+</code></pre></div>
+<h3 id="rationale_26">Rationale</h3>
+<p>We wanted to stick with the REST guideline of noun endpoints with GET that describe what you are retrieving. As recommended in the <a href="https://github.com/ga4gh-discovery/ga4gh-service-info#how-do-i-describe-a-service-implementing-multiple-specifications">service-info specification</a>, a prefix, like <code>/seqcol/...</code> could be added by a service that implemented multiple specifications, but this kind of namespace it outside the scope of the specification itself. We considered doing <code>/{digest1}/compare/{digest2}</code> and that would have been fine. In the end we liked the symmetry of <code>/comparison</code> and <code>/collection</code> as parallel endpoints. For the retrieval endpoint we considered <code>/seqcol</code> or <code>/sequence-collection</code> or <code>/seqCol</code>, but wanted to keep structure parallel to the refget <code>/sequence</code> endpoint.</p>
+<h3 id="limitations_1">Limitations</h3>
+<p>For the <code>POST comparison</code> endpoint, we made 2 limitations to simplify the implementation of the function. First, we do not require it to allow comparing 2 local collections, which could be enabled, but we reason that users should always be comparing against something in the database, and this prevents abusing the system as a computing engine. We also disallowed (or at least don't explicitly require) comparing a level 1 collection (which consists of a named list of array digests), as we figured that most frequently the user will have the array details, and if not, they could look them up.</p>
+<h3 id="linked-issues_20">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/21">https://github.com/ga4gh/refget/issues/21</a></li>
+<li><a href="https://github.com/ga4gh/refget/issues/23">https://github.com/ga4gh/refget/issues/23</a></li>
+</ul>
+<h2 id="2021-09-21-order-will-be-recognized-by-digesting-arrays-in-the-given-order-and-unordered-digests-will-be-handled-as-extensions-through-additional-attributes">2021-09-21 - Order will be recognized by digesting arrays in the given order, and unordered digests will be handled as extensions through additional attributes</h2>
+<h3 id="decision_26">Decision</h3>
+<p>The final sequence collection digests will reflect the order by digesting the arrays in the order provided. We will employ no additional 'order' array, and no additional unordered digests <em>in the string-to-digest</em>. Any additional attributes designed to handle questions with order, such as <code>sorted_name_length_pairs</code>, will not contribute to the digest. Thus, to determine whether two sequence collections differ only in order will require either 1. using the comparison API; or 2. implementing additional functionality via digests outside the inherent attributes.</p>
+<h3 id="rationale_27">Rationale</h3>
+<p>Our earlier decision determined that order <em>must</em> be reflected in the sequence digests, but did not determine the way to ensure that. After months of debate we came up with 4 competing ideas that could do this:</p>
+<p>A. Digest arrays in given order. </p>
+<p>B. Reorder all given arrays according to a single canonical order, and encode order in a separate 'order' array that provides an index into the canonically ordered arrays.</p>
+<p>C. Reorder each given array individually, and then provide a separate 'order_ATTR' array as an index for each array.</p>
+<p>D. Store each array in both ordered and unordered form.</p>
+<p>After lots of initial enthusiasm for option B, we determined that it fails to deliver on the promise of staying invariant when order changes, because if there is a change in any array on which the canonical order is based, this changes the canonical ordering, which in turn changes all the array digests. So these 'unordered' (or canonically ordered) digests are in fact not fit for their main purpose. We therefore agreed to discard this option.</p>
+<p>While options C/D skirt this issue by having a separate order for each array, so that changes in one array do not affect the digest of another, they add significant complexity as everything needs to be stored twice.</p>
+<p>To conclude, option A seems simple and straightforward, satisfies for a basic implementation. We thus defer the question of determining whether two sequence collections differ only in order to the comparison API, or to some other future way to do it that will not affect the actual digests (<em>e.g.</em> the 'sorted_name_length_pairs' attribute).</p>
+<h3 id="linked-issues_21">Linked issues</h3>
+<ul>
+<li>https://github.com/ga4gh/refget/issues/5</li>
+</ul>
+<h3 id="known-limitations_2">Known limitations</h3>
+<p>For use cases that require determination of whether two sequence collections differ only in element order, option A will not provide an answer based on digest comparison alone. Instead, the query will be required to use the compatibility API, which means retrieving the contents of the array to compare them.</p>
+<p>Therefore, to answer this 'order-equivalence' question will require a bit more work than if unordered digests were available; however, this functionality can be easily implemented on top of the basic functionality in a number of ways, which we are continuing to consider.</p>
+<h2 id="2021-08-25-sequence-collection-digests-will-reflect-sequence-order">2021-08-25 - Sequence collection digests will reflect sequence order</h2>
+<h3 id="decision_27">Decision</h3>
+<p>The final sequence collection digests must reflect the order of the sequences given. In other words, changing the order of the sequences will change the identifier.</p>
+<h3 id="rationale_28">Rationale</h3>
+<p>In some scenarios, the order of the sequences in a collection is irrelevant, and therefore, two collections with identical content but a different order should be considered equivalent. This could lead to an approach of first lexographically sorting input sequences before digesting, so that the final identifier is identical regardless of input order.</p>
+<p>However, there are also scenarios for which the order of sequences in a collection matters; for example, some aligners output different results based on the input order of the sequences. Or, order may be used to encode sequence priority. Therefore, it is critical that the final identifiers be able to uniquely identify sequence collections with different orders. Because some use cases require order-aware digests, the final algorithm will have to accommodate this, and we will need to come up with another way to identify two collections that are identical in content but with different order, without relying on the digests being identical</p>
+<h3 id="linked-issues_22">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/5">https://github.com/ga4gh/refget/issues/5</a></li>
+</ul>
+<h3 id="known-limitations_3">Known limitations</h3>
+<p>This decision will lead to a bit more complexity for use cases that do not care about sequence order, because these use cases will no longer be able to rely on simple, identical digest matching. However, this is a necessary increase in complexity to accommodate other use cases where order matters.</p>
+<h2 id="2021-06-30-use-array-based-data-structure-and-multi-tiered-digests">2021-06-30 - Use array-based data structure and multi-tiered digests</h2>
+<h3 id="decision_28">Decision</h3>
+<p>Our original formulation structured data with groups of a sequence plus its  annotation, like <code>chr1|248956422|2648ae1bacce4ec4b6cf337dcae37816/chr2|242193529|4bb4f82880a14111eb7327169ffb729b|</code>. Instead, we decided to switch to an array-based model, in which a sequence collection will be constructed as a dictionary object, with attributes as named arrays, like this:</p>
+<div class="highlight"><pre><span></span><code>seqcol = {&#39;names&#39;: [&#39;chrUn_KI270742v1&#39;,   &#39;chrUn_GL000216v2&#39;,   &#39;chrUn_GL000218v1&#39;],
+  &#39;lengths&#39;: [&#39;186739&#39;, &#39;176608&#39;, &#39;161147&#39;],
+  &#39;sequences&#39;: [&#39;2f31c013a4a8301deb8ab7ed1ca1cd99&#39;,   &#39;725009a7e3f5b78752b68afa922c090c&#39;,   
+&#39;1d708b54644c26c7e01c2dad5426d38c&#39;]}
+</code></pre></div>
+<p>Digests of this object will be the unique identifier of the sequence collection. To compute the digest of this object, we will use a multi-tiered digest approach, where each array will first be digested separately, and then the final identify will be a digest of digests. A sequence collection may thus be represented as a dictionary of digests:</p>
+<div class="highlight"><pre><span></span><code>{ &#39;sequences&#39;: &#39;8dd93796fa0225e92eb159a8779f1b254776557f748f8bfb&#39;,
+ &#39;lengths&#39;: &#39;501fd98e2fdcc276c47306bd72c9155489ed2b23123ddfa2&#39;,
+ &#39;names&#39;: &#39;7bc90a07cf25f2f64f33baee3d420ad1ae5f442055280d43&#39;,
+}
+</code></pre></div>
+<p>This will allow retrieving individual attributes, and testing for identity of individual attributes without retrieving more data.</p>
+<h3 id="rationale_29">Rationale</h3>
+<ul>
+<li>This makes it straightforward to mix-and-match components of the collection. Because each component is independent, and not integrated in with the sequence, it is simpler to select and build subsets and permutations.</li>
+<li>We can add a new component without eliminating backwards compatibility with previous digests that did not include it, because leaving out an array doesn't change the string to digest.</li>
+<li>This makes it easier to test for matching sets of sequences, or matching coordinate systems, using the individual component digests. This way we don't have to traverse down a layer deeper, to the individual elements, to establish identity of individual components.</li>
+<li>It requires only a single delimiter, rather than multiple, which has been a sticking point.</li>
+</ul>
+<h3 id="linked-issues_23">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/8#issuecomment-773489450">https://github.com/ga4gh/refget/issues/8#issuecomment-773489450</a></li>
+<li><a href="https://github.com/ga4gh/refget/issues/10">https://github.com/ga4gh/refget/issues/10</a></li>
+</ul>
+<h3 id="known-limitations_4">Known limitations</h3>
+<ul>
+<li>We may need to enforce that arrays be the same length, at least for attributes that provide one value per sequence. Also, the order of items within each array must match in order for the attributes to correctly collate to a specific sequence.</li>
+</ul>
+<h2 id="2021-01-20-use-the-sam-specification-v1-description-of-sequence-names">2021-01-20 - Use the SAM specification v1 description of sequence names</h2>
+<h3 id="decision_29">Decision</h3>
+<p>Sequence collections will use the <a href="https://samtools.github.io/hts-specs/SAMv1.pdf#subsubsection.1.2.1">v1 SAM specification (subsection 1.2.1)</a> to define the allowable characters in a sequence name. As of January 2021, this is:</p>
+<blockquote>
+<p>Reference sequence names may contain any printable ASCII characters in the range[!-~]apart from backslashes, commas, quotation marks, and brackets—i.e., apart from ‘\ , "‘’ () [] {} &lt;&gt;’—and may notstart with ‘*’ or ‘=’.4</p>
+</blockquote>
+<p>Should a wider GA4GH standard appear from <a href="https://github.com/ga4gh/TASC/issues/5">TASC issue 5</a> the sequence collection spec will review this decision. The long-term vision of the sequence collections specification is to comply with any eventual GA4GH standard for sequence names.</p>
+<h3 id="linked-issues_24">Linked issues</h3>
+<ul>
+<li><a href="https://github.com/ga4gh/refget/issues/2">https://github.com/ga4gh/refget/issues/2</a></li>
+</ul>
+<h3 id="known-limitations_5">Known limitations</h3>
+<ul>
+<li>There have been a handful of reports of old sequences with disallowed characters in the sequence name rows (<code>&gt;</code>) of FASTA files, particularly from the microbiome community. These sequence collections would have to be changed to include only SAM-compatible ASCII characters, which could restrict usage of the sequence collections protocols and delay uptake.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../schemas/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Schemas">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Schemas
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../contributing/" class="md-footer__link md-footer__link--next" aria-label="Next: Contributing">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Contributing
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      GA4GH Large Scale Genomics Workstream, refget team
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.sections", "navigation.expand", "navigation.footer", "toc.follow", "content.action.edit", "content.action.view", "navigation.top"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

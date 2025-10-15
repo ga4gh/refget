@@ -1,0 +1,1972 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ga4gh.github.io/refget/sequences/">
+      
+      
+      
+        <link rel="next" href="../seqcols/">
+      
+      
+      <link rel="icon" href="../img/seqcol_logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>refget protocol - Refget Specifications</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#refget-sequences-v200" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Refget Specifications" class="md-header__button md-logo" aria-label="Refget Specifications" data-md-component="logo">
+      
+  <img src="../img/seqcol_logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Refget Specifications
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              refget protocol
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ga4gh/refget" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Refget Specifications" class="md-nav__button md-logo" aria-label="Refget Specifications" data-md-component="logo">
+      
+  <img src="../img/seqcol_logo.svg" alt="logo">
+
+    </a>
+    Refget Specifications
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ga4gh/refget" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Specifications
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Specifications
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Sequences
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequences
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design principles
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#openapi-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      OpenAPI Description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compliance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compliance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protocol-essentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      Protocol essentials
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internet-media-types-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Internet Media Types Handling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Errors
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checksum-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checksum calculation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#refget-checksum-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      refget Checksum Algorithm
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#namespace-of-the-checksums" class="md-nav__link">
+    <span class="md-ellipsis">
+      Namespace of the checksums
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unique-identifiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unique Identifiers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cors" class="md-nav__link">
+    <span class="md-ellipsis">
+      CORS
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Methods
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-get-sequence-by-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method: get sequence by ID
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-get-known-metadata-for-an-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method: Get known metadata for an id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-fetch-information-on-the-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method: Fetch information on the service
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#range-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Range headers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternative-checksum-algorithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative Checksum Algorithms
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ga4gh-identifier-and-trunc512-algorithm-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      ga4gh identifier and TRUNC512 Algorithm Details
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Rationale
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Rationale">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checksum-input-normalisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checksum Input Normalisation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checksum-choice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checksum Choice
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checksum-identifier-identification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checksum Identifier Identification
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#possible-future-api-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Possible Future API Enhancements
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contributors
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seqcols/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequence Collections
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Detailed how-to guides
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Detailed how-to guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seqcols/digest_from_collection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compute a digest given a seqcol
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seqcols/compare_collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compare two sequence collections
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Implementations
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Implementations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../implementation_python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Python
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../implementation_api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../citation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How to cite
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schemas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Schemas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../decision_record/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Decision record
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design principles
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#openapi-description" class="md-nav__link">
+    <span class="md-ellipsis">
+      OpenAPI Description
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compliance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compliance
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protocol-essentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      Protocol essentials
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internet-media-types-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Internet Media Types Handling
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Errors
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checksum-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checksum calculation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#refget-checksum-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      refget Checksum Algorithm
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#namespace-of-the-checksums" class="md-nav__link">
+    <span class="md-ellipsis">
+      Namespace of the checksums
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unique-identifiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unique Identifiers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cors" class="md-nav__link">
+    <span class="md-ellipsis">
+      CORS
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Methods
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-get-sequence-by-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method: get sequence by ID
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-get-known-metadata-for-an-id" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method: Get known metadata for an id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-fetch-information-on-the-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method: Fetch information on the service
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#range-headers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Range headers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alternative-checksum-algorithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternative Checksum Algorithms
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ga4gh-identifier-and-trunc512-algorithm-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      ga4gh identifier and TRUNC512 Algorithm Details
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#design-rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Rationale
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Rationale">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#checksum-input-normalisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checksum Input Normalisation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checksum-choice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checksum Choice
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checksum-identifier-identification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Checksum Identifier Identification
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#possible-future-api-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Possible Future API Enhancements
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contributors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Contributors
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/ga4gh/refget/edit/master/docs/sequences/README.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/ga4gh/refget/raw/master/docs/sequences/README.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="refget-sequences-v200">Refget Sequences v2.0.0</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Reference sequences are fundamental to genomic analysis and interpretation however naming is a serious issue. For example the reference genomic sequence GRCh38/1 is also known as hg38/chr1, CM000663.2 and NC_000001.11. In addition there is no standardised way to access reference sequence from providers such as INSDC (ENA, Genbank, DDBJ), Ensembl or UCSC.</p>
+<p>Refget enables access to reference sequences using an identifier derived from the sequence itself.</p>
+<p>Refget uses a hash algorithm (by default <code>MD5</code>) to generate a checksum identifier, which is a digest of the underlying sequence. This removes the need for a single accessioning authority to identify a reference sequence and improves the provenance of sequence used in analysis. In addition refget defines a simple scheme to retrieve reference sequence via this checksum identifier.</p>
+<p>Refget is intended to be used in any scenario where full or partial access to reference sequence is required e.g. the CRAM file format or a genome browser.</p>
+<h2 id="design-principles">Design principles</h2>
+<p>The API has the following features:</p>
+<ul>
+<li>The checksum algorithm used to derive the sequence identifier shall be a mainstream algorithm available standard across multiple platforms and programming languages.</li>
+<li>The client may request a sub-sequence, which the server is expected to honour</li>
+<li>Refget was designed to enable access to nucleotide sequences, however other sequences could be provided via the same mechanism e.g. cDNA, CDS, mRNA or proteins</li>
+<li>Optionally the API provides a retrieval of the sequence and metadata via a unique identifier</li>
+</ul>
+<h2 id="openapi-description">OpenAPI Description</h2>
+<p>An OpenAPI description of this specification is available and <a href="pub/refget-openapi.yaml">describes the 2.0.0 version</a>. OpenAPI is a language independent way of describing REST services and is compatible with a number of <a href="http://openapi.tools/">third party tools</a>. (Note: if there are differences between this text and the OpenAPI description, this specification text is definitive.)</p>
+<h2 id="compliance">Compliance</h2>
+<p>Implementers can check if their refget implementations conform to the specification by using our <a href="https://github.com/ga4gh/refget-compliance-suite">compliance suite</a>. A summary of all known public implementations is available from our <a href="https://andrewyatz.github.io/refget-compliance/">compliance report website</a>.</p>
+<h2 id="protocol-essentials">Protocol essentials</h2>
+<p>All API invocations are made to a configurable HTTP(S) endpoint, receive URL-encoded query string parameters and HTTP headers, and return text or other allowed formatting as requested by the user. Successful requests result in HTTP status code 200 and have the appropriate text encoding in the response body as defined for each endpoint. The server may provide responses with chunked transfer encoding. The client and server may mutually negotiate HTTP/2 upgrade using the standard mechanism.</p>
+<p>The response for sequence retrieval has a character set of US-ASCII and consists solely of the requested sequence or sub-sequence with no line breaks. Other formatting of the response sequence may be allowed by the server, subject to standard negotiation with the client via the Accept header.</p>
+<p>Requests adhering to this specification MAY include an Accept header specifying an alternative formatting of the response, if the server allows this. Otherwise the server shall return the default content type specified for the invoked method.</p>
+<p>HTTP responses may be compressed using <a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html">RFC 2616</a> transfer-coding, not content-coding.</p>
+<p>HTTP response may include a 3XX response code and Location header redirecting the client to retrieve sequence data from an alternate location as specified by <a href="https://tools.ietf.org/html/rfc7231">RFC 7231</a>, clients SHOULD be configured follow redirects. <code>302</code>, <code>303</code> and <code>307</code> are all valid response codes to use.</p>
+<p>Range headers are the preferred method for clients making sub-sequence requests, as specified by <a href="https://tools.ietf.org/html/rfc7233">RFC 7233</a>.</p>
+<p>Requests MAY include an Accept header specifying the protocol version they are using:</p>
+<div class="highlight"><pre><span></span><code>Accept: text/vnd.ga4gh.refget.v2.0.0+plain
+</code></pre></div>
+<p>Responses from the server MUST include a Content-Type header. A plain text (<code>text/plain</code>) response MAY include the encoding for the invoked method and protocol version. The refget protocol reserves <code>text/plain</code> for the transfer of sequence data. A JSON response MUST include the encoding for the invoked method and protocol version for example:</p>
+<div class="highlight"><pre><span></span><code>Content-Type: application/vnd.ga4gh.refget.v2.0.0+json; charset=us-ascii
+</code></pre></div>
+<h2 id="internet-media-types-handling">Internet Media Types Handling</h2>
+<p>When responding to a request a server MUST use the fully specified media type for that endpoint. When determining if a request is well-formed, a server MUST allow a internet type to degrade like so</p>
+<ul>
+<li><code>text/vnd.ga4gh.refget.v2.0.0+plain; charset=us-ascii</code><ul>
+<li><code>text/vnd.ga4gh.refget.v2.0.0+plain</code></li>
+<li><code>text/plain</code></li>
+</ul>
+</li>
+<li><code>application/vnd.ga4gh.refget.v2.0.0+json; charset=us-ascii</code><ul>
+<li><code>application/vnd.ga4gh.refget.v2.0.0+json</code></li>
+<li><code>application/json</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="errors">Errors</h2>
+<p>The server MUST respond with an appropriate HTTP status code (4xx or 5xx) when an error condition is detected. In the case of transient server errors (e.g., 503 and other 5xx status codes), the client SHOULD implement appropriate retry logic. For example, if a client sends an alphanumeric string for a parameter that is specified as unsigned integer the server MUST reply with <code>Bad Request</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Error type</th>
+<th>HTTP status code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Bad Request</code></td>
+<td>400</td>
+<td>Cannot process due to malformed request, the requested parameters do not adhere to the specification</td>
+</tr>
+<tr>
+<td><code>Unauthorized</code></td>
+<td>401</td>
+<td>Authorization provided is invalid</td>
+</tr>
+<tr>
+<td><code>Not Found</code></td>
+<td>404</td>
+<td>The resource requested was not found</td>
+</tr>
+<tr>
+<td><code>Not Acceptable</code></td>
+<td>406</td>
+<td>The requested formatting is not supported by the server</td>
+</tr>
+<tr>
+<td><code>Conflict</code></td>
+<td>409</td>
+<td>The document requested cannot be uniquely resolved from the provided identifier</td>
+</tr>
+<tr>
+<td><code>Range Not Satisfiable</code></td>
+<td>416</td>
+<td>The Range request cannot be satisfied</td>
+</tr>
+<tr>
+<td><code>Not Implemented</code></td>
+<td>501</td>
+<td>The specified request is not supported by the server</td>
+</tr>
+</tbody>
+</table>
+<h2 id="security">Security</h2>
+<p>Reference sequence as defined in this specification is publicly accessible without restrictions. Adapting the implementation to retrieve private/potentially sensitive genomic data is not a good use of the protocol. In any circumstances, no personal data should be shared without proper data security measures.</p>
+<p>Sensitive information transmitted on public networks, such as access tokens and human genomic data, MUST be protected using Transport Level Security (TLS) version 1.2 or later, as specified in <a href="https://tools.ietf.org/html/rfc5246">RFC 5246</a>.</p>
+<p>If the data holder requires client authentication and/or authorization, then the client's HTTPS API request MUST present an OAuth 2.0 bearer access token as specified in <a href="https://tools.ietf.org/html/rfc6750">RFC 6750</a>, in the Authorization request header field with the Bearer authentication scheme:</p>
+<div class="highlight"><pre><span></span><code>Authorization: Bearer [access_token]
+</code></pre></div>
+<p>The policies and processes used to perform user authentication and authorization, and the means through which access tokens are issued, are beyond the scope of this API specification. GA4GH recommends the use of the OAuth 2.0 framework (<a href="https://tools.ietf.org/html/rfc6749">RFC 6749</a>) for authentication and authorization.</p>
+<h2 id="checksum-calculation">Checksum calculation</h2>
+<p>The recommended checksum algorithms are <code>MD5</code> (a 32 character HEX string) and a SHA-512-based system called <code>ga4gh</code> (a base64 URL-safe string, see later for details). Servers MUST support sequence retrieval by one or more of these algorithms, and are encouraged to support all to maximize interoperability. An older algorithm called <code>TRUNC512</code> existed in version 1.0.0 of refget but is now deprecated in favour of the GA4GH sequence checksum string. It is possible to translate between the <code>ga4gh</code> and <code>TRUNC512</code> systems however <code>TRUNC512</code> usage SHOULD be discouraged.</p>
+<p>When calculating the checksum for a sequence, all non-base symbols (\n, spaces, etc) must be removed and then the rest uppercased. The allowed alphabet for checksum calculation is uppercase ASCII letters (<code>0x41</code>-<code>0x5A</code> or <code>A-Z</code>).</p>
+<p>Resulting hexadecimal checksum strings shall be considered case insensitive. 0xa is equivalent to 0xA.</p>
+<h2 id="refget-checksum-algorithm">refget Checksum Algorithm</h2>
+<p>The refget checksum algorithm is called <code>ga4gh</code>. It is based on and derived from work carried out by the GA4GH VRS group. The checksum of a reference sequence string is computed as follows:</p>
+<ol>
+<li>
+<p>Canonicalize the sequence string by removing all non-alphabetic characters, including line terminators and other whitespace, and converting any lowercase letters to uppercase.</p>
+<p>(The canonicalised string then contains only uppercase ASCII letters <code>A-Z</code>.)</p>
+</li>
+<li>
+<p>Compute the SHA-512 digest of that canonical sequence string.</p>
+</li>
+<li>
+<p>Take the first 24 bytes of that digest and <code>base64url</code>-encode them.</p>
+<p>(This uses the URL-safe Base 64 variant described in <a href="https://datatracker.ietf.org/doc/html/rfc4648#section-5">RFC 4648 §5</a>, which uses the characters <code>A-Za-z0-9-_</code>. Because the length of the digest prefix taken is a multiple of three, the <code>=</code> pad character is never necessary.)</p>
+</li>
+<li>
+<p>Prepend <code>SQ.</code> to the start of the resulting 32-character text string.</p>
+</li>
+</ol>
+<p>Services may also implement the older <code>TRUNC512</code> representation of a truncated SHA-512 digest, which uses similar ideas to the above <code>ga4gh</code> string. See later in this specification for implementation details of the TRUNC512 algorithm and conversion between <code>ga4gh</code> and <code>TRUNC512</code>.</p>
+<p>For example, the <code>ga4gh</code> digest of <code>ACGT</code> is the string <code>SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2</code>.</p>
+<h2 id="namespace-of-the-checksums">Namespace of the checksums</h2>
+<p>The requested checksum can optionally be prefixed with a namespace describing the type of algorithm being used.
+For example using md5 <code>md5:6aef897c3d6ff0c78aff06ac189178dd</code> and <code>6aef897c3d6ff0c78aff06ac189178dd</code> should return the same sequence and similarly using ga4gh <code>ga4gh:SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2</code> and <code>SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2</code> should return the same sequence.</p>
+<h2 id="unique-identifiers">Unique Identifiers</h2>
+<p>Refget optionally allows the use of namespaced identifiers in place of the digest. The identifier prefixed by a namespace to form a CURIE for example:</p>
+<p><code>insdc:CM000663.2</code></p>
+<p>It is recommended that each namespaced identifier be unique within the refget implementation but if it does not resolve to a single sequence the server must respond with either:</p>
+<ul>
+<li>code 300: <code>multiple choices</code> providing a list of identifiers or sequence digests that correspond to the request;</li>
+<li>code 409: <code>conflict</code> indicating a conflict that cannot be resolved.</li>
+</ul>
+<h2 id="cors">CORS</h2>
+<p>Cross-origin resource sharing (CORS) is an essential technique used to overcome the same origin content policy seen in browsers. This policy restricts a webpage from making a request to another website and leaking potentially sensitive information. However the same origin policy is a barrier to using open APIs. GA4GH open API implementers should enable CORS to an acceptable level as defined by their internal policy. For any public API implementations should allow requests from any server.</p>
+<p>GA4GH is publishing a <a href="https://docs.google.com/document/d/1Ifiik9afTO-CEpWGKEZ5TlixQ6tiKcvug4XLd9GNcqo/edit?usp=sharing">CORS best practices document</a>, which implementers should refer to for guidance when enabling CORS on public API instances.</p>
+<h2 id="api-methods">API Methods</h2>
+<h3 id="method-get-sequence-by-id">Method: get sequence by ID</h3>
+<p><code>GET /sequence/&lt;id&gt;</code></p>
+<p>The primary method for accessing specified sequence data. The response is the requested sequence or sub-sequence in text unless an alternative formatting supported by the server is requested.</p>
+<p>The client may specify a genomic range to retrieve a sub-sequence via either the Range header OR start/end query parameters, however the Range header is the recommended method. If a sub-sequence is requested via <code>start</code>/<code>end</code> query parameters, the response must be 200 and only contain the specified sub-sequence. If a sub-sequence is requested via a Range header, the response must be one of 206 and only contain the specified sub-sequence, be 200 and contain the entire sequence (thus ignoring the Range header), or 303 redirecting the client to where it can retrieve the sequence.</p>
+<p>If a sub-sequence is requested, the response must only contain the specified sub-sequence. A server may place a length limit on sub-sequences returned via query parameter, queries exceeding this limit shall return <code>Range Not Satisfiable</code>.</p>
+<p>If <code>start</code> and <code>end</code> are set to the same value the server should return a 0-length string.</p>
+<p>A server may support circular chromosomes as a reference sequence, but this is not mandatory. If a reference sequence represents a circular chromosome and the server supports circular chromosomes, a sub-sequence query with a start greater than the end will return the sequence from the start location to the end of the reference, immediately followed by the sequence from the first base to the end. If the server supports circular chromosomes and the chromosome is not circular or the range is outside the bounds of the chromosome the server shall return <code>Range Not Satisfiable</code>. Otherwise if circular chromosomes are not supported, a <code>Not Implemented</code> shall be returned. Sub-sequences of circular chromosomes across the origin may not be requested via the Range header. The starting point of a circular chromosome is determined by an external authority and not by the refget implementation.</p>
+<h5 id="default-encoding">Default encoding</h5>
+<p>Unless negotiated with the client and allowed by the server, the default encoding for this method is:</p>
+<div class="highlight"><pre><span></span><code>Content-type: text/vnd.ga4gh.refget.v2.0.0+plain
+</code></pre></div>
+<h4 id="url-parameters">URL parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td>Yes</td>
+<td>A string specifying an identifier uniquely associated with a sequence so that at most one sequence is returned for an id. The id can be a checksum or other unique namespaced identifier supported by the server.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="query-parameters">Query parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>start</code></td>
+<td>32-bit unsigned integer</td>
+<td>Optional</td>
+<td>The start position of the range on the sequence, 0-based, inclusive. The server MUST respond with a <code>Bad Request</code> error if start is specified and is larger than the total sequence length. The server MUST respond with a <code>Range Not Satisfiable</code> error if start and end are specified and start is greater than end and the sequence is not a circular chromosome. Otherwise if the server does not support circular chromosomes it MUST respond with <code>Not Implemented</code> if the start is greater than the end. The server MUST respond with <code>Bad Request</code> if start and the Range header are both specified.</td>
+</tr>
+<tr>
+<td><code>end</code></td>
+<td>32-bit unsigned integer</td>
+<td>Optional</td>
+<td>The end position of the range on the sequence, 0-based, exclusive. The server MUST respond with a <code>Range Not Satisfiable</code> error if start and end are specified and start is greater than end and the sequence is not a circular chromosome. Otherwise if the server does not support circular chromosomes it MUST respond with <code>Not Implemented</code> if the start is greater than the end. The server MUST respond with <code>Bad Request</code> if end and the Range header are both specified.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="request-parameters">Request parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Range</code></td>
+<td>string</td>
+<td>Optional</td>
+<td>Range header as specified in <a href="https://tools.ietf.org/html/rfc7233#section-3.1">RFC 7233</a>, however only a single byte range per GET request is supported by the specification. The byte range of the sequence to return, 0-based inclusive of start and end bytes specified. The server MUST respond with a <code>Bad Request</code> error if both a Range header and start or end query parameters are specified. The server MUST respond with a <code>Bad Request</code> error if one or more ranges are out of bounds of the sequence.</td>
+</tr>
+<tr>
+<td><code>Accept</code></td>
+<td>string</td>
+<td>Optional</td>
+<td>The formatting of the returned sequence, defaults to <code>text/vnd.ga4gh.refget.v2.0.0+plain</code> if not specified. A server MAY support other formatting of the sequence. The server SHOULD respond with a <code>Not Acceptable</code> error if the client requests a format not supported by the server.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="response">Response</h4>
+<p>The server shall return the requested sequence or sub-sequence as a single string in uppercase ASCII text (bytes 0x41-0x5A) with no line terminators or other formatting characters. The server may return the sequence in an alternative formatting, such as JSON or FASTA, if requested by the client via the <code>Accept</code> header and the format is supported by the server.</p>
+<p>On success and either a whole sequence or sub-sequence is returned the server MUST issue a 200 status code if the entire sequence is returned. A server SHOULD return a 206 status code if a Range header was specified and the request was successful.</p>
+<p>If start and end query parameter are specified and equal each other, the server should respond with a zero length string i.e.</p>
+<div class="highlight"><pre><span></span><code>GET /sequence/6aef897c3d6ff0c78aff06ac189178dd?start=0&amp;end=0
+</code></pre></div>
+<p>If a start and/or end query parameter are specified the server should include a <code>Accept-Ranges: none</code> header in the response.</p>
+<p>If the identifier is not known by the server, a 404 status code and <code>NotFound</code> error shall be returned.</p>
+<h4 id="example-text-request-and-response">Example text request and response</h4>
+<p>The following response has been cut for brevity.</p>
+<div class="highlight"><pre><span></span><code>GET /sequence/6aef897c3d6ff0c78aff06ac189178dd
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN ....
+</code></pre></div>
+<h3 id="method-get-known-metadata-for-an-id">Method: Get known metadata for an id</h3>
+<div class="highlight"><pre><span></span><code>GET /sequence/&lt;id&gt;/metadata
+</code></pre></div>
+<p>Return all known names for an identifier and related metadata.</p>
+<p>Due to the possibility of multiple checksum algorithms being supported by a server, and potentially other known aliases for a sequence existing, this method allows clients to query all known names for a given identifier as well as fetch any associated metadata.</p>
+<h4 id="default-encoding_1">Default encoding</h4>
+<p>Unless negotiated with the client and allowed by the server, the default encoding for this method is:</p>
+<div class="highlight"><pre><span></span><code>Content-type: application/vnd.ga4gh.refget.v2.0.0+json
+</code></pre></div>
+<h4 id="url-parameters_1">URL parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td>Yes</td>
+<td>A string specifying an identifier to retrieve metadata for using one of the defined checksum algorithms or a server-specific checksum algorithm.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="request-parameters_1">Request parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Accept</code></td>
+<td>string</td>
+<td>Optional</td>
+<td>The formatting of the returned metadata, defaults to <code>application/vnd.ga4gh.refget.v2.0.0+json</code> if not specified. A server MAY support other formatting of the sequence. The server SHOULD respond with a <code>Not Acceptable</code> error if the client requests a format not supported by the server.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="response_1">Response</h4>
+<p>The server shall return a list of all identifiers for algorithms the server knows and the given identifier along with associated metadata. Identifiers provided by naming authorities should be provided in the <code>aliases</code> property. The server MAY return the query identifier in the list of identifiers.</p>
+<p>A JSON encoded response shall have the following fields:</p>
+<table>
+<tr markdown="block"><td>
+<code>metadata</code><br/>
+object
+</td><td>
+Container for response object.
+<table>
+<tr markdown="block"><td>
+<code>md5</code><br/>
+string
+</td><td>
+md5 checksum.
+</td></tr>
+<tr markdown="block"><td>
+<code>ga4gh</code><br/>
+string
+</td><td>
+  ga4gh identifier, if the server does not support ga4gh the value will be <code>null</code>.
+</td></tr>
+<tr markdown="block"><td>
+<code>length</code><br/>
+int
+</td><td>
+The length of the reference sequence.
+</td></tr>
+<tr markdown="block"><td>
+<code>aliases</code><br/>
+array of objects
+</td><td>
+Array of objects each containing one of the known aliases. The query identifier may be in this this.
+<table>
+<tr markdown="block"><td>
+<code>alias</code><br/>
+string
+</td><td>
+A known alias for the query.
+</td></tr>
+<tr markdown="block"><td>
+<code>naming_authority</code><br/>
+string
+</td><td>
+The source of the alias. See Appendix 1 for a set of recommended names to use.
+</td></tr>
+</table>
+</td></tr>
+</table>
+</td></tr>
+</table>
+
+<p>On success and the query identifier being known to the server, a 200 status code shall be returned.</p>
+<p>If the identifier is not known by the server, a 404 status code shall be returned.</p>
+<h4 id="example-json-request-and-response">Example JSON request and response</h4>
+<div class="highlight"><pre><span></span><code>GET /sequence/6aef897c3d6ff0c78aff06ac189178dd/metadata
+
+{
+  &quot;metadata&quot; : {
+    &quot;md5&quot; : &quot;6aef897c3d6ff0c78aff06ac189178dd&quot;,
+    &quot;ga4gh&quot;: &quot;SQ.Ya6Rs7DHhDeg7YaOSg1EoNi3U_nQ9SvO&quot;,
+    &quot;length&quot;: 248956422,
+    &quot;aliases&quot; : [
+      {
+        &quot;alias&quot;: &quot;CM000663.2&quot;,
+        &quot;naming_authority&quot; : &quot;insdc&quot;
+      },
+      {
+        &quot;alias&quot;: &quot;chr1&quot;,
+        &quot;naming_authority&quot; : &quot;ucsc&quot;
+      }
+    ]
+  }
+}
+</code></pre></div>
+<h3 id="method-fetch-information-on-the-service">Method: Fetch information on the service</h3>
+<p><code>GET /sequence/service-info</code></p>
+<p>Return configuration information about this server implementation. See the <a href="https://github.com/ga4gh-discovery/ga4gh-service-info">service-info specification page</a> for more information.</p>
+<h4 id="default-encoding_2">Default encoding</h4>
+<p>Unless negotiated with the client and allowed by the server, the default encoding for this method is:</p>
+<div class="highlight"><pre><span></span><code>Content-type: application/vnd.ga4gh.refget.v2.0.0+json
+</code></pre></div>
+<h4 id="request-parameters_2">Request parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Data Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Accept</code></td>
+<td>string</td>
+<td>Optional</td>
+<td>The formatting of the returned metadata, defaults to <code>application/vnd.ga4gh.refget.v2.0.0+json</code> if not specified. A server MAY support other formatting of the sequence. The server SHOULD respond with a <code>Not Acceptable</code> error if the client requests a format not supported by the server.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="response_2">Response</h4>
+<p>The server shall return a document detailing specifications of the service implementation. A JSON encoded response shall have the following fields in addition to those specified by service-info:</p>
+<table>
+<tr markdown="block"><td>
+<code>refget</code><br/>
+object
+</td><td>
+Container for response object.
+<table>
+<tr markdown="block"><td>
+<code>circular_supported</code><br/>
+boolean
+</td><td>
+If circular genomes are supported by the server.
+</td></tr>
+<tr markdown="block"><td>
+<code>algorithms</code><br/>
+array of enum(strings)
+</td><td>
+An array of strings listing the digest algorithms that are supported. Standard values: <code>md5</code>, <code>trunc512</code>, <code>ga4gh</code> (though others may be specified as a non-standard extension).
+</td></tr>
+<tr markdown="block"><td>
+<code>identifier_types</code><br/>
+array of strings
+</td><td>
+An array of strings listing the type identifiers supported. Values used should be the same as the one supported by <a href="https://registry.identifiers.org/registry">identifiers.org</a> such as <code>insdc</code>, <code>ensembl</code>, <code>refseq</code>.
+</td></tr>
+<tr markdown="block"><td>
+<code>subsequence_limit</code><br/>
+int or null
+</td><td>
+An integer giving the maximum length of sequence which may be requested using <code>start</code> and/or <code>end</code> query parameters or <code>Range</code> header. <code>null</code> values or values lower than 1 mean the server has no imposed limit.
+</td></tr>
+</table>
+</td></tr>
+</table>
+
+<h4 id="example-json-request-and-response_1">Example JSON request and response</h4>
+<div class="highlight"><pre><span></span><code>GET /service-info
+
+{
+  &quot;id&quot;: &quot;org.ga4gh.refget&quot;,
+  &quot;name&quot;: &quot;Refget server&quot;,
+  &quot;type&quot;: {
+    &quot;group&quot;: &quot;org.ga4gh&quot;,
+    &quot;artifact&quot;: &quot;refget-sequence&quot;,
+    &quot;version&quot;: &quot;2.0.0&quot;
+  },
+  &quot;description&quot;: &quot;Reference sequences from checksums&quot;,
+  &quot;organization&quot;: {
+    &quot;name&quot;: &quot;My organization&quot;,
+    &quot;url&quot;: &quot;https://example.com&quot;
+  },
+  &quot;contactUrl&quot;: &quot;mailto:support@example.com&quot;,
+  &quot;documentationUrl&quot;: &quot;https://docs.myservice.example.com&quot;,
+  &quot;createdAt&quot;: &quot;2019-06-04T12:58:19Z&quot;,
+  &quot;updatedAt&quot;: &quot;2019-06-04T12:58:19Z&quot;,
+  &quot;environment&quot;: &quot;prod&quot;,
+  &quot;version&quot;: &quot;2.0.0&quot;,
+  &quot;refget&quot;: {
+    &quot;circular_supported&quot;: true,
+    &quot;subsequence_limit&quot;: 0,
+    &quot;algorithms&quot;: [
+      &quot;md5&quot;,
+      &quot;ga4gh&quot;,
+      &quot;trunc512&quot;
+    ],
+    &quot;identifier_types&quot;: [
+      &quot;insdc&quot;,
+      &quot;refseq&quot;,
+      &quot;ensembl&quot;
+    ]
+  }
+}
+</code></pre></div>
+<h2 id="range-headers">Range headers</h2>
+<p>GA4GH has a standard of 0-based, half-open coordinates however Range requests as described in RFC 7233 use a unit of bytes starting at 0 and inclusive of the first and last byte specified (although other units are permitted by the RFC). For this reason care must be taken when making a request with a Range header versus start/end in the query string. Range start and end would be with respect to the byte coordinates of the sequence as if it were stored in a file on disk as a continuous string with no carriage returns.</p>
+<p>RFC 7233 permits multiple byte ranges in a request, for this specification only a single byte range per GET request is permitted.</p>
+<p>For example, given the following sequence:</p>
+<div class="highlight"><pre><span></span><code>CAACAGAGACTGCTGCTGACAGTGGGCGGGGGAGTAGTTTGCTTGGCCCGTGGTTGAGGA
+</code></pre></div>
+<p>And a Range header to retrieve 10bp:</p>
+<div class="highlight"><pre><span></span><code>Range: bytes=5-14
+</code></pre></div>
+<p>The returned sub-sequence would be:</p>
+<div class="highlight"><pre><span></span><code>GAGACTGCTG
+</code></pre></div>
+<p>However a start/end for the same 10bp would be:</p>
+<div class="highlight"><pre><span></span><code>?start=5&amp;end=15
+</code></pre></div>
+<p>A Range header to retrieve a single base pair would be:</p>
+<div class="highlight"><pre><span></span><code>Range: bytes=0-0
+</code></pre></div>
+<p>The returned subsequence would be the first <code>C</code> of the sequence. A URL parameter for the same region would be</p>
+<div class="highlight"><pre><span></span><code>?start=0&amp;end=1
+</code></pre></div>
+<p>Any formatting of the sequence a server might allow is applied after the sub-sequence is selected, for example a server that supported returning FASTA the result for the prior example could be:</p>
+<div class="highlight"><pre><span></span><code>&gt;9f5b68f3ebc5f7b06a9b2e2b55297403 5-14
+GAGACTGCTG
+</code></pre></div>
+<p>Any bytes added for formatting to the returned output should not be taken in to account when processing a Range request.</p>
+<h2 id="alternative-checksum-algorithms">Alternative Checksum Algorithms</h2>
+<p>Refget implementations MUST support the <code>MD5</code> identifier space and SHOULD support the <code>ga4gh</code> identifier. Non-standard identifiers are allowed but they MUST conform to the following requirements:</p>
+<ol>
+<li>Non-standard identifiers must be based on an algorithm that uses normalised sequence content as input</li>
+<li>The algorithm used SHOULD be a hash function</li>
+<li>Non-standard identifiers must not clash with the <code>MD5</code> and <code>ga4gh</code> identifier space</li>
+<li>Note <code>ga4gh</code> is allowed to grow in length should collisions in the current implementation be detected</li>
+<li>Non-standard identifiers must not clash with other identifiers on your server i.e. they must be unique.</li>
+</ol>
+<p>Any alternative identifier scheme MUST be declared in the <code>/sequence/service-info</code> endpoint under <code>algorithms</code>.</p>
+<h2 id="ga4gh-identifier-and-trunc512-algorithm-details">ga4gh identifier and TRUNC512 Algorithm Details</h2>
+<p>Examples on how to implement both algorithm schemes in <a href="pub/ga4gh_and_TRUNC512_identifiers.ipynb">Python</a> and <a href="pub/ga4gh_and_TRUNC512_identifiers.pl">Perl</a> are available from this site.</p>
+<h2 id="design-rationale">Design Rationale</h2>
+<p>This non-normative section provides the details behind key API decisions.</p>
+<h3 id="checksum-input-normalisation">Checksum Input Normalisation</h3>
+<p>Key to generating reproducible checksums is the normalisation algorithm applied to sequence input. This API is based on the requirements of SAM/BAM, CRAM Reference Registry and VMC specifications. These specifications' own normalisation algorithms are detailed below:</p>
+<ul>
+<li>SAM/BAM<ul>
+<li>All characters outside of the inclusive range <code>33</code> (<code>0x21</code>/<code>!</code>) through <code>126</code> (<code>0x7E</code>/<code>~</code>) are stripped out</li>
+<li>All lower-case characters are converted to upper-case</li>
+</ul>
+</li>
+<li>CRAM Reference Registry<ul>
+<li>Input comes into the registry via ENA</li>
+<li>ENA allows input conforming to the following regular expression:<br />
+<code>(?i)^([ACGTUMRWSYKVHDBN]+)\*?$</code></li>
+</ul>
+</li>
+<li>VRS<ul>
+<li>VRS requires sequence to be a string of IUPAC codes for either nucleotide or protein sequence</li>
+</ul>
+</li>
+</ul>
+<p>Considering the requirements of the three systems the specification designers felt it was sufficient to restrict input to the inclusive range <code>65</code> (<code>0x41</code>/<code>A</code>) to <code>90</code> (<code>0x5A</code>/<code>Z</code>). Changes to this normalisation algorithm would require a new checksum identifier to be used.</p>
+<h3 id="checksum-choice">Checksum Choice</h3>
+<p>MD5 provides adequate protection against hash collisions occurring from sequences. However the consequence of a sequence derived hash collision appearing would be catastrophic as two or more sequences with different content would report to be the same entity.</p>
+<p>The VRS, Variation Representation Specification, is a complementary GA4GH effort to model genomic variation based on deviations from a reference sequence. Part of their work was to explore hashing algorithms. We have adopted the <a href="https://vrs.ga4gh.org/en/1.0/impl-guide/computed_identifiers.html#truncated-digest-sha512t24u">checksum algorithm from VRS v1</a>, based around the SHA-512 algorithm.</p>
+<p>The algorithm performs a SHA-512 digest of a sequence and creates a <code>base64url</code> encoding (<a href="https://datatracker.ietf.org/doc/html/rfc4648#section-5">using RFC 4648</a>) of the first 24 bytes of the digest. Analysis performed by VRS suggests this should be sufficient to avoid message collisions (see the VRS documentation for more details). Should a message collision occur within this scheme then the number of bytes retained from the SHA-512 checksum will be increased.</p>
+<h3 id="checksum-identifier-identification">Checksum Identifier Identification</h3>
+<p>When a checksum identifier is given to an implementation, it is the server's responsibility to compute what kind of identifier (<code>MD5</code>, <code>ga4gh</code> or <code>TRUNC512</code>) has been given. If provided, the namespace prefix should be used to figure it out. Otherwise <code>MD5</code> and <code>TRUNC512</code> can be deduced based on length; 32 and 48 characters long respectively. <code>ga4gh</code> identifiers can be detected by searching for the string <code>SQ.</code>. Should refget officially support alternative checksum based identifiers we will describe the mechanisms to resolve their identification in future versions.</p>
+<h2 id="possible-future-api-enhancements">Possible Future API Enhancements</h2>
+<ul>
+<li>Allow POST requests for batch downloads</li>
+<li>Formally define more sequence formatting options (e.g. FASTA, protobuf)</li>
+<li>Allow reference sequence checksums to be bundled together e.g. to represent a reference genome</li>
+<li>Support groups/collections of sequences based on checksums</li>
+</ul>
+<h2 id="contributors">Contributors</h2>
+<p>The following people have contributed to the design of this specification.</p>
+<ul>
+<li>Andy Yates</li>
+<li>Rob Davies</li>
+<li>Rasko Leinonen</li>
+<li>Oliver Hofmann</li>
+<li>Thomas Keane</li>
+<li>Heidi Sofia</li>
+<li>Mike Love</li>
+<li>Gustavo Glusman</li>
+<li>John Marshall</li>
+<li>Matthew Laird</li>
+<li>Somesh Chaturvedi</li>
+<li>Rishi Nag</li>
+<li>Reece Hart</li>
+<li>Timothe Cezard</li>
+<li>Reggan Thomas</li>
+</ul>
+<h1 id="appendix">Appendix</h1>
+<h2 id="appendix-1-naming-authorities">Appendix 1 - Naming Authorities</h2>
+<p>The specification makes no attempt to enforce a strict naming authority across implementations due to their potential heterogeneous nature. However we do encourage implementers to reuse naming authority strings where possible following nomenclature from <a href="https://registry.identifiers.org/registry">identifiers.org</a>. See below for examples of recommended names.</p>
+<table>
+<thead>
+<tr>
+<th>String</th>
+<th>Authority</th>
+<th>Description</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>insdc</code></td>
+<td>INSDC</td>
+<td>Used for any identifier held in an INSDC resource (GenBank, ENA, DDBJ)</td>
+<td>Active</td>
+</tr>
+<tr>
+<td><code>ucsc</code></td>
+<td>UCSC</td>
+<td>Used for an identifier assigned by UCSC Genome group</td>
+<td>Active</td>
+</tr>
+<tr>
+<td><code>ensembl</code></td>
+<td>Ensembl</td>
+<td>Used for an identifier assigned by the Ensembl project</td>
+<td>Active</td>
+</tr>
+<tr>
+<td><code>md5</code></td>
+<td>MD5</td>
+<td>Prefix used to describe digests which have gone through the MD5 algorithm</td>
+<td>Active</td>
+</tr>
+<tr>
+<td><code>refseq</code></td>
+<td>RefSeq</td>
+<td>Used for an identifier assigned by the RefSeq group</td>
+<td>Active</td>
+</tr>
+<tr>
+<td><code>trunc512</code></td>
+<td>Refget</td>
+<td>The old checksum algorithm based on SHA-512 used in v1.0.0 of refget</td>
+<td>Deprecated</td>
+</tr>
+<tr>
+<td><code>ga4gh</code></td>
+<td>Refget</td>
+<td>ga4gh identifier, which are prefixed by the term <code>SQ.</code>. This is the preferred naming</td>
+<td>Active</td>
+</tr>
+<tr>
+<td><code>md5</code></td>
+<td>Refget</td>
+<td>md5 checksum of the sequence.</td>
+<td>Active</td>
+</tr>
+<tr>
+<td><code>vmc</code></td>
+<td>VMC</td>
+<td>Used for when an identifier is a VMC compatible digest</td>
+<td>Deprecated</td>
+</tr>
+</tbody>
+</table>
+<h2 id="appendix-2-changes">Appendix 2 - Changes</h2>
+<h3 id="v200">v2.0.0</h3>
+<ul>
+<li>Replace refget's v1 service-info implementation with GA4GH discovery's definition of service-info</li>
+<li>Move code examples out into a Python notebook and a Perl script</li>
+<li>Replace TRUNC512 with ga4gh identifier as the default SHA-512-based hash identifier (support still available for TRUNC512)</li>
+<li>All checksums can be requested namespaced with their algorithm</li>
+<li>Optional support for namespaced identifiers to resolve sequence and metadata</li>
+<li>Lower cased recommended naming authority strings</li>
+</ul>
+<h3 id="v101">v1.0.1</h3>
+<p><a href="https://github.com/samtools/hts-specs/blob/fde0b700d7d1aeb4d40cc27c820965a6f365f650/refget.md">Specification link</a></p>
+<ul>
+<li><code>plain/text</code> responses no longer need to specify a VND. <code>application/json</code> responses continue to need to do this.</li>
+</ul>
+<h3 id="v100">v1.0.0</h3>
+<p><a href="https://github.com/samtools/hts-specs/blob/f7947e7554f289a9bf0027be93be4145b97243a2/refget.md">Specification link</a></p>
+<ul>
+<li>First release of the specification</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+        
+          
+          <a href="../seqcols/" class="md-footer__link md-footer__link--next" aria-label="Next: Sequence Collections">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Sequence Collections
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      GA4GH Large Scale Genomics Workstream, refget team
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.sections", "navigation.expand", "navigation.footer", "toc.follow", "content.action.edit", "content.action.view", "navigation.top"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

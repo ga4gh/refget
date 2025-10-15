@@ -1,0 +1,944 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ga4gh.github.io/refget/seqcols/seqcol_rationale/">
+      
+      
+      
+      
+      <link rel="icon" href="../../img/seqcol_logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>Seqcol rationale - Refget Specifications</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#seqcol-rationale" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Refget Specifications" class="md-header__button md-logo" aria-label="Refget Specifications" data-md-component="logo">
+      
+  <img src="../../img/seqcol_logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Refget Specifications
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Seqcol rationale
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ga4gh/refget" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Refget Specifications" class="md-nav__button md-logo" aria-label="Refget Specifications" data-md-component="logo">
+      
+  <img src="../../img/seqcol_logo.svg" alt="logo">
+
+    </a>
+    Refget Specifications
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ga4gh/refget" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Specifications
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Specifications
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sequences/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequences
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sequence Collections
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Detailed how-to guides
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Detailed how-to guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../digest_from_collection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compute a digest given a seqcol
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compare_collections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compare two sequence collections
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Implementations
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Implementations
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../implementation_python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Python
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../implementation_api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../citation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How to cite
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../schemas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Schemas
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../decision_record/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Decision record
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-tale-of-three-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      A tale of three use cases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#answering-the-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      Answering the question
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Answering the question">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-handling-divergent-needs-by-splitting-the-standard-into-two-parts" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Handling divergent needs by splitting the standard into two parts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-the-comparison-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The comparison function
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-the-layered-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. The layered approach
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#our-proposal-for-inherent-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Our proposal for inherent attributes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dont-get-caught-up-in-the-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Don't get caught up in the structure
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Don&#39;t get caught up in the structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sequence-collections-without-sequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sequence collections without sequences
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/ga4gh/refget/edit/master/docs/seqcols/seqcol_rationale.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/ga4gh/refget/raw/master/docs/seqcols/seqcol_rationale.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="seqcol-rationale">Seqcol rationale</h1>
+<h2 id="introduction">Introduction</h2>
+<p>The Refget Sequence Collections standard specification is written mostly to answer the question of <em>how</em> to implement the standard, rather than explaining <em>why</em> we designed the standard the way we did. But because there are many different use cases and perspectives with an interest in sequence collections, several readers of the specification have completed reading it and understand how to do it, but are confused about why we made some of the decisions we did, particularly because the specification doesn’t perfectly fit with their expectations of the easiest way to solve their specific use case. This document is my attempt to broaden the perspective, provide the rationale for <em>why</em> on some of the more controversial decisions, and hopefully convince readers that the years of thought and discussion that went into sequence collections was useful and created a standard that, although not necessarily the easiest or simplest way to solve one particular use case, is an elegant balance between complexity and simplicity that allows it to solve a huge number of related use cases while maintaining interoperability wherever possible and flexibility when truly needed.</p>
+<p>More specifically, this document attempts to answer these questions:</p>
+<ul>
+<li>Why should the specification include a specific recommended schema, with a defined set of terms, including which are <em>required</em> (must exist) and which are <em>inherent</em> (affect the outcome of the digest)?</li>
+<li>Why is there not a digest for <code>&lt;insert my use case here&gt;</code>, so I can just compare two strings to see if the sequence collections are the same? Why do you need these more complex digests that make my comparison harder?</li>
+<li>What is the purpose of the comparison function, which seems more complicated than a simple string match?</li>
+<li>Why do you organize the sequence collection as a set of arrays, instead of an array of annotated sequence objects?</li>
+<li>Why do you do repeated layers of digests, instead of just building one string for the collection and digesting it, which seems simpler?</li>
+<li>Why is it important to include names, and lengths, instead of just the sequences themselves?</li>
+</ul>
+<h2 id="a-tale-of-three-use-cases">A tale of three use cases</h2>
+<p>A major need that drove seqcol development is the need to see if two sequence collections match. This need is repeated across many use cases, and a main motivating factor in choosing a deterministic, content-derived identifier, because it lets you know if the content is identical by simply asking whether the digests are identical. Early on in our discussions of sequence collection use cases, it was clear that different use cases would have slightly different formulations of what is important in a sequence collection. For example, a first use case is that of the <em>archiver</em>: we just need to assess whether the <em>content of the sequences</em> in two sets are the same. The archiver doesn't care about the order of the sequences, or the names of the sequences, or any other metadata attributes. In this case, it would be simple to just digest each sequence, sort the digests, concatenate them, and then digest that string -- and in fact, this was an early simple proposal for the sequence collection standard. But while this would work perfectly fine for the simple use case of asserting two <em>sets of sequences</em> match in content, this is not the only use case for sequence collections.</p>
+<p>Another use case is that of the <em>aligner</em>: say we want to reproduce a computational pipeline that does sequence alignment. We need an identifier of the reference genome (sequence collection) used for the alignment, so that when we repeat it, we guarantee we are using the same reference. In this scenario, the sorted, concatenated sequence digests wouldn't work for two reasons: First, for many aligners, the order of the sequences matter. Therefore, the final digest representing the collection should <em>differ</em> if the underlying sequences had different order. Second, the output of the aligner is going to specify the location of each read <em>with respect to the name of a sequence</em>. A sequence collection with the same sequences, even in the same order, would yield a different alignment output file if the sequences have different names. Therefore, the final digest should <em>differ</em> if the names of the sequences do not match. To generate a digest useful for this use case, we could adjust the prior proposal by 1) <em>not</em> sorting the sequence digests prior to concatenation; and 2) adding in a <em>names</em> vector. Digesting this would yield a content-derived identifier that would match only if the analysis could be reproduced entirely. Thus, already we have two use cases with different immediate answers to question; in the first, we imagine an identifier computed from sorted sequence digests, and in the second, we imagine an identifier computed from sequences plus their names in their existing order.</p>
+<p>Now, here's yet another use case not served by either of these identifiers: the <em>analyst</em>. An analyst, further downstream, uses data aligned to a reference genome and summarized into genomic annotations. Say they have ChIP-seq data, which defines the binding locations of various transcription factors stored in BED file format. These datasets are columns of a sequence name, plus coordinate start and end for regions of interest. More than 80,000 BED files have been posted on GEO, as these results vary by cell-type, treatment, species, age, etc. The user now is interested in integrating BED files from different studies, either to visualize or analyze them together -- but it only makes sense to integrate them if the BED coordinates are <em>defined on the same coordinate system</em>. If defined on different coordinate systems, a position in one does not correspond to a position in another, and they cannot be easily integrated; additional processing would be required, depending on how different the reference genomes are. We would like the digest to somehow inform us as to whether the sequence collections are compatible at the level of a coordinate system. In this use case, the underlying sequence content is irrelevant, as long as the coordinate systems match. Therefore, a digest should consider the <em>names</em> and <em>lengths</em> of the sequences, but not the actual sequence content. This leads to a third vision of a sequence collection but where the actual base pairs don't matter; what's important is the names and lengths of those sequences.</p>
+<h2 id="answering-the-question">Answering the question</h2>
+<p>It's clear from these examples that we have multiple common and reasonable use cases that use collections of sequences in different ways and therefore lead to a different optimal identifier. How could a standard accommodate all these different viewpoints?</p>
+<p>An immediate solution is to let each use case define its own identifier. That would solve each problem individually; and yet, it is unsatisfying because these resulting identifiers would not be interoperable. The way the archiver computes the identifier wouldn't be useful for the aligner; the aligner's identifier wouldn't be useful for the epigenome analyst, and so on. So these one-off digests would not be able to become the universal identifiers we envisioned at the outset.  We wondered if there could be a way to solve all these different needs, but in a way that maintained some interoperability so the identifiers could somehow be used together within a common ecosystem. Clearly, some aspects of the use cases <em>are</em> shared -- could we use this to do better than the individual solutions that neglect interoperability?</p>
+<p>To do this, we employed several strategies in the sequence collections standard:</p>
+<ul>
+<li>First, we <strong>use a schema</strong> to separate the question of "what gets included" from the rest of the standard.</li>
+<li>Second, we deploy the <strong>comparison function</strong>, a more powerful way of comparing two sequence collections.</li>
+<li>Third, we specify a <strong>layered algorithm</strong> for computing digests, where individual attributes are digested separately and then these are digested again to make the final digest. This provides intermediate digests that can be used for different purposes and also makes it easy to define a custom internal digests.</li>
+</ul>
+<p>These strategies don’t solve all the problems individually, but taken together, they allowed us to design an elegant, powerful, and extensible structure that provides reasonably easy solutions to all our use cases, while maintaining a degree of interoperability among identifiers. Let's dive into each of these strategies in detail to see how it helps us get the best of both worlds.</p>
+<h3 id="1-handling-divergent-needs-by-splitting-the-standard-into-two-parts">1. Handling divergent needs by splitting the standard into two parts</h3>
+<p>Our first strategy splits the identifier definition into two parts: 1) the <em>algorithm</em> by which the identifier will be computed, and 2) the list of <em>what content contributes to the digest</em>. The algorithm means the sorting approach, hash function, delimiters, concatenation process, etc. -- how to construct the string that gets digested to make the identifier. The second part is the <em>list of content</em>, which asks what attributes affect the digest; that is, do we include the names, sequences, etc in the string to digest? The division is useful because many of the differences come from different choice of content, not from a different algorithm, meaning the algorithm could be consistent even in situations where the content is not. For example, the second use case requires sequences, but the third use case does not. The algorithm can be kept the same.</p>
+<p>Separating these two tasks also has a conceptual benefit: it isolates the critical question: <em>exactly which attributes of a sequence collection should contribute to the digest computation?</em> The standard abstracts away this question by allowing an implementation to specify which attributes contribute to the digest through the "inherent" property in the schema. This lets us publish a proposal for the algorithm, but leave the final decision open to the community (or even to different versions to be used by different communities). So people can use the sequence collections standard with whatever schema they want, providing flexibility to handle a wide variety of use cases by changing which attributes are listed as inherent in the schema.</p>
+<p>The split into two parts thus provides some important modularity, but it doesn't solve all the issues. Two important challenges remain: First, it does not provide flexibility to adjust whether the content is sorted, since that's part of the algorithm, not part of the schema. Since this also differs between the first two use cases (the archiver use case wants to sort the sequence digests, but the aligner use case cannot), it means just splitting out the list of inherent attributes is insufficient for accommodating all the use cases. The other, more important issue that remains unsolved is that the identifiers computed with different schemas will, by definition, be different -- meaning we haven't solved the interoperability challenge. Thus, our first strategy helps solve <em>some</em> of the needs to be applied to different use cases, but it doesn't do enough to maintain interoperability.</p>
+<h3 id="2-the-comparison-function">2. The comparison function</h3>
+<p>The second strategy is the comparison function. In short, the goal here is to move away from comparing collections by simply checking if their digests are identical; instead, we want a more powerful comparison that can answer multiple questions using a single digest.</p>
+<p>In more detail: each of the scenarios described above can be viewed as constructing a digest to make it really easy to ask a particular comparison question. For example, in the first use case, the question is "do these two collections have exactly the same sequence content, regardless of order?" In the second example, the question is more general: "do these two collections have exactly the same sequence content and sequence names, in the same order?". The third question is "Do these collections have the same coordinate system, in the same order?". To answer any of these questions, if you had the bespoke digest, you'd simply see if two digests are identical. If they are, the comparison question is satisfied. This is convenient <em>if your question happens to be the one used to construct the digest</em>. But the problem is that the final digest representing a sequence collection can only answer <em>one</em> such question. A simple string check approach simply offers only a single comparison: are these two things identical, or not? Therefore, to accommodate our complex use cases, where we have multiple things we want to compare in different scenarios, we need something more than just comparing digests. We need a single digest to be able to answer <em>all</em> of the above questions, and more.</p>
+<p>Here's our alternative: instead of a digest-matching query, we design a <em>comparison function</em>. The comparison function goes beyond simply comparing digest strings; it provides a comparison of every attribute in the collection, including how many elements match, whether they are in the same order, and more. The output lets you answer all the questions posed above, plus more. You can tell if two collections have the same sequences, whether they are in the same order, whether their names match, whether the sequences differ but the lengths match, etc. It also allows you to determine more complex comparisons: is one sequence collection a subset of another? Do they have at least some sequences or names in common? Are their coordinate systems compatible, even if the sequence content differs? All of these questions are immediately answerable from the result of the comparison function.</p>
+<p>To give a specific example of why the comparison function is better than relying on digest matching, let's revisit the first and second use cases. Whereas the original digest matching approach would require a separate identifier for each use case, the comparison function allows us to answer both questions <em>without requiring separate identifiers</em>; we can use a single, general-purpose identifier. We first build a single identifier (the more specific one): it does not sort the sequences, and does include names. This identifier, as before, needs only a string match for the second use case. To answer the question of the first use case, checking if the strings match is not enough, since it can't confirm the content is the same even without a matching order, since the digests were computed using the given order. Thus, to make this comparison, you'd need to go one further step and use the comparison function. Luckily, this is very simple: you run the comparison function on the two digests, and the result immediately tells you for the <em>sequences</em> attribute, whether they have the same sequences in a different order, independent of names, answering your question.</p>
+<p>So, the vision here is that we've moved away from a quick check to see if two strings match, into a more information-rich function where you look at the output of the comparison function to answer the question. This added complexity is required if we want to use sequence collections to solve more than one problem. Admittedly, by necessity this makes the standard more complex for a single use case alone. However, it also makes the standard more general, meaning it is more likely to be used for a variety of different use cases. In other words, it maintains interoperability.</p>
+<p>The risk here is that users who only see a single use case could balk and say, “Well, this is too complex for what we need. Our needs are solved by a simple algorithm; we don't need to define all these other terms, use a comparison function, etc.” But while that may be true, this leads to fragmentation, with digests minted and useful only for a single purpose. The unfortunate truth is that we cannot have it both ways: it's simply impossible to define a single digest that can address all the comparisons we need at the level of a string match. We face a tradeoff: either define individual identifiers for each use case at the cost of interoperability, or define a more general identifier with a more complex comparison function, maintaining interoperability at the cost of increased complexity. By adding in a bit more complexity, you're able to buy into an ecosystem where a community can define and provide tools that will support the increased complexity, leading to better interoperability and ease of use in the long run. Eventually, the benefits of doing something that solves multiple problems will outweigh the additional cost over the simple solution.</p>
+<p>To mitigate the costs of the increased complexity of the comparison function, we've spent years optimizing and simplifying it to make it as simple as possible while retaining enough power to make it <em>really useful</em>. We tried to hit a sweet spot, where this information is 1) very fast to compute; 2) reasonably easy to code (my implementation is only about <a href="https://github.com/refgenie/refget/blob/68dac1ece7a79cd9127096ea8caddae3db9fc091/refget/utilities.py#L209">150 lines of Python code</a>); 3) simple enough to be understood relatively easily; and 4) information-rich enough to answer a huge number of comparison questions, making it very generally useful. The result returned by a comparison is a pretty understandable JSON document, which we've documented extensively in the specification (under the HowTo on comparing sequence collections). For me, the interoperability benefits and increased power are clearly worth the added complexity.</p>
+<p>The comparison function is extremely powerful. Even if you don't think you need it for your use case, it will open the opportunity to do much more interesting comparisons of sequence collections that go beyond exact identity. But there are two limitations with the comparison function: First, it can't answer every possible question; it can only compare to the level specified. Second, it comes with the increased cost of having to compute a function. The third and final strategy addresses both of these limitations.</p>
+<h3 id="3-the-layered-approach">3. The layered approach</h3>
+<p>In some situations it may truly be necessary to answer a comparison question with a faster string-match check. For example, if you need to compare a huge number of collections, maybe the time cost of running the comparison function is intractable. This seems unlikely, since the comparison function is extremely fast, and it does not increase the algorithmic complexity... If you're doing pairwise comparisons between many sequence collections, the time complexity will grow exponentially with the number of collections; the comparison function will only be a linear factor. Nevertheless, there may be a rare case that requires a specific digest for a single comparison.</p>
+<p>Our third strategy is what we call the "layered approach," because Sequence Collections uses a layered, recursive method of computing digests. First, each attribute is digested independently, and then these digests are re-digested to create the final identifier. These internal digests -- the first independent digest, which we call "level 1" -- can be useful for some questions on their own. In some cases, it may be possible to make the comparison of interest by a string comparison of the level 1 digests, bypassing the need for the comparison function. For example, if you don't care about names, you could simply compare the <code>sequence</code> attribute-level digest. This gives you the same, fast, string-match check to answer a question, but in a framework that maintains the interoperability of the primary identifier.</p>
+<p>To make this even more useful, the flexibility becomes complete with <em>custom ancillary non-inherent attributes</em>. In short, it works like this: if you <em>really</em> need a particular digest, then just compute it and add it to the sequence collection as a non-inherent attribute. You can then use it the way you would outside of the standard. As an example, the standard specifies a recommended ancillary attribute called <code>sorted_name_length_pairs</code>. This attribute solves a specific use case of coordinate system compatibility. Two sequence collections that have matching <code>sorted_name_length_pairs</code> attributes will have identical coordinate systems. The details of how to construct this attribute are included in the specification. We considered this use case common enough that we included this as a recommended ancillary attribute in the standard. It also provides an example of how you could construct other ancillary attributes to answer other specific questions that are not already answered by the basic comparison function or the level 1 digests. The point is that custom attributes like this can be easily added by a particular implementation to answer a specific question that is not already answered by the comparison function, or if the situation requires a string match instead of calling an external function for performance reasons. This provides ultimately flexibility for any comparison use case we have not already imagined, all within a framework that maintains interoperability of the final sequence collection identifiers.</p>
+<h2 id="our-proposal-for-inherent-attributes">Our proposal for inherent attributes</h2>
+<p>These strategies are major steps toward balancing interoperability and specific use cases, but there's one last major issue before we're all the way there: we need a proposal for a minimal, universal set of inherent attributes. One that could be the catch-all. Here's the problem. In our first strategy, we described how users could change the <em>inherent</em> attributes in the schema, depending on a particular use case. That's great for accommodating different needs while maintaining a common framework, but it also leads to a potential challenge: If two different implementations define different inherent attributes, then the digests of the same sequence collection will not match between these two implementations. That's part of the definition of <em>inherent</em>. This means if people use different sets of inherent attributes, we've again lost the interoperability that we've sought. By making the specification flexible enough that people can change which attributes contribute to the digest, we also open up the possibility that people will choose different inherent attributes, costing interoperability.</p>
+<p>Our solution to this is that we should provide a general standard list of inherent attributes, an "accepted" or "approved" schema, as a recommended part of the specification. This will encourage people to adopt this set of attributes, preserving interoperability for as many implementations as possible. But it also maintains the flexibility for users who need to implement something that breaks that interoperability. Buying into a general-purpose standardized schema is the only way to get interoperability at the level of matching digests across use cases. Thus, the specification includes a RECOMMENDED set of inherent attributes.</p>
+<h2 id="dont-get-caught-up-in-the-structure">Don't get caught up in the structure</h2>
+<p>One final important point. Sometimes people seeing the standard for the first time are confused at the way we structure sequence collections when we compute the digest. Specifically, why we structure the collection as an object of arrays, rather than an array of objects. In some use cases, it's more natural to think of a sequence with its metadata (name, etc) as an object, and a sequence collection as an array of such objects. Flipping the axis to group the information by attribute, instead of by sequence isn't the way they've thought about collections of objects and so it's unnatural, and this turns them off to the standard.</p>
+<p>For reasons outlined in the specification, for the actual computing of the identifier, it's important to use the array-based structure -- this is what enables us to use the "level 1" digests for certain comparison questions, and also provides critical performance benefits for extremely large sequence collections. But don't let this dissuade you! My critical point is this: <em>the way to compute the interoperable identifier does not force you to structure your data in a certain way in your service</em> -- it's simply the way you structure the data when you compute its identifier. You are, of course, free to store a collection however you want, in whatever structure makes sense for you. You'd just need to structure it according to the standard if you wanted to implement the algorithm for computing the digest. In fact, my implementation provides a way to retrieve the collection information in either structure. </p>
+<h3 id="sequence-collections-without-sequences">Sequence collections without sequences</h3>
+<p>Typically, we think of a sequence collection as consisting of real sequences, but in fact, sequence collections can also be used to specify collections where the actual sequence content is irrelevant.
+Since this concept can be a bit abstract for those not familiar, we'll try here to explain the rationale and benefit of this.
+First, consider that in a sequence comparison, for some use cases, we may be primarily concerned only with the <em>length</em> of the sequence, and not the actual sequence of characters.
+For example, BED files provide start and end coordinates of genomic regions of interest, which are defined on a particular sequence.
+On the surface, it seems that two genomic regions are only comparable if they are defined on the same sequence.
+However, this not <em>strictly</em> true; in fact, really, as long as the underlying sequences are homologous, and the position in one sequence references an equivalent position in the other, then it makes sense to compare the coordinates.
+In other words, even if the underlying sequences aren't <em>exactly</em> the same, as long as they represent something equivalent, then the coordinates can be compared.
+A prerequisite for this is that the <em>lengths</em> of the sequence must match; it wouldn't make sense to compare position 5,673 on a sequence of length 8,000 against the same position on a sequence of length 9,000 because those positions don't clearly represent the same thing; but if the sequences have the same length and represent a homology statement, then it may be meaningful to compare the positions. </p>
+<p>We realized that we could gain a lot of power from the seqcol comparison function by comparing just the name and length vectors, which typically correspond to a coordinate system.
+Thus, actual sequence content is optional for sequence collections.
+We still think it's correct to refer to a sequence-content-less sequence collection as a "sequence collection" -- because it is still an abstract concept that <em>is</em> representing a collection of sequences: we know their names, and their lengths, we just don't care about the actual characters in the sequence in this case.
+Thus, we can think of these as a sequence collection without sequence characters.</p>
+<p>An example of a canonical representation (level 2) of a sequence collection with unspecified sequences would be:</p>
+<div class="highlight"><pre><span></span><code>{
+  &quot;lengths&quot;: [
+    &quot;1216&quot;,
+    &quot;970&quot;,
+    &quot;1788&quot;
+  ],
+  &quot;names&quot;: [
+    &quot;A&quot;,
+    &quot;B&quot;,
+    &quot;C&quot;
+  ]
+}
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      GA4GH Large Scale Genomics Workstream, refget team
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["header.autohide", "navigation.sections", "navigation.expand", "navigation.footer", "toc.follow", "content.action.edit", "content.action.view", "navigation.top"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
