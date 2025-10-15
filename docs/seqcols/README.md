@@ -657,17 +657,15 @@ transient | as normal | not present | True if the level 2 representation is not 
 
 ##### 4.6.1 Default values for attribute qualifiers
 
-All attribute qualifiers default to false when not explicitly specified in the schema. For a given attribute, if not specified,
+These attribute qualifiers default to false when not explicitly specified in the schema. For a given attribute, if not specified,
 
 - `collated`: defaults to `false` (local qualifier)
-- `inherent`: defaults to `false`
 - `transient`: defaults to `false`
 - `passthru`: defaults to `false`
 - `required`: defaults to `false` (consistent with JSON Schema conventions)
 
 Similarly, when the global qualifier arrays themselves are not specified in the schema, they default to empty arrays:
 - `required`: defaults to `[]` (consistent with JSON Schema conventions)
-- `ga4gh.inherent`: defaults to `[]`
 - `ga4gh.transient`: defaults to `[]`
 - `ga4gh.passthru`: defaults to `[]`
 
@@ -675,7 +673,7 @@ This means that an attribute is only considered to have a qualifier set to `true
 - Set to `true` for local qualifiers (e.g., `collated: true`)
 - Included in the appropriate array for global qualifiers (e.g., listed in `ga4gh.inherent`)
 
-While the default for `required` and `ga4gh.inherent` arrays is `[]`, implementations SHOULD explicitly specify these arrays in their service-info schemas, as an empty `inherent` array would result in an undefined level 0 digest algorithm.
+The `ga4gh.inherent` array MUST be specified, because an empty `inherent` array would result in an undefined level 0 digest algorithm.
 
 #### 4.7 Method of specifying attribute qualifiers
 
