@@ -2,7 +2,7 @@
 
 ## **Introduction**
 
-The GA4GH Sequence Collections (seqcol) specification provides a standardized solution for identifying and managing collections of reference sequences in genomics workflows. This document presents user stories for nine key use cases, demonstrating how seqcol addresses real-world challenges in genomic data management, analysis, and sharing.
+The GA4GH Sequence Collections (seqcol) specification provides a standardized solution for identifying and managing collections of reference sequences in genomics workflows. This document presents user stories for eleven key use cases, demonstrating how seqcol addresses real-world challenges in genomic data management, analysis, and sharing.
 
 ## **Use case 1: Find all sequences within a collection**
 
@@ -322,3 +322,82 @@ The seqcol specification is fundamentally built on content-based identifiers:
 4. **Standardized computation**: The specification ensures any implementation computes identical digests for identical content
 
 This built-in digest system means that if two collections have the same digest, they are guaranteed to have identical content. No additional digest system is needed beyond the seqcol identifier itself. Tools implementing seqcol include reference implementations in Python (e.g., the refget-py package) that can compute these digests from local sequence files.
+
+## **Use case 10: Embed identifiers for provenance and reproducibility**
+
+**What this accomplishes**
+
+Enables tools and pipelines to embed seqcol identifiers in their outputs for provenance tracking, and allows annotation of data files with computed seqcol digests when the reference is unknown. This ensures that the exact reference sequences used in analysis are documented and traceable.
+
+**User story**
+
+**As a** software developer building genomics tools
+**I want** to embed seqcol identifiers in my tool's outputs and compute them from input files
+**So that** downstream tools can identify the exact reference used and maintain complete provenance
+
+**Concrete examples**
+
+* Embedding seqcol digest in VCF/BAM/CRAM file headers during variant calling or alignment
+* Computing seqcol digest from an input file with unknown or undocumented reference
+* Pipeline outputs that automatically track reference provenance across analysis steps
+* Annotating legacy datasets with seqcol digests for improved data management
+
+**How seqcol solves this**
+
+The seqcol specification enables provenance tracking through multiple mechanisms:
+
+1. **Lightweight identifiers**: Seqcol digests are compact strings that can be easily embedded in file headers, metadata fields, or database records
+
+2. **Bidirectional workflow**:
+   * **Forward direction**: Tools can embed a known seqcol digest when creating output files
+   * **Reverse direction**: Tools can compute a seqcol digest from reference information in existing files (e.g., extracting chromosome names and lengths from BAM headers)
+
+3. **Standard format**: The consistent digest format means any tool that encounters a seqcol identifier can query a seqcol server to retrieve complete reference information
+
+4. **No central authority required**: Digests can be computed locally from reference files without needing to register with a central database, making it suitable for custom or private references
+
+This allows developers to build tools that maintain reference provenance automatically, and enables users to document references for data that previously lacked clear provenance.
+Downstream users who then make use of these pipeline outputs will be able to retrieve the exact sequences used (assuming it is a standardized collection hosted by a refget service).
+
+## **Use case 11: Assess coordinate system compatibility**
+
+**What this accomplishes**
+
+Determines whether different datasets, annotation files, or visualizations can be used together based on coordinate system (name/length) compatibility, even if underlying sequences differ.
+This is particularly important for genome browsers, annotation curation, and data integration where exact sequence content is less critical than positional consistency.
+
+**User story**
+
+**As a** genome browser developer or data curator
+**I want** to check if my coordinate system is compatible with annotation files or other datasets
+**So that** I can determine if annotations can be displayed, merged, or compared without coordinate transformation
+
+**Concrete examples**
+
+* Checking if a BED file can be displayed on a genome browser's reference genome
+* Validating SNP annotations against target reference genome coordinates before import
+* Determining if two datasets with different sequence content (e.g., soft-masked vs hard-masked) share coordinate systems
+* Assessing whether published annotations can be applied to a locally-modified reference
+
+**How seqcol solves this**
+
+The seqcol specification enables coordinate system compatibility checking through specialized attributes and comparison capabilities:
+
+1. **Coordinate-focused attributes**: The recommended `name_length_pairs` and `sorted_name_length_pairs` attributes capture just the coordinate system information:
+   * `name_length_pairs`: Ordered coordinate system (preserves chromosome order)
+   * `sorted_name_length_pairs`: Order-invariant coordinate system (for order-agnostic compatibility)
+
+2. **Attribute-level comparison**: The `/comparison` endpoint provides detailed information about:
+   * Whether names match between collections
+   * Whether lengths match between collections
+   * How many sequences are shared vs unique
+   * Whether shared sequences are in the same order
+
+3. **Flexible compatibility levels**: Users can determine different levels of compatibility:
+   * **Strict compatibility**: Identical `name_length_pairs` digest means identical coordinate systems in same order
+   * **Relaxed compatibility**: Matching `sorted_name_length_pairs` digest means same coordinates, possibly different order
+   * **Partial compatibility**: Comparison shows subset relationships or overlapping coordinates
+
+4. **Sequence-agnostic**: Because coordinate attributes are separate from sequence content, two references with different underlying sequences (e.g., with/without alternate contigs, soft-masked vs unmasked) can be recognized as coordinate-compatible
+
+This is particularly valuable for genome browsers that need to quickly determine if annotation tracks can be displayed, and for data curators who need to assess whether annotations created on one reference can be safely applied to another.

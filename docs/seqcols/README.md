@@ -29,27 +29,19 @@ Finally, the protocol defines several recommended procedures that will improve c
 
 Sequence collections represent fundamental concepts, making the specification adaptable to a wide range of use cases.
 A primary goal is to enable sequence collection (seqcol) digests to replace or complement the human-readable identifiers currently used for reference genomes (e.g., "hg38" or "GRCh38").
-Unfortunately, these simple identifiers often refer to references with subtle (or not so subtle) differences. Such variation leads to fundamental issues in analyses relying on reference genomes, undermining the utility of these identifiers.  
+Unfortunately, these simple identifiers often refer to references with subtle (or not so subtle) differences. Such variation leads to fundamental issues in analyses relying on reference genomes, undermining the utility of these identifiers.
 
 Unique identifiers, such as those provided by the NCBI Assembly database, partially address this problem by unambiguously identifying specific assemblies. However, this approach has limitations:
 
 - It depends on a central authority, which excludes custom genomes and doesn't cover all reference providers.
-- Centralized identifiers alone cannot *confirm* identity, as identity also depends on the genome's content.  
-- It does not address the related challenge of determining compatibility among reference genomes. Analytical results or annotations based on different references may still be integrable if certain conditions are met, but current tools and standards lack the means to formalize and simplify compatibility comparisons.  
+- Centralized identifiers alone cannot *confirm* identity, as identity also depends on the genome's content.
+- It does not address the related challenge of determining compatibility among reference genomes. Analytical results or annotations based on different references may still be integrable if certain conditions are met, but current tools and standards lack the means to formalize and simplify compatibility comparisons.
 
 The [refget Sequences standard](../sequences/README.md) provides a partial solution applicable to individual sequences, such as a single chromosome.
 However, refget Sequences does not directly address collections of sequences, such as a linear reference genome.
-Building on refget Sequences, the *Sequence Collections* specification introduces foundational concepts that support diverse use cases, including:  
+Building on refget Sequences, the *Sequence Collections* specification introduces foundational concepts that support diverse use cases.
 
-- **Accessing sequences**:  *As a data analyst, I want to know which sequences are in a specific collection so I can analyze them further.*  
-- **Comparing collections**:  *As a data analyst, I want to compare the sequence collections used in two separate analyses to assess the compatibility of their resulting data.*  
-- **Annotation curation**: *As a data curator for SNP data, I want an unambiguous reference genome identifier upon which my SNP annotations can be interpreted, so I can compare them with confidence*.
-- **Extracting subsets**:  *As a data analyst, I want to extract specific sequences, such as those composing the chromosomes or karyotype of a genome.*  
-- **Validating submissions**: *As a submission system, I need to determine the exact content of a sequence collection to validate data file submissions.*  
-- **Embedding identifiers**:  *As a software developer, I want to embed a sequence collection identifier in my tool's output, allowing downstream tools to identify the exact sequence collection used.*  
-- **Checking compatibility**:  *As a data analyst using published data, I have a chromosome sizes file (a set of lengths and names) and want to determine whether a given sequence collection is length- or name-compatible with this file.*  
-- **Genome browser integration**:  *As a genome browser, I use one sequence collection for the displayed coordinate system and want to check if a digest representing a given BED file's coordinate system is compatible with it.*  
-- **Annotating unknown references**:  *As a data processor, I encounter input data without reference genome information and want to generate a sequence collection digest to attach, enabling further processing with seqcol features.*  
+For detailed user stories and concrete examples of how seqcol addresses real-world challenges, see the [User Stories and Use Cases](user_stories.md) document.
 
 ## Architectural decision record
 
