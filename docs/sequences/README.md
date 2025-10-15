@@ -571,7 +571,7 @@ The specification makes no attempt to enforce a strict naming authority across i
 
 ### v2.0.0
 
-- Replace refget sequences v1 service-info implementation with GA4GH discovery's definition of service-info
+- Replace refget sequences' v1 service-info implementation with GA4GH discovery's definition of service-info
 - Move code examples out into a Python notebook and a Perl script
 - Replace TRUNC512 with ga4gh identifier as the default SHA-512-based hash identifier (support still available for TRUNC512)
 - All checksums can be requested namespaced with their algorithm
