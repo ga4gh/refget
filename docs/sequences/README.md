@@ -1,20 +1,22 @@
 ---
 layout: default
-title: refget protocol
+title: refget sequences protocol
 suppress_footer: true
 ---
 
 # Refget Sequences v2.0.0
 
+> **Note on naming:** This specification was originally published as "refget", but in 2025 was renamed to "refget sequences", after the *refget sequence collections* specification was approved. The term "refget" is now used as an umbrella term covering both the sequences and sequence collections specification. This document has been updated to use "refget sequences," but "refget" may be used as shorthand to refer to "refget sequences" for historical reasons (e.g., `vnd.ga4gh.refget.v2.0.0+plain`).
+
 ## Introduction
 
 Reference sequences are fundamental to genomic analysis and interpretation however naming is a serious issue. For example the reference genomic sequence GRCh38/1 is also known as hg38/chr1, CM000663.2 and NC_000001.11. In addition there is no standardised way to access reference sequence from providers such as INSDC (ENA, Genbank, DDBJ), Ensembl or UCSC.
 
-Refget enables access to reference sequences using an identifier derived from the sequence itself.
+Refget Sequences enables access to reference sequences using an identifier derived from the sequence itself.
 
-Refget uses a hash algorithm (by default `MD5`) to generate a checksum identifier, which is a digest of the underlying sequence. This removes the need for a single accessioning authority to identify a reference sequence and improves the provenance of sequence used in analysis. In addition refget defines a simple scheme to retrieve reference sequence via this checksum identifier.
+Refget Sequences uses a hash algorithm (by default `MD5`) to generate a checksum identifier, which is a digest of the underlying sequence. This removes the need for a single accessioning authority to identify a reference sequence and improves the provenance of sequence used in analysis. In addition refget defines a simple scheme to retrieve reference sequence via this checksum identifier.
 
-Refget is intended to be used in any scenario where full or partial access to reference sequence is required e.g. the CRAM file format or a genome browser.
+Refget Sequences is intended to be used in any scenario where full or partial access to reference sequence is required e.g. the CRAM file format or a genome browser.
 
 ## Design principles
 
@@ -31,7 +33,7 @@ An OpenAPI description of this specification is available and [describes the 2.0
 
 ## Compliance
 
-Implementers can check if their refget implementations conform to the specification by using our [compliance suite](https://github.com/ga4gh/refget-compliance-suite). A summary of all known public implementations is available from our [compliance report website](https://andrewyatz.github.io/refget-compliance/).
+Implementers can check if their refget sequences implementations conform to the specification by using our [compliance suite](https://github.com/ga4gh/refget-compliance-suite). A summary of all known public implementations is available from our [compliance report website](https://andrewyatz.github.io/refget-compliance/).
 
 ## Protocol essentials
 
@@ -97,7 +99,7 @@ Authorization: Bearer [access_token]
 The policies and processes used to perform user authentication and authorization, and the means through which access tokens are issued, are beyond the scope of this API specification. GA4GH recommends the use of the OAuth 2.0 framework ([RFC 6749](https://tools.ietf.org/html/rfc6749)) for authentication and authorization.
 
 ## Checksum calculation
-The recommended checksum algorithms are `MD5` (a 32 character HEX string) and a SHA-512-based system called `ga4gh` (a base64 URL-safe string, see later for details). Servers MUST support sequence retrieval by one or more of these algorithms, and are encouraged to support all to maximize interoperability. An older algorithm called `TRUNC512` existed in version 1.0.0 of refget but is now deprecated in favour of the GA4GH sequence checksum string. It is possible to translate between the `ga4gh` and `TRUNC512` systems however `TRUNC512` usage SHOULD be discouraged.
+The recommended checksum algorithms are `MD5` (a 32 character HEX string) and a SHA-512-based system called `ga4gh` (a base64 URL-safe string, see later for details). Servers MUST support sequence retrieval by one or more of these algorithms, and are encouraged to support all to maximize interoperability. An older algorithm called `TRUNC512` existed in version 1.0.0 of refget sequences but is now deprecated in favour of the GA4GH sequence checksum string. It is possible to translate between the `ga4gh` and `TRUNC512` systems however `TRUNC512` usage SHOULD be discouraged.
 
 When calculating the checksum for a sequence, all non-base symbols (\n, spaces, etc) must be removed and then the rest uppercased. The allowed alphabet for checksum calculation is uppercase ASCII letters (`0x41`-`0x5A` or `A-Z`).
 
@@ -518,7 +520,7 @@ The algorithm performs a SHA-512 digest of a sequence and creates a `base64url` 
 
 ### Checksum Identifier Identification
 
-When a checksum identifier is given to an implementation, it is the server's responsibility to compute what kind of identifier (`MD5`, `ga4gh` or `TRUNC512`) has been given. If provided, the namespace prefix should be used to figure it out. Otherwise `MD5` and `TRUNC512` can be deduced based on length; 32 and 48 characters long respectively. `ga4gh` identifiers can be detected by searching for the string `SQ.`. Should refget officially support alternative checksum based identifiers we will describe the mechanisms to resolve their identification in future versions.
+When a checksum identifier is given to an implementation, it is the server's responsibility to compute what kind of identifier (`MD5`, `ga4gh` or `TRUNC512`) has been given. If provided, the namespace prefix should be used to figure it out. Otherwise `MD5` and `TRUNC512` can be deduced based on length; 32 and 48 characters long respectively. `ga4gh` identifiers can be detected by searching for the string `SQ.`. Should refget sequences officially support alternative checksum based identifiers we will describe the mechanisms to resolve their identification in future versions.
 
 ## Possible Future API Enhancements
 
@@ -560,7 +562,7 @@ The specification makes no attempt to enforce a strict naming authority across i
 | `ensembl`  | Ensembl | Used for an identifier assigned by the Ensembl project | Active |
 | `md5`  | MD5 | Prefix used to describe digests which have gone through the MD5 algorithm | Active |
 | `refseq`   | RefSeq | Used for an identifier assigned by the RefSeq group | Active |
-| `trunc512` | Refget | The old checksum algorithm based on SHA-512 used in v1.0.0 of refget | Deprecated |
+| `trunc512` | Refget | The old checksum algorithm based on SHA-512 used in v1.0.0 of refget sequences | Deprecated |
 | `ga4gh`    | Refget | ga4gh identifier, which are prefixed by the term `SQ.`. This is the preferred naming | Active |
 | `md5`    | Refget | md5 checksum of the sequence. | Active |
 | `vmc`      | VMC | Used for when an identifier is a VMC compatible digest | Deprecated |
@@ -569,7 +571,7 @@ The specification makes no attempt to enforce a strict naming authority across i
 
 ### v2.0.0
 
-- Replace refget's v1 service-info implementation with GA4GH discovery's definition of service-info
+- Replace refget sequences v1 service-info implementation with GA4GH discovery's definition of service-info
 - Move code examples out into a Python notebook and a Perl script
 - Replace TRUNC512 with ga4gh identifier as the default SHA-512-based hash identifier (support still available for TRUNC512)
 - All checksums can be requested namespaced with their algorithm
