@@ -673,7 +673,7 @@ This means that an attribute is only considered to have a qualifier set to `true
 - Set to `true` for local qualifiers (e.g., `collated: true`)
 - Included in the appropriate array for global qualifiers (e.g., listed in `ga4gh.inherent`)
 
-The `ga4gh.inherent` array MUST be specified, because an empty `inherent` array would result in an undefined level 0 digest algorithm.
+A non-empty `ga4gh.inherent` array MUST be provided, because an empty `inherent` array would result in an undefined level 0 digest algorithm.
 
 #### 4.7 Method of specifying attribute qualifiers
 
