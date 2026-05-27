@@ -247,6 +247,7 @@ Applying this to each value will produce the following structure:
     Attributes of a seqcol that are *not* listed as `inherent` `MUST NOT` contribute to the digest; they are therefore excluded from the top-level digest calculation (Steps 4 and 5).
     Therefore, if the intermediate seqcol representation includes any non-inherent attributes, these must be removed before proceeding to step 4.
     In the simple example, the `lengths` attribute is not `inherent` and must be filtered.
+    This filtering applies only to digest computation. Non-inherent attributes are still included in level 1 and level 2 representations returned by the API.
 
 
 #### Step 4: Apply RFC-8785 again to canonicalize the JSON of the new seqcol object representation.
@@ -280,7 +281,7 @@ Zjx9_tD2o-1yKB6RR2v2g3W9c5ufydUc
 
 ##### Level 1
 
-What you'd get when you look up the digest with **1 database lookup**. We sometimes refer to this as the "attribute digests", because it is made up a digest for each attribute in the sequence collection. Example:
+What you'd get when you look up the digest with **1 database lookup**. We sometimes refer to this as the "attribute digests", because it is made up a digest for each attribute in the sequence collection. The level 1 representation includes all attributes (both inherent and non-inherent); however, only inherent attributes contribute to computing the level 0 digest in Steps 4-5 of the encoding algorithm. Example:
 
 ```json
 {
