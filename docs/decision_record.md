@@ -8,6 +8,22 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+## 2026-05-27 Allow asterisk (*) character in sequence checksum alphabet
+
+### Decision
+
+The allowed alphabet for refget sequence checksum calculation is expanded from `A-Z` to include the asterisk character (`*`), code point `0x2A`.
+
+### Rationale
+
+Translational readthrough occurs when the ribosome reaches a stop codon but, instead of terminating, a near-cognate tRNA outcompetes the release factor and an amino acid is incorporated. Translation then continues in-frame to the next stop codon, producing a C-terminally extended protein. The amino acid inserted at the readthrough position  depends on which tRNA wins the competition, which varies by stop codon and cellular context. The asterisk (`*`) functions as an ambiguity code, analogous to how IUPAC ambiguity codes (R, Y, N, etc.) represent uncertain nucleotides in DNA sequences.
+
+Ensembl represents these positions with `*`, including at interior positions (not just trailing). The previous refget sequences spec restricted sequences to `A-Z`, which caused some ambiguity in implementation; implementations may either strip asterisks (causing digest collisions between genuinely distinct sequences), reject these sequences entirely, or allow the asterisk despite the spec excluding them. By including `*` in the allowed alphabet, we ensure protein sequences with readthrough events produce consistent, distinct digests across implementations.
+
+### Linked issues
+
+- <https://github.com/biocommons/bioutils/issues/85>
+
 ## 2024-11-20 Level 2 return values should not return transient attributes
 
 ### Decision
