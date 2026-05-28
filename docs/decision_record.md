@@ -8,6 +8,28 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 [TOC]
 
+## 2026-05-28 Clarify start/end query parameter and Range header edge cases
+
+### Decision
+
+1. The `start` and `end` query parameters may be used independently (either one alone, or both together).
+2. If only `start` is specified, the server returns the sub-sequence from `start` to the end of the sequence.
+3. If only `end` is specified, the server returns the sub-sequence from position 0 to `end`.
+4. If `start` or `end` exceeds the total sequence length, the server MUST respond with `Range Not Satisfiable` (416). Previously, the spec required `Bad Request` (400) for out-of-bounds `start`.
+5. For Range header requests, behavior follows [RFC 7233](https://datatracker.ietf.org/doc/html/rfc7233#section-2.1): if `last-byte-pos` exceeds the sequence length, the server MUST clip it to the sequence length; if `first-byte-pos` exceeds the sequence length, the server MUST respond with `Range Not Satisfiable`.
+
+### Rationale
+
+The specification was ambiguous about whether `start` and `end` must both be provided or could be used independently. The compliance suite and reference implementation (EBI) already allowed either parameter to be omitted, so we codified this existing behavior.
+
+For query parameters, both out-of-bounds `start` and `end` now require `Range Not Satisfiable` (416), which matches the reference implementation (EBI) behavior. The previous spec required `Bad Request` (400) for out-of-bounds `start`.
+
+For Range headers, RFC 7233 specifies that an out-of-bounds `last-byte-pos` should be clipped to the representation length, while an out-of-bounds `first-byte-pos` makes the range unsatisfiable. The previous specification text ("out of bounds = Bad Request") was ambiguous and inconsistent with RFC 7233. We now explicitly align Range header behavior with the RFC.
+
+### Linked issues
+
+- <https://github.com/ga4gh/refget/issues/107>
+
 ## 2024-11-20 Level 2 return values should not return transient attributes
 
 ### Decision
