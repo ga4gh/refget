@@ -152,9 +152,16 @@ GA4GH is publishing a [CORS best practices document](https://docs.google.com/doc
 
 The primary method for accessing specified sequence data. The response is the requested sequence or sub-sequence in text unless an alternative formatting supported by the server is requested.
 
-The client may specify a genomic range to retrieve a sub-sequence via either the Range header OR start/end query parameters, however the Range header is the recommended method. If a sub-sequence is requested via `start`/`end` query parameters, the response must be 200 and only contain the specified sub-sequence. If a sub-sequence is requested via a Range header, the response must be one of 206 and only contain the specified sub-sequence, be 200 and contain the entire sequence (thus ignoring the Range header), or 303 redirecting the client to where it can retrieve the sequence.
+The client may specify a genomic range to retrieve a sub-sequence via either the Range header OR start/end query parameters, however the Range header is the recommended method. If a sub-sequence is requested via `start`/`end` query parameters, the response must be `200 OK` and only contain the specified sub-sequence.
 
-If a sub-sequence is requested, the response must only contain the specified sub-sequence. A server may place a length limit on sub-sequences returned via query parameter, queries exceeding this limit shall return `Range Not Satisfiable`.
+If a sub-sequence is requested via a Range header, the server MUST respond with one of the following:
+- `206 Partial Content` containing only the requested sub-sequence (RECOMMENDED)
+- `200 OK` containing the entire sequence, if the server does not support Range headers
+- `303 See Other` redirecting the client to where it can retrieve the sequence
+
+Servers that support Range headers SHOULD return `206` with the requested sub-sequence. Servers that do not support Range headers MAY return `200` with the entire sequence.
+
+A server may place a length limit on sub-sequences returned via query parameter, queries exceeding this limit shall return `Range Not Satisfiable`.
 
 If `start` and `end` are set to the same value the server should return a 0-length string.
 
@@ -191,7 +198,11 @@ Content-type: text/vnd.ga4gh.refget.v2.0.0+plain
 
 The server shall return the requested sequence or sub-sequence as a single string in uppercase ASCII text (bytes 0x41-0x5A) with no line terminators or other formatting characters. The server may return the sequence in an alternative formatting, such as JSON or FASTA, if requested by the client via the `Accept` header and the format is supported by the server.
 
-On success and either a whole sequence or sub-sequence is returned the server MUST issue a 200 status code if the entire sequence is returned. A server SHOULD return a 206 status code if a Range header was specified and the request was successful.
+When a request is successful:
+- If the server returns the entire sequence and no Range header was specified, the server MUST return `200 OK`
+- If a Range header was specified and the server returns only the requested sub-sequence, the server MUST return `206 Partial Content`
+- If a Range header was specified but the server does not support Range headers, it MUST return `200 OK` with the entire sequence
+- If a Range header requests the entire sequence (e.g., `Range: bytes=0-`), the server SHOULD return `206 Partial Content` to indicate Range header support, but MAY return `200 OK`
 
 If start and end query parameter are specified and equal each other, the server should respond with a zero length string i.e.
 
