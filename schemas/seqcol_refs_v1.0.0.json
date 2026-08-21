@@ -1,0 +1,26 @@
+{
+  "description": "A collection of biological sequences.",
+  "type": "object",
+  "$id": "https://ga4gh.github.io/refget/schemas/seqcol_minimal_v1.0.0.json",
+  "properties": {
+    "lengths": {
+      "$ref": "/lengths"
+    },
+    "names": {
+      "$ref": "/names"
+    },
+    "sequences": {
+      "$ref": "/sequences"
+    }
+  },
+  "required": [
+    "names",
+    "sequences"
+  ],
+  "ga4gh": {
+    "inherent": [
+      "names",
+      "sequences"
+    ]
+  }
+}
