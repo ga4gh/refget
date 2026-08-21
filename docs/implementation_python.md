@@ -7,7 +7,7 @@
 
 The reference implementation of refget standards in Python is available here:
 
-- Documentation: <https://refgenie.org/refget/>
+- Documentation: <https://docs.refgenie.org/refget/>
 - Source at GitHub: <https://github.com/refgenie/refget>.
 - PyPI: <https://pypi.org/project/refget/>
 
