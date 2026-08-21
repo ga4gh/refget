@@ -24,7 +24,7 @@ The API has the following features:
 
 - The checksum algorithm used to derive the sequence identifier shall be a mainstream algorithm available standard across multiple platforms and programming languages.
 - The client may request a sub-sequence, which the server is expected to honour
-- Refget was designed to enable access to nucleotide sequences, however other sequences could be provided via the same mechanism e.g. cDNA, CDS, mRNA or proteins
+- Refget sequences was designed to enable access to nucleotide sequences, however other sequences could be provided via the same mechanism e.g. cDNA, CDS, mRNA or proteins
 - Optionally the API provides a retrieval of the sequence and metadata via a unique identifier
 
 ## OpenAPI Description
@@ -130,11 +130,11 @@ The requested checksum can optionally be prefixed with a namespace describing th
 For example using md5 `md5:6aef897c3d6ff0c78aff06ac189178dd` and `6aef897c3d6ff0c78aff06ac189178dd` should return the same sequence and similarly using ga4gh `ga4gh:SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2` and `SQ.aKF498dAxcJAqme6QYQ7EZ07-fiw8Kw2` should return the same sequence.
 
 ## Unique Identifiers
-Refget optionally allows the use of namespaced identifiers in place of the digest. The identifier prefixed by a namespace to form a CURIE for example:
+Refget sequences optionally allows the use of namespaced identifiers in place of the digest. The identifier prefixed by a namespace to form a CURIE for example:
 
 `insdc:CM000663.2`
 
-It is recommended that each namespaced identifier be unique within the refget implementation but if it does not resolve to a single sequence the server must respond with either:
+It is recommended that each namespaced identifier be unique within the refget sequences implementation but if it does not resolve to a single sequence the server must respond with either:
 
 - code 300: `multiple choices` providing a list of identifiers or sequence digests that correspond to the request;
 - code 409: `conflict` indicating a conflict that cannot be resolved.
@@ -158,7 +158,7 @@ If a sub-sequence is requested, the response must only contain the specified sub
 
 If `start` and `end` are set to the same value the server should return a 0-length string.
 
-A server may support circular chromosomes as a reference sequence, but this is not mandatory. If a reference sequence represents a circular chromosome and the server supports circular chromosomes, a sub-sequence query with a start greater than the end will return the sequence from the start location to the end of the reference, immediately followed by the sequence from the first base to the end. If the server supports circular chromosomes and the chromosome is not circular or the range is outside the bounds of the chromosome the server shall return `Range Not Satisfiable`. Otherwise if circular chromosomes are not supported, a `Not Implemented` shall be returned. Sub-sequences of circular chromosomes across the origin may not be requested via the Range header. The starting point of a circular chromosome is determined by an external authority and not by the refget implementation.
+A server may support circular chromosomes as a reference sequence, but this is not mandatory. If a reference sequence represents a circular chromosome and the server supports circular chromosomes, a sub-sequence query with a start greater than the end will return the sequence from the start location to the end of the reference, immediately followed by the sequence from the first base to the end. If the server supports circular chromosomes and the chromosome is not circular or the range is outside the bounds of the chromosome the server shall return `Range Not Satisfiable`. Otherwise if circular chromosomes are not supported, a `Not Implemented` shall be returned. Sub-sequences of circular chromosomes across the origin may not be requested via the Range header. The starting point of a circular chromosome is determined by an external authority and not by the refget sequences implementation.
 
 ##### Default encoding
 Unless negotiated with the client and allowed by the server, the default encoding for this method is:
@@ -389,7 +389,7 @@ GET /service-info
 
 {
   "id": "org.ga4gh.refget",
-  "name": "Refget server",
+  "name": "Refget sequences server",
   "type": {
     "group": "org.ga4gh",
     "artifact": "refget-sequence",
@@ -476,7 +476,7 @@ Any bytes added for formatting to the returned output should not be taken in to 
 
 ## Alternative Checksum Algorithms
 
-Refget implementations MUST support the `MD5` identifier space and SHOULD support the `ga4gh` identifier. Non-standard identifiers are allowed but they MUST conform to the following requirements:
+Refget sequences implementations MUST support the `MD5` identifier space and SHOULD support the `ga4gh` identifier. Non-standard identifiers are allowed but they MUST conform to the following requirements:
 
 1. Non-standard identifiers must be based on an algorithm that uses normalised sequence content as input
 2. The algorithm used SHOULD be a hash function
