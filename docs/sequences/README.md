@@ -4,7 +4,7 @@ title: refget sequences protocol
 suppress_footer: true
 ---
 
-# Refget Sequences v2.0.0
+# Refget Sequences v2.0.1
 
 > **Note on naming:** This specification was originally published as "refget", but in 2025 was renamed to "refget sequences", after the *refget sequence collections* specification was approved. The term "refget" is now used as an umbrella term covering both the sequences and sequence collections specification. This document has been updated to use "refget sequences," but "refget" may be used as shorthand to refer to "refget sequences" for historical reasons (e.g., `vnd.ga4gh.refget.v2.0.0+plain`).
 
@@ -101,16 +101,16 @@ The policies and processes used to perform user authentication and authorization
 ## Checksum calculation
 The recommended checksum algorithms are `MD5` (a 32 character HEX string) and a SHA-512-based system called `ga4gh` (a base64 URL-safe string, see later for details). Servers MUST support sequence retrieval by one or more of these algorithms, and are encouraged to support all to maximize interoperability. An older algorithm called `TRUNC512` existed in version 1.0.0 of refget sequences but is now deprecated in favour of the GA4GH sequence checksum string. It is possible to translate between the `ga4gh` and `TRUNC512` systems however `TRUNC512` usage SHOULD be discouraged.
 
-When calculating the checksum for a sequence, all non-base symbols (\n, spaces, etc) must be removed and then the rest uppercased. The allowed alphabet for checksum calculation is uppercase ASCII letters (`0x41`-`0x5A` or `A-Z`).
+When calculating the checksum for a sequence, all non-base symbols (\n, spaces, etc) must be removed and then the rest uppercased. The allowed alphabet for checksum calculation is uppercase ASCII letters (`0x41`-`0x5A` or `A-Z`) plus the asterisk character (`0x2A` or `*`), to accommodate protein sequences containing stop codons or translational readthrough events.
 
 Resulting hexadecimal checksum strings shall be considered case insensitive. 0xa is equivalent to 0xA.
 
 ## refget Checksum Algorithm
 The refget checksum algorithm is called `ga4gh`. It is based on and derived from work carried out by the GA4GH VRS group. The checksum of a reference sequence string is computed as follows:
 
-1. Canonicalize the sequence string by removing all non-alphabetic characters, including line terminators and other whitespace, and converting any lowercase letters to uppercase.
+1. Canonicalize the sequence string by removing all characters that are not alphabetic letters or asterisks, including line terminators and other whitespace, and converting any lowercase letters to uppercase.
 
-    (The canonicalised string then contains only uppercase ASCII letters `A-Z`.)
+    (The canonicalised string then contains only uppercase ASCII letters `A-Z` and asterisks `*`.)
 
 1. Compute the SHA-512 digest of that canonical sequence string.
 
@@ -189,7 +189,7 @@ Content-type: text/vnd.ga4gh.refget.v2.0.0+plain
 
 #### Response
 
-The server shall return the requested sequence or sub-sequence as a single string in uppercase ASCII text (bytes 0x41-0x5A) with no line terminators or other formatting characters. The server may return the sequence in an alternative formatting, such as JSON or FASTA, if requested by the client via the `Accept` header and the format is supported by the server.
+The server shall return the requested sequence or sub-sequence as a single string in uppercase ASCII text (bytes `0x41`-`0x5A` and `0x2A`) with no line terminators or other formatting characters. The server may return the sequence in an alternative formatting, such as JSON or FASTA, if requested by the client via the `Accept` header and the format is supported by the server.
 
 On success and either a whole sequence or sub-sequence is returned the server MUST issue a 200 status code if the entire sequence is returned. A server SHOULD return a 206 status code if a Range header was specified and the request was successful.
 
@@ -508,7 +508,7 @@ Key to generating reproducible checksums is the normalisation algorithm applied 
 - VRS
     - VRS requires sequence to be a string of IUPAC codes for either nucleotide or protein sequence
 
-Considering the requirements of the three systems the specification designers felt it was sufficient to restrict input to the inclusive range `65` (`0x41`/`A`) to `90` (`0x5A`/`Z`). Changes to this normalisation algorithm would require a new checksum identifier to be used.
+Considering the requirements of the three systems the specification designers initially restricted input to the inclusive range `65` (`0x41`/`A`) to `90` (`0x5A`/`Z`). In v2.0.1, the asterisk character (`0x2A`/`*`) was added to the allowed alphabet to support protein sequences. Ensembl uses `*` to represent translational readthrough positions, including at interior positions within protein sequences.
 
 ### Checksum Choice
 
@@ -568,6 +568,10 @@ The specification makes no attempt to enforce a strict naming authority across i
 | `vmc`      | VMC | Used for when an identifier is a VMC compatible digest | Deprecated |
 
 ## Appendix 2 - Changes
+
+### v2.0.1
+
+- Expanded allowed alphabet for checksum calculation to include the asterisk (`*`) character, to support protein sequences containing stop codons and translational readthrough events
 
 ### v2.0.0
 
