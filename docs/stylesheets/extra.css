@@ -22,3 +22,7 @@ img.title {
     max-width: 80%; /* Prevents it from being too large */
   }
 }
+/* Show nav page icons (e.g. the in-development cone on Pangenomes) after the label */
+.md-nav__link > svg {
+  order: 1;
+}

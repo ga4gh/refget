@@ -7,6 +7,7 @@ nav:
   - Specifications: 
     - Sequences: sequences/README.md
     - Sequence Collections: seqcols/README.md
+    - Pangenomes: pangenomes/README.md
   - Detailed how-to guides:
     - Compute a digest given a seqcol: seqcols/digest_from_collection.md
     - Compare two sequence collections: seqcols/compare_collections.md
